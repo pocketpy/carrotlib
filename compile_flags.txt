@@ -1,0 +1,7 @@
+-xc++
+-std=c++17
+-Iinclude/
+-I3rd/pocketpy/include/
+-I3rd/imgui/
+-I3rd/raylib/src/
+-I3rd/rlImGui/

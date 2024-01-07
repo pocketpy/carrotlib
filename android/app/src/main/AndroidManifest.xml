@@ -1,0 +1,21 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:label="Game"
+        android:roundIcon="@mipmap/ic_launcher_round">
+        <activity android:name="game.example.android.MainActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="userLandscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="GameAndroid" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

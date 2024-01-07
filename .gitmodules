@@ -1,0 +1,3 @@
+[submodule "3rd/pocketpy"]
+	path = 3rd/pocketpy
+	url = https://github.com/blueloveth/pocketpy
