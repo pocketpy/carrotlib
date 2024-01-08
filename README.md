@@ -1,6 +1,9 @@
 # carrotlib🥕
 
-*This project is still in early development.*
+## Caveat
+
++ This project is NOT ready for production.
++ This project mainly serves for my own games.
 
 ## Create a project
 
