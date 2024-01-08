@@ -11,7 +11,10 @@ if TYPE_CHECKING:
 
 root: Node = None
 b2_world: World = None
+
 debug_window: DebugWindow = None
+debug_draw_box2d: bool = False
+
 background: rl.Color = rl.Color(255, 255, 255, 255)
 
 # updated by engine every frame

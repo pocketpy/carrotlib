@@ -149,7 +149,8 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         # 	e_pairBit				= 0x0008,	///< draw broad-phase pairs
         # 	e_centerOfMassBit		= 0x0010	///< draw center of mass frame
         # };
-        # g.b2_world.debug_draw(0x0001 | 0x0002 | 0x0008 | 0x0010)
+        if g.debug_draw_box2d:
+            g.b2_world.debug_draw(0x0001 | 0x0002 | 0x0008 | 0x0010)
 
         # 5. render ui
         g.is_rendering_ui = True
