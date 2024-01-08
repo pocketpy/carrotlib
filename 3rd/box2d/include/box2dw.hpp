@@ -1,7 +1,7 @@
 #pragma once
 
 #include "box2d/box2d.h"
-#include "pocketpy/pocketpy.h"
+#include "pocketpy.h"
 
 namespace pkpy{
 
@@ -135,10 +135,6 @@ struct PyWorld {
     static void _register(VM* vm, PyObject* mod, PyObject* type);
 };
 
-inline void add_module_box2d(VM* vm){
-    PyObject* mod = vm->new_module("box2d");
-    PyBody::register_class(vm, mod);
-    PyWorld::register_class(vm, mod);
-}
+void add_module_box2d(VM* vm);
 
 }   // namespace pkpy

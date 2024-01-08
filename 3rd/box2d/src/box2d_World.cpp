@@ -2,6 +2,12 @@
 
 namespace pkpy{
 
+void add_module_box2d(VM* vm){
+    PyObject* mod = vm->new_module("box2d");
+    PyBody::register_class(vm, mod);
+    PyWorld::register_class(vm, mod);
+}
+
 struct MyRayCastCallback: b2RayCastCallback{
     PK_ALWAYS_PASS_BY_POINTER(MyRayCastCallback)
 
