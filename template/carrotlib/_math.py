@@ -10,7 +10,3 @@ def clamp(x, a, b):
 
 def clamp01(x):
     return clamp(x, 0, 1)
-
-def smoothstep(a, b, t):
-    t = clamp01((t - a) / (b - a))
-    return t * t * (3 - 2 * t)

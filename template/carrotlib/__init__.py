@@ -9,6 +9,7 @@ from ._sound import *
 from ._renderer import *
 from ._font import SpriteFont
 from ._viewport import *
+from ._math import *
 from ._setup import main
 
 from . import logger, nodes, controls, g
