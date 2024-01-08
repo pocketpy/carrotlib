@@ -5,6 +5,7 @@ using namespace pkpy;
 using namespace ct;
 
 namespace pkpy{
+    void add_module_box2d(VM* vm);
     void add_module_raylib(VM* vm);
     void add_module_imgui(VM* vm);
 }
@@ -16,20 +17,6 @@ int main(int argc, char** argv){
     vm->_import_handler = &platform_load_asset;
     vm->_stdout = [](const char* s, int n){ platform_log_info(Str(s, n)); };
     vm->_stderr = [](const char* s, int n){ platform_log_error(Str(s, n)); };
-
-    // IGNORED_FUNCTIONS = {
-    //     # callback functions
-    //     "SetTraceLogCallback",
-    //     "SetLoadFileDataCallback",
-    //     "SetSaveFileDataCallback",
-    //     "SetLoadFileTextCallback",
-    //     "SetSaveFileTextCallback",
-    //     'SetAudioStreamCallback',
-    //     'AttachAudioStreamProcessor',
-    //     'DetachAudioStreamProcessor',
-    //     'AttachAudioMixedProcessor',
-    //     'DetachAudioMixedProcessor',
-    // }
 
     SetLoadFileDataCallback([](const char* filename, int* dataSize) -> unsigned char*{
         int out_size;
@@ -52,6 +39,7 @@ int main(int argc, char** argv){
         return (char*)out;
     });
 
+    add_module_box2d(vm);
     add_module_raylib(vm);
     add_module_imgui(vm);
     add_module__ct(vm);

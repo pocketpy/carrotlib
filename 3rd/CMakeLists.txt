@@ -32,10 +32,14 @@ option(SUPPORT_FILEFORMAT_QOA "" OFF)
 option(SUPPORT_STANDARD_FILEIO "" OFF)
 add_subdirectory(raylib)
 
-# pocketpy
-option(PK_USE_BOX2D "Use Box2D" ON)
-option(PK_USE_CJSON "Use cJSON" OFF)
 add_subdirectory(pocketpy)
+add_subdirectory(box2d)
+
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /utf-8 /O2")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -O2")
+endif()
 
 add_library(
     ${PROJECT_NAME}
@@ -48,6 +52,7 @@ target_link_libraries(
     ${PROJECT_NAME}
     raylib
     pocketpy
+    box2d
 )
 
 target_include_directories(
