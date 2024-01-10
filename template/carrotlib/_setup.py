@@ -35,7 +35,6 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         window_size = design_size
 
     rl.SetTraceLogLevel(rl.LOG_WARNING)
-    rl.SetTargetFPS(60)
 
     if not rl.IsWindowReady():
         rl.InitWindow(window_size[0], window_size[1], title)
