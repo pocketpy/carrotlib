@@ -90,18 +90,39 @@ def draw_circle(center: vec2, radius: float, color: rl.Color):
     rl.DrawCircle(int(center.x), int(center.y), radius, color)
 
 def draw_rect(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = None):
+    if not _g.is_rendering_ui:
+        rect = rect.copy()
+        trans = _g.world_to_viewport
+        center = trans.transform_point(vec2(rect.x, rect.y))
+        rect.x = center.x
+        rect.y = center.y
+        scale = trans._s()
+        rect.width *= scale.x
+        rect.height *= scale.y
     origin = origin or vec2(0.5, 0.5)
-    rl.DrawRectanglePro(
-        rect,
-        origin,
-        0,
+    offset_x = rect.width * (0 - origin.x)
+    offset_y = rect.height * (0 - origin.y)
+    rl.DrawRectangle(
+        int(rect.x + offset_x),
+        int(rect.y + offset_y),
+        int(rect.width),
+        int(rect.height),
         color or Colors.White,
     )
 
 def draw_rect_lines(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = None):
+    if not _g.is_rendering_ui:
+        rect = rect.copy()
+        trans = _g.world_to_viewport
+        center = trans.transform_point(vec2(rect.x, rect.y))
+        rect.x = center.x
+        rect.y = center.y
+        scale = trans._s()
+        rect.width *= scale.x
+        rect.height *= scale.y
     origin = origin or vec2(0.5, 0.5)
-    offset_x = rect.width * (0.5 - origin.x)
-    offset_y = rect.height * (0.5 - origin.y)
+    offset_x = rect.width * (0 - origin.x)
+    offset_y = rect.height * (0 - origin.y)
     rl.DrawRectangleLines(
         int(rect.x + offset_x),
         int(rect.y + offset_y),
