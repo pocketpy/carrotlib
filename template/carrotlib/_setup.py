@@ -39,7 +39,6 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
     if not rl.IsWindowReady():
         rl.InitWindow(window_size[0], window_size[1], title)
         rl.InitAudioDevice()
-        rl.SetExitKey(0)
         imgui.rlImGuiSetup(True)
         imgui.GetIO().FontGlobalScale = 1 if sys.platform == 'darwin' else 2
         imgui.GetIO().IniFilename = None    # disable imgui.ini
