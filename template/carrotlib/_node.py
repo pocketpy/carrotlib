@@ -86,12 +86,14 @@ class Node:
         """
         self._raii_objects.append(obj)
         return obj
+    
+    _IDENTITY_T = mat3x3.identity()
 
     def transform(self) -> mat3x3:
         """get the transform matrix from world space to local space"""
-        tt = mat3x3.trs(self.position, self.rotation, self.scale)
         if self.parent is None:
-            return tt
+            return Node._IDENTITY_T
+        tt = mat3x3.trs(self.position, self.rotation, self.scale)
         return self.parent.transform() @ tt
     
     def _ready(self):
@@ -107,16 +109,17 @@ class Node:
         if self.on_update is not None:
             self.on_update()
         # update coroutines
-        for coroutine in self._coroutines:
-            # None means a coroutine was stopped by user
-            # we cannot remove it immediately because it will break the loop
-            if coroutine is None:
-                continue
-            obj = next(coroutine)
-            if obj is not StopIteration:
-                self._alive_coroutines.append(coroutine)
-        self._coroutines, self._alive_coroutines = self._alive_coroutines, self._coroutines
-        self._alive_coroutines.clear()
+        if self._coroutines:
+            for coroutine in self._coroutines:
+                # None means a coroutine was stopped by user
+                # we cannot remove it immediately because it will break the loop
+                if coroutine is None:
+                    continue
+                obj = next(coroutine)
+                if obj is not StopIteration:
+                    self._alive_coroutines.append(coroutine)
+            self._coroutines, self._alive_coroutines = self._alive_coroutines, self._coroutines
+            self._alive_coroutines.clear()
 
     def _render(self):
         if self._state == 1 and self.on_render is not None:

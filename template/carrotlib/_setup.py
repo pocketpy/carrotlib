@@ -74,8 +74,10 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
     g.debug_window = DebugWindow()
     f_init()
 
+    # temporary variables
     all_nodes: list[Node] = []
     interactable_controls: list[Control] = []
+
     while not rl.WindowShouldClose():
         if _should_restart_app:
             _should_restart_app = False

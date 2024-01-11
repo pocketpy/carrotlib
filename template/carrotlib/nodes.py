@@ -70,14 +70,16 @@ class Grid(Node):
         self.count = 100
 
     def on_render(self):
+        begin, end = vec2(0, 0), vec2(0, 0)
         for i in range(-self.count, self.count + 1):
-            draw_line(
-                vec2(i * self.cell_width, -self.count * self.cell_height),
-                vec2(i * self.cell_width, self.count * self.cell_height),
-                self.color
-            )
-            draw_line(
-                vec2(-self.count * self.cell_width, i * self.cell_height),
-                vec2(self.count * self.cell_width, i * self.cell_height),
-                self.color
-            )
+            begin.x = i * self.cell_width
+            begin.y = -self.count * self.cell_height
+            end.x = i * self.cell_width
+            end.y = self.count * self.cell_height
+            draw_line(begin, end, self.color)
+
+            begin.x = -self.count * self.cell_width
+            begin.y = i * self.cell_height
+            end.x = self.count * self.cell_width
+            end.y = i * self.cell_height
+            draw_line(begin, end, self.color)
