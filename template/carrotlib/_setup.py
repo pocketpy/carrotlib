@@ -123,9 +123,9 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         # 4. render
         # update world_to_viewport
         g.world_to_viewport = mat3x3.trs(
-                vec2(g.viewport_width, g.viewport_height) / 2,
+                vec2(g.viewport_width/2, g.viewport_height/2),
                 0,
-                vec2(1, 1) * g.PIXEL_PER_UNIT,
+                vec2(g.PIXEL_PER_UNIT, g.PIXEL_PER_UNIT),
             ) @ g.world_to_camera
 
         rl.BeginDrawing()
