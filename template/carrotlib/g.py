@@ -24,7 +24,7 @@ pressed_control: Control = None
 # how many pixels in one virtual unit, this makes box2d work
 # box2d requires objects to be in the range of 0.1 ~ 10 units
 # box2d requires world to be in the range of -1000 ~ 1000 units
-PIXEL_PER_UNIT = 100
+PIXEL_PER_UNIT = 10
 
 # world space to camera space matrix (set by user)
 world_to_camera: mat3x3 = mat3x3.identity()
