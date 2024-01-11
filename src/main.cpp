@@ -18,8 +18,8 @@ int main(int argc, char** argv){
     vm->_stdout = [](const char* s, int n){ platform_log_info(Str(s, n)); };
     vm->_stderr = [](const char* s, int n){ platform_log_error(Str(s, n)); };
 
-    static int counter = 0;
-    vm->heap._gc_marker_ex = [](VM* vm) { platform_log_info(fmt("gc: ", counter++, "\n")); };
+    // static int counter = 0;
+    // vm->heap._gc_marker_ex = [](VM* vm) { platform_log_info(fmt("gc: ", counter++, "\n")); };
 
     SetLoadFileDataCallback([](const char* filename, int* dataSize) -> unsigned char*{
         int out_size;
