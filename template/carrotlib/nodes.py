@@ -1,10 +1,11 @@
 from ._node import Node
 from ._viewport import get_mouse_delta
 from . import g as _g
-from ._renderer import draw_texture, Texture2D, SubTexture2D
+from ._renderer import draw_texture, Texture2D, SubTexture2D, draw_line
 from ._colors import Colors
 
 import raylib as rl
+from linalg import vec2
 
 class FreeCamera(Node):
     def on_update(self):
@@ -58,3 +59,25 @@ class Sprite(Node):
             self.color,
             self.origin
         )
+
+
+class Grid(Node):
+    def __init__(self, name=None, parent=None) -> None:
+        super().__init__(name, parent)
+        self.color = rl.Color(255, 255, 255, 64)
+        self.cell_width = 1
+        self.cell_height = 1
+        self.count = 100
+
+    def on_render(self):
+        for i in range(-self.count, self.count + 1):
+            draw_line(
+                vec2(i * self.cell_width, -self.count * self.cell_height),
+                vec2(i * self.cell_width, self.count * self.cell_height),
+                self.color
+            )
+            draw_line(
+                vec2(-self.count * self.cell_width, i * self.cell_height),
+                vec2(self.count * self.cell_width, i * self.cell_height),
+                self.color
+            )

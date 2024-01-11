@@ -131,6 +131,15 @@ def draw_rect_lines(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = N
         color or Colors.White,
     )
 
+
+def draw_line(begin: vec2, end: vec2, color: rl.Color):
+    if not _g.is_rendering_ui:
+        trans = _g.world_to_viewport
+        begin = trans.transform_point(begin)
+        end = trans.transform_point(end)
+    rl.DrawLineEx(begin, end, 1, color)
+
+
 class DebugDraw:
     def draw_polygon(self, vertices: list[vec2], color: vec4):
         trans = _g.world_to_viewport
