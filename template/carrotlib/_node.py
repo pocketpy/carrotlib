@@ -25,6 +25,7 @@ class Node:
         self._alive_coroutines = []     # alive coroutines
         self._state = 0                 # unready -> ready -> destroyed
         self._raii_objects = []         # objects that will be destroyed when this node is destroyed
+        self._cached_transform = mat3x3.identity()
         # transform
         self.position = vec2(0, 0)
         self.rotation = 0           # in radians
@@ -94,9 +95,10 @@ class Node:
         if self.parent is None:
             return mat3x3.identity()
         t = self.parent.transform()
-        t.__imatmul__(mat3x3.trs(self.position, self.rotation, self.scale))
+        self._cached_transform.set_trs(self.position, self.rotation, self.scale)
+        t.__imatmul__(self._cached_transform)
         return t
-    
+
     def _ready(self):
         # call on_ready only once
         if self._state == 0:

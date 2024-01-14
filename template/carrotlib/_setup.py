@@ -80,6 +80,12 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
     all_nodes__append = all_nodes.append
     interactable_controls: list[Control] = []
 
+    PIXEL_UNIT_TRANSFORM = mat3x3.trs(
+                vec2(g.viewport_width/2, g.viewport_height/2),
+                0,
+                vec2(g.PIXEL_PER_UNIT, g.PIXEL_PER_UNIT),
+            )
+
     while not rl.WindowShouldClose():
         if _should_restart_app:
             _should_restart_app = False
@@ -122,11 +128,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
 
         # 4. render
         # update world_to_viewport
-        g.world_to_viewport = mat3x3.trs(
-                vec2(g.viewport_width/2, g.viewport_height/2),
-                0,
-                vec2(g.PIXEL_PER_UNIT, g.PIXEL_PER_UNIT),
-            ) @ g.world_to_camera
+        g.world_to_viewport.assign(PIXEL_UNIT_TRANSFORM @ g.world_to_camera)
 
         rl.BeginDrawing()
         rl.BeginMode2D(g.rl_camera_2d)
