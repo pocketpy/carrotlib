@@ -8,8 +8,8 @@ def load_asset(name: str) -> bytes:
 def list_assets(root: str) -> list[str]:
     """list the assets in the platform's asset directory."""
 
-def fast_apply(f: callable, a: list | tuple) -> None:
-    ...
+def fast_apply(f: callable, a: list | tuple, *args) -> None:
+    """Equivalent to `for x in a: f(x, *args)` but much faster."""
 
 def _get_cjk_codepoints() -> tuple[int_p, int]:
     ...

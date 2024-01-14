@@ -13,16 +13,26 @@ static Vector2 DrawTextBoxed(bool, bool, float, Font font, const char *text, Rec
 void add_module__ct(VM *vm){
     PyObject* mod = vm->new_module("_carrotlib");
 
-    vm->bind(mod, "fast_apply(f, a)", [](VM* vm, ArgsView args){
+    vm->bind_func<-1>(mod, "fast_apply", [](VM* vm, ArgsView args){
+        if(args.size() < 2) vm->TypeError("expected at least 2 arguments");
+        PyObject** begin;
+        PyObject** end;
         if(is_non_tagged_type(args[1], vm->tp_list)){
-            for(PyObject* item: PK_OBJ_GET(List, args[1])) vm->call(args[0], item);
-            return vm->None;
+            begin = PK_OBJ_GET(List, args[1]).begin();
+            end = PK_OBJ_GET(List, args[1]).end();
+        }else if(is_non_tagged_type(args[1], vm->tp_tuple)){
+            begin = PK_OBJ_GET(Tuple, args[1]).begin();
+            end = PK_OBJ_GET(Tuple, args[1]).end();
+        }else{
+            vm->TypeError("expected a list or tuple as 2nd argument");
         }
-        if(is_non_tagged_type(args[1], vm->tp_tuple)){
-            for(PyObject* item: PK_OBJ_GET(Tuple, args[1])) vm->call(args[0], item);
-            return vm->None;
+        for(PyObject** item=begin; item!=end; item++){
+            vm->s_data.push(args[0]);
+            vm->s_data.push(PY_NULL);
+            vm->s_data.push(*item);
+            for(int j=2; j<args.size(); j++) vm->s_data.push(args[j]);
+            vm->vectorcall(args.size()-1);
         }
-        vm->TypeError("expected a list or tuple as 2nd argument");
         return vm->None;
     });
 

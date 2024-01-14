@@ -5,11 +5,11 @@ from _carrotlib import fast_apply
 from . import g as _g
 
 class Node:
-    on_ready = None
-    on_update = None
-    on_render = None
-    on_render_ui = None
-    on_destroy = None
+    on_ready = lambda self: None
+    on_update = lambda self: None
+    on_render = lambda self: None
+    on_render_ui = lambda self: None
+    on_destroy = lambda self: None
 
     parent: 'Node'
     children: dict[str, 'Node']
@@ -100,21 +100,13 @@ class Node:
     def _ready(self):
         # call on_ready only once
         if self._state == 0:
-            # pre-compute some flags
-            self._has_on_ready = self.on_ready is not None
-            self._has_on_update = self.on_update is not None
-            self._has_on_render = self.on_render is not None
-            self._has_on_render_ui = self.on_render_ui is not None
-            self._has_on_destroy = self.on_destroy is not None
-            if self._has_on_ready:
-                self.on_ready()
+            self.on_ready()
             self._state = 1
 
     def _update(self):
         if self._state != 1:
             return
-        if self._has_on_update:
-            self.on_update()
+        self.on_update()
         # update coroutines
         if self._coroutines:
             for coroutine in self._coroutines:
@@ -129,19 +121,18 @@ class Node:
             self._alive_coroutines.clear()
 
     def _render(self):
-        if self._state == 1 and self._has_on_render:
+        if self._state == 1:
             self.on_render()
 
     def _render_ui(self):
-        if self._state == 1 and self._has_on_render_ui:
+        if self._state == 1:
             self.on_render_ui()
 
     def _destroy(self):
         if self._state == 2:
             return
         self._state = 2
-        if self._has_on_destroy:
-            self.on_destroy()
+        self.on_destroy()
         self.stop_all_coroutines()
         for obj in self._raii_objects:
             obj.destroy()
@@ -149,17 +140,13 @@ class Node:
 
     def apply(self, f):
         f(self)
-        if self.children:
-            for child in self.children.values():
-                child.apply(f)
+        fast_apply(Node.apply, self.children.values(), f)
 
     def apply_enabled(self, f):
         if not self.enabled:
             return
         f(self)
-        if self.children:
-            for child in self.children.values():
-                child.apply_enabled(f)
+        fast_apply(Node.apply_enabled, self.children.values(), f)
 
     def is_ancestor_of(self, node: 'Node') -> bool:
         """check if this node is an ancestor of `node`"""
