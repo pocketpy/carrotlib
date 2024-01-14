@@ -36,20 +36,11 @@ def draw_texture(transform: mat3x3, tex: rl.Texture2D, src_rect: rl.Rectangle=No
         src_rect.height *= -1
 
     if origin is None:
-        origin = vec2(0.5, 0.5)
+        origin = vec2(0.5*dest_width, 0.5*dest_height)
     else:
-        origin = origin.copy()
+        origin = vec2(origin.x*dest_width, origin.y*dest_height)
 
-    origin.x *= dest_width
-    origin.y *= dest_height
-
-    dest_rect = rl.Rectangle(
-        pos.x,
-        pos.y,
-        dest_width,
-        dest_height,
-    )
-
+    dest_rect = rl.Rectangle(pos.x, pos.y, dest_width, dest_height)
     rl.DrawTexturePro(
         tex,
         src_rect,

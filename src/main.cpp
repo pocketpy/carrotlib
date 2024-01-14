@@ -18,8 +18,20 @@ int main(int argc, char** argv){
     vm->_stdout = [](const char* s, int n){ platform_log_info(Str(s, n)); };
     vm->_stderr = [](const char* s, int n){ platform_log_error(Str(s, n)); };
 
-    // static int counter = 0;
-    // vm->heap._gc_marker_ex = [](VM* vm) { platform_log_info(fmt("gc: ", counter++, "\n")); };
+#if PK_DEBUG_GC_STATS
+    static int counter = 0;
+    vm->heap._gc_marker_ex = [](VM* vm) { platform_log_info(fmt("======== ", counter++, " ========\n")); };
+#endif
+
+    // vm->heap._gc_on_delete = [](VM* vm, PyObject* obj){
+    //     if(is_non_tagged_type(obj, vm->tp_bound_method)){
+    //         auto& bm = PK_OBJ_GET(BoundMethod, obj);
+    //         if(is_non_tagged_type(bm.func, vm->tp_function)){
+    //             Function& func = PK_OBJ_GET(Function, bm.func);
+    //             std::cout << PK_OBJ_GET(Str, vm->py_repr(bm.self)) << '.' << func.decl->code->name << std::endl;
+    //         }
+    //     }
+    // };
 
     SetLoadFileDataCallback([](const char* filename, int* dataSize) -> unsigned char*{
         int out_size;

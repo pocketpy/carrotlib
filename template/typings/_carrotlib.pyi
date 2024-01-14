@@ -8,11 +8,14 @@ def load_asset(name: str) -> bytes:
 def list_assets(root: str) -> list[str]:
     """list the assets in the platform's asset directory."""
 
+def fast_apply(f: callable, a: list | tuple) -> None:
+    ...
+
 def _get_cjk_codepoints() -> tuple[int_p, int]:
-    pass
+    ...
 
 def _rlDrawTextBoxed(render: bool, limitHeight: bool, lineSpacing: float, font: rl.Font, text: str, rec: rl.Rectangle, fontSize: float, spacing: float, wordWrap: bool, tint: rl.Color) -> vec2:
-    pass
+    ...
 
 PIXEL_SNAP_SHADER: str
 GLSL_VERSION: int

@@ -5,6 +5,8 @@ import raylib as rl
 
 import imgui
 
+from _carrotlib import fast_apply
+
 from . import g
 from ._node import Node
 from .controls import Control
@@ -75,6 +77,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
 
     # temporary variables
     all_nodes: list[Node] = []
+    all_nodes__append = all_nodes.append
     interactable_controls: list[Control] = []
 
     while not rl.WindowShouldClose():
@@ -84,16 +87,15 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
             raise RestartException
 
         all_nodes.clear()
-        g.root.apply(all_nodes.append)
-        for node in all_nodes:
-            node._ready()
+        g.root.apply(all_nodes__append)
+        fast_apply(Node._ready, all_nodes)
 
         # 1. physics update
         g.b2_world.step(rl.GetFrameTime(), 6, 2)
 
         # 2. input events
         all_nodes.clear()
-        g.root.apply_enabled(all_nodes.append)
+        g.root.apply_enabled(all_nodes__append)
 
         # hot reload feature
         if rl.IsKeyPressed(rl.KEY_F5):
@@ -116,8 +118,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
                 break
 
         # 3. update
-        for node in all_nodes:
-            node._update()
+        fast_apply(Node._update, all_nodes)
 
         # 4. render
         # update world_to_viewport
@@ -133,12 +134,11 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
 
         # NOTE: after updates, the nodes may be changed (enabled/disabled)
         all_nodes.clear()
-        g.root.apply_enabled(all_nodes.append)
+        g.root.apply_enabled(all_nodes__append)
 
         # render scene (sort by z-index via stable sort)
-        all_nodes.sort(key=lambda n: n.total_z_index())
-        for node in all_nodes:
-            node._render()
+        all_nodes.sort(key=Node.total_z_index)
+        fast_apply(Node._render, all_nodes)
 
         # render gizmos
         # enum
@@ -154,8 +154,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
 
         # 5. render ui
         g.is_rendering_ui = True
-        for node in all_nodes:
-            node._render_ui()
+        fast_apply(Node._render_ui, all_nodes)
         g.is_rendering_ui = False
 
         rl.DrawFPS(0, 0)

@@ -5,6 +5,8 @@ _swap: list[rl.Sound] = []
 
 def _update_managed_sounds():
     global _managed_sounds, _swap
+    if not _managed_sounds:
+        return
     for sound in _managed_sounds:
         if rl.IsSoundPlaying(sound):
             _swap.append(sound)

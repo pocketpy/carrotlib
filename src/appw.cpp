@@ -13,6 +13,19 @@ static Vector2 DrawTextBoxed(bool, bool, float, Font font, const char *text, Rec
 void add_module__ct(VM *vm){
     PyObject* mod = vm->new_module("_carrotlib");
 
+    vm->bind(mod, "fast_apply(f, a)", [](VM* vm, ArgsView args){
+        if(is_non_tagged_type(args[1], vm->tp_list)){
+            for(PyObject* item: PK_OBJ_GET(List, args[1])) vm->call(args[0], item);
+            return vm->None;
+        }
+        if(is_non_tagged_type(args[1], vm->tp_tuple)){
+            for(PyObject* item: PK_OBJ_GET(Tuple, args[1])) vm->call(args[0], item);
+            return vm->None;
+        }
+        vm->TypeError("expected a list or tuple as 2nd argument");
+        return vm->None;
+    });
+
     vm->bind(mod, "load_asset(name: str)",
         [](VM* vm, ArgsView args){
             const Str& name = CAST(Str&, args[0]);

@@ -1,6 +1,7 @@
 from linalg import *
 import raylib as rl
 import box2d
+from _carrotlib import fast_apply
 from . import g as _g
 
 class Node:
@@ -49,8 +50,9 @@ class Node:
     
     @global_position.setter
     def global_position(self, value: vec2):
-        inv_t = ~(self.parent.transform())
-        self.position = inv_t.transform_point(value)
+        t = self.parent.transform()
+        t.invert_()
+        self.position = t.transform_point(value)
 
     def __repr__(self):
         cls_name = type(self).__name__
@@ -87,26 +89,31 @@ class Node:
         self._raii_objects.append(obj)
         return obj
     
-    _IDENTITY_T = mat3x3.identity()
-
     def transform(self) -> mat3x3:
         """get the transform matrix from world space to local space"""
         if self.parent is None:
-            return Node._IDENTITY_T
-        tt = mat3x3.trs(self.position, self.rotation, self.scale)
-        return self.parent.transform() @ tt
+            return mat3x3.identity()
+        t = self.parent.transform()
+        t.__imatmul__(mat3x3.trs(self.position, self.rotation, self.scale))
+        return t
     
     def _ready(self):
         # call on_ready only once
         if self._state == 0:
-            if self.on_ready is not None:
+            # pre-compute some flags
+            self._has_on_ready = self.on_ready is not None
+            self._has_on_update = self.on_update is not None
+            self._has_on_render = self.on_render is not None
+            self._has_on_render_ui = self.on_render_ui is not None
+            self._has_on_destroy = self.on_destroy is not None
+            if self._has_on_ready:
                 self.on_ready()
             self._state = 1
 
     def _update(self):
         if self._state != 1:
             return
-        if self.on_update is not None:
+        if self._has_on_update:
             self.on_update()
         # update coroutines
         if self._coroutines:
@@ -122,18 +129,18 @@ class Node:
             self._alive_coroutines.clear()
 
     def _render(self):
-        if self._state == 1 and self.on_render is not None:
+        if self._state == 1 and self._has_on_render:
             self.on_render()
 
     def _render_ui(self):
-        if self._state == 1 and self.on_render_ui is not None:
+        if self._state == 1 and self._has_on_render_ui:
             self.on_render_ui()
 
     def _destroy(self):
         if self._state == 2:
             return
         self._state = 2
-        if self.on_destroy is not None:
+        if self._has_on_destroy:
             self.on_destroy()
         self.stop_all_coroutines()
         for obj in self._raii_objects:
@@ -142,15 +149,17 @@ class Node:
 
     def apply(self, f):
         f(self)
-        for child in self.children.values():
-            child.apply(f)
+        if self.children:
+            for child in self.children.values():
+                child.apply(f)
 
     def apply_enabled(self, f):
         if not self.enabled:
             return
         f(self)
-        for child in self.children.values():
-            child.apply_enabled(f)
+        if self.children:
+            for child in self.children.values():
+                child.apply_enabled(f)
 
     def is_ancestor_of(self, node: 'Node') -> bool:
         """check if this node is an ancestor of `node`"""
