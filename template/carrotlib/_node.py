@@ -24,7 +24,7 @@ class Node:
         self._coroutines = []           # running coroutines
         self._alive_coroutines = []     # alive coroutines
         self._state = 0                 # unready -> ready -> destroyed
-        self._raii_objects = []         # objects that will be destroyed when this node is destroyed
+        self._b2_bodies = []            # box2d bodies
         self._cached_transform = mat3x3.identity()
         # transform
         self.position = vec2(0, 0)
@@ -35,15 +35,13 @@ class Node:
         # settings
         self.z_index = 0
         self.enabled = True
+        self.tags = []
 
-        if parent is None:
-            parent = _g.root
-        self.parent = parent
-
-        if parent is not None:
-            if self._name in parent.children:
+        self.parent = parent or _g.root
+        if self.parent is not None:
+            if self._name in self.parent.children:
                 raise ValueError(f'duplicated child name {self._name!r}')
-            parent.children[self._name] = self
+            self.parent.children[self._name] = self
 
     @property
     def global_position(self) -> vec2:
@@ -78,17 +76,11 @@ class Node:
             node = node.children[name]
         return node
     
-    def create_body(self) -> box2d.Body:
-        """create a box2d body attached to this node with RAII enabled"""
-        return self.RAII(box2d.Body(_g.b2_world, node=self))
-    
-    def RAII(self, obj):
-        """automatically destroy the object when this node is destroyed
-        
-        + `obj`: an object which contains a `destroy` method
-        """
-        self._raii_objects.append(obj)
-        return obj
+    def create_body(self, with_callback=True) -> box2d.Body:
+        """create a box2d body attached to this node"""
+        b2_body = box2d.Body(_g.b2_world, node=self, with_callback=with_callback)
+        self._b2_bodies.append(b2_body)
+        return b2_body
     
     def transform(self) -> mat3x3:
         """get the transform matrix from world space to local space"""
@@ -96,8 +88,7 @@ class Node:
             return mat3x3.identity()
         t = self.parent.transform()
         self._cached_transform.set_trs(self.position, self.rotation, self.scale)
-        t.__imatmul__(self._cached_transform)
-        return t
+        return t.__imatmul__(self._cached_transform)
 
     def _ready(self):
         # call on_ready only once
@@ -136,9 +127,7 @@ class Node:
         self._state = 2
         self.on_destroy()
         self.stop_all_coroutines()
-        for obj in self._raii_objects:
-            obj.destroy()
-        self._raii_objects.clear()
+        fast_apply(box2d.Body.destroy, self._b2_bodies)
 
     def apply(self, f):
         f(self)

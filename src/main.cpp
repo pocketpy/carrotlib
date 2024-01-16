@@ -23,16 +23,6 @@ int main(int argc, char** argv){
     vm->heap._gc_marker_ex = [](VM* vm) { platform_log_info(fmt("======== ", counter++, " ========\n")); };
 #endif
 
-    // vm->heap._gc_on_delete = [](VM* vm, PyObject* obj){
-    //     if(is_non_tagged_type(obj, vm->tp_bound_method)){
-    //         auto& bm = PK_OBJ_GET(BoundMethod, obj);
-    //         if(is_non_tagged_type(bm.func, vm->tp_function)){
-    //             Function& func = PK_OBJ_GET(Function, bm.func);
-    //             std::cout << PK_OBJ_GET(Str, vm->py_repr(bm.self)) << '.' << func.decl->code->name << std::endl;
-    //         }
-    //     }
-    // };
-
     SetLoadFileDataCallback([](const char* filename, int* dataSize) -> unsigned char*{
         int out_size;
         unsigned char* out = platform_load_asset(filename, strlen(filename), &out_size);
@@ -71,7 +61,7 @@ int main(int argc, char** argv){
     // });
 #endif
 
-#if !ANDROID
+#if PK_SYS_PLATFORM == 0 || PK_SYS_PLATFORM == 3 || PK_SYS_PLATFORM == 5
     if(argc != 2){
         std::cerr << "usage: " << argv[0] << " [project_dir]" << std::endl;
         exit(1);
@@ -81,6 +71,11 @@ int main(int argc, char** argv){
         exit(1);
     }
     std::filesystem::current_path(argv[1]);
+    platform_log_info(std::filesystem::current_path().string() + "\n");
+#endif
+
+#if PK_SYS_PLATFORM == 1
+    std::filesystem::current_path("workdir");
     platform_log_info(std::filesystem::current_path().string() + "\n");
 #endif
 
@@ -108,7 +103,7 @@ int main(int argc, char** argv){
             return 1;
         }
     }catch(std::exception& e){
-        platform_log_error(fmt("std::runtime_error: ", e.what(), "\n"));
+        platform_log_error(fmt("std::exception: ", e.what(), "\n"));
         return 1;
     }
 

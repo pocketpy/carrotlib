@@ -1,6 +1,8 @@
 from linalg import vec2, vec4
 from typing import Iterable, Protocol
 
+from carrotlib import Node
+
 class _NodeLike(Protocol):
     def on_box2d_contact_begin(self, other: 'Body'): ...
     def on_box2d_contact_end(self, other: 'Body'): ...
@@ -77,7 +79,7 @@ class Body:
     restitution_threshold: float
     is_sensor: bool
 
-    def __new__(cls, world: World, node: _NodeLike = None):
+    def __new__(cls, world: World, node: _NodeLike | Node = None, with_callback: bool = True):
         """create a body in the world."""
 
     def set_box_shape(self, hx: float, hy: float): ...
@@ -92,7 +94,7 @@ class Body:
     def apply_impulse_to_center(self, impulse: vec2): ...
     def apply_angular_impulse(self, impulse: float): ...
 
-    def get_node(self) -> _NodeLike:
+    def get_node(self) -> _NodeLike | Node:
         """return the node that is attached to this body."""
 
     def get_contacts(self) -> list['Body']:

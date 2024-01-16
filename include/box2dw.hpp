@@ -69,6 +69,7 @@ struct PyBody{
     b2Body* body;
     b2Fixture* _fixture;
     PyObject* node_like;
+    bool with_callback;
 
     bool _is_destroyed;
     PyBody(): body(nullptr), _fixture(nullptr), node_like(nullptr), _is_destroyed(false){}

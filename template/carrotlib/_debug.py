@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 from linalg import vec2, vec4
 import traceback
+import math
 import c
 
 import imgui
@@ -126,7 +127,7 @@ class DebugWindow:
         imgui.BeginTabBar("DebugTabBar")
         if imgui.BeginTabItem("Hierarchy"):
             height = imgui.GetFrameHeight()
-            imgui.BeginChild("Hierarchy", vec2(0, height-180), False, 0)
+            imgui.BeginChild("Hierarchy", vec2(0, height-200), False, 0)
             self.render_hierarchy(g.root)
             imgui.EndChild()
 
@@ -135,9 +136,11 @@ class DebugWindow:
             imgui.BeginChild("Properties", vec2(0, 0), False, 0)
             if self.selected:
                 imgui.Text(f"position: {self.selected.position}")
-                imgui.Text(f"rotation: {self.selected.rotation}")
+                degree = math.degrees(self.selected.rotation)
+                imgui.Text(f"rotation: {self.selected.rotation:.2f} ({degree:.2f}°)")
                 imgui.Text(f"scale: {self.selected.scale}")
                 imgui.Text(f"total_z_index: {self.selected.total_z_index()}")
+                imgui.Text(f"tags: {self.selected.tags}")
             else:
                 imgui.Text("Nothing selected")
             imgui.EndChild()

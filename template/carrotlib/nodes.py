@@ -31,7 +31,7 @@ class Sprite(Node):
         self.texture = None
         self.flip_x = False
         self.flip_y = False
-        self.origin = None
+        self.origin = vec2(0.5, 0.5)
         self.color = Colors.White
 
     def on_render(self):

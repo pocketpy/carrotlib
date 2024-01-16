@@ -61,5 +61,6 @@ target_include_directories(
     imgui
     rlImGui
     raylib/src
+    box2d/include
     pocketpy/include
 )
