@@ -6,7 +6,7 @@ from _carrotlib import _rlDrawTextBoxed
 from ._node import Node
 from ._colors import Colors
 from ._font import SpriteFont
-from ._renderer import draw_text_pro, draw_rect, Texture2D, SubTexture2D
+from ._renderer import draw_text, draw_rect, Texture2D, SubTexture2D
 
 from . import g as _g
 
@@ -171,7 +171,7 @@ class Label(TextBase):
     def on_render_ui(self):
         if self.font is None:
             return
-        draw_text_pro(
+        draw_text(
             self.font,
             self.global_position,
             self.text,

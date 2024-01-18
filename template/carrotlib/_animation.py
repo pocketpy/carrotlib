@@ -55,4 +55,4 @@ class FramedAnimator:
             else:
                 self._current_animation = None
                 return
-        return self._current_animation.frames[int(self._current_frame)]
+        return self._current_animation.frames[round(self._current_frame)]

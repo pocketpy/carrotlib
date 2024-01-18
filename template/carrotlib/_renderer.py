@@ -50,7 +50,7 @@ def draw_texture(transform: mat3x3, tex: rl.Texture2D, src_rect: rl.Rectangle=No
         color or Colors.White,
     )
 
-def draw_text_pro(font: rl.Font, pos: vec2, text: str, font_size: int, spacing: int, line_spacing: int, color: rl.Color, origin: vec2 = None):
+def draw_text(font: rl.Font, pos: vec2, text: str, font_size: int, color: rl.Color, spacing: int = 0, line_spacing: int = 0, origin: vec2 = None):
     """draw text in world space"""
     if not _g.is_rendering_ui:
         trans = _g.world_to_viewport
@@ -62,16 +62,6 @@ def draw_text_pro(font: rl.Font, pos: vec2, text: str, font_size: int, spacing: 
     pos.y -= size.y * origin.y
     rl.DrawTextEx(font, text, pos, font_size, spacing, color)
 
-def draw_text(pos: vec2, text: str, font_size: int, color: rl.Color):
-    """draw text in world space"""
-    if not _g.is_rendering_ui:
-        trans = _g.world_to_viewport
-        pos = trans.transform_point(pos)
-    rl.SetTextLineSpacing(font_size)
-    width = rl.MeasureText(text, font_size)
-    pos.x -= width / 2
-    pos.y -= font_size / 2
-    rl.DrawText(text, int(pos.x), int(pos.y), font_size, color)
 
 def draw_circle(center: vec2, radius: float, color: rl.Color, solid=True):
     if not _g.is_rendering_ui:
@@ -79,14 +69,14 @@ def draw_circle(center: vec2, radius: float, color: rl.Color, solid=True):
         center = trans.transform_point(center)
         radius *= trans._s().x
     if solid:
-        rl.DrawCircle(int(center.x), int(center.y), radius, color)
+        rl.DrawCircleV(center, radius, color)
     else:
-        rl.DrawCircleLines(int(center.x), int(center.y), radius, color)
+        rl.DrawCircleLinesV(center, radius, color)
 
 
 def draw_rect(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = None, solid=True):
+    rect = rect.copy()
     if not _g.is_rendering_ui:
-        rect = rect.copy()
         trans = _g.world_to_viewport
         center = trans.transform_point(vec2(rect.x, rect.y))
         rect.x = center.x
@@ -95,24 +85,12 @@ def draw_rect(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = None, s
         rect.width *= scale.x
         rect.height *= scale.y
     origin = origin or vec2(0.5, 0.5)
-    offset_x = rect.width * (0 - origin.x)
-    offset_y = rect.height * (0 - origin.y)
+    rect.x += rect.width * (0 - origin.x)
+    rect.y += rect.height * (0 - origin.y)
     if solid:
-        rl.DrawRectangle(
-            int(rect.x + offset_x),
-            int(rect.y + offset_y),
-            int(rect.width),
-            int(rect.height),
-            color or Colors.White,
-        )
+        rl.DrawRectangleRec(rect, color or Colors.White)
     else:
-        rl.DrawRectangleLines(
-            int(rect.x + offset_x),
-            int(rect.y + offset_y),
-            int(rect.width),
-            int(rect.height),
-            color or Colors.White,
-        )
+        rl.DrawRectangleLinesEx(rect, 1, color or Colors.White)
 
 def draw_line(begin: vec2, end: vec2, color: rl.Color):
     if not _g.is_rendering_ui:
@@ -129,7 +107,7 @@ class DebugDraw:
         for i in range(len(vertices) - 1):
             _0 = vertices[i]
             _1 = vertices[i+1]
-            rl.DrawLine(int(_0.x), int(_0.y), int(_1.x), int(_1.y), rl.ColorFromNormalized(color))
+            rl.DrawLineV(_0, _1, rl.ColorFromNormalized(color))
 
     def draw_solid_polygon(self, vertices: list[vec2], color: vec4):
         self.draw_polygon(vertices, color)
@@ -144,7 +122,7 @@ class DebugDraw:
         trans = _g.world_to_viewport
         p1 = trans.transform_point(p1)
         p2 = trans.transform_point(p2)
-        rl.DrawLine(int(p1.x), int(p1.y), int(p2.x), int(p2.y), rl.ColorFromNormalized(color))
+        rl.DrawLineV(p1, p2, rl.ColorFromNormalized(color))
 
     def draw_transform(self, position: vec2, rotation: float):
         pass
