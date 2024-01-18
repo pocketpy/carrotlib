@@ -94,7 +94,8 @@ class Body:
     def apply_impulse_to_center(self, impulse: vec2): ...
     def apply_angular_impulse(self, impulse: float): ...
 
-    def get_node(self) -> _NodeLike | Node:
+    @property
+    def node(self) -> _NodeLike | Node:
         """return the node that is attached to this body."""
 
     def get_contacts(self) -> list['Body']:

@@ -106,8 +106,8 @@ void PyBody::_register(VM* vm, PyObject* mod, PyObject* type){
     _bind(vm, type, "apply_impulse_to_center(self, impulse: vec2)", &PyBody::apply_impulse_to_center);
     _bind(vm, type, "apply_angular_impulse(self, impulse: float)", &PyBody::apply_angular_impulse);
 
-    // get_node
-    vm->bind(type, "get_node(self)", [](VM* vm, ArgsView args){
+    // node
+    vm->bind_property(type, "node", [](VM* vm, ArgsView args){
         const PyBody& body = CAST(PyBody&, args[0]);
         return body.node_like;
     });
