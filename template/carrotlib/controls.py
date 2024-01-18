@@ -176,9 +176,9 @@ class Label(TextBase):
             self.global_position,
             self.text,
             self.font_size,
+            self.color,
             self.spacing,
             self.line_spacing,
-            self.color,
             self.origin,
         )
 
