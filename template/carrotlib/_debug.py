@@ -113,9 +113,8 @@ class DebugWindow:
 
         if imgui.IsItemClicked(0):
             self.selected = root
-        if imgui.IsItemClicked(0) and imgui.IsMouseDoubleClicked(0):
-            self.selected = root
-            root.enabled = not root.enabled
+            if imgui.IsMouseDoubleClicked(0):
+                root.enabled = not root.enabled
 
         if isinstance(root, Control) and root.interactable:
             color = vec4(0, 1, 0, 1) if root.enabled else DISABLED_COLOR
