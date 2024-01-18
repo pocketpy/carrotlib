@@ -13,7 +13,7 @@ from .controls import Control
 from ._renderer import DebugDraw
 from ._sound import _unload_all_sound_aliases, _update_managed_sounds
 from ._resources import _unload_all_resources
-from ._debug import DebugWindow
+from .debug import DebugWindow
 from ._viewport import get_mouse_position
 
 class RestartException(Exception):
@@ -167,6 +167,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         g.debug_window.variables['mouse_pos'] = get_mouse_position()
         g.debug_window.variables['hovered_control'] = g.hovered_control
         g.debug_window.variables['pressed_control'] = g.pressed_control
+        g.debug_window.variables['world_to_viewport'] = g.world_to_viewport
         g.debug_window.render()
         imgui.Render()
         rl.EndDrawing()

@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from box2d import World
     from ._node import Node
     from .controls import Control
-    from ._debug import DebugWindow
+    from .debug import DebugWindow
 
 root: Node = None
 b2_world: World = None

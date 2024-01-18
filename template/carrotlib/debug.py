@@ -164,7 +164,11 @@ class DebugWindow:
         if imgui.BeginTabItem("Variables"):
             imgui.BeginChild("Variables", vec2(0, 0), False, 0)
             for name, value in self.variables.items():
-                imgui.Text(f"{name}: {value!r}")
+                value_repr = repr(value)
+                value_repr = '\n' + value_repr if '\n' in value_repr else value_repr
+                imgui.Text(f"{name}: {value_repr}")
+                imgui.Separator()
+
             imgui.EndChild()
             imgui.EndTabItem()
 
