@@ -110,6 +110,13 @@ class DebugWindow:
         if not root.enabled:
             imgui.PushStyleColor(imgui.ImGuiCol_Text, DISABLED_COLOR)
         expand = imgui.TreeNode(title, flags)
+
+        if imgui.IsItemClicked(0):
+            self.selected = root
+        if imgui.IsItemClicked(0) and imgui.IsMouseDoubleClicked(0):
+            self.selected = root
+            root.enabled = not root.enabled
+
         if isinstance(root, Control) and root.interactable:
             color = vec4(0, 1, 0, 1) if root.enabled else DISABLED_COLOR
             self.render_tree_colored_tag('[ui]', color)
@@ -122,12 +129,6 @@ class DebugWindow:
 
         if not root.enabled:
             imgui.PopStyleColor()
-
-        if imgui.IsItemClicked(0):
-            self.selected = root
-        if imgui.IsItemClicked(0) and imgui.IsMouseDoubleClicked(0):
-            self.selected = root
-            root.enabled = not root.enabled
 
         if expand:
             for child in root.children.values():
