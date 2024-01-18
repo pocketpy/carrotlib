@@ -1,4 +1,3 @@
-from typing import TYPE_CHECKING
 from linalg import vec2, vec4
 import traceback
 import math
@@ -6,8 +5,8 @@ import c
 
 import imgui
 
-if TYPE_CHECKING:
-    from ._node import Node
+from ._node import Node
+from .controls import Control
 
 from . import g
 
@@ -88,10 +87,16 @@ class DebugWindow:
         self.variables = {}
         self.python_console = PythonConsole()
 
+    def render_tree_colored_tag(self, text: str, color: vec4):
+        imgui.SameLine(0, 8)
+        imgui.PushStyleColor(imgui.ImGuiCol_Text, color)
+        imgui.Text(text)
+        imgui.PopStyleColor()
+
     def render_hierarchy(self, root: Node, depth=0):
         flags = imgui.ImGuiTreeNodeFlags_OpenOnArrow \
             | imgui.ImGuiTreeNodeFlags_SpanFullWidth
-        if depth == 0:
+        if depth <= 1:
             flags |= imgui.ImGuiTreeNodeFlags_DefaultOpen
         if root is self.selected:
             flags |= imgui.ImGuiTreeNodeFlags_Selected
@@ -101,9 +106,20 @@ class DebugWindow:
         title = root.name + f" <{type(root).__name__}>"
 
         # if not enabled use gray color
+        DISABLED_COLOR = vec4(0.5, 0.5, 0.5, 1)
         if not root.enabled:
-            imgui.PushStyleColor(imgui.ImGuiCol_Text, vec4(0.5, 0.5, 0.5, 1))
+            imgui.PushStyleColor(imgui.ImGuiCol_Text, DISABLED_COLOR)
         expand = imgui.TreeNode(title, flags)
+        if isinstance(root, Control) and root.interactable:
+            color = vec4(0, 1, 0, 1) if root.enabled else DISABLED_COLOR
+            self.render_tree_colored_tag('[ui]', color)
+
+        if root.enabled and len(root._coroutines) > 0:
+            self.render_tree_colored_tag(f"[{len(root._coroutines)}]", vec4(1, 0.5, 0, 1))
+
+        if root.tags:
+            self.render_tree_colored_tag(f"[{','.join(root.tags)}]", vec4(0.1, 0.6, 1, 1))
+
         if not root.enabled:
             imgui.PopStyleColor()
 

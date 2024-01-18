@@ -107,8 +107,7 @@ class Node:
                 # we cannot remove it immediately because it will break the loop
                 if coroutine is None:
                     continue
-                obj = next(coroutine)
-                if obj is not StopIteration:
+                if next(coroutine) is not StopIteration:
                     self._alive_coroutines.append(coroutine)
             self._coroutines, self._alive_coroutines = self._alive_coroutines, self._coroutines
             self._alive_coroutines.clear()
