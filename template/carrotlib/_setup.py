@@ -42,7 +42,6 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         rl.InitWindow(window_size[0], window_size[1], title)
         rl.InitAudioDevice()
         imgui.rlImGuiSetup(True)
-        imgui.GetIO().FontGlobalScale = 1 if sys.platform == 'darwin' else 2
         imgui.GetIO().IniFilename = None    # disable imgui.ini
 
     # determine viewport scale
@@ -158,9 +157,10 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         g.is_rendering_ui = True
         fast_apply(Node._render_ui, all_nodes)
         g.is_rendering_ui = False
-
-        rl.DrawFPS(0, 0)
         rl.EndMode2D()
+
+        # right top
+        rl.DrawFPS(rl.GetScreenWidth()-100, 0)
 
         # 6. submit
         imgui.NewFrame()

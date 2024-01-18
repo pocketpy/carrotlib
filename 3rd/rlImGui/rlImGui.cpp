@@ -422,8 +422,11 @@ void rlImGuiBeginInitImGui()
     GlobalContext = ImGui::CreateContext(nullptr);
     SetupKeymap();
 
-	ImGuiIO& io = ImGui::GetIO();
-	io.Fonts->AddFontDefault();
+    ImGuiIO& io = ImGui::GetIO();
+
+    ImFontConfig config;
+    config.SizePixels = 20.0f;
+    io.Fonts->AddFontDefault(&config);
 }
 
 void rlImGuiSetup(bool dark)

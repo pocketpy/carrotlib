@@ -1,7 +1,6 @@
-from linalg import *
-from c import *
-from raylib import *
-
+from linalg import vec2, vec4
+from c import void_p, int_p, bool_p, float_p, char_p
+from raylib import Texture_p, Rectangle, RenderTexture_p
 
 # ImDrawFlags_
 ImDrawFlags_None = 0
