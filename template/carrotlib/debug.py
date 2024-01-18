@@ -106,24 +106,23 @@ class DebugWindow:
         title = root.name + f" <{type(root).__name__}>"
 
         # if not enabled use gray color
-        DISABLED_COLOR = vec4(0.5, 0.5, 0.5, 1)
         if not root.enabled:
-            imgui.PushStyleColor(imgui.ImGuiCol_Text, DISABLED_COLOR)
+            color = vec4(0.5, 0.5, 0.5, 1)
+        elif isinstance(root, Control) and root.interactable:
+            color = vec4(0, 1, 0, 1)
+        else:
+            color = vec4(1, 1, 1, 1)
+        imgui.PushStyleColor(imgui.ImGuiCol_Text, color)
         expand = imgui.TreeNode(title, flags)
-        if not root.enabled:
-            imgui.PopStyleColor()
+        imgui.PopStyleColor()
 
         if imgui.IsItemClicked(0):
             self.selected = root
             if imgui.IsMouseDoubleClicked(0):
                 root.enabled = not root.enabled
 
-        if isinstance(root, Control) and root.interactable:
-            color = vec4(0, 1, 0, 1) if root.enabled else DISABLED_COLOR
-            self.render_tree_colored_tag('[ui]', color)
-
         if root.enabled and len(root._coroutines) > 0:
-            self.render_tree_colored_tag(f"[{len(root._coroutines)}]", vec4(1, 0.5, 0, 1))
+            self.render_tree_colored_tag(f"({len(root._coroutines)})", vec4(1, 0.5, 0, 1))
 
         if root.tags:
             self.render_tree_colored_tag(f"[{','.join(root.tags)}]", vec4(0.1, 0.6, 1, 1))
