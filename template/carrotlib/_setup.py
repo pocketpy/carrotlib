@@ -127,7 +127,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
 
         # 4. render
         # update world_to_viewport
-        g.world_to_viewport.assign(PIXEL_UNIT_TRANSFORM @ g.world_to_camera)
+        PIXEL_UNIT_TRANSFORM.matmul(g.world_to_camera, out=g.world_to_viewport)
 
         rl.BeginDrawing()
         rl.BeginMode2D(g.rl_camera_2d)

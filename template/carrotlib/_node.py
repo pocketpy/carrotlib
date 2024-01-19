@@ -87,8 +87,9 @@ class Node:
         if self.parent is None:
             return mat3x3.identity()
         t = self.parent.transform()
-        self._cached_transform.set_trs(self.position, self.rotation, self.scale)
-        return t.__imatmul__(self._cached_transform)
+        self._cached_transform.copy_trs_(self.position, self.rotation, self.scale)
+        t.matmul(self._cached_transform, out=t)
+        return t
 
     def _ready(self):
         # call on_ready only once
