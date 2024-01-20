@@ -33,6 +33,8 @@ option(SUPPORT_STANDARD_FILEIO "" OFF)
 add_subdirectory(raylib)
 
 add_subdirectory(pocketpy)
+target_compile_definitions(pocketpy PUBLIC PK_ENABLE_OS=1)
+
 add_subdirectory(box2d)
 
 if(MSVC)
