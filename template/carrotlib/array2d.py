@@ -21,12 +21,6 @@ class array2d_row(Generic[T]):
     
     def __repr__(self):
         return f'array2d_row({self.row}, {self.copy()})'
-    
-    def assign(self, values):
-        if len(values) != self.a.n_cols:
-            raise ValueError(f'expects {self.a.n_cols} values, got {len(values)}')
-        for col in range(self.a.n_cols):
-            self.a[col, self.row] = values[col]
 
 
 class array2d_col(Generic[T]):
@@ -48,12 +42,6 @@ class array2d_col(Generic[T]):
     
     def __repr__(self):
         return f'array2d_col({self.col}, {self.copy()})'
-    
-    def assign(self, values):
-        if len(values) != self.a.n_rows:
-            raise ValueError(f'expects {self.a.n_rows} values, got {len(values)}')
-        for row in range(self.a.n_rows):
-            self.a[self.col, row] = values[row]
 
 
 class array2d(Generic[T]):
