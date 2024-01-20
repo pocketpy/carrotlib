@@ -143,6 +143,7 @@ class array2d(Generic[T]):
             for col in range(self.n_cols):
                 c = str(self[col, row])
                 if len(c) < width:
-                    c = ' ' * (width - len(c)) + c
-                print(c, end='')
+                    print(c, end=' '*(width - len(c)))
+                else:
+                    print(c, end='')
             print()
