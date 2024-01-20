@@ -107,17 +107,10 @@ class array2d(Generic[T]):
         buffer.append(')')
         return '\n'.join(buffer)
 
-    def map1d(self, f: Callable[[int, T], Any]) -> 'array2d':
+    def map(self, f: Callable[[T], Any]) -> 'array2d':
         new_a: array2d = array2d(self.n_cols, self.n_rows)
         for i in range(self.n_cols * self.n_rows):
-            new_a.data[i] = f(i, self.data[i])
-        return new_a
-    
-    def map2d(self, f: Callable[[int, int, T], Any]) -> 'array2d':
-        new_a: array2d = array2d(self.n_cols, self.n_rows)
-        for row in range(self.n_rows):
-            for col in range(self.n_cols):
-                new_a[col, row] = f(col, row, self[col, row])
+            new_a.data[i] = f(self.data[i])
         return new_a
     
     def copy(self) -> 'array2d[T]':
@@ -131,7 +124,20 @@ class array2d(Generic[T]):
             for col in range(self.n_cols):
                 new_a[row, col] = self[col, row]
         return new_a
-    
+
+    def fill_(self, value: T) -> None:
+        for i in range(self.n_cols * self.n_rows):
+            self.data[i] = value
+
+    def apply_(self, f: Callable[[T], T]) -> None:
+        for i in range(self.n_cols * self.n_rows):
+            self.data[i] = f(self.data[i])
+
+    def copy_(self, other: 'array2d[T]') -> None:
+        self.n_cols = other.n_cols
+        self.n_rows = other.n_rows
+        self.data = other.data.copy()
+
     def draw(self, width=1):
         for row in range(self.n_rows):
             for col in range(self.n_cols):
@@ -140,5 +146,3 @@ class array2d(Generic[T]):
                     c = ' ' * (width - len(c)) + c
                 print(c, end='')
             print()
-
-
