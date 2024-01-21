@@ -1,10 +1,9 @@
-import json
 from .defs.tileset import TilesetDef
 from .defs.layer import AutoTiledLayerDef
 
 class Project:
     def __init__(self, data: dict):
-        assert '__header__' in data
+        assert data['jsonVersion'] == '1.5.3'
         self.data = data
 
     def _get_def(self, key: str, uid: int) -> dict:
@@ -21,7 +20,4 @@ class Project:
 
     def __getitem__(self, key: str):
         return self.data[key]
-    
-    def save(self, filepath: str):
-        with open(filepath, 'w') as f:
-            f.write(json.dumps(self.data))
+

@@ -46,12 +46,11 @@ class AutoTiledLayer:
                     self.data['intGridCsv'] = layer['intGridCsv']
                     break
             else:
-                raise Exception(f"Cannot find 'intGridCsv' via autoSourceLayerDefUid={autoSourceLayerDefUid}")
+                raise Exception(f"cannot find 'intGridCsv' with autoSourceLayerDefUid={autoSourceLayerDefUid}")
         else:
-            raise Exception(f'Incorrect type: {self.data["__type"]}')
+            raise Exception(f'unsupported type: {self.data["__type"]}')
 
         self.intGridCsv = array2d(self.data['__cWid'], self.data['__cHei'])
-        assert len(self.data['intGridCsv']) == len(self.intGridCsv.data)
         self.intGridCsv.data = self.data['intGridCsv']
 
     @property
@@ -150,10 +149,10 @@ class AutoTiledLayer:
                     elif rule.breakOnMatch:
                         # Break on match is ON
                         coord_locks.add((x, y))
-                    elif not rule.has_any_position_offset() and rule.alpha >= 1:
+                    elif not rule.hasAnyPositionOffset() and rule.alpha >= 1:
                         # Check for opaque tiles
                         for t in output_ij:
-                            if td.is_tile_opaque(t.tid):
+                            if td.isTileOpaque(t.tid):
                                 coord_locks.add((x, y))
                                 break
     
@@ -201,10 +200,10 @@ class AutoTiledLayer:
         td = self.get_tileset_def()
         
         if r.tileMode == 'Single':
-            tile_ids = [r.get_random_tile_for_coord(self.seed, cx, cy, flips)]
+            tile_rect_ids = r.getRandomTileRectIdsForCoord(self.seed, cx, cy, flips)
             stamp_infos = None
         else:
-            tile_ids = r.tileIds
+            tile_rect_ids = r.tileRectsIds
             # stamp_infos = getRuleStampRenderInfos(r, td, tileIds, flips);
             raise NotImplementedError
 
@@ -216,12 +215,12 @@ class AutoTiledLayer:
         def_gridSize = self.data['__gridSize']
         assert stamp_infos is None
 
-        for tid in tile_ids:
+        for tid in tile_rect_ids:
             output_ij.append(TileInfo(
-                cx * def_gridSize + r.get_x_offset_for_coord(self.seed, cx, cy, flips),
-                cy * def_gridSize + r.get_y_offset_for_coord(self.seed, cx, cy, flips),
-                td.get_tile_source_x(tid), # srcX
-                td.get_tile_source_y(tid), # srcY
+                cx * def_gridSize + r.getXOffsetForCoord(self.seed, cx, cy, flips),
+                cy * def_gridSize + r.getYOffsetForCoord(self.seed, cx, cy, flips),
+                td.getTileSourceX(tid), # srcX
+                td.getTileSourceY(tid), # srcY
                 tid,
                 flips,
                 r.alpha

@@ -1,15 +1,14 @@
 from ..defs.rule import AutoLayerRuleDef
 
 class AutoTiledLayerDef:
+    data: dict
+    autoSourceLayerDefUid: int | None
+
     def __init__(self, data: dict) -> None:
         assert 'autoRuleGroups' in data
         self.data = data
         self.autoSourceLayerDefUid = data['autoSourceLayerDefUid']
 
-    @property
-    def type(self) -> str:
-        return self.data['type']
-    
     def get_active_rules(self) -> list[AutoLayerRuleDef]:
         ret = []
         for group in self.data['autoRuleGroups']:
