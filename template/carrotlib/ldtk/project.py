@@ -1,10 +1,11 @@
+import json
 from .defs.tileset import TilesetDef
 from .defs.layer import AutoTiledLayerDef
 
 class Project:
-    def __init__(self, data: dict):
-        assert data['jsonVersion'] == '1.5.3'
-        self.data = data
+    def __init__(self, data: bytes):
+        self.data = json.loads(data)
+        assert self.data['jsonVersion'] == '1.5.3'
 
     def _get_def(self, key: str, uid: int) -> dict:
         for definition in self.data['defs'][key]:
