@@ -80,7 +80,7 @@ struct wrapped__Matrix{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"m0", "m4", "m8", "m12", "m1", "m5", "m9", "m13", "m2", "m6", "m10", "m14", "m3", "m7", "m11", "m15"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 16) vm->TypeError(fmt("expected 16 arguments, got ", args.size()-1));
+            if(args.size()-1 != 16) vm->TypeError(_S("expected 16 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -142,7 +142,7 @@ struct wrapped__Color{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"r", "g", "b", "a"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 4) vm->TypeError(fmt("expected 4 arguments, got ", args.size()-1));
+            if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -192,7 +192,7 @@ struct wrapped__Rectangle{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"x", "y", "width", "height"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 4) vm->TypeError(fmt("expected 4 arguments, got ", args.size()-1));
+            if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -242,7 +242,7 @@ struct wrapped__Image{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"data", "width", "height", "mipmaps", "format"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 5) vm->TypeError(fmt("expected 5 arguments, got ", args.size()-1));
+            if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -293,7 +293,7 @@ struct wrapped__Texture{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"id", "width", "height", "mipmaps", "format"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 5) vm->TypeError(fmt("expected 5 arguments, got ", args.size()-1));
+            if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -344,7 +344,7 @@ struct wrapped__RenderTexture{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"id", "texture", "depth"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 3) vm->TypeError(fmt("expected 3 arguments, got ", args.size()-1));
+            if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -393,7 +393,7 @@ struct wrapped__NPatchInfo{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"source", "left", "top", "right", "bottom", "layout"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 6) vm->TypeError(fmt("expected 6 arguments, got ", args.size()-1));
+            if(args.size()-1 != 6) vm->TypeError(_S("expected 6 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -445,7 +445,7 @@ struct wrapped__GlyphInfo{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"value", "offsetX", "offsetY", "advanceX", "image"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 5) vm->TypeError(fmt("expected 5 arguments, got ", args.size()-1));
+            if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -496,7 +496,7 @@ struct wrapped__Font{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"baseSize", "glyphCount", "glyphPadding", "texture", "recs", "glyphs"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 6) vm->TypeError(fmt("expected 6 arguments, got ", args.size()-1));
+            if(args.size()-1 != 6) vm->TypeError(_S("expected 6 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -548,7 +548,7 @@ struct wrapped__Camera3D{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"position", "target", "up", "fovy", "projection"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 5) vm->TypeError(fmt("expected 5 arguments, got ", args.size()-1));
+            if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -599,7 +599,7 @@ struct wrapped__Camera2D{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"offset", "target", "rotation", "zoom"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 4) vm->TypeError(fmt("expected 4 arguments, got ", args.size()-1));
+            if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -649,7 +649,7 @@ struct wrapped__Mesh{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"vertexCount", "triangleCount", "vertices", "texcoords", "texcoords2", "normals", "tangents", "colors", "indices", "animVertices", "animNormals", "boneIds", "boneWeights", "vaoId", "vboId"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 15) vm->TypeError(fmt("expected 15 arguments, got ", args.size()-1));
+            if(args.size()-1 != 15) vm->TypeError(_S("expected 15 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -710,7 +710,7 @@ struct wrapped__Shader{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"id", "locs"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 2) vm->TypeError(fmt("expected 2 arguments, got ", args.size()-1));
+            if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -758,7 +758,7 @@ struct wrapped__MaterialMap{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"texture", "color", "value"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 3) vm->TypeError(fmt("expected 3 arguments, got ", args.size()-1));
+            if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -807,7 +807,7 @@ struct wrapped__Material{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"shader", "maps", "params"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 3) vm->TypeError(fmt("expected 3 arguments, got ", args.size()-1));
+            if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -856,7 +856,7 @@ struct wrapped__Transform{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"translation", "rotation", "scale"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 3) vm->TypeError(fmt("expected 3 arguments, got ", args.size()-1));
+            if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -905,7 +905,7 @@ struct wrapped__BoneInfo{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"name", "parent"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 2) vm->TypeError(fmt("expected 2 arguments, got ", args.size()-1));
+            if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -953,7 +953,7 @@ struct wrapped__Model{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"transform", "meshCount", "materialCount", "meshes", "materials", "meshMaterial", "boneCount", "bones", "bindPose"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 9) vm->TypeError(fmt("expected 9 arguments, got ", args.size()-1));
+            if(args.size()-1 != 9) vm->TypeError(_S("expected 9 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1008,7 +1008,7 @@ struct wrapped__ModelAnimation{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"boneCount", "frameCount", "bones", "framePoses", "name"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 5) vm->TypeError(fmt("expected 5 arguments, got ", args.size()-1));
+            if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1059,7 +1059,7 @@ struct wrapped__Ray{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"position", "direction"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 2) vm->TypeError(fmt("expected 2 arguments, got ", args.size()-1));
+            if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1107,7 +1107,7 @@ struct wrapped__RayCollision{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"hit", "distance", "point", "normal"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 4) vm->TypeError(fmt("expected 4 arguments, got ", args.size()-1));
+            if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1157,7 +1157,7 @@ struct wrapped__BoundingBox{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"min", "max"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 2) vm->TypeError(fmt("expected 2 arguments, got ", args.size()-1));
+            if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1205,7 +1205,7 @@ struct wrapped__Wave{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"frameCount", "sampleRate", "sampleSize", "channels", "data"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 5) vm->TypeError(fmt("expected 5 arguments, got ", args.size()-1));
+            if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1256,7 +1256,7 @@ struct wrapped__AudioStream{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"buffer", "processor", "sampleRate", "sampleSize", "channels"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 5) vm->TypeError(fmt("expected 5 arguments, got ", args.size()-1));
+            if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1307,7 +1307,7 @@ struct wrapped__Sound{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"stream", "frameCount"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 2) vm->TypeError(fmt("expected 2 arguments, got ", args.size()-1));
+            if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1355,7 +1355,7 @@ struct wrapped__Music{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"stream", "frameCount", "looping", "ctxType", "ctxData"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 5) vm->TypeError(fmt("expected 5 arguments, got ", args.size()-1));
+            if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1406,7 +1406,7 @@ struct wrapped__VrDeviceInfo{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"hResolution", "vResolution", "hScreenSize", "vScreenSize", "vScreenCenter", "eyeToScreenDistance", "lensSeparationDistance", "interpupillaryDistance", "lensDistortionValues", "chromaAbCorrection"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 10) vm->TypeError(fmt("expected 10 arguments, got ", args.size()-1));
+            if(args.size()-1 != 10) vm->TypeError(_S("expected 10 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1462,7 +1462,7 @@ struct wrapped__VrStereoConfig{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"projection", "viewOffset", "leftLensCenter", "rightLensCenter", "leftScreenCenter", "rightScreenCenter", "scale", "scaleIn"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 8) vm->TypeError(fmt("expected 8 arguments, got ", args.size()-1));
+            if(args.size()-1 != 8) vm->TypeError(_S("expected 8 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1516,7 +1516,7 @@ struct wrapped__FilePathList{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"capacity", "count", "paths"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 3) vm->TypeError(fmt("expected 3 arguments, got ", args.size()-1));
+            if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1565,7 +1565,7 @@ struct wrapped__AutomationEvent{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"frame", "type", "params"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 3) vm->TypeError(fmt("expected 3 arguments, got ", args.size()-1));
+            if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1614,7 +1614,7 @@ struct wrapped__AutomationEventList{
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
             static const StrName _fields_[] = {"capacity", "count", "events"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 3) vm->TypeError(fmt("expected 3 arguments, got ", args.size()-1));
+            if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }

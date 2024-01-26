@@ -20,14 +20,14 @@ int main(int argc, char** argv){
 
 #if PK_DEBUG_GC_STATS
     static int counter = 0;
-    vm->heap._gc_marker_ex = [](VM* vm) { platform_log_info(fmt("======== ", counter++, " ========\n")); };
+    vm->heap._gc_marker_ex = [](VM* vm) { platform_log_info(_S("======== ", counter++, " ========\n")); };
 #endif
 
     SetLoadFileDataCallback([](const char* filename, int* dataSize) -> unsigned char*{
         int out_size;
         unsigned char* out = platform_load_asset(filename, strlen(filename), &out_size);
         if(out == nullptr){
-            vm->IOError(fmt("failed to load ", filename, "\n"));
+            vm->IOError(_S("failed to load ", filename, "\n"));
             return nullptr;
         }
         *dataSize = out_size;
@@ -38,7 +38,7 @@ int main(int argc, char** argv){
         int out_size;
         unsigned char* out = platform_load_asset(filename, strlen(filename), &out_size);
         if(out == nullptr){
-            vm->IOError(fmt("failed to load ", filename, "\n"));
+            vm->IOError(_S("failed to load ", filename, "\n"));
             return nullptr;
         }
         return (char*)out;
@@ -83,7 +83,7 @@ int main(int argc, char** argv){
     int out_size;
     unsigned char* out = platform_load_asset(entry_file.data(), entry_file.size(), &out_size);
     if(out == nullptr){
-        platform_log_error(fmt("failed to load ", entry_file, "\n"));
+        platform_log_error(_S("failed to load ", entry_file, "\n"));
         exit(100);
     }
     Str entry_file_string((char*)out, out_size);
@@ -103,7 +103,7 @@ int main(int argc, char** argv){
             return 1;
         }
     }catch(std::exception& e){
-        platform_log_error(fmt("std::exception: ", e.what(), "\n"));
+        platform_log_error(_S("std::exception: ", e.what(), "\n"));
         return 1;
     }
 

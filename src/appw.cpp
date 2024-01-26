@@ -41,7 +41,7 @@ void add_module__ct(VM *vm){
             const Str& name = CAST(Str&, args[0]);
             int out_size;
             unsigned char* out = platform_load_asset(name.data, name.size, &out_size);
-            if(out == nullptr) vm->IOError(fmt("failed to load: ", name));
+            if(out == nullptr) vm->IOError(_S("failed to load: ", name));
             return VAR(Bytes(out, out_size));
         });
 
@@ -49,7 +49,7 @@ void add_module__ct(VM *vm){
         [](VM* vm, ArgsView args){
             const Str& name = CAST(Str&, args[0]);
             std::optional<std::vector<Str>> res = platform_list_assets(name);
-            if(!res) vm->IOError(fmt("failed to list assets: ", name));
+            if(!res) vm->IOError(_S("failed to list assets: ", name));
             List ret(res.value().size());
             for(int i = 0; i < res.value().size(); i++){
                 ret[i] = VAR(res.value()[i]);
