@@ -10,12 +10,12 @@ from ._renderer import draw_text, draw_rect, Texture2D, SubTexture2D
 
 from . import g as _g
 
-def _convert_coordinates(old_pivot: vec2, new_pivot: vec2, pos: vec2, width: float, height: float):
+def _convert_coordinates(old_pivot: vec2, new_pivot: vec2, position: vec2, width: float, height: float):
     # 计算旧锚点到新锚点的偏移量
     offset_x = (new_pivot.x - old_pivot.x) * width
     offset_y = (new_pivot.y - old_pivot.y) * height
     # 用偏移量更新向量
-    return vec2(pos.x - offset_x, pos.y - offset_y)
+    return vec2(position.x - offset_x, position.y - offset_y)
 
 class Control(Node):
     parent: 'Control'   # we assume a control's parent is also a control
@@ -33,7 +33,7 @@ class Control(Node):
     def is_pressed(self) -> bool:
         return _g.pressed_control is self
     
-    def set_position(self, pos: vec2, pivot: vec2):
+    def set_position(self, position: vec2, pivot: vec2, new_pivot: vec2 = None):
         """Set position based on pivot
         + `(0, 0)`: top left
         + `(0.5, 0.5)`: center
@@ -41,9 +41,11 @@ class Control(Node):
         """
         rect = self.parent.get_rect()
         parent_scale = self.parent.transform()._s()
-        unscaled_width = rect.width / parent_scale.x
-        unscaled_height = rect.height / parent_scale.y
-        self.position = _convert_coordinates(pivot, vec2(0.5, 0.5), pos, unscaled_width, unscaled_height)
+        width = rect.width / parent_scale.x
+        height = rect.height / parent_scale.y
+        new_pivot = new_pivot or vec2(0.5, 0.5)
+        rect_pos = _convert_coordinates(pivot, new_pivot, position, width, height)
+        self.position = rect_pos
 
 
 class Image(Control):
