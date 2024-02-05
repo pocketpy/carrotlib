@@ -32,8 +32,9 @@ option(SUPPORT_FILEFORMAT_QOA "" OFF)
 option(SUPPORT_STANDARD_FILEIO "" OFF)
 add_subdirectory(raylib)
 
+option(PK_ENABLE_OS "" ON)
+option(PK_NO_EXPORT_C_API "" ON)
 add_subdirectory(pocketpy)
-target_compile_definitions(pocketpy PUBLIC PK_ENABLE_OS=1)
 
 add_subdirectory(box2d)
 

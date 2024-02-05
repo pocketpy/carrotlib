@@ -3,6 +3,7 @@
 #include "pocketpy.h"
 
 #include <optional>
+#include <filesystem>
 
 using namespace pkpy;
 
