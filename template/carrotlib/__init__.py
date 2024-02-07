@@ -14,7 +14,7 @@ from ._setup import main
 
 from . import logger, nodes, controls, g
 
-from .array2d import array2d
 from .controls import Control
 
 from raylib import Color
+

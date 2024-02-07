@@ -2,7 +2,7 @@ from .project import Project
 from .defs.rule import AutoLayerRuleDef
 from .defs.layer import AutoTiledLayerDef
 
-from carrotlib.array2d import array2d
+from array2d import array2d
 
 class TileInfo:
     def __init__(self, x: int, y: int, srcX: int, srcY: int, tid: int, flips: int, a: float):
@@ -51,7 +51,7 @@ class AutoTiledLayer:
             raise Exception(f'unsupported type: {self.data["__type"]}')
 
         self.intGridCsv = array2d(self.data['__cWid'], self.data['__cHei'])
-        self.intGridCsv.data = self.data['intGridCsv']
+        self.intGridCsv.copy_(self.data['intGridCsv'])
 
     @property
     def render_offset_y(self) -> int:
