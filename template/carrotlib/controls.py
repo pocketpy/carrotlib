@@ -101,6 +101,9 @@ class TextBase(Control):
     font: rl.Font
     text: str
 
+    SPACING: int | float = 0
+    LINE_SPACING: int = 0
+
     @property
     def alpha(self) -> float:
         return self.color.a / 255
@@ -113,8 +116,8 @@ class TextBase(Control):
         super().__init__(name, parent)
         self.font = _g.default_font
         self.text = ""
-        self.spacing = 0
-        self.line_spacing = 0
+        self.spacing = TextBase.SPACING
+        self.line_spacing = TextBase.LINE_SPACING
         self.font_size = _g.default_font_size
         self.color = Colors.White.copy()
 
