@@ -202,6 +202,11 @@ class SpriteText(Control):
         self.font.draw(self.transform(), self.text, self.spacing, self.color)
 
 class Container(Control):
+    width: float | None
+    height: float | None
+    origin: vec2
+    color: rl.Color | None
+
     def __init__(self, name=None, parent=None) -> None:
         super().__init__(name, parent)
         self.width = None
@@ -228,6 +233,7 @@ class Container(Control):
         inner = Container(name=name, parent=self)
         inner.width = self.width - padding.x * 2
         inner.height = self.height - padding.y * 2
+        inner.set_position(vec2(0, 0), vec2(0.5, 0.5), self.origin)
         return inner
 
     def on_render_ui(self):
