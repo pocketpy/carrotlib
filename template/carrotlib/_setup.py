@@ -116,7 +116,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         # make the most recently rendered control on top
         interactable_controls.reverse()
         for c in interactable_controls:
-            if rl.CheckCollisionPointRec(get_mouse_position(), c.get_rect()):
+            if rl.CheckCollisionPointRec(get_mouse_position(), c.rect()):
                 g.hovered_control = c
                 if rl.IsMouseButtonPressed(0):
                     g.pressed_control = c
