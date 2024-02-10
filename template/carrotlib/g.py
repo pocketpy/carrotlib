@@ -39,3 +39,6 @@ viewport_height: int = None
 viewport_scale: float = None
 
 rl_camera_2d: rl.Camera2D = None
+
+default_font: rl.Font = None
+default_font_size: int = None

@@ -111,11 +111,11 @@ class TextBase(Control):
 
     def __init__(self, name=None, parent=None) -> None:
         super().__init__(name, parent)
-        self.font = None
+        self.font = _g.default_font
         self.text = ""
         self.spacing = 0
         self.line_spacing = 0
-        self.font_size = 32
+        self.font_size = _g.default_font_size
         self.color = Colors.White.copy()
 
 class Text(TextBase):

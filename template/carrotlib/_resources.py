@@ -1,6 +1,8 @@
 from typing import Generic, TypeVar
 import raylib as rl
+
 from _carrotlib import _get_cjk_codepoints
+from . import g as _g
 
 T = TypeVar("T")
 
@@ -24,8 +26,8 @@ class ResourceLoader(Generic[T]):
 
 def _load_font_cjk(path: str) -> rl.Font:
     p_data, count = _get_cjk_codepoints()
-    FONT_TTF_DEFAULT_SIZE = 32
-    return rl.LoadFontEx(path, FONT_TTF_DEFAULT_SIZE, p_data, count)
+    UNSCALING = 10
+    return rl.LoadFontEx(path, _g.default_font_size * UNSCALING, p_data, count)
 
 def _load_texture_scaled(path: str, scale: float):
     image = rl.LoadImage(path)
