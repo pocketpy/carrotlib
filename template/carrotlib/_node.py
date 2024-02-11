@@ -76,9 +76,8 @@ class Node:
 
     def get_node(self, path: str) -> 'Node':
         """get the child node by path"""
-        names = path.split('/')
         node = self
-        for name in names:
+        for name in path.split('/'):
             node = node.children[name]
         return node
     
