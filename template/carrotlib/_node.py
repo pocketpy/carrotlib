@@ -1,6 +1,8 @@
 from linalg import *
 import raylib as rl
 import box2d
+from typing import Literal
+
 from _carrotlib import fast_apply
 from . import g as _g
 
@@ -42,6 +44,10 @@ class Node:
             if self._name in self.parent.children:
                 raise ValueError(f'duplicated child name {self._name!r}')
             self.parent.children[self._name] = self
+
+    @property
+    def state(self) -> Literal[0, 1, 2]:
+        return self._state
 
     @property
     def global_position(self) -> vec2:
