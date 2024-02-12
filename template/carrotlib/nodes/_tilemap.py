@@ -3,12 +3,12 @@ from collections import defaultdict
 from linalg import *
 import raylib as rl
 
-from .ldtk.layer import AutoTiledLayer
+from ..ldtk.layer import AutoTiledLayer
 
-from ._node import Node
-from ._colors import Colors
+from .._node import Node
+from .._colors import Colors
 
-from . import g as _g
+from .. import g as _g
 
 class _Vertex:
     def __init__(self, x: int, y: int, neighbors: list, count: int):
