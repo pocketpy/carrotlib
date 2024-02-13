@@ -28,5 +28,5 @@ def binomial(n: int, p: float) -> int:
 def normal(mu: float, sigma: float) -> float:
     u1 = random()
     u2 = random()
-    z = (cos(6.283185307179586 * u2) * sqrt(-2 * log(u1)))
+    z = (cos(2 * 3.141592653589793 * u2) * sqrt(-2 * log(u1)))
     return mu + sigma * z
