@@ -210,7 +210,7 @@ class Particles(Node):
                 now = rl.GetTime()
                 self_t = self.transform()
 
-                if now >= times[-1]:
+                while times and now >= times[-1]:
                     times.pop()
                     if len(self._particles) < self.max_particles:
                         p = _Particle()
