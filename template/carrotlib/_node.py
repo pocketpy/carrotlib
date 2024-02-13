@@ -24,7 +24,7 @@ class Node:
         # private fields
         self._name = name or hex(id(self))
         self._coroutines = []           # running coroutines
-        self._alive_coroutines = []     # alive coroutines
+        self._living_coroutines = []    # living coroutines
         self._state = 0                 # unready -> ready -> destroyed
         self._b2_bodies = []            # box2d bodies
         self._cached_transform = mat3x3.identity()
@@ -114,9 +114,9 @@ class Node:
                 if coroutine is None:
                     continue
                 if next(coroutine) is not StopIteration:
-                    self._alive_coroutines.append(coroutine)
-            self._coroutines, self._alive_coroutines = self._alive_coroutines, self._coroutines
-            self._alive_coroutines.clear()
+                    self._living_coroutines.append(coroutine)
+            self._coroutines, self._living_coroutines = self._living_coroutines, self._coroutines
+            self._living_coroutines.clear()
 
     def _render(self):
         if self._state == 1:
