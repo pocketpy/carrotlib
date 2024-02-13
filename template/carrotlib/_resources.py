@@ -55,6 +55,9 @@ load_image = ResourceLoader[rl.Image](rl.LoadImage, rl.UnloadImage)
 
 def _unload_all_resources():
     load_texture.unload_all()
+    load_texture_scaled.unload_all()
+    load_square_texture.unload_all()
+    
     load_font_cjk.unload_all()
     load_font.unload_all()
     load_sound.unload_all()
