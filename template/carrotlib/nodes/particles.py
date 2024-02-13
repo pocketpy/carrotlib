@@ -14,6 +14,7 @@ __all__ = ['Particles', 'EmissionShape', 'PointEmissionShape', 'CircleEmissionSh
 
 class _Particle:
     _time: float
+    _init_t: mat3x3
 
     position: vec2
     rotation: float
@@ -128,6 +129,7 @@ class Particles(Node):
         super().__init__(name=name, parent=parent)
 
         self._particles = []
+        self._coroutine = None
 
         self.duration = 5
         self.looping = True
@@ -143,7 +145,8 @@ class Particles(Node):
         # self.simulation_speed = 1.0
 
         self.play_on_ready = True
-
+        self.destroy_on_stop = False
+        
         # Emission Shape
         self.rate_over_time = 10
         self.shape = PointEmissionShape()
@@ -152,8 +155,10 @@ class Particles(Node):
         self.color_over_lifetime = None
         self.scale_over_lifetime = None
 
-        self._coroutine = None
-    
+    @property
+    def emitting(self) -> bool:
+        return self._coroutine is not None
+
     def play(self):
         if self._coroutine is None:
             self._coroutine = self.start_coroutine(self._emit_coroutine())
@@ -169,45 +174,47 @@ class Particles(Node):
 
     def on_render(self):
         t = mat3x3.identity()
-        self_t = self.transform()
-        self_t.copy_r_(0)   # reset rotation
         for p in self._particles:
             t.copy_trs_(p.position, p.rotation, p.scale)
-            self_t.matmul(t, out=t)
+            p._init_t.matmul(t, out=t)
             if p.texture is not None:
                 draw_texture(t, p.texture, color=p.color)
+
+    def on_update(self):
+        # on_update always precedes coroutines
+        now, delta = rl.GetTime(), rl.GetFrameTime()
+        # remove dead particles
+        self._particles = [p for p in self._particles if now - p._time < p.lifetime]
+        # simulate
+        for p in self._particles:
+            value = 1 - clamp01((now - p._time) / p.lifetime)
+            p.position += p.velocity * delta
+            if self.scale_over_lifetime:
+                p.scale = self.scale_over_lifetime(value)
+            if self.color_over_lifetime:
+                p.color = self.color_over_lifetime(value)
 
     def _emit_coroutine(self):
         while True:
             now = rl.GetTime()
-            # emit one cycle of particles
-            E = self.rate_over_time * self.duration
+            E = int(self.rate_over_time * self.duration)
             times = [now + random() * self.duration for _ in range(E)]
             times.sort(reverse=True)
 
             while times:
                 now = rl.GetTime()
-                delta = rl.GetFrameTime()
                 self_t = self.transform()
-
-                # remove dead particles
-                self._particles = [p for p in self._particles if now - p._time < p.lifetime]
-                # simulate
-                for p in self._particles:
-                    value = 1 - clamp01((now - p._time) / p.lifetime)
-                    p.position += p.velocity * delta
-                    if self.scale_over_lifetime:
-                        p.scale = self.scale_over_lifetime(value)
-                    if self.color_over_lifetime:
-                        p.color = self.color_over_lifetime(value)
 
                 if now >= times[-1]:
                     times.pop()
                     if len(self._particles) < self.max_particles:
                         p = _Particle()
-                        p._time = now
                         p.position, p.direction = self.shape.sample(self_t._r())
                         p.rotation = _float(self.start_rotation)
+
+                        p._time = now
+                        self_t.copy_r_(0)   # reset rotation
+                        p._init_t = self_t
 
                         if self.scale_over_lifetime:
                             p.scale = self.scale_over_lifetime(1)
@@ -229,4 +236,8 @@ class Particles(Node):
             if not self.looping:
                 break
 
-
+        if self.destroy_on_stop:
+            # wait until all particles are dead
+            while self._particles:
+                yield None
+            self.destroy()
