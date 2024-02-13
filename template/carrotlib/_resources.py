@@ -38,12 +38,7 @@ def _load_texture_scaled(path: str, scale: float):
     return texture
 
 def _load_square_texture(size: int):
-    raw_data = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x04\x00\x00\x00\x04\x08\x00\x00\x00\x00\x8c\x9a\xc1\xa2\x00\x00\x00\tpHYs\x00\x00\x0b\x13\x00\x00\x0b\x13\x01\x00\x9a\x9c\x18\x00\x00\x00\x11IDAT\x08\x99c\xfc\xcf\xc0\xc0\xc0\xc4\x80B\x00\x00\x13Q\x01\x07\x9e\xa3\x9e{\x00\x00\x00\x00IEND\xaeB`\x82'
-    data = c.struct(len(raw_data))
-    for i in range(len(raw_data)):
-        data.write_uchar(raw_data[i], offset=i)
-    image = rl.LoadImageFromMemory('.png', data.addr(), data.sizeof())
-    rl.ImageResizeNN(image.addr(), size, size)
+    image = rl.GenImageColor(size, size, rl.Color(255, 255, 255, 255))
     texture = rl.LoadTextureFromImage(image)
     rl.UnloadImage(image)
     return texture
