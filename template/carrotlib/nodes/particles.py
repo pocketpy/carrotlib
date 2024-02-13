@@ -2,7 +2,7 @@ import raylib as rl
 from linalg import vec2, mat3x3
 from math import cos, sin, sqrt
 from random import random, randint
-from typing import Literal
+from typing import Literal, Callable
 
 from .._node import Node
 from .. import g as _g
@@ -126,6 +126,9 @@ class Particles(Node):
     _particles: list[_Particle]
 
     shape: EmissionShape
+
+    color_over_lifetime: Callable[[float], rl.Color] | None
+    scale_over_lifetime: Callable[[float], vec2] | None
 
     def __init__(self, name=None, parent=None):
         super().__init__(name=name, parent=parent)
