@@ -205,26 +205,24 @@ class SpriteText(Control):
         self.font.draw(self.transform(), self.text, self.spacing, self.color)
 
 class Container(Control):
-    width: float | None
-    height: float | None
+    width: float
+    height: float
     origin: vec2
     color: rl.Color | None
 
     def __init__(self, name=None, parent=None) -> None:
         super().__init__(name, parent)
-        self.width = None
-        self.height = None
+        self.width = _g.viewport_width
+        self.height = _g.viewport_height
         self.origin = vec2(0.5, 0.5)
         self.color = None
 
     def rect(self) -> rl.Rectangle:
-        width = self.width or _g.viewport_width
-        height = self.height or _g.viewport_height
         trans = self.transform()
         pos = trans._t()
         scale = trans._s()
-        dest_width = width * scale.x
-        dest_height = height * scale.y
+        dest_width = self.width * scale.x
+        dest_height = self.height * scale.y
         return rl.Rectangle(
             pos.x - dest_width * self.origin.x,
             pos.y - dest_height * self.origin.y,
