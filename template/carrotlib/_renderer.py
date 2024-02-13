@@ -20,7 +20,7 @@ def draw_texture(transform: mat3x3, tex: rl.Texture2D, src_rect: rl.Rectangle=No
         rot = transform._r()
         scale = transform._s()
     else:
-        transform = _g.world_to_viewport @ transform
+        _g.world_to_viewport.matmul(transform, out=transform)
         pos = transform._t()
         rot = transform._r()
         scale = transform._s() / _g.PIXEL_PER_UNIT
