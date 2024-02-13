@@ -7,7 +7,7 @@ _managed_sounds: list[rl.Sound] = []
 def _update_managed_sounds_coro():
     global _managed_sounds
     while True:
-        yield WaitForSeconds(5)
+        yield WaitForSeconds(8)
         living_sounds = []
         for sound in _managed_sounds:
             if rl.IsSoundPlaying(sound):
