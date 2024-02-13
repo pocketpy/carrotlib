@@ -161,6 +161,9 @@ class Node:
         # print(self.parent.children.keys(), self.name, self.name in self.parent.children)
         del self.parent.children[self.name]
         self.parent = None
+
+    def destroy_later(self, delay: float):
+        _g.root.start_coroutine(_DestroyLater(delay, self))
     
     def start_coroutine(self, coroutine):
         self._coroutines.append(coroutine)
@@ -221,3 +224,14 @@ class WaitForEndOfFrame:
     
     def __next__(self):
         return StopIteration
+    
+class _DestroyLater(WaitForSeconds):
+    def __init__(self, seconds: float, node: Node):
+        super().__init__(seconds)
+        self.node = node
+
+    def __next__(self):
+        obj = super().__next__()
+        if obj is StopIteration:
+            self.node.destroy()
+            return obj
