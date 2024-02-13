@@ -155,7 +155,8 @@ class Particles(Node):
         self._coroutine = None
     
     def play(self):
-        self._coroutine = self.start_coroutine(self._emit_coroutine())
+        if self._coroutine is None:
+            self._coroutine = self.start_coroutine(self._emit_coroutine())
 
     def stop(self):
         if self._coroutine is not None:
@@ -183,18 +184,18 @@ class Particles(Node):
             E = self.rate_over_time * self.duration
             times = [now + random() * self.duration for _ in range(E)]
             times.sort(reverse=True)
-            
+
             while times:
                 now = rl.GetTime()
                 delta = rl.GetFrameTime()
                 self_t = self.transform()
 
                 # remove dead particles
-                self._particles = [p for p in self._particles if now-p._time<p.lifetime]
-                # update
+                self._particles = [p for p in self._particles if now - p._time < p.lifetime]
+                # simulate
                 for p in self._particles:
-                    p.position += p.velocity * delta
                     value = 1 - clamp01((now - p._time) / p.lifetime)
+                    p.position += p.velocity * delta
                     if self.scale_over_lifetime:
                         p.scale = self.scale_over_lifetime(value)
                     if self.color_over_lifetime:
@@ -220,7 +221,7 @@ class Particles(Node):
                             p.color = self.color_over_lifetime(1)
                         else:
                             p.color = _color(self.start_color)
-                            
+
                         p.texture = self.start_texture
                         self._particles.append(p)
                 yield None

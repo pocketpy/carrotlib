@@ -11,7 +11,7 @@ from . import g
 from ._node import Node
 from .controls import Control
 from ._renderer import DebugDraw
-from ._sound import _unload_all_sound_aliases, _update_managed_sounds
+from ._sound import _unload_all_sound_aliases, _update_managed_sounds_coro, _count_managed_sounds
 from ._resources import _unload_all_resources
 from .debug import DebugWindow
 from ._viewport import get_mouse_position
@@ -72,6 +72,9 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
     g.b2_world = box2d.World()
     g.b2_world.set_debug_draw(DebugDraw())
     g.debug_window = DebugWindow()
+
+    g.root.start_coroutine(_update_managed_sounds_coro())
+
     f_init()
 
     # temporary variables
@@ -167,13 +170,11 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         g.debug_window.variables['mouse_pos'] = get_mouse_position()
         g.debug_window.variables['hovered_control'] = g.hovered_control
         g.debug_window.variables['pressed_control'] = g.pressed_control
+        g.debug_window.variables['managed_sounds'] = _count_managed_sounds()
         g.debug_window.variables['world_to_viewport'] = g.world_to_viewport
         g.debug_window.render()
         imgui.Render()
         rl.EndDrawing()
-        
-        # 7. clean up
-        _update_managed_sounds()
 
     _destroy_all_resources()
 

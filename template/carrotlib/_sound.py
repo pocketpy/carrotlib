@@ -1,20 +1,23 @@
 import raylib as rl
 
-_managed_sounds: list[rl.Sound] = []
-_swap: list[rl.Sound] = []
+from ._node import WaitForSeconds
 
-def _update_managed_sounds():
-    global _managed_sounds, _swap
-    if not _managed_sounds:
-        return
-    for sound in _managed_sounds:
-        if rl.IsSoundPlaying(sound):
-            _swap.append(sound)
-        else:
-            rl.UnloadSoundAlias(sound)
-    _managed_sounds, _swap = _swap, _managed_sounds
-    _swap.clear()
-    return _managed_sounds
+_managed_sounds: list[rl.Sound] = []
+
+def _update_managed_sounds_coro():
+    global _managed_sounds
+    while True:
+        yield WaitForSeconds(5)
+        living_sounds = []
+        for sound in _managed_sounds:
+            if rl.IsSoundPlaying(sound):
+                living_sounds.append(sound)
+            else:
+                rl.UnloadSoundAlias(sound)
+        _managed_sounds = living_sounds
+
+def _count_managed_sounds():
+    return len(_managed_sounds)
 
 def _unload_all_sound_aliases():
     for sound in _managed_sounds:
