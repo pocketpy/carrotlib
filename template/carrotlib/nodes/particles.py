@@ -28,6 +28,8 @@ class _Particle:
 
     @property
     def velocity(self) -> vec2:
+        if self.direction == vec2(0, 0):
+            return self.direction
         self.direction.normalize_()
         return self.direction * self.speed
 
