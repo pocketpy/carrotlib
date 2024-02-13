@@ -143,7 +143,7 @@ class Particles(Node):
         self.start_speed = 5.0
         self.start_scale = vec2(1, 1)
         self.start_rotation = 0.0
-        self.start_color = Colors.White
+        self.start_color = Colors.White.copy()
         self.start_texture = None
 
         self.max_particles = 1000
