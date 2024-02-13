@@ -12,7 +12,7 @@ from ._math import *
 from ._event import Event
 from ._setup import main
 
-from . import logger, nodes, controls, g
+from . import logger, nodes, controls, g, random
 
 from .controls import Control
 

@@ -46,7 +46,7 @@ def draw_texture(transform: mat3x3, tex: rl.Texture2D, src_rect: rl.Rectangle=No
         src_rect,
         dest_rect,
         origin,
-        rot * 57.2957795,       # convert rad to deg
+        rot * 57.295779512896,       # convert rad to deg
         color or Colors.White,
     )
 
