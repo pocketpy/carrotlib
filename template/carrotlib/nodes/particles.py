@@ -5,10 +5,9 @@ from random import random, randint
 from typing import Literal, Callable
 
 from .._node import Node
-from .. import g as _g
-from .._renderer import draw_texture, Texture2D, SubTexture2D, draw_rect
+from .._renderer import draw_texture, Texture2D, SubTexture2D
 from .._colors import Colors
-from .._math import clamp, clamp01, lerp
+from .._math import clamp01
 
 __all__ = ['Particles', 'EmissionShape', 'PointEmissionShape', 'CircleEmissionShape', 'RectEmissionShape', 'EdgeEmissionShape']
 
