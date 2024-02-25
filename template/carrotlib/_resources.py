@@ -26,7 +26,7 @@ class ResourceLoader(Generic[T]):
 
 def _load_font_cjk(path: str) -> rl.Font:
     p_data, count = _get_cjk_codepoints()
-    UNSCALING = 10
+    UNSCALING = 8
     return rl.LoadFontEx(path, _g.default_font_size * UNSCALING, p_data, count)
 
 def _load_texture_scaled(path: str, scale: float):
