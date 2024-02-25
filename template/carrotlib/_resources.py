@@ -1,6 +1,5 @@
 from typing import Generic, TypeVar
 import raylib as rl
-import c
 
 from _carrotlib import _get_cjk_codepoints
 from . import g as _g

@@ -10,8 +10,3 @@ def get_mouse_position() -> vec2:
 def get_mouse_delta() -> vec2:
     """Get mouse delta in viewport space"""
     return rl.GetMouseDelta() / _g.viewport_scale
-
-__all__ = [
-    'get_mouse_position',
-    'get_mouse_delta',
-]

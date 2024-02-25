@@ -1,17 +1,32 @@
 import raylib as rl
 from _carrotlib import list_assets
+from typing import Iterable
+
 from ._resources import load_texture
+from ._renderer import Texture2D, SubTexture2D
 
 class FramedAnimation:
-    def __init__(self, frames: list[rl.Texture2D], speed: int, loop: bool):
+    def __init__(self, frames: list[Texture2D | SubTexture2D], speed: int, loop: bool):
         self.frames = frames
         self.speed = speed
         self.loop = loop
 
-def load_framed_animation(path: str, speed: int = 12, loop: bool = True) -> FramedAnimation:
+def load_framed_animation(path: str, speed: int, loop: bool):
     frames = []
     for frame in sorted(list_assets(path)):
         frames.append(load_texture(frame))
+    return FramedAnimation(frames, speed, loop)
+
+def load_framed_animation_atlas(path: str, tile_size: int, tile_indices: Iterable[int], speed: int, loop: bool):
+    main_tex = load_texture(path)
+    assert main_tex.width % tile_size == 0
+    assert main_tex.height % tile_size == 0
+    frames = []
+    tiles_per_row = main_tex.width // tile_size
+    for i in tile_indices:
+        src_x = (i % tiles_per_row) * tile_size
+        src_y = (i // tiles_per_row) * tile_size
+        frames.append(SubTexture2D(main_tex, src_x, src_y, tile_size, tile_size))
     return FramedAnimation(frames, speed, loop)
 
 class FramedAnimator:
@@ -44,7 +59,7 @@ class FramedAnimator:
     def stop(self):
         self._current_animation = None
 
-    def update(self) -> rl.Texture2D:
+    def update(self) -> Texture2D | SubTexture2D | None:
         if self._current_animation is None:
             return
         dt = rl.GetFrameTime()
