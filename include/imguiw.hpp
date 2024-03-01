@@ -17,13 +17,13 @@ PyObject* py_var(VM* vm, ImVec4 im_vec){
 
 template<>
 ImVec2 py_cast<ImVec2>(VM* vm, PyObject* obj){
-    PyVec2 vec = py_cast<PyVec2>(vm, obj);
+    Vec2 vec = py_cast<Vec2>(vm, obj);
     return ImVec2(vec.x, vec.y);
 }
 
 template<>
 ImVec4 py_cast<ImVec4>(VM* vm, PyObject* obj){
-    PyVec4 vec = py_cast<PyVec4>(vm, obj);
+    Vec4 vec = py_cast<Vec4>(vm, obj);
     return ImVec4(vec.x, vec.y, vec.z, vec.w);
 }
 
