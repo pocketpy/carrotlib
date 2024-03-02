@@ -80,6 +80,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
     # temporary variables
     all_nodes: list[Node] = []
     all_nodes__append = all_nodes.append
+    node_sort_key = lambda n: n.total_z_index()
     interactable_controls: list[Control] = []
 
     PIXEL_UNIT_TRANSFORM = mat3x3.trs(
@@ -141,7 +142,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         g.root.apply_enabled(all_nodes__append)
 
         # render scene (sort by z-index via stable sort)
-        all_nodes.sort(key=Node.total_z_index)
+        all_nodes.sort(key=node_sort_key)
         fast_apply(Node._render, all_nodes)
 
         # render gizmos
