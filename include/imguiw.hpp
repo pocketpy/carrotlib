@@ -5,24 +5,24 @@
 
 namespace pkpy{
 
-PyObject* py_var(VM* vm, ImVec2 im_vec){
+inline PyObject* py_var(VM* vm, ImVec2 im_vec){
     Vec2 vec(im_vec.x, im_vec.y);
     return py_var(vm, vec);
 }
 
-PyObject* py_var(VM* vm, ImVec4 im_vec){
+inline PyObject* py_var(VM* vm, ImVec4 im_vec){
     Vec4 vec(im_vec.x, im_vec.y, im_vec.z, im_vec.w);
     return py_var(vm, vec);
 }
 
 template<>
-ImVec2 py_cast<ImVec2>(VM* vm, PyObject* obj){
+inline ImVec2 py_cast<ImVec2>(VM* vm, PyObject* obj){
     Vec2 vec = py_cast<Vec2>(vm, obj);
     return ImVec2(vec.x, vec.y);
 }
 
 template<>
-ImVec4 py_cast<ImVec4>(VM* vm, PyObject* obj){
+inline ImVec4 py_cast<ImVec4>(VM* vm, PyObject* obj){
     Vec4 vec = py_cast<Vec4>(vm, obj);
     return ImVec4(vec.x, vec.y, vec.z, vec.w);
 }
@@ -986,20 +986,6 @@ static void register_imgui_enums(VM* vm, PyObject* mod){
     "ImGuiWindowFlags_ChildMenu = 268435456\n"
     "\n"
     , "imgui.py", EXEC_MODE, mod);
-}
-
-PyObject* py_var(VM* vm, signed char val){
-    return py_var(vm, (i64)val);
-}
-
-template<>
-signed char py_cast<signed char>(VM* vm, PyObject* val){
-    return (signed char)py_cast<i64>(vm, val);
-}
-
-template<>
-signed char _py_cast<signed char>(VM* vm, PyObject* val){
-    return (signed char)_py_cast<i64>(vm, val);
 }
 
 template<typename T>
