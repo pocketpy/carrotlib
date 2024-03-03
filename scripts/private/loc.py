@@ -9,6 +9,8 @@ def get_loc(path):
 def get_loc_for_dir(path):
     loc = 0
     for root, dirs, files in os.walk(path):
+        if 'carrotlib' in root and root != path:
+            continue
         for file in files:
             if file.endswith('.py'):
                 filepath = os.path.join(root, file)
