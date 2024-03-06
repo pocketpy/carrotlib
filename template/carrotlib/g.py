@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from ._node import Node
     from .controls import Control
     from .debug import DebugWindow
+    from ._light import Lightmap
 
 root: Node = None
 b2_world: World = None
@@ -42,3 +43,5 @@ rl_camera_2d: rl.Camera2D = None
 
 default_font: rl.Font = None
 default_font_size: int = None
+
+lightmap: Lightmap = None

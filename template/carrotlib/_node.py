@@ -26,8 +26,8 @@ class Node:
         self._coroutines = []           # running coroutines
         self._living_coroutines = []    # living coroutines
         self._state = 0                 # unready -> ready -> destroyed
-        self._b2_bodies = []            # box2d bodies
         self._cached_transform = mat3x3.identity()
+        self._raii_objects = []
         # transform
         self.position = vec2(0, 0)
         self.rotation = 0           # in radians
@@ -84,7 +84,7 @@ class Node:
     def create_body(self, with_callback=True) -> box2d.Body:
         """create a box2d body attached to this node"""
         b2_body = box2d.Body(_g.b2_world, node=self, with_callback=with_callback)
-        self._b2_bodies.append(b2_body)
+        self._raii_objects.append(b2_body)
         return b2_body
     
     def transform(self) -> mat3x3:
@@ -132,7 +132,8 @@ class Node:
         self._state = 2
         self.on_destroy()
         self.stop_all_coroutines()
-        fast_apply(box2d.Body.destroy, self._b2_bodies)
+        for obj in self._raii_objects:
+            obj.destroy()
 
     def apply(self, f):
         f(self)

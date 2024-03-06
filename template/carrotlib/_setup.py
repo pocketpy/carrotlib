@@ -15,6 +15,7 @@ from ._sound import _unload_all_sound_aliases, _update_managed_sounds_coro, _cou
 from ._resources import _unload_all_resources
 from .debug import DebugWindow
 from ._viewport import get_mouse_position
+from ._light import Lightmap
 
 class RestartException(Exception):
     pass
@@ -26,6 +27,7 @@ def _destroy_all_resources():
     _unload_all_resources()
     for child in g.root.children.values():
         child.destroy()
+    g.lightmap.destroy()
 
 def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]=None, title="Game"):
     global _should_restart_app
@@ -72,6 +74,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
     g.b2_world = box2d.World()
     g.b2_world.set_debug_draw(DebugDraw())
     g.debug_window = DebugWindow()
+    g.lightmap = Lightmap(g.viewport_width, g.viewport_height)
 
     g.root.start_coroutine(_update_managed_sounds_coro())
 
@@ -132,6 +135,9 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         # 4. render
         # update world_to_viewport
         PIXEL_UNIT_TRANSFORM.matmul(g.world_to_camera, out=g.world_to_viewport)
+
+        # update lightmap
+        g.lightmap.update()
 
         rl.BeginDrawing()
         rl.BeginMode2D(g.rl_camera_2d)
