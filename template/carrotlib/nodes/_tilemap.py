@@ -175,6 +175,8 @@ class Tilemap(Node):
         self.grid_size = self.layer.grid_size
         self.cell_size = self.layer.grid_size / _g.PIXEL_PER_UNIT
 
+        self.material = _g.default_material
+
         super().__init__(name, parent)
 
     tex: rl.Texture2D
@@ -208,7 +210,8 @@ class Tilemap(Node):
 
     def on_render(self):
         # rl.BeginShaderMode(self.shader)
-        self.draw(self.transform())
+        with self.material:
+            self.draw(self.transform())
         # rl.EndShaderMode()
         # draw_circle(self.global_position, 0.2, Colors.Red)
 

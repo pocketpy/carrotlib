@@ -33,6 +33,7 @@ class Sprite(Node):
         self.flip_y = False
         self.origin = vec2(0.5, 0.5)
         self.color = Colors.White
+        self.material = _g.default_material
 
     def on_render(self):
         if self.texture is None:
@@ -50,15 +51,16 @@ class Sprite(Node):
         else:
             raise ValueError(f'Unknown texture type: {type(self.texture)}')
 
-        draw_texture(
-            self.transform(),
-            main_tex,
-            src_rect,
-            self.flip_x,
-            self.flip_y,
-            self.color,
-            self.origin
-        )
+        with self.material:
+            draw_texture(
+                self.transform(),
+                main_tex,
+                src_rect,
+                self.flip_x,
+                self.flip_y,
+                self.color,
+                self.origin
+            )
 
 
 class Grid(Node):
