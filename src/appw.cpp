@@ -1,4 +1,5 @@
 ﻿#include "appw.hpp"
+#include "light.hpp"
 #include "imguiw.hpp"
 
 #include <regex>
@@ -12,6 +13,27 @@ static Vector2 DrawTextBoxed(bool, bool, float, Font font, const char *text, Rec
 
 void add_module__ct(VM *vm){
     PyObject* mod = vm->new_module("_carrotlib");
+
+    vm->bind(mod, "_bake_global_light(image, color, intensity)",
+        [](VM* vm, ArgsView args){
+            Image* image = CAST(Image*, args[0]);
+            Color color = CAST(Color, args[1]);
+            f64 intensity = CAST(f64, args[2]);
+            bake_global_light(image, color, intensity);
+            return vm->None;
+        });
+
+    vm->bind(mod, "_bake_point_light(image, color, intensity, x, y, r)",
+        [](VM* vm, ArgsView args){
+            Image* image = CAST(Image*, args[0]);
+            Color color = CAST(Color, args[1]);
+            f64 intensity = CAST(f64, args[2]);
+            int x = CAST(int, args[3]);
+            int y = CAST(int, args[4]);
+            int r = CAST(int, args[5]);
+            bake_point_light(image, color, intensity, x, y, r);
+            return vm->None;
+        });
 
     vm->bind_func<-1>(mod, "fast_apply", [](VM* vm, ArgsView args){
         if(args.size() < 2) vm->TypeError("expected at least 2 arguments");

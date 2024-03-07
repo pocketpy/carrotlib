@@ -1,18 +1,11 @@
 import raylib as rl
 from typing import TypeVar
+from _carrotlib import _bake_global_light, _bake_point_light
 
 from ._colors import Colors
 from ._math import clamp
 from ._node import Node
 from . import g as _g
-
-def color_with_intensity(color: rl.Color, intensity: float) -> rl.Color:
-    color = color.copy()
-    color.r = int(clamp(color.r * intensity, 0, 255))
-    color.g = int(clamp(color.g * intensity, 0, 255))
-    color.b = int(clamp(color.b * intensity, 0, 255))
-    return color
-
 
 class LightMaterial:
     def __init__(self, lightmap: 'Lightmap'):
@@ -94,7 +87,7 @@ class Lightmap:
     def update(self):
         rl.ImageClearBackground(self.image.addr(), Colors.Black)
         for light in self.lights:
-            light.draw(self.image)
+            light._bake(self.image)
         rl.UpdateTexture(self.texture, self.image.data)
 
     def destroy(self):
@@ -110,7 +103,7 @@ class Light2D(Node):
         self.lightmap = lightmap
         lightmap.lights.append(self)
 
-    def draw(self, image: rl.Image) -> None:
+    def _bake(self, image: rl.Image) -> None:
         raise NotImplementedError
     
     def destroy(self):
@@ -121,31 +114,14 @@ class Light2D(Node):
 
 
 class GlobalLight2D(Light2D):
-    def draw(self, image: rl.Image) -> None:
-        # TODO: additive blending
-        rl.ImageDrawRectangle(
-            image.addr(),
-            0,
-            0,
-            image.width,
-            image.height,
-            color_with_intensity(self.color, self.intensity)
-        )
+    def _bake(self, image: rl.Image) -> None:
+        _bake_global_light(image.addr(), self.color, self.intensity)
 
 
 class PointLight2D(Light2D):
     radius: int = 1
 
-    def draw(self, image: rl.Image) -> None:
+    def _bake(self, image: rl.Image) -> None:
         screen_pos = _g.world_to_viewport.transform_point(self.global_position)
         x, y = round(screen_pos.x), round(screen_pos.y)
-        # aseprite draw circle
-        # https://www.aseprite.org/docs/circle/
-        # TODO: additive blending
-        rl.ImageDrawCircle(
-            image.addr(),
-            x,
-            image.height-y-1,
-            self.radius,
-            color_with_intensity(self.color, self.intensity)
-        )
+        _bake_point_light(image.addr(), self.color, self.intensity, x, y, self.radius)
