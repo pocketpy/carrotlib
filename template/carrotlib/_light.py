@@ -106,7 +106,7 @@ class Light2D(Node):
     def _bake(self, image: rl.Image) -> None:
         raise NotImplementedError
     
-    def destroy(self):
+    def on_destroy(self):
         try:
             self.lightmap.lights.remove(self)
         except ValueError:

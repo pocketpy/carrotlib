@@ -150,23 +150,21 @@ void algo_ellipsefill(int x0, int y0, int x1, int y1,
 
 
 namespace ct{
-    static Color alpha_blend(Color src, Color dst){
-        float alpha = src.a / 255.0f;
-        float inv_alpha = 1.0f - alpha;
+    static Color additive(Color src, Color dst){
+        // premultiplied alpha
+        float src_a = src.a / 255.0f;
+        src.r *= src_a;
+        src.g *= src_a;
+        src.b *= src_a;
+        float dst_a = dst.a / 255.0f;
+        dst.r *= dst_a;
+        dst.g *= dst_a;
+        dst.b *= dst_a;
         return {
-            (unsigned char)(src.r * alpha + dst.r * inv_alpha),
-            (unsigned char)(src.g * alpha + dst.g * inv_alpha),
-            (unsigned char)(src.b * alpha + dst.b * inv_alpha),
-            (unsigned char)(src.a + dst.a * inv_alpha)
-        };
-    }
-
-    static Color additive_blend(Color src, Color dst){
-        return {
-            (unsigned char)std::min(255, src.r + dst.r),
-            (unsigned char)std::min(255, src.g + dst.g),
-            (unsigned char)std::min(255, src.b + dst.b),
-            (unsigned char)std::min(255, src.a + dst.a)
+            (unsigned char)std::clamp((int)(src.r + dst.r), 0, 255),
+            (unsigned char)std::clamp((int)(src.g + dst.g), 0, 255),
+            (unsigned char)std::clamp((int)(src.b + dst.b), 0, 255),
+            255,
         };
     }
 
@@ -186,7 +184,7 @@ namespace ct{
         color = color_with_instensity(color, intensity);
         int numel = img->width * img->height;
         Color* pixels = (Color*)img->data;
-        for(int i=0; i<numel; i++) pixels[i] = additive_blend(color, pixels[i]);
+        for(int i=0; i<numel; i++) pixels[i] = additive(color, pixels[i]);
     }
 
     void bake_point_light(Image* img, Color color, double intensity, int x, int y, int r){
@@ -194,15 +192,37 @@ namespace ct{
             throw std::runtime_error("img->format != PIXELFORMAT_UNCOMPRESSED_R8G8B8A8");
         }
         color = color_with_instensity(color, intensity);
-        using ArgsT = std::tuple<Image*, Color, int, int, int>;
-        ArgsT args{img, color, x, y, r};
-        aseprite::algo_ellipse(x - r, y - r, x + r, y + r, 0, 0, &args, [](int x, int y, void* data){
-            auto [img, color, x0, y0, r] = *(ArgsT*)data;
-            float distance = sqrt((x - x0) * (x - x0) + (y - y0) * (y - y0));
+
+        for(int i=x-r; i<=x+r; i++){
+          for(int j=y-r; j<=y+r; j++){
+            float distance = sqrt((i-x)*(i-x) + (j-y)*(j-y));
+            if(distance > r) continue;
+            float distance01 = std::clamp(distance / r, 0.0f, 1.0f);
             Color new_color = color;
-            new_color.a = (unsigned char)(color.a * (1.0f - std::min(1.0f, distance / r)));
-            Color* pixels = (Color*)img->data;
-            pixels[y * img->width + x] = additive_blend(new_color, pixels[y * img->width + x]);
-        });
+            if(distance01 >= 0.75){
+              new_color.a = (unsigned char)(color.a * (1.0 - distance01));
+            }
+            int base = img->width * (img->height-j-1);
+            Color* pixels = (Color*)img->data + base;
+            pixels[i] = additive(new_color, pixels[i]);
+          }
+        }
+
+        // using ArgsT = std::tuple<Image*, Color, int, int, int>;
+        // ArgsT args{img, color, x, y, r};
+        // aseprite::algo_ellipsefill(x - r, y - r, x + r, y + r, 0, 0, &args, [](int start_x, int y, int end_x, void* data){
+        //     auto [img, color, x0, y0, r] = *(ArgsT*)data;
+        //     int base = img->width * (img->height-y-1);
+        //     Color* pixels = (Color*)img->data + base;
+        //     for(int x = start_x; x <= end_x; x++){
+        //         float distance = sqrt((x - x0) * (x - x0) + (y - y0) * (y - y0));
+        //         float distance01 = std::clamp(distance / r, 0.0f, 1.0f);
+        //         Color new_color = color;
+        //         if(distance01 >= 0.75){
+        //           new_color.a = (unsigned char)(color.a * (1.0 - distance01));
+        //         }
+        //         pixels[x] = additive(new_color, pixels[x]);
+        //     }
+        // });
     }
 }
