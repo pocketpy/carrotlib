@@ -1,4 +1,6 @@
 #include <algorithm>
+#include <tuple>
+#include <stdexcept>
 
 #include "raylib.h"
 

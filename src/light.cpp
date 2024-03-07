@@ -202,7 +202,7 @@ namespace ct{
             Color new_color = color;
             new_color.a = (unsigned char)(color.a * (1.0f - std::min(1.0f, distance / r)));
             Color* pixels = (Color*)img->data;
-            pixels[y * img->width + x] = additive_blend(color, pixels[y * img->width + x]);
+            pixels[y * img->width + x] = additive_blend(new_color, pixels[y * img->width + x]);
         });
     }
 }
