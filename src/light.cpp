@@ -192,7 +192,7 @@ namespace ct{
             throw std::runtime_error("img->format != PIXELFORMAT_UNCOMPRESSED_R8G8B8A8");
         }
         color = color_with_instensity(color, intensity);
-
+        y = img->height - y - 1;
         for(int i=x-r; i<=x+r; i++){
           for(int j=y-r; j<=y+r; j++){
             float distance = sqrt((i-x)*(i-x) + (j-y)*(j-y));
@@ -202,9 +202,8 @@ namespace ct{
             if(distance01 >= 0.75){
               new_color.a = (unsigned char)(color.a * (1.0 - distance01));
             }
-            int base = img->width * (img->height-j-1);
-            Color* pixels = (Color*)img->data + base;
-            pixels[i] = additive(new_color, pixels[i]);
+            Color* pixel = (Color*)img->data + img->width * j + i;
+            *pixel = additive(new_color, *pixel);
           }
         }
 
