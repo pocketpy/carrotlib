@@ -23,7 +23,7 @@ void add_module__ct(VM *vm){
             return vm->None;
         });
 
-    vm->bind(mod, "_bake_point_light(image, color, intensity, x, y, r)",
+    vm->bind(mod, "_bake_point_light(image, color, intensity, x, y, r, cookie)",
         [](VM* vm, ArgsView args){
             Image* image = CAST(Image*, args[0]);
             Color color = CAST(Color, args[1]);
@@ -31,7 +31,8 @@ void add_module__ct(VM *vm){
             int x = CAST(int, args[3]);
             int y = CAST(int, args[4]);
             int r = CAST(int, args[5]);
-            bake_point_light(image, color, intensity, x, y, r);
+            Image* cookie = CAST(Image*, args[6]);
+            bake_point_light(image, color, intensity, x, y, r, cookie);
             return vm->None;
         });
 

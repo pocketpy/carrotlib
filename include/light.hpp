@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <tuple>
 #include <stdexcept>
 
 #include "raylib.h"
@@ -13,6 +12,23 @@ namespace aseprite{
 }
 
 namespace ct{
-    void bake_global_light(Image* img, Color color, double intensity);
-    void bake_point_light(Image* img, Color color, double intensity, int x, int y, int r);
+    struct ColorNoAlpha{
+        unsigned char r;
+        unsigned char g;
+        unsigned char b;
+
+        ColorNoAlpha with_intensity(double intensity){
+            return {
+                (unsigned char)std::clamp((int)(r * intensity), 0, 255),
+                (unsigned char)std::clamp((int)(g * intensity), 0, 255),
+                (unsigned char)std::clamp((int)(b * intensity), 0, 255)
+            };
+        }
+
+        ColorNoAlpha(unsigned char r, unsigned char g, unsigned char b) : r(r), g(g), b(b) {}
+        ColorNoAlpha(Color color): r(color.r), g(color.g), b(color.b) {}
+    };
+
+    void bake_global_light(Image* img, ColorNoAlpha color, double intensity);
+    void bake_point_light(Image* img, ColorNoAlpha color, double intensity, int x, int y, int r, Image* cookie);
 }
