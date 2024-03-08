@@ -27,6 +27,7 @@ namespace ct{
 
         ColorNoAlpha(unsigned char r, unsigned char g, unsigned char b) : r(r), g(g), b(b) {}
         ColorNoAlpha(Color color): r(color.r), g(color.g), b(color.b) {}
+        operator Color() const { return {r, g, b, 255}; }
     };
 
     void bake_global_light(Image* img, ColorNoAlpha color, double intensity);

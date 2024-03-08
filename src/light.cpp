@@ -150,12 +150,12 @@ void algo_ellipsefill(int x0, int y0, int x1, int y1,
 
 
 namespace ct{
-    static Color additive(ColorNoAlpha src, Color dst){
+    static Color additive(Color src, Color dst){
         return {
             (unsigned char)std::clamp((int)src.r + dst.r, 0, 255),
             (unsigned char)std::clamp((int)src.g + dst.g, 0, 255),
             (unsigned char)std::clamp((int)src.b + dst.b, 0, 255),
-            dst.a
+            (unsigned char)std::clamp((int)src.a + dst.a, 0, 255)
         };
     }
 
@@ -163,7 +163,6 @@ namespace ct{
         if(img->format != PIXELFORMAT_UNCOMPRESSED_R8G8B8A8){
             throw std::runtime_error("img->format != PIXELFORMAT_UNCOMPRESSED_R8G8B8A8");
         }
-        ColorNoAlpha new_color(color);
         int numel = img->width * img->height;
         Color* pixels = (Color*)img->data;
         for(int i=0; i<numel; i++) pixels[i] = additive(color, pixels[i]);
@@ -183,8 +182,7 @@ namespace ct{
             int v = (j - y) / (double)r * cookie->height;
             unsigned mask = ((unsigned char*)cookie->data)[cookie->width * v + u];
             Color* pixel = (Color*)img->data + img->width * j + i;
-            ColorNoAlpha new_color = color.with_intensity(mask / 255.0);
-            *pixel = additive(new_color, *pixel);
+            *pixel = additive(color.with_intensity(mask / 255.0), *pixel);
           }
         }
 
