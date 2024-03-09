@@ -151,60 +151,38 @@ void algo_ellipsefill(int x0, int y0, int x1, int y1,
 
 namespace ct{
     static Color additive(Color src, Color dst){
-        // premultiplied alpha
-        float src_a = src.a / 255.0f;
-        src.r *= src_a;
-        src.g *= src_a;
-        src.b *= src_a;
-        float dst_a = dst.a / 255.0f;
-        dst.r *= dst_a;
-        dst.g *= dst_a;
-        dst.b *= dst_a;
         return {
-            (unsigned char)std::clamp((int)(src.r + dst.r), 0, 255),
-            (unsigned char)std::clamp((int)(src.g + dst.g), 0, 255),
-            (unsigned char)std::clamp((int)(src.b + dst.b), 0, 255),
-            255,
+            (unsigned char)std::clamp((int)src.r + dst.r, 0, 255),
+            (unsigned char)std::clamp((int)src.g + dst.g, 0, 255),
+            (unsigned char)std::clamp((int)src.b + dst.b, 0, 255),
+            (unsigned char)std::clamp((int)src.a + dst.a, 0, 255)
         };
     }
 
-    static Color color_with_instensity(Color color, double intensity){
-        return {
-            (unsigned char)std::clamp((int)(color.r * intensity), 0, 255),
-            (unsigned char)std::clamp((int)(color.g * intensity), 0, 255),
-            (unsigned char)std::clamp((int)(color.b * intensity), 0, 255),
-            color.a
-        };
-    }
-
-    void bake_global_light(Image* img, Color color, double intensity){
+    void bake_global_light(Image* img, ColorNoAlpha color, double intensity){
         if(img->format != PIXELFORMAT_UNCOMPRESSED_R8G8B8A8){
             throw std::runtime_error("img->format != PIXELFORMAT_UNCOMPRESSED_R8G8B8A8");
         }
-        color = color_with_instensity(color, intensity);
         int numel = img->width * img->height;
         Color* pixels = (Color*)img->data;
         for(int i=0; i<numel; i++) pixels[i] = additive(color, pixels[i]);
     }
 
-    void bake_point_light(Image* img, Color color, double intensity, int x, int y, int r){
+    void bake_point_light(Image* img, ColorNoAlpha color, double intensity, int x, int y, int r, Image* cookie){
         if(img->format != PIXELFORMAT_UNCOMPRESSED_R8G8B8A8){
             throw std::runtime_error("img->format != PIXELFORMAT_UNCOMPRESSED_R8G8B8A8");
         }
-        color = color_with_instensity(color, intensity);
-
+        if(cookie->format != PIXELFORMAT_UNCOMPRESSED_GRAYSCALE){
+            throw std::runtime_error("cookie->format != PIXELFORMAT_UNCOMPRESSED_GRAYSCALE");
+        }
+        y = img->height - y - 1;
         for(int i=x-r; i<=x+r; i++){
           for(int j=y-r; j<=y+r; j++){
-            float distance = sqrt((i-x)*(i-x) + (j-y)*(j-y));
-            if(distance > r) continue;
-            float distance01 = std::clamp(distance / r, 0.0f, 1.0f);
-            Color new_color = color;
-            if(distance01 >= 0.75){
-              new_color.a = (unsigned char)(color.a * (1.0 - distance01));
-            }
-            int base = img->width * (img->height-j-1);
-            Color* pixels = (Color*)img->data + base;
-            pixels[i] = additive(new_color, pixels[i]);
+            int u = (i - x) / (double)r * cookie->width;
+            int v = (j - y) / (double)r * cookie->height;
+            unsigned mask = ((unsigned char*)cookie->data)[cookie->width * v + u];
+            Color* pixel = (Color*)img->data + img->width * j + i;
+            *pixel = additive(color.with_intensity(mask / 255.0), *pixel);
           }
         }
 
