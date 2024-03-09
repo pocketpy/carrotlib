@@ -10,11 +10,10 @@ class Tween:
     Playing = 1
     Completed = 2
 
-    completed: Callable
+    completed: Callable = None
 
     def __init__(self, obj):
         self.obj = obj
-        self.completed = None
         self._state = Tween.Ready
 
     @property
