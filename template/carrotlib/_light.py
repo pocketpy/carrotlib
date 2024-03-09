@@ -4,7 +4,6 @@ from linalg import vec2
 from _carrotlib import _bake_global_light, _bake_point_light
 
 from ._colors import Colors
-from ._math import clamp
 from ._node import Node
 from . import g as _g
 
