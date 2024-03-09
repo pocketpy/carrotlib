@@ -29,5 +29,4 @@ namespace ct{
 
     void bake_global_light(Image* img, Color color, double intensity);
     void bake_point_light(Image* img, Color color, double intensity, int x, int y, int r, Image* cookie);
-    void bake_particle_light(Image* img, Color color, double intensity, int x, int y, int r);
 }

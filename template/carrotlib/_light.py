@@ -1,6 +1,6 @@
 import raylib as rl
-from typing import TypeVar
-from linalg import vec2
+from typing import TypeVar, TYPE_CHECKING
+from linalg import vec2, mat3x3
 from _carrotlib import _bake_global_light, _bake_point_light
 
 from ._colors import Colors
@@ -57,7 +57,6 @@ in vec4 screenPos;
 uniform sampler2D texture0;
 uniform sampler2D texture1;     // lightmap texture
 uniform vec4 colDiffuse;        // tint color
-uniform vec2 texelSize;         // texture texel size
 
 // Output fragment color
 out vec4 finalColor;
@@ -65,20 +64,15 @@ out vec4 finalColor;
 void main()
 {
     vec2 screenCoord = screenPos.xy / screenPos.w;
-    // pixelated
-    screenCoord = floor(screenCoord / (texelSize*4)) * (texelSize*4);
     vec4 texel = texture(texture0, fragTexCoord);   // Get texel color
     vec4 light = texture(texture1, screenCoord);    // Get light color
     finalColor = texel * colDiffuse * fragColor * light;
 }""")
         self.loc_lightmap = rl.GetShaderLocation(self.shader, "texture1")
-        self.loc_texel_size = rl.GetShaderLocation(self.shader, "texelSize")
 
     def __enter__(self):
         rl.BeginShaderMode(self.shader)
         rl.SetShaderValueTexture(self.shader, self.loc_lightmap, self.lightmap.texture)
-        texel_size = vec2(1.0 / self.lightmap.texture.width, 1.0 / self.lightmap.texture.height)
-        rl.SetShaderValue(self.shader, self.loc_texel_size, texel_size.addr(), rl.SHADER_UNIFORM_VEC2)
         return self
     
     def __exit__(self, *args):
@@ -131,11 +125,37 @@ class GlobalLight2D(Light2D):
 
 
 class PointLight2D(Light2D):
-    # TODO: support scale
-    # TODO: support pixelate
     radius: int = 1
 
     def _bake(self, image: rl.Image) -> None:
         screen_pos = _g.world_to_viewport.transform_point(self.global_position)
         x, y = round(screen_pos.x), round(screen_pos.y)
         _bake_point_light(image.addr(), self.color, self.intensity, x, y, self.radius)
+
+
+if TYPE_CHECKING:
+    from .nodes.particles import Particles
+
+
+class ParticleLight2D(Light2D):
+    parent: 'Particles'
+    radius: int = 1
+
+    def _bake(self, image: rl.Image) -> None:
+        t = mat3x3.identity()
+        for p in self.parent._particles:
+            t.copy_trs_(p.position, p.rotation, p.scale)
+            p._init_t.matmul(t, out=t)
+            screen_pos = _g.world_to_viewport.transform_point(t._t())
+            x, y = round(screen_pos.x), round(screen_pos.y)
+
+            color = rl.Color(
+                self.color.r * p.color.r // 255,
+                self.color.g * p.color.g // 255,
+                self.color.b * p.color.b // 255,
+                p.color.a
+            )
+            scale_ratio = t._s().length() / p._init_t._s().length()
+            radius = round(self.radius * scale_ratio)
+            intensity = color.a / 255 * self.intensity
+            _bake_point_light(image.addr(), color, intensity, x, y, radius)
