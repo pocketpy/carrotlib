@@ -12,24 +12,21 @@ namespace aseprite{
 }
 
 namespace ct{
-    struct ColorNoAlpha{
-        unsigned char r;
-        unsigned char g;
-        unsigned char b;
-
-        ColorNoAlpha with_intensity(double intensity){
-            return {
-                (unsigned char)std::clamp((int)(r * intensity), 0, 255),
-                (unsigned char)std::clamp((int)(g * intensity), 0, 255),
-                (unsigned char)std::clamp((int)(b * intensity), 0, 255)
-            };
+    struct HdrColor{
+        float r, g, b, a;
+        HdrColor(float r, float g, float b, float a) : r(r), g(g), b(b), a(std::clamp(a, 0.0f, 1.0f)) {}
+        HdrColor(Color color, double intensity) :
+            r(color.r / 255.0 * intensity),
+            g(color.g / 255.0 * intensity),
+            b(color.b / 255.0 * intensity),
+            a(color.a) {}
+        
+        static HdrColor additive(HdrColor src, HdrColor dst){
+            // https://github.com/aseprite/aseprite/blob/main/src/doc/blend_funcs.cpp#L497
+            return HdrColor(src.r + dst.r, src.g + dst.g, src.b + dst.b, src.a);
         }
-
-        ColorNoAlpha(unsigned char r, unsigned char g, unsigned char b) : r(r), g(g), b(b) {}
-        ColorNoAlpha(Color color): r(color.r), g(color.g), b(color.b) {}
-        operator Color() const { return {r, g, b, 255}; }
     };
 
-    void bake_global_light(Image* img, ColorNoAlpha color, double intensity);
-    void bake_point_light(Image* img, ColorNoAlpha color, double intensity, int x, int y, int r, Image* cookie);
+    void bake_global_light(Image* img, Color color, double intensity);
+    void bake_point_light(Image* img, Color color, double intensity, int x, int y, int r, Image* cookie);
 }

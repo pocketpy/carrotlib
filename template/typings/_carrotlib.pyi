@@ -23,5 +23,5 @@ GLSL_VERSION: int
 def _bake_global_light(image: rl.Image_p, color: rl.Color, intensity: float) -> None:
     ...
 
-def _bake_point_light(image: rl.Image_p, color: rl.Color, intensity: float, x: int, y: int, radius: int, cookie: rl.Image_p) -> None:
+def _bake_point_light(image: rl.Image_p, color: rl.Color, intensity: float, x: int, y: int, radius: int, cookie: rl.Image_p = None) -> None:
     ...
