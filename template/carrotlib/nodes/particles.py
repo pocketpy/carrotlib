@@ -23,7 +23,7 @@ class _Particle:
     speed: float
     direction: vec2
     color: rl.Color
-    texture: Texture2D | SubTexture2D | None
+    texture: Texture2D | None
 
     @property
     def velocity(self) -> vec2:
@@ -146,7 +146,6 @@ class Particles(Node):
         self.start_texture = None
 
         self.max_particles = 1000
-        # self.simulation_speed = 1.0
 
         self.play_on_ready = True
         self.destroy_on_stop = False

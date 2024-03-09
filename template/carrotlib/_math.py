@@ -1,5 +1,4 @@
 def lerp(a, b, t):
-    if a > b: a, b = b, a
     return a + (b - a) * t
 
 def clamp(x, a, b):

@@ -1252,4 +1252,23 @@ namespace ct{
         //     }
         // });
     }
+
+    void bake_particle_light(Image *img, Color color, double intensity, int x, int y, int r){
+        if(img->format != PIXELFORMAT_UNCOMPRESSED_R32G32B32A32){
+            throw std::runtime_error("img->format != PIXELFORMAT_UNCOMPRESSED_R32G32B32A32");
+        }
+        bake_point_light(img, color, intensity, x, y, r, nullptr);
+        // y = img->height - y - 1;
+        // for(int i=0; i<=2*r; i++){
+        //   for(int j=0; j<=2*r; j++){
+        //     int x_ = x - r + i;
+        //     int y_ = y - r + j;
+        //     if(x_ < 0 || x_ >= img->width || y_ < 0 || y_ >= img->height) continue;
+        //     HdrColor* pixel = (HdrColor*)img->data + img->width * y_ + x_;
+        //     double distance = sqrt((i - r) * (i - r) + (j - r) * (j - r));
+        //     double distance01 = std::clamp(distance / r, 0.0, 1.0);
+        //     *pixel = HdrColor::additive(HdrColor(color, (1.0 - distance01) * intensity), *pixel);
+        //   }
+        // }
+    }
 }
