@@ -45,11 +45,5 @@ default_font: rl.Font = None
 default_font_size: int = None
 
 lightmap: Lightmap = None
-
-
-class DefaultMaterial:
-    def __enter__(self): pass
-    def __exit__(self, *args): pass
-
-default_material = DefaultMaterial()
+default_material = None
 

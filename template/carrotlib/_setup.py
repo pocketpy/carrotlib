@@ -16,6 +16,7 @@ from ._resources import _unload_all_resources
 from .debug import DebugWindow
 from ._viewport import get_mouse_position
 from ._light import Lightmap
+from ._material import UnlitMaterial
 
 class RestartException(Exception):
     pass
@@ -75,6 +76,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
     g.b2_world.set_debug_draw(DebugDraw())
     g.debug_window = DebugWindow()
     g.lightmap = Lightmap(g.viewport_width, g.viewport_height)
+    g.default_material = UnlitMaterial()
 
     g.root.start_coroutine(_update_managed_sounds_coro())
 
