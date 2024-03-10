@@ -5,7 +5,7 @@ from ._animation import FramedAnimation, FramedAnimator, load_framed_animation, 
 from ._tween import Tweener, TweenList
 from ._sound import play_sound
 from ._font import SpriteFont
-from ._viewport import get_mouse_position, get_mouse_delta
+from ._viewport import get_mouse_position, get_mouse_delta, set_camera_transform
 from ._event import Event
 from ._light import PointLight2D, GlobalLight2D, ParticleLight2D, Lightmap
 from ._material import UnlitMaterial, DiffuseMaterial, Material
