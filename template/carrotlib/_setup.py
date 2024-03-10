@@ -15,7 +15,6 @@ from ._sound import _unload_all_sound_aliases, _update_managed_sounds_coro, _cou
 from ._resources import _unload_all_resources
 from .debug import DebugWindow
 from ._viewport import get_mouse_position
-from ._light import Lightmap
 from ._material import UnlitMaterial
 
 class RestartException(Exception):
@@ -23,17 +22,32 @@ class RestartException(Exception):
 
 _should_restart_app = False
 
-def _destroy_all_resources():
-    _unload_all_sound_aliases()
-    _unload_all_resources()
-    for child in g.root.children.values():
-        child.destroy()
-    g.lightmap.destroy()
+class Callbacks:
+    def on_ready(self):
+        g.rl_camera_2d = rl.Camera2D(vec2(0,0), vec2(0,0), 0, g.viewport_scale)
+        g.root = Node('root')
+        g.b2_world = box2d.World()
+        g.b2_world.set_debug_draw(DebugDraw())
+        g.debug_window = DebugWindow()
+        g.default_material = UnlitMaterial()
+        g.root.start_coroutine(_update_managed_sounds_coro())
 
-def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]=None, title="Game"):
+    def on_pre_render(self):
+        if g.default_lightmap:
+            g.default_lightmap.update()
+
+    def on_destroy(self):
+        _unload_all_sound_aliases()
+        _unload_all_resources()
+        for child in g.root.children.values():
+            child.destroy()
+        if g.default_lightmap:
+            g.default_lightmap.destroy()
+
+
+def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: tuple[int, int]=None, title="Game"):
     global _should_restart_app
 
-    assert callable(f_init)
     assert design_size is not None
 
     if window_size is None:
@@ -70,17 +84,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
     print('window_scale_dpi:', rl.GetWindowScaleDPI())
 
     # intialization
-    g.rl_camera_2d = rl.Camera2D(vec2(0,0), vec2(0,0), 0, g.viewport_scale)
-    g.root = Node('root')
-    g.b2_world = box2d.World()
-    g.b2_world.set_debug_draw(DebugDraw())
-    g.debug_window = DebugWindow()
-    g.lightmap = Lightmap(g.viewport_width, g.viewport_height)
-    g.default_material = UnlitMaterial()
-
-    g.root.start_coroutine(_update_managed_sounds_coro())
-
-    f_init()
+    callbacks.on_ready()
 
     # temporary variables
     all_nodes: list[Node] = []
@@ -97,7 +101,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
     while not rl.WindowShouldClose():
         if _should_restart_app:
             _should_restart_app = False
-            _destroy_all_resources()
+            callbacks.on_destroy()
             raise RestartException
 
         all_nodes.clear()
@@ -138,8 +142,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         # update world_to_viewport
         PIXEL_UNIT_TRANSFORM.matmul(g.world_to_camera, out=g.world_to_viewport)
 
-        # update lightmap
-        g.lightmap.update()
+        callbacks.on_pre_render()
 
         rl.BeginDrawing()
         rl.BeginMode2D(g.rl_camera_2d)
@@ -185,7 +188,7 @@ def main(f_init, design_size: tuple[int, int]=None, window_size: tuple[int, int]
         imgui.Render()
         rl.EndDrawing()
 
-    _destroy_all_resources()
+    callbacks.on_destroy()
 
     imgui.rlImGuiShutdown()
     rl.CloseAudioDevice()

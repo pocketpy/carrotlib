@@ -7,9 +7,9 @@ from ._sound import play_sound
 from ._font import SpriteFont
 from ._viewport import get_mouse_position, get_mouse_delta
 from ._event import Event
-from ._light import PointLight2D, GlobalLight2D, ParticleLight2D
-from ._material import UnlitMaterial, DiffuseMaterial
-from ._setup import main
+from ._light import PointLight2D, GlobalLight2D, ParticleLight2D, Lightmap
+from ._material import UnlitMaterial, DiffuseMaterial, Material
+from ._setup import main, Callbacks
 
 from ._renderer import *
 from ._resources import *

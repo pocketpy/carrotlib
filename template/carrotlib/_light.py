@@ -31,10 +31,10 @@ class Light2D(Node):
     color: rl.Color = Colors.White
     intensity: float = 1.0
 
-    def __init__(self, lightmap: Lightmap, name=None, parent=None) -> None:
+    def __init__(self, lightmap: Lightmap = None, name=None, parent=None) -> None:
         super().__init__(name=name, parent=parent)
-        self.lightmap = lightmap
-        lightmap.lights.append(self)
+        self.lightmap = lightmap or _g.default_lightmap
+        self.lightmap.lights.append(self)
 
     def _bake(self, image: rl.Image) -> None:
         raise NotImplementedError
