@@ -34,9 +34,9 @@ class Tween:
             raise ValueError("a Tween instance can only be setup once")
         self._state = Tween.Playing
 
-    def play(self):
+    def play(self, node: Node):
         self._setup()
-        self.obj.start_coroutine(self)
+        node.start_coroutine(self)
 
 class Tweener(Tween):
     def __init__(self, obj, name, target, duration, ease=None):
@@ -45,8 +45,6 @@ class Tweener(Tween):
         self.target = target            # target value
         self.duration = duration        # duration in seconds
         self.ease = ease or easing.OutQuad      # easing function
-
-        assert isinstance(obj, Node)
         assert type(name) is str
     
     def _setup(self):
