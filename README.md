@@ -19,11 +19,13 @@ Create a `main.py` in `<your_project>` folder. And this is the entry point of yo
 # main.py
 import carrotlib as cl
 
-def init():
-    """Initialize your game here."""
-    pass
+class MyCallbacks(cl.Callbacks):
+    def on_ready(self):
+        super().on_ready()
 
-cl.main(init, design_size=(1280, 720), title='<your_project>')
+        """Initialize your game here."""
+
+cl.main(MyCallbacks(), design_size=(1280, 720), title='<your_project>')
 ```
 
 ## Build win32
@@ -33,7 +35,7 @@ mkdir build
 cd build
 mkdir win32
 cd win32
-cmake ../..
+cmake ..\..
 cmake --build .
 Debug\Game.exe ..\..\projects\<your_project>
 ```
