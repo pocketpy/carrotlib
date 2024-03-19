@@ -1,5 +1,6 @@
 import raylib as rl
 from linalg import vec2
+from typing import Literal
 
 from _carrotlib import _rlDrawTextBoxed
 
@@ -17,12 +18,81 @@ def _convert_coordinates(old_pivot: vec2, new_pivot: vec2, position: vec2, width
     # 用偏移量更新向量
     return vec2(position.x - offset_x, position.y - offset_y)
 
+
+class ButtonState:
+    value: Literal['normal', 'hover', 'pressed', 'disabled']
+
+    def __init__(self, control: 'Control', on_click, on_long_press) -> None:
+        self.value = 'normal'
+        self.control = control
+        self.on_click = on_click
+        self.on_long_press = on_long_press
+
+        self._pressed_time = None
+
+        self.colors = {
+            'normal': Colors.White,
+            'hover': Colors.LightGray,
+            'pressed': Colors.Gray,
+            'disabled': Colors.DarkGray,
+        }
+
+    @property
+    def color(self) -> rl.Color:
+        return self.colors[self.value]
+
+    def update(self):
+        if not self.control.interactable:
+            self.value = 'disabled'
+
+        if self.value == 'disabled':
+            self._pressed_time = None
+            if self.control.interactable:
+                self.value = 'normal'
+        elif self.value == 'normal':
+            self._pressed_time = None
+            if self.control.is_hovering():
+                if rl.IsMouseButtonPressed(0):
+                    self.value = 'pressed'
+                    self._pressed_time = rl.GetTime()
+                else:
+                    self.value = 'hover'
+        elif self.value == 'hover':
+            self._pressed_time = None
+            if not self.control.is_hovering():
+                self.value = 'normal'
+            elif rl.IsMouseButtonPressed(0):
+                self.value = 'pressed'
+                self._pressed_time = rl.GetTime()
+        elif self.value == 'pressed':
+            if self.on_long_press and self._pressed_time is not None and rl.GetTime() - self._pressed_time > 0.5:
+                if self.control.is_hovering():
+                    self.on_long_press()
+                    self.value = 'hover'
+                self._pressed_time = None
+                return
+            if rl.IsMouseButtonReleased(0):
+                if self.control.is_hovering():
+                    if self.on_click:
+                        self.on_click()
+                    self.value = 'hover'
+                else:
+                    self.value = 'normal'
+
+
+        
+
+
+
 class Control(Node):
     parent: 'Control'   # we assume a control's parent is also a control
 
     def __init__(self, name=None, parent=None) -> None:
         super().__init__(name, parent)
         self.interactable = False
+
+    def create_button_state(self, on_click=None, on_long_press=None) -> ButtonState:
+        return ButtonState(self, on_click, on_long_press)
 
     def rect(self) -> rl.Rectangle:
         return rl.Rectangle(0, 0, 0, 0)
