@@ -31,7 +31,10 @@ class Control(Node):
         return _g.hovered_control is self
     
     def is_pressed(self) -> bool:
-        return _g.pressed_control is self
+        return self.is_hovering() and rl.IsMouseButtonPressed(0)
+    
+    def is_released(self) -> bool:
+        return self.is_hovering() and rl.IsMouseButtonReleased(0)
     
     def set_position(self, position: vec2, pivot: vec2, new_pivot: vec2 = None):
         """Set position based on pivot

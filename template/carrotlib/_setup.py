@@ -121,7 +121,6 @@ def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: t
 
         interactable_controls.clear()
         g.hovered_control = None
-        g.pressed_control = None
 
         for node in all_nodes:
             if isinstance(node, Control) and node.interactable and node._state == 1:
@@ -131,8 +130,6 @@ def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: t
         for c in interactable_controls:
             if rl.CheckCollisionPointRec(get_mouse_position(), c.rect()):
                 g.hovered_control = c
-                if rl.IsMouseButtonPressed(0):
-                    g.pressed_control = c
                 break
 
         # 3. update
@@ -181,7 +178,6 @@ def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: t
         imgui.NewFrame()
         g.debug_window.variables['mouse_pos'] = get_mouse_position()
         g.debug_window.variables['hovered_control'] = g.hovered_control
-        g.debug_window.variables['pressed_control'] = g.pressed_control
         g.debug_window.variables['managed_sounds'] = _count_managed_sounds()
         g.debug_window.variables['world_to_viewport'] = g.world_to_viewport
         g.debug_window.render()

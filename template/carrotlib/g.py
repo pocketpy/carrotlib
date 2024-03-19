@@ -19,7 +19,6 @@ debug_draw_box2d: bool = False
 
 # updated by engine every frame
 hovered_control: Control = None
-pressed_control: Control = None
 
 # world space to camera space matrix (set by user)
 world_to_camera: mat3x3 = mat3x3.identity()
