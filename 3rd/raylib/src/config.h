@@ -6,7 +6,7 @@
 *
 *   LICENSE: zlib/libpng
 *
-*   Copyright (c) 2018-2023 Ahmad Fatoum & Ramon Santamaria (@raysan5)
+*   Copyright (c) 2018-2024 Ahmad Fatoum & Ramon Santamaria (@raysan5)
 *
 *   This software is provided "as-is", without any express or implied warranty. In no event
 *   will the authors be held liable for any damages arising from the use of this software.
@@ -81,6 +81,7 @@
 #define MAX_GAMEPADS                    4       // Maximum number of gamepads supported
 #define MAX_GAMEPAD_AXIS                8       // Maximum number of axis supported (per gamepad)
 #define MAX_GAMEPAD_BUTTONS            32       // Maximum number of buttons supported (per gamepad)
+#define MAX_GAMEPAD_VIBRATION_TIME      2.0f    // Maximum vibration time in seconds
 #define MAX_TOUCH_POINTS                8       // Maximum number of touch points supported
 #define MAX_KEY_PRESSED_QUEUE          16       // Maximum number of keys in the key input queue
 #define MAX_CHAR_PRESSED_QUEUE         16       // Maximum number of characters in the char input queue
@@ -181,6 +182,7 @@
 // Selected desired font fileformats to be supported for loading
 #define SUPPORT_FILEFORMAT_FNT          1
 #define SUPPORT_FILEFORMAT_TTF          1
+#define SUPPORT_FILEFORMAT_BDF          1
 
 // Support text management functions
 // If not defined, still some functions are supported: TextLength(), TextFormat()

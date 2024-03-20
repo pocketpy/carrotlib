@@ -50,7 +50,7 @@
 *
 *   LICENSE: zlib/libpng
 *
-*   Copyright (c) 2013-2023 Ramon Santamaria (@raysan5)
+*   Copyright (c) 2013-2024 Ramon Santamaria (@raysan5)
 *
 *   This software is provided "as-is", without any express or implied warranty. In no event
 *   will the authors be held liable for any damages arising from the use of this software.
@@ -416,6 +416,8 @@ static void MixAudioFrames(float *framesOut, const float *framesIn, ma_uint32 fr
 #if defined(RAUDIO_STANDALONE)
 static bool IsFileExtension(const char *fileName, const char *ext); // Check file extension
 static const char *GetFileExtension(const char *fileName);          // Get pointer to extension for a filename string (includes the dot: .png)
+static const char *GetFileName(const char *filePath);               // Get pointer to filename for a path string
+static const char *GetFileNameWithoutExt(const char *filePath);     // Get filename string without extension (uses static string)
 
 static unsigned char *LoadFileData(const char *fileName, int *dataSize);    // Load file data as byte array (read)
 static bool SaveFileData(const char *fileName, void *data, int dataSize);   // Save data to file from byte array (write)
@@ -939,12 +941,14 @@ Sound LoadSoundAlias(Sound source)
 
     if (source.stream.buffer->data != NULL)
     {
-        AudioBuffer* audioBuffer = LoadAudioBuffer(AUDIO_DEVICE_FORMAT, AUDIO_DEVICE_CHANNELS, AUDIO.System.device.sampleRate, 0, AUDIO_BUFFER_USAGE_STATIC);
+        AudioBuffer *audioBuffer = LoadAudioBuffer(AUDIO_DEVICE_FORMAT, AUDIO_DEVICE_CHANNELS, AUDIO.System.device.sampleRate, 0, AUDIO_BUFFER_USAGE_STATIC);
+        
         if (audioBuffer == NULL)
         {
             TRACELOG(LOG_WARNING, "SOUND: Failed to create buffer");
-            return sound; // early return to avoid dereferencing the audioBuffer null pointer
+            return sound; // Early return to avoid dereferencing the audioBuffer null pointer
         }
+        
         audioBuffer->sizeInFrames = source.stream.buffer->sizeInFrames;
         audioBuffer->volume = source.stream.buffer->volume;
         audioBuffer->data = source.stream.buffer->data;
@@ -986,7 +990,7 @@ void UnloadSound(Sound sound)
 
 void UnloadSoundAlias(Sound alias)
 {
-    // untrack and unload just the sound buffer, not the sample data, it is shared with the source for the alias
+    // Untrack and unload just the sound buffer, not the sample data, it is shared with the source for the alias
     if (alias.stream.buffer != NULL)
     {
         ma_data_converter_uninit(&alias.stream.buffer->converter, NULL);
@@ -1077,8 +1081,9 @@ bool ExportWaveAsCode(Wave wave, const char *fileName)
     int waveDataSize = wave.frameCount*wave.channels*wave.sampleSize/8;
 
     // NOTE: Text data buffer size is estimated considering wave data size in bytes
-    // and requiring 6 char bytes for every byte: "0x00, "
-    char *txtData = (char *)RL_CALLOC(waveDataSize*6 + 2000, sizeof(char));
+    // and requiring 12 char bytes for every byte; the actual size varies, but 
+    // the longest possible char being appended is "%.4ff,\n    ", which is 12 bytes.
+    char *txtData = (char *)RL_CALLOC(waveDataSize*12 + 2000, sizeof(char));
 
     int byteCount = 0;
     byteCount += sprintf(txtData + byteCount, "\n//////////////////////////////////////////////////////////////////////////////////\n");
@@ -1088,7 +1093,7 @@ bool ExportWaveAsCode(Wave wave, const char *fileName)
     byteCount += sprintf(txtData + byteCount, "// more info and bugs-report:  github.com/raysan5/raylib                        //\n");
     byteCount += sprintf(txtData + byteCount, "// feedback and support:       ray[at]raylib.com                                //\n");
     byteCount += sprintf(txtData + byteCount, "//                                                                              //\n");
-    byteCount += sprintf(txtData + byteCount, "// Copyright (c) 2018-2023 Ramon Santamaria (@raysan5)                          //\n");
+    byteCount += sprintf(txtData + byteCount, "// Copyright (c) 2018-2024 Ramon Santamaria (@raysan5)                          //\n");
     byteCount += sprintf(txtData + byteCount, "//                                                                              //\n");
     byteCount += sprintf(txtData + byteCount, "//////////////////////////////////////////////////////////////////////////////////\n\n");
 
@@ -1097,7 +1102,7 @@ bool ExportWaveAsCode(Wave wave, const char *fileName)
     strcpy(varFileName, GetFileNameWithoutExt(fileName));
     for (int i = 0; varFileName[i] != '\0'; i++) if (varFileName[i] >= 'a' && varFileName[i] <= 'z') { varFileName[i] = varFileName[i] - 32; }
 
-    //Add wave information
+    // Add wave information
     byteCount += sprintf(txtData + byteCount, "// Wave data information\n");
     byteCount += sprintf(txtData + byteCount, "#define %s_FRAME_COUNT      %u\n", varFileName, wave.frameCount);
     byteCount += sprintf(txtData + byteCount, "#define %s_SAMPLE_RATE      %u\n", varFileName, wave.sampleRate);
@@ -1403,7 +1408,7 @@ Music LoadMusicStream(const char *fileName)
             music.stream = LoadAudioStream(AUDIO.System.device.sampleRate, bits, AUDIO_DEVICE_CHANNELS);
             music.frameCount = (unsigned int)jar_xm_get_remaining_samples(ctxXm);    // NOTE: Always 2 channels (stereo)
             music.looping = true;   // Looping enabled by default
-            jar_xm_reset(ctxXm);    // make sure we start at the beginning of the song
+            jar_xm_reset(ctxXm);    // Make sure we start at the beginning of the song
             musicLoaded = true;
         }
     }
@@ -1594,7 +1599,7 @@ Music LoadMusicStreamFromMemory(const char *fileType, const unsigned char *data,
             music.stream = LoadAudioStream(AUDIO.System.device.sampleRate, bits, 2);
             music.frameCount = (unsigned int)jar_xm_get_remaining_samples(ctxXm);    // NOTE: Always 2 channels (stereo)
             music.looping = true;   // Looping enabled by default
-            jar_xm_reset(ctxXm);    // make sure we start at the beginning of the song
+            jar_xm_reset(ctxXm);    // Make sure we start at the beginning of the song
 
             music.ctxData = ctxXm;
             musicLoaded = true;
@@ -2640,6 +2645,50 @@ static const char *GetFileExtension(const char *fileName)
     return dot;
 }
 
+// String pointer reverse break: returns right-most occurrence of charset in s
+static const char *strprbrk(const char *s, const char *charset)
+{
+    const char *latestMatch = NULL;
+    for (; s = strpbrk(s, charset), s != NULL; latestMatch = s++) { }
+    return latestMatch;
+}
+
+// Get pointer to filename for a path string
+static const char *GetFileName(const char *filePath)
+{
+    const char *fileName = NULL;
+    if (filePath != NULL) fileName = strprbrk(filePath, "\\/");
+
+    if (!fileName) return filePath;
+
+    return fileName + 1;
+}
+
+// Get filename string without extension (uses static string)
+static const char *GetFileNameWithoutExt(const char *filePath)
+{
+    #define MAX_FILENAMEWITHOUTEXT_LENGTH   256
+
+    static char fileName[MAX_FILENAMEWITHOUTEXT_LENGTH] = { 0 };
+    memset(fileName, 0, MAX_FILENAMEWITHOUTEXT_LENGTH);
+
+    if (filePath != NULL) strcpy(fileName, GetFileName(filePath));   // Get filename with extension
+
+    int size = (int)strlen(fileName);   // Get size in bytes
+
+    for (int i = 0; (i < size) && (i < MAX_FILENAMEWITHOUTEXT_LENGTH); i++)
+    {
+        if (fileName[i] == '.')
+        {
+            // NOTE: We break on first '.' found
+            fileName[i] = '\0';
+            break;
+        }
+    }
+
+    return fileName;
+}
+
 // Load data from file into a buffer
 static unsigned char *LoadFileData(const char *fileName, int *dataSize)
 {
@@ -2697,9 +2746,19 @@ static bool SaveFileData(const char *fileName, void *data, int dataSize)
 
             fclose(file);
         }
-        else TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to open file", fileName);
+        else
+        {
+            TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to open file", fileName);
+            return false;
+        }
     }
-    else TRACELOG(LOG_WARNING, "FILEIO: File name provided is not valid");
+    else 
+    {
+        TRACELOG(LOG_WARNING, "FILEIO: File name provided is not valid");
+        return false;
+    }
+
+    return true;
 }
 
 // Save text data to file (write), string must be '\0' terminated
@@ -2718,9 +2777,19 @@ static bool SaveFileText(const char *fileName, char *text)
 
             fclose(file);
         }
-        else TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to open text file", fileName);
+        else
+        {
+            TRACELOG(LOG_WARNING, "FILEIO: [%s] Failed to open text file", fileName);
+            return false;
+        }
     }
-    else TRACELOG(LOG_WARNING, "FILEIO: File name provided is not valid");
+    else
+    {
+        TRACELOG(LOG_WARNING, "FILEIO: File name provided is not valid");
+        return false;
+    }
+
+    return true;
 }
 #endif
 

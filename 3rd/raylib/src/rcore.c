@@ -63,7 +63,7 @@
 *
 *   LICENSE: zlib/libpng
 *
-*   Copyright (c) 2013-2023 Ramon Santamaria (@raysan5) and contributors
+*   Copyright (c) 2013-2024 Ramon Santamaria (@raysan5) and contributors
 *
 *   This software is provided "as-is", without any express or implied warranty. In no event
 *   will the authors be held liable for any damages arising from the use of this software.
@@ -81,6 +81,19 @@
 *     3. This notice may not be removed or altered from any source distribution.
 *
 **********************************************************************************************/
+
+//----------------------------------------------------------------------------------
+// Feature Test Macros required for this module
+//----------------------------------------------------------------------------------
+#if (defined(__linux__) || defined(PLATFORM_WEB)) && (_XOPEN_SOURCE < 500)
+    #undef _XOPEN_SOURCE
+    #define _XOPEN_SOURCE 500 // Required for: readlink if compiled with c99 without gnu ext.
+#endif
+
+#if (defined(__linux__) || defined(PLATFORM_WEB)) && (_POSIX_C_SOURCE < 199309L)
+    #undef _POSIX_C_SOURCE
+    #define _POSIX_C_SOURCE 199309L // Required for: CLOCK_MONOTONIC if compiled with c99 without gnu ext.
+#endif
 
 #include "raylib.h"                 // Declares module functions
 
@@ -211,6 +224,9 @@ __declspec(dllimport) int __stdcall WideCharToMultiByte(unsigned int cp, unsigne
 #ifndef MAX_GAMEPAD_BUTTONS
     #define MAX_GAMEPAD_BUTTONS           32        // Maximum number of buttons supported (per gamepad)
 #endif
+#ifndef MAX_GAMEPAD_VIBRATION_TIME
+    #define MAX_GAMEPAD_VIBRATION_TIME     2.0f     // Maximum vibration time in seconds
+#endif
 #ifndef MAX_TOUCH_POINTS
     #define MAX_TOUCH_POINTS               8        // Maximum number of touch points supported
 #endif
@@ -234,11 +250,6 @@ __declspec(dllimport) int __stdcall WideCharToMultiByte(unsigned int cp, unsigne
 #define FLAG_CLEAR(n, f) ((n) &= ~(f))
 #define FLAG_TOGGLE(n, f) ((n) ^= (f))
 #define FLAG_CHECK(n, f) ((n) & (f))
-
-#if (defined(__linux__) || defined(PLATFORM_WEB)) && (_POSIX_C_SOURCE < 199309L)
-    #undef _POSIX_C_SOURCE
-    #define _POSIX_C_SOURCE 199309L // Required for: CLOCK_MONOTONIC if compiled with c99 without gnu ext.
-#endif
 
 //----------------------------------------------------------------------------------
 // Types and Structures Definition
@@ -354,7 +365,7 @@ static int screenshotCounter = 0;    // Screenshots counter
 #endif
 
 #if defined(SUPPORT_GIF_RECORDING)
-int gifFrameCounter = 0;             // GIF frames counter
+unsigned int gifFrameCounter = 0;    // GIF frames counter
 bool gifRecording = false;           // GIF recording state
 MsfGifState gifState = { 0 };        // MSGIF context state
 #endif
@@ -944,9 +955,6 @@ void BeginMode2D(Camera2D camera)
 
     // Apply 2d camera transformation to modelview
     rlMultMatrixf(MatrixToFloat(GetCameraMatrix2D(camera)));
-
-    // Apply screen scaling if required
-    rlMultMatrixf(MatrixToFloat(CORE.Window.screenScale));
 }
 
 // Ends 2D mode with custom camera
@@ -955,7 +963,8 @@ void EndMode2D(void)
     rlDrawRenderBatchActive();      // Update and draw internal render batch
 
     rlLoadIdentity();               // Reset current matrix (modelview)
-    rlMultMatrixf(MatrixToFloat(CORE.Window.screenScale)); // Apply screen scaling if required
+
+    if (rlGetActiveFramebuffer() == 0) rlMultMatrixf(MatrixToFloat(CORE.Window.screenScale)); // Apply screen scaling if required
 }
 
 // Initializes 3D mode with custom camera (3D)
@@ -1008,7 +1017,7 @@ void EndMode3D(void)
     rlMatrixMode(RL_MODELVIEW);     // Switch back to modelview matrix
     rlLoadIdentity();               // Reset current matrix (modelview)
 
-    rlMultMatrixf(MatrixToFloat(CORE.Window.screenScale)); // Apply screen scaling if required
+    if (rlGetActiveFramebuffer() == 0) rlMultMatrixf(MatrixToFloat(CORE.Window.screenScale)); // Apply screen scaling if required
 
     rlDisableDepthTest();           // Disable DEPTH_TEST for 2D
 }
@@ -1053,6 +1062,11 @@ void EndTextureMode(void)
 
     // Set viewport to default framebuffer size
     SetupViewport(CORE.Window.render.width, CORE.Window.render.height);
+
+    // Go back to the modelview state from BeginDrawing since we are back to the default FBO
+    rlMatrixMode(RL_MODELVIEW);     // Switch back to modelview matrix
+    rlLoadIdentity();               // Reset current matrix (modelview)
+    rlMultMatrixf(MatrixToFloat(CORE.Window.screenScale)); // Apply screen scaling if required
 
     // Reset current fbo to screen size
     CORE.Window.currentFbo.width = CORE.Window.render.width;
@@ -1192,8 +1206,8 @@ VrStereoConfig LoadVrStereoConfig(VrDeviceInfo device)
         // NOTE: Camera movement might seem more natural if we model the head.
         // Our axis of rotation is the base of our head, so we might want to add
         // some y (base of head to eye level) and -z (center of head to eye protrusion) to the camera positions.
-        config.viewOffset[0] = MatrixTranslate(-device.interpupillaryDistance*0.5f, 0.075f, 0.045f);
-        config.viewOffset[1] = MatrixTranslate(device.interpupillaryDistance*0.5f, 0.075f, 0.045f);
+        config.viewOffset[0] = MatrixTranslate(device.interpupillaryDistance*0.5f, 0.075f, 0.045f);
+        config.viewOffset[1] = MatrixTranslate(-device.interpupillaryDistance*0.5f, 0.075f, 0.045f);
 
         // Compute eyes Viewports
         /*
@@ -1392,15 +1406,21 @@ void SetShaderValueTexture(Shader shader, int locIndex, Texture2D texture)
 // Module Functions Definition: Screen-space Queries
 //----------------------------------------------------------------------------------
 
-// Get a ray trace from mouse position
-Ray GetMouseRay(Vector2 mouse, Camera camera)
+// Get a ray trace from screen position (i.e mouse)
+Ray GetScreenToWorldRay(Vector2 position, Camera camera)
+{
+    return GetScreenToWorldRayEx(position, camera, (float)GetScreenWidth(), (float)GetScreenHeight());
+}
+
+// Get a ray trace from the screen position (i.e mouse) within a specific section of the screen
+Ray GetScreenToWorldRayEx(Vector2 position, Camera camera, float width, float height)
 {
     Ray ray = { 0 };
 
     // Calculate normalized device coordinates
     // NOTE: y value is negative
-    float x = (2.0f*mouse.x)/(float)GetScreenWidth() - 1.0f;
-    float y = 1.0f - (2.0f*mouse.y)/(float)GetScreenHeight();
+    float x = (2.0f*position.x)/width - 1.0f;
+    float y = 1.0f - (2.0f*position.y)/height;
     float z = 1.0f;
 
     // Store values in a vector
@@ -1414,11 +1434,11 @@ Ray GetMouseRay(Vector2 mouse, Camera camera)
     if (camera.projection == CAMERA_PERSPECTIVE)
     {
         // Calculate projection matrix from perspective
-        matProj = MatrixPerspective(camera.fovy*DEG2RAD, ((double)GetScreenWidth()/(double)GetScreenHeight()), RL_CULL_DISTANCE_NEAR, RL_CULL_DISTANCE_FAR);
+        matProj = MatrixPerspective(camera.fovy*DEG2RAD, ((double)width/(double)height), RL_CULL_DISTANCE_NEAR, RL_CULL_DISTANCE_FAR);
     }
     else if (camera.projection == CAMERA_ORTHOGRAPHIC)
     {
-        double aspect = (double)CORE.Window.screen.width/(double)CORE.Window.screen.height;
+        double aspect = (double)width/(double)height;
         double top = camera.fovy/2.0;
         double right = top*aspect;
 
@@ -1677,7 +1697,6 @@ void WaitTime(double seconds)
 // NOTE: Functions with a platform-specific implementation on rcore_<platform>.c
 //void OpenURL(const char *url)
 
-
 // Set the seed for the random number generator
 void SetRandomSeed(unsigned int seed)
 {
@@ -1829,7 +1848,7 @@ bool FileExists(const char *fileName)
 // NOTE: Extensions checking is not case-sensitive
 bool IsFileExtension(const char *fileName, const char *ext)
 {
-    #define MAX_FILE_EXTENSION_SIZE  16
+    #define MAX_FILE_EXTENSION_LENGTH  16
 
     bool result = false;
     const char *fileExt = GetFileExtension(fileName);
@@ -1840,8 +1859,8 @@ bool IsFileExtension(const char *fileName, const char *ext)
         int extCount = 0;
         const char **checkExts = TextSplit(ext, ';', &extCount); // WARNING: Module required: rtext
 
-        char fileExtLower[MAX_FILE_EXTENSION_SIZE + 1] = { 0 };
-        strncpy(fileExtLower, TextToLower(fileExt), MAX_FILE_EXTENSION_SIZE); // WARNING: Module required: rtext
+        char fileExtLower[MAX_FILE_EXTENSION_LENGTH + 1] = { 0 };
+        strncpy(fileExtLower, TextToLower(fileExt), MAX_FILE_EXTENSION_LENGTH); // WARNING: Module required: rtext
 
         for (int i = 0; i < extCount; i++)
         {
@@ -1935,25 +1954,27 @@ const char *GetFileName(const char *filePath)
 // Get filename string without extension (uses static string)
 const char *GetFileNameWithoutExt(const char *filePath)
 {
-    #define MAX_FILENAMEWITHOUTEXT_LENGTH   256
+    #define MAX_FILENAME_LENGTH     256
+    
+    static char fileName[MAX_FILENAME_LENGTH] = { 0 };
+    memset(fileName, 0, MAX_FILENAME_LENGTH);
 
-    static char fileName[MAX_FILENAMEWITHOUTEXT_LENGTH] = { 0 };
-    memset(fileName, 0, MAX_FILENAMEWITHOUTEXT_LENGTH);
-
-    if (filePath != NULL) strcpy(fileName, GetFileName(filePath));   // Get filename with extension
-
-    int size = (int)strlen(fileName);   // Get size in bytes
-
-    for (int i = 0; (i < size) && (i < MAX_FILENAMEWITHOUTEXT_LENGTH); i++)
+    if (filePath != NULL)
     {
-        if (fileName[i] == '.')
+        strcpy(fileName, GetFileName(filePath)); // Get filename.ext without path
+        int size = (int)strlen(fileName); // Get size in bytes
+        
+        for (int i = size; i > 0; i--) // Reverse search '.'
         {
-            // NOTE: We break on first '.' found
-            fileName[i] = '\0';
-            break;
+            if (fileName[i] == '.')
+            {
+                // NOTE: We break on first '.' found
+                fileName[i] = '\0';
+                break;
+            }
         }
     }
-
+    
     return fileName;
 }
 
@@ -2480,13 +2501,10 @@ AutomationEventList LoadAutomationEventList(const char *fileName)
 }
 
 // Unload automation events list from file
-void UnloadAutomationEventList(AutomationEventList *list)
+void UnloadAutomationEventList(AutomationEventList list)
 {
 #if defined(SUPPORT_AUTOMATION_EVENTS)
-    RL_FREE(list->events);
-    list->events = NULL;
-    list->count = 0;
-    list->capacity = 0;
+    RL_FREE(list.events);
 #endif
 }
 
@@ -3268,7 +3286,7 @@ static void ScanDirectoryFilesRecursively(const char *basePath, FilePathList *fi
 
 #if defined(SUPPORT_AUTOMATION_EVENTS)
 // Automation event recording
-// NOTE: Recording is by default done at EndDrawing(), after PollInputEvents()
+// NOTE: Recording is by default done at EndDrawing(), before PollInputEvents()
 static void RecordAutomationEvent(void)
 {
     // Checking events in current frame and save them into currentEventList
