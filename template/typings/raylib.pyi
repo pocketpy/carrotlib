@@ -3388,12 +3388,6 @@ def TextToFloat(text: str) -> float:
     Wraps: `float TextToFloat(const char * text)`
     """
 
-def ExportMeshAsCode(mesh: Mesh, fileName: str) -> bool:
-    """Export mesh as code file (.h) defining multiple arrays of vertex attributes
-
-    Wraps: `bool ExportMeshAsCode(Mesh mesh, const char * fileName)`
-    """
-
 def InitAudioDevice() -> None:
     """Initialize audio device and context
 

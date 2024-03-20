@@ -2297,7 +2297,6 @@ void add_module_raylib(VM* vm){
     _bind(vm, mod, "TextToPascal(text: str) -> str", &TextToPascal);
     _bind(vm, mod, "TextToInteger(text: str) -> int", &TextToInteger);
     _bind(vm, mod, "TextToFloat(text: str) -> float", &TextToFloat);
-    _bind(vm, mod, "ExportMeshAsCode(mesh: Mesh, fileName: str) -> bool", &ExportMeshAsCode);
     _bind(vm, mod, "InitAudioDevice() -> None", &InitAudioDevice);
     _bind(vm, mod, "CloseAudioDevice() -> None", &CloseAudioDevice);
     _bind(vm, mod, "IsAudioDeviceReady() -> bool", &IsAudioDeviceReady);
