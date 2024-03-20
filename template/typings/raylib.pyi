@@ -450,7 +450,6 @@ class _wrapped__VrDeviceInfo:
     vResolution: int                    # `int`: Vertical resolution in pixels
     hScreenSize: float                  # `float`: Horizontal size in meters
     vScreenSize: float                  # `float`: Vertical size in meters
-    vScreenCenter: float                # `float`: Screen center in meters
     eyeToScreenDistance: float          # `float`: Distance between eye and display in meters
     lensSeparationDistance: float       # `float`: Lens separation distance in meters
     interpupillaryDistance: float       # `float`: IPD (distance between pupils) in meters
@@ -462,7 +461,7 @@ class VrDeviceInfo(_StructLike[VrDeviceInfo], _wrapped__VrDeviceInfo):
     @overload
     def __init__(self): ...
     @overload
-    def __init__(self, hResolution: int, vResolution: int, hScreenSize: float, vScreenSize: float, vScreenCenter: float, eyeToScreenDistance: float, lensSeparationDistance: float, interpupillaryDistance: float, lensDistortionValues: float_p, chromaAbCorrection: float_p): ...
+    def __init__(self, hResolution: int, vResolution: int, hScreenSize: float, vScreenSize: float, eyeToScreenDistance: float, lensSeparationDistance: float, interpupillaryDistance: float, lensDistortionValues: float_p, chromaAbCorrection: float_p): ...
 
 class VrDeviceInfo_p(Pointer[VrDeviceInfo]):
     """Wraps `VrDeviceInfo *`"""
@@ -677,7 +676,7 @@ KEY_KP_ADD = 334                                # Key: Keypad +
 KEY_KP_ENTER = 335                              # Key: Keypad Enter
 KEY_KP_EQUAL = 336                              # Key: Keypad =
 KEY_BACK = 4                                    # Key: Android back button
-KEY_MENU = 82                                   # Key: Android menu button
+KEY_MENU = 5                                    # Key: Android menu button
 KEY_VOLUME_UP = 24                              # Key: Android volume up button
 KEY_VOLUME_DOWN = 25                            # Key: Android volume down button
 
@@ -1397,34 +1396,22 @@ def UnloadShader(shader: Shader) -> None:
     Wraps: `void UnloadShader(Shader shader)`
     """
 
-def GetMouseRay(mousePosition: vec2, camera: Camera) -> Ray:
+def GetScreenToWorldRay(mousePosition: vec2, camera: Camera) -> Ray:
     """Get a ray trace from mouse position
 
-    Wraps: `Ray GetMouseRay(Vector2 mousePosition, Camera camera)`
+    Wraps: `Ray GetScreenToWorldRay(Vector2 mousePosition, Camera camera)`
     """
 
-def GetCameraMatrix(camera: Camera) -> Matrix:
-    """Get camera transform matrix (view matrix)
+def GetScreenToWorldRayEx(mousePosition: vec2, camera: Camera, width: float, height: float) -> Ray:
+    """Get a ray trace from mouse position in a viewport
 
-    Wraps: `Matrix GetCameraMatrix(Camera camera)`
-    """
-
-def GetCameraMatrix2D(camera: Camera2D) -> Matrix:
-    """Get camera 2d transform matrix
-
-    Wraps: `Matrix GetCameraMatrix2D(Camera2D camera)`
+    Wraps: `Ray GetScreenToWorldRayEx(Vector2 mousePosition, Camera camera, float width, float height)`
     """
 
 def GetWorldToScreen(position: vec3, camera: Camera) -> vec2:
     """Get the screen space position for a 3d world space position
 
     Wraps: `Vector2 GetWorldToScreen(Vector3 position, Camera camera)`
-    """
-
-def GetScreenToWorld2D(position: vec2, camera: Camera2D) -> vec2:
-    """Get the world space position for a 2d camera screen space position
-
-    Wraps: `Vector2 GetScreenToWorld2D(Vector2 position, Camera2D camera)`
     """
 
 def GetWorldToScreenEx(position: vec3, camera: Camera, width: int, height: int) -> vec2:
@@ -1437,6 +1424,24 @@ def GetWorldToScreen2D(position: vec2, camera: Camera2D) -> vec2:
     """Get the screen space position for a 2d camera world space position
 
     Wraps: `Vector2 GetWorldToScreen2D(Vector2 position, Camera2D camera)`
+    """
+
+def GetScreenToWorld2D(position: vec2, camera: Camera2D) -> vec2:
+    """Get the world space position for a 2d camera screen space position
+
+    Wraps: `Vector2 GetScreenToWorld2D(Vector2 position, Camera2D camera)`
+    """
+
+def GetCameraMatrix(camera: Camera) -> Matrix:
+    """Get camera transform matrix (view matrix)
+
+    Wraps: `Matrix GetCameraMatrix(Camera camera)`
+    """
+
+def GetCameraMatrix2D(camera: Camera2D) -> Matrix:
+    """Get camera 2d transform matrix
+
+    Wraps: `Matrix GetCameraMatrix2D(Camera2D camera)`
     """
 
 def SetTargetFPS(fps: int) -> None:
@@ -1739,10 +1744,10 @@ def LoadAutomationEventList(fileName: str) -> AutomationEventList:
     Wraps: `AutomationEventList LoadAutomationEventList(const char * fileName)`
     """
 
-def UnloadAutomationEventList(list: 'AutomationEventList_p') -> None:
+def UnloadAutomationEventList(list: AutomationEventList) -> None:
     """Unload automation events list from file
 
-    Wraps: `void UnloadAutomationEventList(AutomationEventList * list)`
+    Wraps: `void UnloadAutomationEventList(AutomationEventList list)`
     """
 
 def ExportAutomationEventList(list: AutomationEventList, fileName: str) -> bool:
@@ -1887,6 +1892,12 @@ def SetGamepadMappings(mappings: str) -> int:
     """Set internal gamepad mappings (SDL_GameControllerDB)
 
     Wraps: `int SetGamepadMappings(const char * mappings)`
+    """
+
+def SetGamepadVibration(gamepad: int, leftMotor: float, rightMotor: float) -> None:
+    """Set gamepad vibration for both motors
+
+    Wraps: `void SetGamepadVibration(int gamepad, float leftMotor, float rightMotor)`
     """
 
 def IsMouseButtonPressed(button: int) -> bool:
@@ -2067,6 +2078,18 @@ def SetShapesTexture(texture: Texture2D, source: Rectangle) -> None:
     """Set texture and rectangle to be used on shapes drawing
 
     Wraps: `void SetShapesTexture(Texture2D texture, Rectangle source)`
+    """
+
+def GetShapesTexture() -> Texture2D:
+    """Get texture that is used for shapes drawing
+
+    Wraps: `Texture2D GetShapesTexture()`
+    """
+
+def GetShapesTextureRectangle() -> Rectangle:
+    """Get texture source rectangle that is used for shapes drawing
+
+    Wraps: `Rectangle GetShapesTextureRectangle()`
     """
 
 def DrawPixel(posX: int, posY: int, color: Color) -> None:
@@ -2457,6 +2480,12 @@ def LoadImageAnim(fileName: str, frames: int_p) -> Image:
     """Load image sequence from file (frames appended to image.data)
 
     Wraps: `Image LoadImageAnim(const char * fileName, int * frames)`
+    """
+
+def LoadImageAnimFromMemory(fileType: str, fileData: uchar_p, dataSize: int, frames: int_p) -> Image:
+    """Load image sequence from memory buffer
+
+    Wraps: `Image LoadImageAnimFromMemory(const char * fileType, const unsigned char * fileData, int dataSize, int * frames)`
     """
 
 def LoadImageFromMemory(fileType: str, fileData: uchar_p, dataSize: int) -> Image:
@@ -2981,6 +3010,12 @@ def DrawTextureNPatch(texture: Texture2D, nPatchInfo: NPatchInfo, dest: Rectangl
     Wraps: `void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint)`
     """
 
+def ColorIsEqual(col1: Color, col2: Color) -> bool:
+    """Check if two colors are equal
+
+    Wraps: `bool ColorIsEqual(Color col1, Color col2)`
+    """
+
 def Fade(color: Color, alpha: float) -> Color:
     """Get color with alpha applied, alpha goes from 0.0f to 1.0f
 
@@ -2988,7 +3023,7 @@ def Fade(color: Color, alpha: float) -> Color:
     """
 
 def ColorToInt(color: Color) -> int:
-    """Get hexadecimal value for a Color
+    """Get hexadecimal value for a Color (0xRRGGBBAA)
 
     Wraps: `int ColorToInt(Color color)`
     """
@@ -3287,10 +3322,10 @@ def TextSubtext(text: str, position: int, length: int) -> str:
     Wraps: `const char * TextSubtext(const char * text, int position, int length)`
     """
 
-def TextReplace(text: char_p, replace: str, by: str) -> char_p:
+def TextReplace(text: str, replace: str, by: str) -> char_p:
     """Replace text string (WARNING: memory must be freed!)
 
-    Wraps: `char * TextReplace(char * text, const char * replace, const char * by)`
+    Wraps: `char * TextReplace(const char * text, const char * replace, const char * by)`
     """
 
 def TextInsert(text: str, insert: str, position: int) -> char_p:
@@ -3345,6 +3380,18 @@ def TextToInteger(text: str) -> int:
     """Get integer value from text (negative values not supported)
 
     Wraps: `int TextToInteger(const char * text)`
+    """
+
+def TextToFloat(text: str) -> float:
+    """Get float value from text (negative values not supported)
+
+    Wraps: `float TextToFloat(const char * text)`
+    """
+
+def ExportMeshAsCode(mesh: Mesh, fileName: str) -> bool:
+    """Export mesh as code file (.h) defining multiple arrays of vertex attributes
+
+    Wraps: `bool ExportMeshAsCode(Mesh mesh, const char * fileName)`
     """
 
 def InitAudioDevice() -> None:

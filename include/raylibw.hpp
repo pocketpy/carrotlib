@@ -1404,9 +1404,9 @@ struct wrapped__VrDeviceInfo{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"hResolution", "vResolution", "hScreenSize", "vScreenSize", "vScreenCenter", "eyeToScreenDistance", "lensSeparationDistance", "interpupillaryDistance", "lensDistortionValues", "chromaAbCorrection"};
+            static const StrName _fields_[] = {"hResolution", "vResolution", "hScreenSize", "vScreenSize", "eyeToScreenDistance", "lensSeparationDistance", "interpupillaryDistance", "lensDistortionValues", "chromaAbCorrection"};
             if(args.size()==1) return vm->None;
-            if(args.size()-1 != 10) vm->TypeError(_S("expected 10 arguments, got ", args.size()-1));
+            if(args.size()-1 != 9) vm->TypeError(_S("expected 9 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
             }
@@ -1417,7 +1417,6 @@ struct wrapped__VrDeviceInfo{
         PY_FIELD(wrapped__VrDeviceInfo, "vResolution", _, vResolution)
         PY_FIELD(wrapped__VrDeviceInfo, "hScreenSize", _, hScreenSize)
         PY_FIELD(wrapped__VrDeviceInfo, "vScreenSize", _, vScreenSize)
-        PY_FIELD(wrapped__VrDeviceInfo, "vScreenCenter", _, vScreenCenter)
         PY_FIELD(wrapped__VrDeviceInfo, "eyeToScreenDistance", _, eyeToScreenDistance)
         PY_FIELD(wrapped__VrDeviceInfo, "lensSeparationDistance", _, lensSeparationDistance)
         PY_FIELD(wrapped__VrDeviceInfo, "interpupillaryDistance", _, interpupillaryDistance)
@@ -1658,7 +1657,7 @@ void add_module_raylib(VM* vm){
     // TraceLogLevel
     _bind_enums(vm, mod, {{"LOG_ALL", 0}, {"LOG_TRACE", 1}, {"LOG_DEBUG", 2}, {"LOG_INFO", 3}, {"LOG_WARNING", 4}, {"LOG_ERROR", 5}, {"LOG_FATAL", 6}, {"LOG_NONE", 7}});
     // KeyboardKey
-    _bind_enums(vm, mod, {{"KEY_NULL", 0}, {"KEY_APOSTROPHE", 39}, {"KEY_COMMA", 44}, {"KEY_MINUS", 45}, {"KEY_PERIOD", 46}, {"KEY_SLASH", 47}, {"KEY_ZERO", 48}, {"KEY_ONE", 49}, {"KEY_TWO", 50}, {"KEY_THREE", 51}, {"KEY_FOUR", 52}, {"KEY_FIVE", 53}, {"KEY_SIX", 54}, {"KEY_SEVEN", 55}, {"KEY_EIGHT", 56}, {"KEY_NINE", 57}, {"KEY_SEMICOLON", 59}, {"KEY_EQUAL", 61}, {"KEY_A", 65}, {"KEY_B", 66}, {"KEY_C", 67}, {"KEY_D", 68}, {"KEY_E", 69}, {"KEY_F", 70}, {"KEY_G", 71}, {"KEY_H", 72}, {"KEY_I", 73}, {"KEY_J", 74}, {"KEY_K", 75}, {"KEY_L", 76}, {"KEY_M", 77}, {"KEY_N", 78}, {"KEY_O", 79}, {"KEY_P", 80}, {"KEY_Q", 81}, {"KEY_R", 82}, {"KEY_S", 83}, {"KEY_T", 84}, {"KEY_U", 85}, {"KEY_V", 86}, {"KEY_W", 87}, {"KEY_X", 88}, {"KEY_Y", 89}, {"KEY_Z", 90}, {"KEY_LEFT_BRACKET", 91}, {"KEY_BACKSLASH", 92}, {"KEY_RIGHT_BRACKET", 93}, {"KEY_GRAVE", 96}, {"KEY_SPACE", 32}, {"KEY_ESCAPE", 256}, {"KEY_ENTER", 257}, {"KEY_TAB", 258}, {"KEY_BACKSPACE", 259}, {"KEY_INSERT", 260}, {"KEY_DELETE", 261}, {"KEY_RIGHT", 262}, {"KEY_LEFT", 263}, {"KEY_DOWN", 264}, {"KEY_UP", 265}, {"KEY_PAGE_UP", 266}, {"KEY_PAGE_DOWN", 267}, {"KEY_HOME", 268}, {"KEY_END", 269}, {"KEY_CAPS_LOCK", 280}, {"KEY_SCROLL_LOCK", 281}, {"KEY_NUM_LOCK", 282}, {"KEY_PRINT_SCREEN", 283}, {"KEY_PAUSE", 284}, {"KEY_F1", 290}, {"KEY_F2", 291}, {"KEY_F3", 292}, {"KEY_F4", 293}, {"KEY_F5", 294}, {"KEY_F6", 295}, {"KEY_F7", 296}, {"KEY_F8", 297}, {"KEY_F9", 298}, {"KEY_F10", 299}, {"KEY_F11", 300}, {"KEY_F12", 301}, {"KEY_LEFT_SHIFT", 340}, {"KEY_LEFT_CONTROL", 341}, {"KEY_LEFT_ALT", 342}, {"KEY_LEFT_SUPER", 343}, {"KEY_RIGHT_SHIFT", 344}, {"KEY_RIGHT_CONTROL", 345}, {"KEY_RIGHT_ALT", 346}, {"KEY_RIGHT_SUPER", 347}, {"KEY_KB_MENU", 348}, {"KEY_KP_0", 320}, {"KEY_KP_1", 321}, {"KEY_KP_2", 322}, {"KEY_KP_3", 323}, {"KEY_KP_4", 324}, {"KEY_KP_5", 325}, {"KEY_KP_6", 326}, {"KEY_KP_7", 327}, {"KEY_KP_8", 328}, {"KEY_KP_9", 329}, {"KEY_KP_DECIMAL", 330}, {"KEY_KP_DIVIDE", 331}, {"KEY_KP_MULTIPLY", 332}, {"KEY_KP_SUBTRACT", 333}, {"KEY_KP_ADD", 334}, {"KEY_KP_ENTER", 335}, {"KEY_KP_EQUAL", 336}, {"KEY_BACK", 4}, {"KEY_MENU", 82}, {"KEY_VOLUME_UP", 24}, {"KEY_VOLUME_DOWN", 25}});
+    _bind_enums(vm, mod, {{"KEY_NULL", 0}, {"KEY_APOSTROPHE", 39}, {"KEY_COMMA", 44}, {"KEY_MINUS", 45}, {"KEY_PERIOD", 46}, {"KEY_SLASH", 47}, {"KEY_ZERO", 48}, {"KEY_ONE", 49}, {"KEY_TWO", 50}, {"KEY_THREE", 51}, {"KEY_FOUR", 52}, {"KEY_FIVE", 53}, {"KEY_SIX", 54}, {"KEY_SEVEN", 55}, {"KEY_EIGHT", 56}, {"KEY_NINE", 57}, {"KEY_SEMICOLON", 59}, {"KEY_EQUAL", 61}, {"KEY_A", 65}, {"KEY_B", 66}, {"KEY_C", 67}, {"KEY_D", 68}, {"KEY_E", 69}, {"KEY_F", 70}, {"KEY_G", 71}, {"KEY_H", 72}, {"KEY_I", 73}, {"KEY_J", 74}, {"KEY_K", 75}, {"KEY_L", 76}, {"KEY_M", 77}, {"KEY_N", 78}, {"KEY_O", 79}, {"KEY_P", 80}, {"KEY_Q", 81}, {"KEY_R", 82}, {"KEY_S", 83}, {"KEY_T", 84}, {"KEY_U", 85}, {"KEY_V", 86}, {"KEY_W", 87}, {"KEY_X", 88}, {"KEY_Y", 89}, {"KEY_Z", 90}, {"KEY_LEFT_BRACKET", 91}, {"KEY_BACKSLASH", 92}, {"KEY_RIGHT_BRACKET", 93}, {"KEY_GRAVE", 96}, {"KEY_SPACE", 32}, {"KEY_ESCAPE", 256}, {"KEY_ENTER", 257}, {"KEY_TAB", 258}, {"KEY_BACKSPACE", 259}, {"KEY_INSERT", 260}, {"KEY_DELETE", 261}, {"KEY_RIGHT", 262}, {"KEY_LEFT", 263}, {"KEY_DOWN", 264}, {"KEY_UP", 265}, {"KEY_PAGE_UP", 266}, {"KEY_PAGE_DOWN", 267}, {"KEY_HOME", 268}, {"KEY_END", 269}, {"KEY_CAPS_LOCK", 280}, {"KEY_SCROLL_LOCK", 281}, {"KEY_NUM_LOCK", 282}, {"KEY_PRINT_SCREEN", 283}, {"KEY_PAUSE", 284}, {"KEY_F1", 290}, {"KEY_F2", 291}, {"KEY_F3", 292}, {"KEY_F4", 293}, {"KEY_F5", 294}, {"KEY_F6", 295}, {"KEY_F7", 296}, {"KEY_F8", 297}, {"KEY_F9", 298}, {"KEY_F10", 299}, {"KEY_F11", 300}, {"KEY_F12", 301}, {"KEY_LEFT_SHIFT", 340}, {"KEY_LEFT_CONTROL", 341}, {"KEY_LEFT_ALT", 342}, {"KEY_LEFT_SUPER", 343}, {"KEY_RIGHT_SHIFT", 344}, {"KEY_RIGHT_CONTROL", 345}, {"KEY_RIGHT_ALT", 346}, {"KEY_RIGHT_SUPER", 347}, {"KEY_KB_MENU", 348}, {"KEY_KP_0", 320}, {"KEY_KP_1", 321}, {"KEY_KP_2", 322}, {"KEY_KP_3", 323}, {"KEY_KP_4", 324}, {"KEY_KP_5", 325}, {"KEY_KP_6", 326}, {"KEY_KP_7", 327}, {"KEY_KP_8", 328}, {"KEY_KP_9", 329}, {"KEY_KP_DECIMAL", 330}, {"KEY_KP_DIVIDE", 331}, {"KEY_KP_MULTIPLY", 332}, {"KEY_KP_SUBTRACT", 333}, {"KEY_KP_ADD", 334}, {"KEY_KP_ENTER", 335}, {"KEY_KP_EQUAL", 336}, {"KEY_BACK", 4}, {"KEY_MENU", 5}, {"KEY_VOLUME_UP", 24}, {"KEY_VOLUME_DOWN", 25}});
     // MouseButton
     _bind_enums(vm, mod, {{"MOUSE_BUTTON_LEFT", 0}, {"MOUSE_BUTTON_RIGHT", 1}, {"MOUSE_BUTTON_MIDDLE", 2}, {"MOUSE_BUTTON_SIDE", 3}, {"MOUSE_BUTTON_EXTRA", 4}, {"MOUSE_BUTTON_FORWARD", 5}, {"MOUSE_BUTTON_BACK", 6}});
     // MouseCursor
@@ -1966,13 +1965,14 @@ void add_module_raylib(VM* vm){
     _bind(vm, mod, "SetShaderValueMatrix(shader: Shader, locIndex: int, mat: Matrix) -> None", &SetShaderValueMatrix);
     _bind(vm, mod, "SetShaderValueTexture(shader: Shader, locIndex: int, texture: Texture2D) -> None", &SetShaderValueTexture);
     _bind(vm, mod, "UnloadShader(shader: Shader) -> None", &UnloadShader);
-    _bind(vm, mod, "GetMouseRay(mousePosition: vec2, camera: Camera) -> Ray", &GetMouseRay);
-    _bind(vm, mod, "GetCameraMatrix(camera: Camera) -> Matrix", &GetCameraMatrix);
-    _bind(vm, mod, "GetCameraMatrix2D(camera: Camera2D) -> Matrix", &GetCameraMatrix2D);
+    _bind(vm, mod, "GetScreenToWorldRay(mousePosition: vec2, camera: Camera) -> Ray", &GetScreenToWorldRay);
+    _bind(vm, mod, "GetScreenToWorldRayEx(mousePosition: vec2, camera: Camera, width: float, height: float) -> Ray", &GetScreenToWorldRayEx);
     _bind(vm, mod, "GetWorldToScreen(position: vec3, camera: Camera) -> vec2", &GetWorldToScreen);
-    _bind(vm, mod, "GetScreenToWorld2D(position: vec2, camera: Camera2D) -> vec2", &GetScreenToWorld2D);
     _bind(vm, mod, "GetWorldToScreenEx(position: vec3, camera: Camera, width: int, height: int) -> vec2", &GetWorldToScreenEx);
     _bind(vm, mod, "GetWorldToScreen2D(position: vec2, camera: Camera2D) -> vec2", &GetWorldToScreen2D);
+    _bind(vm, mod, "GetScreenToWorld2D(position: vec2, camera: Camera2D) -> vec2", &GetScreenToWorld2D);
+    _bind(vm, mod, "GetCameraMatrix(camera: Camera) -> Matrix", &GetCameraMatrix);
+    _bind(vm, mod, "GetCameraMatrix2D(camera: Camera2D) -> Matrix", &GetCameraMatrix2D);
     _bind(vm, mod, "SetTargetFPS(fps: int) -> None", &SetTargetFPS);
     _bind(vm, mod, "GetFrameTime() -> float", &GetFrameTime);
     _bind(vm, mod, "GetTime() -> float", &GetTime);
@@ -2023,7 +2023,7 @@ void add_module_raylib(VM* vm){
     _bind(vm, mod, "EncodeDataBase64(data: uchar_p, dataSize: int, outputSize: int_p) -> char_p", &EncodeDataBase64);
     _bind(vm, mod, "DecodeDataBase64(data: uchar_p, outputSize: int_p) -> uchar_p", &DecodeDataBase64);
     _bind(vm, mod, "LoadAutomationEventList(fileName: str) -> AutomationEventList", &LoadAutomationEventList);
-    _bind(vm, mod, "UnloadAutomationEventList(list: 'AutomationEventList_p') -> None", &UnloadAutomationEventList);
+    _bind(vm, mod, "UnloadAutomationEventList(list: AutomationEventList) -> None", &UnloadAutomationEventList);
     _bind(vm, mod, "ExportAutomationEventList(list: AutomationEventList, fileName: str) -> bool", &ExportAutomationEventList);
     _bind(vm, mod, "SetAutomationEventList(list: 'AutomationEventList_p') -> None", &SetAutomationEventList);
     _bind(vm, mod, "SetAutomationEventBaseFrame(frame: int) -> None", &SetAutomationEventBaseFrame);
@@ -2048,6 +2048,7 @@ void add_module_raylib(VM* vm){
     _bind(vm, mod, "GetGamepadAxisCount(gamepad: int) -> int", &GetGamepadAxisCount);
     _bind(vm, mod, "GetGamepadAxisMovement(gamepad: int, axis: int) -> float", &GetGamepadAxisMovement);
     _bind(vm, mod, "SetGamepadMappings(mappings: str) -> int", &SetGamepadMappings);
+    _bind(vm, mod, "SetGamepadVibration(gamepad: int, leftMotor: float, rightMotor: float) -> None", &SetGamepadVibration);
     _bind(vm, mod, "IsMouseButtonPressed(button: int) -> bool", &IsMouseButtonPressed);
     _bind(vm, mod, "IsMouseButtonDown(button: int) -> bool", &IsMouseButtonDown);
     _bind(vm, mod, "IsMouseButtonReleased(button: int) -> bool", &IsMouseButtonReleased);
@@ -2078,6 +2079,8 @@ void add_module_raylib(VM* vm){
     _bind(vm, mod, "UpdateCamera(camera: 'Camera_p', mode: int) -> None", &UpdateCamera);
     _bind(vm, mod, "UpdateCameraPro(camera: 'Camera_p', movement: vec3, rotation: vec3, zoom: float) -> None", &UpdateCameraPro);
     _bind(vm, mod, "SetShapesTexture(texture: Texture2D, source: Rectangle) -> None", &SetShapesTexture);
+    _bind(vm, mod, "GetShapesTexture() -> Texture2D", &GetShapesTexture);
+    _bind(vm, mod, "GetShapesTextureRectangle() -> Rectangle", &GetShapesTextureRectangle);
     _bind(vm, mod, "DrawPixel(posX: int, posY: int, color: Color) -> None", &DrawPixel);
     _bind(vm, mod, "DrawPixelV(position: vec2, color: Color) -> None", &DrawPixelV);
     _bind(vm, mod, "DrawLine(startPosX: int, startPosY: int, endPosX: int, endPosY: int, color: Color) -> None", &DrawLine);
@@ -2143,6 +2146,7 @@ void add_module_raylib(VM* vm){
     _bind(vm, mod, "LoadImageRaw(fileName: str, width: int, height: int, format: int, headerSize: int) -> Image", &LoadImageRaw);
     _bind(vm, mod, "LoadImageSvg(fileNameOrString: str, width: int, height: int) -> Image", &LoadImageSvg);
     _bind(vm, mod, "LoadImageAnim(fileName: str, frames: int_p) -> Image", &LoadImageAnim);
+    _bind(vm, mod, "LoadImageAnimFromMemory(fileType: str, fileData: uchar_p, dataSize: int, frames: int_p) -> Image", &LoadImageAnimFromMemory);
     _bind(vm, mod, "LoadImageFromMemory(fileType: str, fileData: uchar_p, dataSize: int) -> Image", &LoadImageFromMemory);
     _bind(vm, mod, "LoadImageFromTexture(texture: Texture2D) -> Image", &LoadImageFromTexture);
     _bind(vm, mod, "LoadImageFromScreen() -> Image", &LoadImageFromScreen);
@@ -2230,6 +2234,7 @@ void add_module_raylib(VM* vm){
     _bind(vm, mod, "DrawTextureRec(texture: Texture2D, source: Rectangle, position: vec2, tint: Color) -> None", &DrawTextureRec);
     _bind(vm, mod, "DrawTexturePro(texture: Texture2D, source: Rectangle, dest: Rectangle, origin: vec2, rotation: float, tint: Color) -> None", &DrawTexturePro);
     _bind(vm, mod, "DrawTextureNPatch(texture: Texture2D, nPatchInfo: NPatchInfo, dest: Rectangle, origin: vec2, rotation: float, tint: Color) -> None", &DrawTextureNPatch);
+    _bind(vm, mod, "ColorIsEqual(col1: Color, col2: Color) -> bool", &ColorIsEqual);
     _bind(vm, mod, "Fade(color: Color, alpha: float) -> Color", &Fade);
     _bind(vm, mod, "ColorToInt(color: Color) -> int", &ColorToInt);
     _bind(vm, mod, "ColorNormalize(color: Color) -> vec4", &ColorNormalize);
@@ -2281,7 +2286,7 @@ void add_module_raylib(VM* vm){
     _bind(vm, mod, "TextIsEqual(text1: str, text2: str) -> bool", &TextIsEqual);
     _bind(vm, mod, "TextLength(text: str) -> int", &TextLength);
     _bind(vm, mod, "TextSubtext(text: str, position: int, length: int) -> str", &TextSubtext);
-    _bind(vm, mod, "TextReplace(text: char_p, replace: str, by: str) -> char_p", &TextReplace);
+    _bind(vm, mod, "TextReplace(text: str, replace: str, by: str) -> char_p", &TextReplace);
     _bind(vm, mod, "TextInsert(text: str, insert: str, position: int) -> char_p", &TextInsert);
     _bind(vm, mod, "TextJoin(textList: void_p, count: int, delimiter: str) -> str", &TextJoin);
     _bind(vm, mod, "TextSplit(text: str, delimiter: int, count: int_p) -> void_p", &TextSplit);
@@ -2291,6 +2296,8 @@ void add_module_raylib(VM* vm){
     _bind(vm, mod, "TextToLower(text: str) -> str", &TextToLower);
     _bind(vm, mod, "TextToPascal(text: str) -> str", &TextToPascal);
     _bind(vm, mod, "TextToInteger(text: str) -> int", &TextToInteger);
+    _bind(vm, mod, "TextToFloat(text: str) -> float", &TextToFloat);
+    _bind(vm, mod, "ExportMeshAsCode(mesh: Mesh, fileName: str) -> bool", &ExportMeshAsCode);
     _bind(vm, mod, "InitAudioDevice() -> None", &InitAudioDevice);
     _bind(vm, mod, "CloseAudioDevice() -> None", &CloseAudioDevice);
     _bind(vm, mod, "IsAudioDeviceReady() -> bool", &IsAudioDeviceReady);
