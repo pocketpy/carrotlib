@@ -20,8 +20,6 @@ from ._material import UnlitMaterial
 class RestartException(Exception):
     pass
 
-_should_restart_app = False
-
 class Callbacks:
     def on_ready(self):
         g.rl_camera_2d = rl.Camera2D(vec2(0,0), vec2(0,0), 0, g.viewport_scale)
@@ -46,8 +44,6 @@ class Callbacks:
 
 
 def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: tuple[int, int]=None, title="Game"):
-    global _should_restart_app
-
     assert design_size is not None
 
     if window_size is None:
@@ -99,8 +95,8 @@ def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: t
             )
 
     while not rl.WindowShouldClose():
-        if _should_restart_app:
-            _should_restart_app = False
+        # hot reload feature
+        if rl.IsKeyPressed(rl.KEY_F5):
             callbacks.on_destroy()
             raise RestartException
 
@@ -114,10 +110,6 @@ def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: t
         # 2. input events
         all_nodes.clear()
         g.root.apply_enabled(all_nodes__append)
-
-        # hot reload feature
-        if rl.IsKeyPressed(rl.KEY_F5):
-            _should_restart_app = True
 
         interactable_controls.clear()
         g.hovered_control = None
