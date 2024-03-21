@@ -12,6 +12,19 @@ namespace pkpy{
 
 static VM* vm;
 
+int error_screen(Str msg){
+    while(!WindowShouldClose()){
+        // raylib default font size is 10, use 10/20/30 to be pixel perfect
+        BeginDrawing();
+        ClearBackground(RED);
+        SetTextLineSpacing(22);
+        DrawText(msg.c_str(), 8, 8, 20, WHITE);
+        if(IsMouseButtonReleased(0)) break;
+        EndDrawing();
+    }
+    return 1;
+}
+
 int main(int argc, char** argv){
     vm = new VM();
     vm->_import_handler = &platform_load_asset;
@@ -100,11 +113,11 @@ int main(int argc, char** argv){
             return 0;
         }else{
             platform_log_error(py_exc.summary() + "\n");
-            return 1;
+            return error_screen(py_exc.summary());
         }
     }catch(std::exception& e){
         platform_log_error(_S("std::exception: ", e.what(), "\n"));
-        return 1;
+        return error_screen(_S("std::exception: ", e.what()));
     }
 
     delete vm;

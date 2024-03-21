@@ -95,11 +95,6 @@ def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: t
             )
 
     while not rl.WindowShouldClose():
-        # hot reload feature
-        if rl.IsKeyPressed(rl.KEY_F5):
-            callbacks.on_destroy()
-            raise RestartException
-
         all_nodes.clear()
         g.root.apply(all_nodes__append)
         fast_apply(Node._ready, all_nodes)
@@ -176,6 +171,11 @@ def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: t
         g.debug_window.render()
         imgui.Render()
         rl.EndDrawing()
+
+        # hot reload feature
+        if rl.IsKeyPressed(rl.KEY_F5):
+            callbacks.on_destroy()
+            raise RestartException
 
     callbacks.on_destroy()
 
