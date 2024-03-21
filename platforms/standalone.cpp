@@ -44,4 +44,8 @@ namespace ct{
         SendMessage(GetActiveWindow(), WM_INPUTLANGCHANGEREQUEST, 0, (LPARAM)HKL(0x04090409));
     }
 #endif
+
+    Str get_system_info(){
+        return _S("sys.platform: ", pkpy::kPlatformStrings[PK_SYS_PLATFORM]);
+    }
 }   // namespace ct

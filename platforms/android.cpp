@@ -3,6 +3,7 @@
 using namespace pkpy;
 
 #include <android/log.h>
+#include <sys/system_properties.h>
 
 using namespace pkpy;
 
@@ -44,5 +45,17 @@ namespace ct{
         }
         AAssetDir_close(dir);
         return list;
+    }
+
+    Str get_system_info(){
+        char manufacturer[PROP_VALUE_MAX + 1] = {0};
+        char model[PROP_VALUE_MAX + 1] = {0};
+        char os_version[PROP_VALUE_MAX + 1] = {0};
+        /* A length 0 value indicates that the property is not defined */
+        __system_property_get("ro.product.manufacturer", manufacturer);
+        __system_property_get("ro.product.model", model);
+        __system_property_get("ro.build.version.release", os_version);
+        int sdk_version = GetAndroidApp()->activity->sdkVersion;
+        return _S("Android ", os_version, " - ", manufacturer, " ", model, " - SDK ", sdk_version, " - NDK ", __NDK_MAJOR__, ".", __NDK_MINOR__);
     }
 }   // namespace ct

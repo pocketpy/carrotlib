@@ -13,7 +13,7 @@ namespace pkpy{
 static VM* vm;
 
 int error_screen(Str msg){
-    msg = _S("Oops! The game encountered an error.", "\n\n", msg);
+    msg = _S("Oops! The game encountered an error.", "\n", get_system_info(), "\n\n", msg);
     int render_width = GetRenderWidth();
     int font_size = render_width / 500 * 10;
     int line_spacing = font_size * 1.2;
@@ -67,14 +67,6 @@ int main(int argc, char** argv){
 
 #if _WIN32
     set_console_cp_utf8_on_win32();
-    // vm->bind(vm->_modules["raylib"], "InitWindow(width: int, height: int, title: str)", [](VM* vm, ArgsView args){
-    //     int width = CAST(int, args[0]);
-    //     int height = CAST(int, args[1]);
-    //     const char* title = CAST(CString, args[2]);
-    //     InitWindow(width, height, title);
-    //     set_input_method_on_win32();
-    //     return vm->None;
-    // });
 #endif
 
 #if PK_SYS_PLATFORM == 0 || PK_SYS_PLATFORM == 3 || PK_SYS_PLATFORM == 5

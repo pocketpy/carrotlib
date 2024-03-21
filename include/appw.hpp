@@ -21,6 +21,8 @@ namespace ct{
     void set_input_method_on_win32();
 
     void add_module__ct(VM* vm);
+
+    Str get_system_info();
 }
 
 #ifdef __ANDROID__
