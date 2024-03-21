@@ -13,13 +13,16 @@ namespace pkpy{
 static VM* vm;
 
 int error_screen(Str msg){
+    msg = _S("Oops! The game encountered an error.", "\n\n", msg);
+    int render_width = GetRenderWidth();
+    int font_size = render_width / 500 * 10;
+    int line_spacing = font_size * 1.2;
     while(!WindowShouldClose()){
         // raylib default font size is 10, use 10/20/30 to be pixel perfect
         BeginDrawing();
-        ClearBackground(RED);
-        SetTextLineSpacing(22);
-        DrawText(msg.c_str(), 8, 8, 20, WHITE);
-        if(IsMouseButtonReleased(0)) break;
+        ClearBackground({255, 130, 45, 255});   // 🥕 orange
+        SetTextLineSpacing(line_spacing);
+        DrawText(msg.c_str(), font_size, font_size, font_size, WHITE);
         EndDrawing();
     }
     return 1;
