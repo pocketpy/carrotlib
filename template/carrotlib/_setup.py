@@ -177,6 +177,7 @@ def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: t
         # 6. submit
         imgui.NewFrame()
         g.debug_window.variables['mouse_pos'] = get_mouse_position()
+        g.debug_window.variables['gesture'] = rl.Gesture_NAMES[rl.GetGestureDetected()]
         g.debug_window.variables['hovered_control'] = g.hovered_control
         g.debug_window.variables['managed_sounds'] = _count_managed_sounds()
         g.debug_window.variables['world_to_viewport'] = g.world_to_viewport

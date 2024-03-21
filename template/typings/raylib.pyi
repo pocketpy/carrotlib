@@ -539,6 +539,7 @@ PI: float = 3.141592653589793
 
 ########## ConfigFlags ##########
 # System/Window config flags
+ConfigFlags_NAMES: dict[int, str]
 FLAG_VSYNC_HINT = 64                            # Set to try enabling V-Sync on GPU
 FLAG_FULLSCREEN_MODE = 2                        # Set to run program in fullscreen
 FLAG_WINDOW_RESIZABLE = 4                       # Set to allow resizable window
@@ -558,6 +559,7 @@ FLAG_INTERLACED_HINT = 65536                    # Set to try enabling interlaced
 
 ########## TraceLogLevel ##########
 # Trace log level
+TraceLogLevel_NAMES: dict[int, str]
 LOG_ALL = 0                                     # Display all logs
 LOG_TRACE = 1                                   # Trace logging, intended for internal use only
 LOG_DEBUG = 2                                   # Debug logging, used for internal debugging, it should be disabled on release builds
@@ -569,6 +571,7 @@ LOG_NONE = 7                                    # Disable logging
 
 ########## KeyboardKey ##########
 # Keyboard keys (US keyboard layout)
+KeyboardKey_NAMES: dict[int, str]
 KEY_NULL = 0                                    # Key: NULL, used for no key pressed
 KEY_APOSTROPHE = 39                             # Key: '
 KEY_COMMA = 44                                  # Key: ,
@@ -682,6 +685,7 @@ KEY_VOLUME_DOWN = 25                            # Key: Android volume down butto
 
 ########## MouseButton ##########
 # Mouse buttons
+MouseButton_NAMES: dict[int, str]
 MOUSE_BUTTON_LEFT = 0                           # Mouse button left
 MOUSE_BUTTON_RIGHT = 1                          # Mouse button right
 MOUSE_BUTTON_MIDDLE = 2                         # Mouse button middle (pressed wheel)
@@ -692,6 +696,7 @@ MOUSE_BUTTON_BACK = 6                           # Mouse button back (advanced mo
 
 ########## MouseCursor ##########
 # Mouse cursor
+MouseCursor_NAMES: dict[int, str]
 MOUSE_CURSOR_DEFAULT = 0                        # Default pointer shape
 MOUSE_CURSOR_ARROW = 1                          # Arrow shape
 MOUSE_CURSOR_IBEAM = 2                          # Text writing cursor shape
@@ -706,6 +711,7 @@ MOUSE_CURSOR_NOT_ALLOWED = 10                   # The operation-not-allowed shap
 
 ########## GamepadButton ##########
 # Gamepad buttons
+GamepadButton_NAMES: dict[int, str]
 GAMEPAD_BUTTON_UNKNOWN = 0                      # Unknown button, just for error checking
 GAMEPAD_BUTTON_LEFT_FACE_UP = 1                 # Gamepad left DPAD up button
 GAMEPAD_BUTTON_LEFT_FACE_RIGHT = 2              # Gamepad left DPAD right button
@@ -727,6 +733,7 @@ GAMEPAD_BUTTON_RIGHT_THUMB = 17                 # Gamepad joystick pressed butto
 
 ########## GamepadAxis ##########
 # Gamepad axis
+GamepadAxis_NAMES: dict[int, str]
 GAMEPAD_AXIS_LEFT_X = 0                         # Gamepad left stick X axis
 GAMEPAD_AXIS_LEFT_Y = 1                         # Gamepad left stick Y axis
 GAMEPAD_AXIS_RIGHT_X = 2                        # Gamepad right stick X axis
@@ -736,6 +743,7 @@ GAMEPAD_AXIS_RIGHT_TRIGGER = 5                  # Gamepad back trigger right, pr
 
 ########## MaterialMapIndex ##########
 # Material map index
+MaterialMapIndex_NAMES: dict[int, str]
 MATERIAL_MAP_ALBEDO = 0                         # Albedo material (same as: MATERIAL_MAP_DIFFUSE)
 MATERIAL_MAP_METALNESS = 1                      # Metalness material (same as: MATERIAL_MAP_SPECULAR)
 MATERIAL_MAP_NORMAL = 2                         # Normal material
@@ -750,6 +758,7 @@ MATERIAL_MAP_BRDF = 10                          # Brdf material
 
 ########## ShaderLocationIndex ##########
 # Shader location index
+ShaderLocationIndex_NAMES: dict[int, str]
 SHADER_LOC_VERTEX_POSITION = 0                  # Shader location: vertex attribute: position
 SHADER_LOC_VERTEX_TEXCOORD01 = 1                # Shader location: vertex attribute: texcoord01
 SHADER_LOC_VERTEX_TEXCOORD02 = 2                # Shader location: vertex attribute: texcoord02
@@ -779,6 +788,7 @@ SHADER_LOC_MAP_BRDF = 25                        # Shader location: sampler2d tex
 
 ########## ShaderUniformDataType ##########
 # Shader uniform data type
+ShaderUniformDataType_NAMES: dict[int, str]
 SHADER_UNIFORM_FLOAT = 0                        # Shader uniform type: float
 SHADER_UNIFORM_VEC2 = 1                         # Shader uniform type: vec2 (2 float)
 SHADER_UNIFORM_VEC3 = 2                         # Shader uniform type: vec3 (3 float)
@@ -791,6 +801,7 @@ SHADER_UNIFORM_SAMPLER2D = 8                    # Shader uniform type: sampler2d
 
 ########## ShaderAttributeDataType ##########
 # Shader attribute data types
+ShaderAttributeDataType_NAMES: dict[int, str]
 SHADER_ATTRIB_FLOAT = 0                         # Shader attribute type: float
 SHADER_ATTRIB_VEC2 = 1                          # Shader attribute type: vec2 (2 float)
 SHADER_ATTRIB_VEC3 = 2                          # Shader attribute type: vec3 (3 float)
@@ -798,6 +809,7 @@ SHADER_ATTRIB_VEC4 = 3                          # Shader attribute type: vec4 (4
 
 ########## PixelFormat ##########
 # Pixel formats
+PixelFormat_NAMES: dict[int, str]
 PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1          # 8 bit per pixel (no alpha)
 PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA = 2         # 8*2 bpp (2 channels)
 PIXELFORMAT_UNCOMPRESSED_R5G6B5 = 3             # 16 bpp
@@ -825,6 +837,7 @@ PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA = 24       # 2 bpp
 
 ########## TextureFilter ##########
 # Texture parameters: filter mode
+TextureFilter_NAMES: dict[int, str]
 TEXTURE_FILTER_POINT = 0                        # No filter, just pixel approximation
 TEXTURE_FILTER_BILINEAR = 1                     # Linear filtering
 TEXTURE_FILTER_TRILINEAR = 2                    # Trilinear filtering (linear with mipmaps)
@@ -834,6 +847,7 @@ TEXTURE_FILTER_ANISOTROPIC_16X = 5              # Anisotropic filtering 16x
 
 ########## TextureWrap ##########
 # Texture parameters: wrap mode
+TextureWrap_NAMES: dict[int, str]
 TEXTURE_WRAP_REPEAT = 0                         # Repeats texture in tiled mode
 TEXTURE_WRAP_CLAMP = 1                          # Clamps texture to edge pixel in tiled mode
 TEXTURE_WRAP_MIRROR_REPEAT = 2                  # Mirrors and repeats the texture in tiled mode
@@ -841,6 +855,7 @@ TEXTURE_WRAP_MIRROR_CLAMP = 3                   # Mirrors and clamps to border t
 
 ########## CubemapLayout ##########
 # Cubemap layouts
+CubemapLayout_NAMES: dict[int, str]
 CUBEMAP_LAYOUT_AUTO_DETECT = 0                  # Automatically detect layout type
 CUBEMAP_LAYOUT_LINE_VERTICAL = 1                # Layout is defined by a vertical line with faces
 CUBEMAP_LAYOUT_LINE_HORIZONTAL = 2              # Layout is defined by a horizontal line with faces
@@ -850,12 +865,14 @@ CUBEMAP_LAYOUT_PANORAMA = 5                     # Layout is defined by a panoram
 
 ########## FontType ##########
 # Font type, defines generation method
+FontType_NAMES: dict[int, str]
 FONT_DEFAULT = 0                                # Default font generation, anti-aliased
 FONT_BITMAP = 1                                 # Bitmap font generation, no anti-aliasing
 FONT_SDF = 2                                    # SDF font generation, requires external shader
 
 ########## BlendMode ##########
 # Color blending modes (pre-defined)
+BlendMode_NAMES: dict[int, str]
 BLEND_ALPHA = 0                                 # Blend textures considering alpha (default)
 BLEND_ADDITIVE = 1                              # Blend textures adding colors
 BLEND_MULTIPLIED = 2                            # Blend textures multiplying colors
@@ -867,6 +884,7 @@ BLEND_CUSTOM_SEPARATE = 7                       # Blend textures using custom rg
 
 ########## Gesture ##########
 # Gesture
+Gesture_NAMES: dict[int, str]
 GESTURE_NONE = 0                                # No gesture
 GESTURE_TAP = 1                                 # Tap gesture
 GESTURE_DOUBLETAP = 2                           # Double tap gesture
@@ -881,6 +899,7 @@ GESTURE_PINCH_OUT = 512                         # Pinch out gesture
 
 ########## CameraMode ##########
 # Camera system modes
+CameraMode_NAMES: dict[int, str]
 CAMERA_CUSTOM = 0                               # Custom camera
 CAMERA_FREE = 1                                 # Free camera
 CAMERA_ORBITAL = 2                              # Orbital camera
@@ -889,11 +908,13 @@ CAMERA_THIRD_PERSON = 4                         # Third person camera
 
 ########## CameraProjection ##########
 # Camera projection
+CameraProjection_NAMES: dict[int, str]
 CAMERA_PERSPECTIVE = 0                          # Perspective projection
 CAMERA_ORTHOGRAPHIC = 1                         # Orthographic projection
 
 ########## NPatchLayout ##########
 # N-patch layout
+NPatchLayout_NAMES: dict[int, str]
 NPATCH_NINE_PATCH = 0                           # Npatch layout: 3x3 tiles
 NPATCH_THREE_PATCH_VERTICAL = 1                 # Npatch layout: 1x3 tiles
 NPATCH_THREE_PATCH_HORIZONTAL = 2               # Npatch layout: 3x1 tiles
