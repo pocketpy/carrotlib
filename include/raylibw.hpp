@@ -82,8 +82,8 @@ struct wrapped__Matrix{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"m0", "m4", "m8", "m12", "m1", "m5", "m9", "m13", "m2", "m6", "m10", "m14", "m3", "m7", "m11", "m15"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"m0", "m4", "m8", "m12", "m1", "m5", "m9", "m13", "m2", "m6", "m10", "m14", "m3", "m7", "m11", "m15"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 16) vm->TypeError(_S("expected 16 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -121,11 +121,6 @@ template<>
 Matrix _py_cast<Matrix>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Matrix&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Matrix* v){
-    const static std::pair<StrName, StrName> P("raylib", "Matrix_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Color ***************/
 struct wrapped__Color{
     PY_CLASS(wrapped__Color, raylib, Color)
@@ -144,8 +139,8 @@ struct wrapped__Color{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"r", "g", "b", "a"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"r", "g", "b", "a"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -171,11 +166,6 @@ template<>
 Color _py_cast<Color>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Color&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Color* v){
-    const static std::pair<StrName, StrName> P("raylib", "Color_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Rectangle ***************/
 struct wrapped__Rectangle{
     PY_CLASS(wrapped__Rectangle, raylib, Rectangle)
@@ -194,8 +184,8 @@ struct wrapped__Rectangle{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"x", "y", "width", "height"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"x", "y", "width", "height"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -221,11 +211,6 @@ template<>
 Rectangle _py_cast<Rectangle>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Rectangle&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Rectangle* v){
-    const static std::pair<StrName, StrName> P("raylib", "Rectangle_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Image ***************/
 struct wrapped__Image{
     PY_CLASS(wrapped__Image, raylib, Image)
@@ -244,8 +229,8 @@ struct wrapped__Image{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"data", "width", "height", "mipmaps", "format"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"data", "width", "height", "mipmaps", "format"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -272,11 +257,6 @@ template<>
 Image _py_cast<Image>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Image&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Image* v){
-    const static std::pair<StrName, StrName> P("raylib", "Image_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Texture ***************/
 struct wrapped__Texture{
     PY_CLASS(wrapped__Texture, raylib, Texture)
@@ -295,8 +275,8 @@ struct wrapped__Texture{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"id", "width", "height", "mipmaps", "format"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"id", "width", "height", "mipmaps", "format"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -323,11 +303,6 @@ template<>
 Texture _py_cast<Texture>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Texture&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Texture* v){
-    const static std::pair<StrName, StrName> P("raylib", "Texture_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** RenderTexture ***************/
 struct wrapped__RenderTexture{
     PY_CLASS(wrapped__RenderTexture, raylib, RenderTexture)
@@ -346,8 +321,8 @@ struct wrapped__RenderTexture{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"id", "texture", "depth"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"id", "texture", "depth"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -372,11 +347,6 @@ template<>
 RenderTexture _py_cast<RenderTexture>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__RenderTexture&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const RenderTexture* v){
-    const static std::pair<StrName, StrName> P("raylib", "RenderTexture_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** NPatchInfo ***************/
 struct wrapped__NPatchInfo{
     PY_CLASS(wrapped__NPatchInfo, raylib, NPatchInfo)
@@ -395,8 +365,8 @@ struct wrapped__NPatchInfo{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"source", "left", "top", "right", "bottom", "layout"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"source", "left", "top", "right", "bottom", "layout"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 6) vm->TypeError(_S("expected 6 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -424,11 +394,6 @@ template<>
 NPatchInfo _py_cast<NPatchInfo>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__NPatchInfo&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const NPatchInfo* v){
-    const static std::pair<StrName, StrName> P("raylib", "NPatchInfo_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** GlyphInfo ***************/
 struct wrapped__GlyphInfo{
     PY_CLASS(wrapped__GlyphInfo, raylib, GlyphInfo)
@@ -447,8 +412,8 @@ struct wrapped__GlyphInfo{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"value", "offsetX", "offsetY", "advanceX", "image"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"value", "offsetX", "offsetY", "advanceX", "image"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -475,11 +440,6 @@ template<>
 GlyphInfo _py_cast<GlyphInfo>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__GlyphInfo&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const GlyphInfo* v){
-    const static std::pair<StrName, StrName> P("raylib", "GlyphInfo_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Font ***************/
 struct wrapped__Font{
     PY_CLASS(wrapped__Font, raylib, Font)
@@ -498,8 +458,8 @@ struct wrapped__Font{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"baseSize", "glyphCount", "glyphPadding", "texture", "recs", "glyphs"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"baseSize", "glyphCount", "glyphPadding", "texture", "recs", "glyphs"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 6) vm->TypeError(_S("expected 6 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -527,11 +487,6 @@ template<>
 Font _py_cast<Font>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Font&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Font* v){
-    const static std::pair<StrName, StrName> P("raylib", "Font_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Camera3D ***************/
 struct wrapped__Camera3D{
     PY_CLASS(wrapped__Camera3D, raylib, Camera3D)
@@ -550,8 +505,8 @@ struct wrapped__Camera3D{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"position", "target", "up", "fovy", "projection"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"position", "target", "up", "fovy", "projection"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -578,11 +533,6 @@ template<>
 Camera3D _py_cast<Camera3D>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Camera3D&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Camera3D* v){
-    const static std::pair<StrName, StrName> P("raylib", "Camera3D_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Camera2D ***************/
 struct wrapped__Camera2D{
     PY_CLASS(wrapped__Camera2D, raylib, Camera2D)
@@ -601,8 +551,8 @@ struct wrapped__Camera2D{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"offset", "target", "rotation", "zoom"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"offset", "target", "rotation", "zoom"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -628,11 +578,6 @@ template<>
 Camera2D _py_cast<Camera2D>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Camera2D&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Camera2D* v){
-    const static std::pair<StrName, StrName> P("raylib", "Camera2D_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Mesh ***************/
 struct wrapped__Mesh{
     PY_CLASS(wrapped__Mesh, raylib, Mesh)
@@ -651,8 +596,8 @@ struct wrapped__Mesh{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"vertexCount", "triangleCount", "vertices", "texcoords", "texcoords2", "normals", "tangents", "colors", "indices", "animVertices", "animNormals", "boneIds", "boneWeights", "vaoId", "vboId"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"vertexCount", "triangleCount", "vertices", "texcoords", "texcoords2", "normals", "tangents", "colors", "indices", "animVertices", "animNormals", "boneIds", "boneWeights", "vaoId", "vboId"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 15) vm->TypeError(_S("expected 15 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -689,11 +634,6 @@ template<>
 Mesh _py_cast<Mesh>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Mesh&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Mesh* v){
-    const static std::pair<StrName, StrName> P("raylib", "Mesh_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Shader ***************/
 struct wrapped__Shader{
     PY_CLASS(wrapped__Shader, raylib, Shader)
@@ -712,8 +652,8 @@ struct wrapped__Shader{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"id", "locs"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"id", "locs"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -737,11 +677,6 @@ template<>
 Shader _py_cast<Shader>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Shader&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Shader* v){
-    const static std::pair<StrName, StrName> P("raylib", "Shader_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** MaterialMap ***************/
 struct wrapped__MaterialMap{
     PY_CLASS(wrapped__MaterialMap, raylib, MaterialMap)
@@ -760,8 +695,8 @@ struct wrapped__MaterialMap{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"texture", "color", "value"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"texture", "color", "value"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -786,11 +721,6 @@ template<>
 MaterialMap _py_cast<MaterialMap>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__MaterialMap&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const MaterialMap* v){
-    const static std::pair<StrName, StrName> P("raylib", "MaterialMap_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Material ***************/
 struct wrapped__Material{
     PY_CLASS(wrapped__Material, raylib, Material)
@@ -809,8 +739,8 @@ struct wrapped__Material{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"shader", "maps", "params"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"shader", "maps", "params"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -835,11 +765,6 @@ template<>
 Material _py_cast<Material>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Material&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Material* v){
-    const static std::pair<StrName, StrName> P("raylib", "Material_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Transform ***************/
 struct wrapped__Transform{
     PY_CLASS(wrapped__Transform, raylib, Transform)
@@ -858,8 +783,8 @@ struct wrapped__Transform{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"translation", "rotation", "scale"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"translation", "rotation", "scale"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -884,11 +809,6 @@ template<>
 Transform _py_cast<Transform>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Transform&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Transform* v){
-    const static std::pair<StrName, StrName> P("raylib", "Transform_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** BoneInfo ***************/
 struct wrapped__BoneInfo{
     PY_CLASS(wrapped__BoneInfo, raylib, BoneInfo)
@@ -907,8 +827,8 @@ struct wrapped__BoneInfo{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"name", "parent"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"name", "parent"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -932,11 +852,6 @@ template<>
 BoneInfo _py_cast<BoneInfo>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__BoneInfo&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const BoneInfo* v){
-    const static std::pair<StrName, StrName> P("raylib", "BoneInfo_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Model ***************/
 struct wrapped__Model{
     PY_CLASS(wrapped__Model, raylib, Model)
@@ -955,8 +870,8 @@ struct wrapped__Model{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"transform", "meshCount", "materialCount", "meshes", "materials", "meshMaterial", "boneCount", "bones", "bindPose"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"transform", "meshCount", "materialCount", "meshes", "materials", "meshMaterial", "boneCount", "bones", "bindPose"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 9) vm->TypeError(_S("expected 9 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -987,11 +902,6 @@ template<>
 Model _py_cast<Model>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Model&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Model* v){
-    const static std::pair<StrName, StrName> P("raylib", "Model_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** ModelAnimation ***************/
 struct wrapped__ModelAnimation{
     PY_CLASS(wrapped__ModelAnimation, raylib, ModelAnimation)
@@ -1010,8 +920,8 @@ struct wrapped__ModelAnimation{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"boneCount", "frameCount", "bones", "framePoses", "name"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"boneCount", "frameCount", "bones", "framePoses", "name"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1038,11 +948,6 @@ template<>
 ModelAnimation _py_cast<ModelAnimation>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__ModelAnimation&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const ModelAnimation* v){
-    const static std::pair<StrName, StrName> P("raylib", "ModelAnimation_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Ray ***************/
 struct wrapped__Ray{
     PY_CLASS(wrapped__Ray, raylib, Ray)
@@ -1061,8 +966,8 @@ struct wrapped__Ray{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"position", "direction"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"position", "direction"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1086,11 +991,6 @@ template<>
 Ray _py_cast<Ray>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Ray&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Ray* v){
-    const static std::pair<StrName, StrName> P("raylib", "Ray_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** RayCollision ***************/
 struct wrapped__RayCollision{
     PY_CLASS(wrapped__RayCollision, raylib, RayCollision)
@@ -1109,8 +1009,8 @@ struct wrapped__RayCollision{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"hit", "distance", "point", "normal"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"hit", "distance", "point", "normal"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1136,11 +1036,6 @@ template<>
 RayCollision _py_cast<RayCollision>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__RayCollision&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const RayCollision* v){
-    const static std::pair<StrName, StrName> P("raylib", "RayCollision_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** BoundingBox ***************/
 struct wrapped__BoundingBox{
     PY_CLASS(wrapped__BoundingBox, raylib, BoundingBox)
@@ -1159,8 +1054,8 @@ struct wrapped__BoundingBox{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"min", "max"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"min", "max"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1184,11 +1079,6 @@ template<>
 BoundingBox _py_cast<BoundingBox>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__BoundingBox&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const BoundingBox* v){
-    const static std::pair<StrName, StrName> P("raylib", "BoundingBox_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Wave ***************/
 struct wrapped__Wave{
     PY_CLASS(wrapped__Wave, raylib, Wave)
@@ -1207,8 +1097,8 @@ struct wrapped__Wave{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"frameCount", "sampleRate", "sampleSize", "channels", "data"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"frameCount", "sampleRate", "sampleSize", "channels", "data"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1235,11 +1125,6 @@ template<>
 Wave _py_cast<Wave>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Wave&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Wave* v){
-    const static std::pair<StrName, StrName> P("raylib", "Wave_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** AudioStream ***************/
 struct wrapped__AudioStream{
     PY_CLASS(wrapped__AudioStream, raylib, AudioStream)
@@ -1258,8 +1143,8 @@ struct wrapped__AudioStream{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"buffer", "processor", "sampleRate", "sampleSize", "channels"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"buffer", "processor", "sampleRate", "sampleSize", "channels"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1286,11 +1171,6 @@ template<>
 AudioStream _py_cast<AudioStream>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__AudioStream&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const AudioStream* v){
-    const static std::pair<StrName, StrName> P("raylib", "AudioStream_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Sound ***************/
 struct wrapped__Sound{
     PY_CLASS(wrapped__Sound, raylib, Sound)
@@ -1309,8 +1189,8 @@ struct wrapped__Sound{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"stream", "frameCount"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"stream", "frameCount"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1334,11 +1214,6 @@ template<>
 Sound _py_cast<Sound>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Sound&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Sound* v){
-    const static std::pair<StrName, StrName> P("raylib", "Sound_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** Music ***************/
 struct wrapped__Music{
     PY_CLASS(wrapped__Music, raylib, Music)
@@ -1357,8 +1232,8 @@ struct wrapped__Music{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"stream", "frameCount", "looping", "ctxType", "ctxData"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"stream", "frameCount", "looping", "ctxType", "ctxData"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1385,11 +1260,6 @@ template<>
 Music _py_cast<Music>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__Music&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const Music* v){
-    const static std::pair<StrName, StrName> P("raylib", "Music_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** VrDeviceInfo ***************/
 struct wrapped__VrDeviceInfo{
     PY_CLASS(wrapped__VrDeviceInfo, raylib, VrDeviceInfo)
@@ -1408,8 +1278,8 @@ struct wrapped__VrDeviceInfo{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"hResolution", "vResolution", "hScreenSize", "vScreenSize", "eyeToScreenDistance", "lensSeparationDistance", "interpupillaryDistance", "lensDistortionValues", "chromaAbCorrection"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"hResolution", "vResolution", "hScreenSize", "vScreenSize", "eyeToScreenDistance", "lensSeparationDistance", "interpupillaryDistance", "lensDistortionValues", "chromaAbCorrection"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 9) vm->TypeError(_S("expected 9 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1440,11 +1310,6 @@ template<>
 VrDeviceInfo _py_cast<VrDeviceInfo>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__VrDeviceInfo&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const VrDeviceInfo* v){
-    const static std::pair<StrName, StrName> P("raylib", "VrDeviceInfo_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** VrStereoConfig ***************/
 struct wrapped__VrStereoConfig{
     PY_CLASS(wrapped__VrStereoConfig, raylib, VrStereoConfig)
@@ -1463,8 +1328,8 @@ struct wrapped__VrStereoConfig{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"projection", "viewOffset", "leftLensCenter", "rightLensCenter", "leftScreenCenter", "rightScreenCenter", "scale", "scaleIn"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"projection", "viewOffset", "leftLensCenter", "rightLensCenter", "leftScreenCenter", "rightScreenCenter", "scale", "scaleIn"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 8) vm->TypeError(_S("expected 8 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1494,11 +1359,6 @@ template<>
 VrStereoConfig _py_cast<VrStereoConfig>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__VrStereoConfig&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const VrStereoConfig* v){
-    const static std::pair<StrName, StrName> P("raylib", "VrStereoConfig_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** FilePathList ***************/
 struct wrapped__FilePathList{
     PY_CLASS(wrapped__FilePathList, raylib, FilePathList)
@@ -1517,8 +1377,8 @@ struct wrapped__FilePathList{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"capacity", "count", "paths"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"capacity", "count", "paths"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1543,11 +1403,6 @@ template<>
 FilePathList _py_cast<FilePathList>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__FilePathList&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const FilePathList* v){
-    const static std::pair<StrName, StrName> P("raylib", "FilePathList_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** AutomationEvent ***************/
 struct wrapped__AutomationEvent{
     PY_CLASS(wrapped__AutomationEvent, raylib, AutomationEvent)
@@ -1566,8 +1421,8 @@ struct wrapped__AutomationEvent{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"frame", "type", "params"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"frame", "type", "params"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1592,11 +1447,6 @@ template<>
 AutomationEvent _py_cast<AutomationEvent>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__AutomationEvent&>(vm, obj)._();
 }
-PyObject* py_var(VM* vm, const AutomationEvent* v){
-    const static std::pair<StrName, StrName> P("raylib", "AutomationEvent_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
-}
 /*************** AutomationEventList ***************/
 struct wrapped__AutomationEventList{
     PY_CLASS(wrapped__AutomationEventList, raylib, AutomationEventList)
@@ -1615,8 +1465,8 @@ struct wrapped__AutomationEventList{
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
-            static const StrName _fields_[] = {"capacity", "count", "events"};
-            if(args.size()==1) return vm->None;
+            const StrName _fields_[] = {"capacity", "count", "events"};
+            if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
             for(int i=1; i<args.size(); i++){
                 vm->setattr(args[0], _fields_[i-1], args[i]);
@@ -1640,11 +1490,6 @@ AutomationEventList py_cast<AutomationEventList>(VM* vm, PyObject* obj){
 template<>
 AutomationEventList _py_cast<AutomationEventList>(VM* vm, PyObject* obj){
     return *_py_cast<wrapped__AutomationEventList&>(vm, obj)._();
-}
-PyObject* py_var(VM* vm, const AutomationEventList* v){
-    const static std::pair<StrName, StrName> P("raylib", "AutomationEventList_p");
-    PyObject* type = vm->_modules[P.first]->attr(P.second);
-    return vm->heap.gcnew<VoidP>(PK_OBJ_GET(Type, type), v);
 }
 ////////////////////////////////////////
 void add_module_raylib(VM* vm){
@@ -1700,191 +1545,36 @@ void add_module_raylib(VM* vm){
     _bind_enums(vm, mod, "NPatchLayout", {{"NPATCH_NINE_PATCH", 0}, {"NPATCH_THREE_PATCH_VERTICAL", 1}, {"NPATCH_THREE_PATCH_HORIZONTAL", 2}});
 
     wrapped__Matrix::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Matrix_p", VoidP::_type(vm));
-        mod->attr().set("Matrix_p", type);
-        PY_POINTER_SETGETITEM(Matrix)
-    }
     wrapped__Color::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Color_p", VoidP::_type(vm));
-        mod->attr().set("Color_p", type);
-        PY_POINTER_SETGETITEM(Color)
-    }
     wrapped__Rectangle::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Rectangle_p", VoidP::_type(vm));
-        mod->attr().set("Rectangle_p", type);
-        PY_POINTER_SETGETITEM(Rectangle)
-    }
     wrapped__Image::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Image_p", VoidP::_type(vm));
-        mod->attr().set("Image_p", type);
-        PY_POINTER_SETGETITEM(Image)
-    }
     wrapped__Texture::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Texture_p", VoidP::_type(vm));
-        mod->attr().set("Texture_p", type);
-        PY_POINTER_SETGETITEM(Texture)
-    }
     wrapped__RenderTexture::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "RenderTexture_p", VoidP::_type(vm));
-        mod->attr().set("RenderTexture_p", type);
-        PY_POINTER_SETGETITEM(RenderTexture)
-    }
     wrapped__NPatchInfo::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "NPatchInfo_p", VoidP::_type(vm));
-        mod->attr().set("NPatchInfo_p", type);
-        PY_POINTER_SETGETITEM(NPatchInfo)
-    }
     wrapped__GlyphInfo::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "GlyphInfo_p", VoidP::_type(vm));
-        mod->attr().set("GlyphInfo_p", type);
-        PY_POINTER_SETGETITEM(GlyphInfo)
-    }
     wrapped__Font::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Font_p", VoidP::_type(vm));
-        mod->attr().set("Font_p", type);
-        PY_POINTER_SETGETITEM(Font)
-    }
     wrapped__Camera3D::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Camera3D_p", VoidP::_type(vm));
-        mod->attr().set("Camera3D_p", type);
-        PY_POINTER_SETGETITEM(Camera3D)
-    }
     wrapped__Camera2D::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Camera2D_p", VoidP::_type(vm));
-        mod->attr().set("Camera2D_p", type);
-        PY_POINTER_SETGETITEM(Camera2D)
-    }
     wrapped__Mesh::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Mesh_p", VoidP::_type(vm));
-        mod->attr().set("Mesh_p", type);
-        PY_POINTER_SETGETITEM(Mesh)
-    }
     wrapped__Shader::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Shader_p", VoidP::_type(vm));
-        mod->attr().set("Shader_p", type);
-        PY_POINTER_SETGETITEM(Shader)
-    }
     wrapped__MaterialMap::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "MaterialMap_p", VoidP::_type(vm));
-        mod->attr().set("MaterialMap_p", type);
-        PY_POINTER_SETGETITEM(MaterialMap)
-    }
     wrapped__Material::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Material_p", VoidP::_type(vm));
-        mod->attr().set("Material_p", type);
-        PY_POINTER_SETGETITEM(Material)
-    }
     wrapped__Transform::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Transform_p", VoidP::_type(vm));
-        mod->attr().set("Transform_p", type);
-        PY_POINTER_SETGETITEM(Transform)
-    }
     wrapped__BoneInfo::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "BoneInfo_p", VoidP::_type(vm));
-        mod->attr().set("BoneInfo_p", type);
-        PY_POINTER_SETGETITEM(BoneInfo)
-    }
     wrapped__Model::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Model_p", VoidP::_type(vm));
-        mod->attr().set("Model_p", type);
-        PY_POINTER_SETGETITEM(Model)
-    }
     wrapped__ModelAnimation::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "ModelAnimation_p", VoidP::_type(vm));
-        mod->attr().set("ModelAnimation_p", type);
-        PY_POINTER_SETGETITEM(ModelAnimation)
-    }
     wrapped__Ray::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Ray_p", VoidP::_type(vm));
-        mod->attr().set("Ray_p", type);
-        PY_POINTER_SETGETITEM(Ray)
-    }
     wrapped__RayCollision::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "RayCollision_p", VoidP::_type(vm));
-        mod->attr().set("RayCollision_p", type);
-        PY_POINTER_SETGETITEM(RayCollision)
-    }
     wrapped__BoundingBox::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "BoundingBox_p", VoidP::_type(vm));
-        mod->attr().set("BoundingBox_p", type);
-        PY_POINTER_SETGETITEM(BoundingBox)
-    }
     wrapped__Wave::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Wave_p", VoidP::_type(vm));
-        mod->attr().set("Wave_p", type);
-        PY_POINTER_SETGETITEM(Wave)
-    }
     wrapped__AudioStream::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "AudioStream_p", VoidP::_type(vm));
-        mod->attr().set("AudioStream_p", type);
-        PY_POINTER_SETGETITEM(AudioStream)
-    }
     wrapped__Sound::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Sound_p", VoidP::_type(vm));
-        mod->attr().set("Sound_p", type);
-        PY_POINTER_SETGETITEM(Sound)
-    }
     wrapped__Music::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "Music_p", VoidP::_type(vm));
-        mod->attr().set("Music_p", type);
-        PY_POINTER_SETGETITEM(Music)
-    }
     wrapped__VrDeviceInfo::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "VrDeviceInfo_p", VoidP::_type(vm));
-        mod->attr().set("VrDeviceInfo_p", type);
-        PY_POINTER_SETGETITEM(VrDeviceInfo)
-    }
     wrapped__VrStereoConfig::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "VrStereoConfig_p", VoidP::_type(vm));
-        mod->attr().set("VrStereoConfig_p", type);
-        PY_POINTER_SETGETITEM(VrStereoConfig)
-    }
     wrapped__FilePathList::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "FilePathList_p", VoidP::_type(vm));
-        mod->attr().set("FilePathList_p", type);
-        PY_POINTER_SETGETITEM(FilePathList)
-    }
     wrapped__AutomationEvent::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "AutomationEvent_p", VoidP::_type(vm));
-        mod->attr().set("AutomationEvent_p", type);
-        PY_POINTER_SETGETITEM(AutomationEvent)
-    }
     wrapped__AutomationEventList::register_class(vm, mod);
-    {
-        PyObject* type = vm->new_type_object(mod, "AutomationEventList_p", VoidP::_type(vm));
-        mod->attr().set("AutomationEventList_p", type);
-        PY_POINTER_SETGETITEM(AutomationEventList)
-    }
 
     _bind(vm, mod, "InitWindow(width: int, height: int, title: str) -> None", &InitWindow);
     _bind(vm, mod, "CloseWindow() -> None", &CloseWindow);
@@ -2366,14 +2056,9 @@ void add_module_raylib(VM* vm){
     CodeObject_ co = vm->compile("from linalg import *", "raylib.py", EXEC_MODE);
     vm->_exec(co, mod);
     mod->attr().set("Quaternion", mod->attr("vec4"));
-    mod->attr().set("Quaternion_p", mod->attr("vec4_p"));
     mod->attr().set("Texture2D", mod->attr("Texture"));
-    mod->attr().set("Texture2D_p", mod->attr("Texture_p"));
     mod->attr().set("TextureCubemap", mod->attr("Texture"));
-    mod->attr().set("TextureCubemap_p", mod->attr("Texture_p"));
     mod->attr().set("RenderTexture2D", mod->attr("RenderTexture"));
-    mod->attr().set("RenderTexture2D_p", mod->attr("RenderTexture_p"));
     mod->attr().set("Camera", mod->attr("Camera3D"));
-    mod->attr().set("Camera_p", mod->attr("Camera3D_p"));
 }
 }  // namespace pkpy

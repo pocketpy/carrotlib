@@ -27,9 +27,7 @@ class Matrix(_StructLike[Matrix], _wrapped__Matrix):
     def __init__(self): ...
     @overload
     def __init__(self, m0: float, m4: float, m8: float, m12: float, m1: float, m5: float, m9: float, m13: float, m2: float, m6: float, m10: float, m14: float, m3: float, m7: float, m11: float, m15: float): ...
-
-class Matrix_p(Pointer[Matrix]):
-    """Wraps `Matrix *`"""
+Matrix_p = void_p
 
 class _wrapped__Color:
     r: int                              # `unsigned char`: Color red value
@@ -43,9 +41,7 @@ class Color(_StructLike[Color], _wrapped__Color):
     def __init__(self): ...
     @overload
     def __init__(self, r: int, g: int, b: int, a: int): ...
-
-class Color_p(Pointer[Color]):
-    """Wraps `Color *`"""
+Color_p = void_p
 
 class _wrapped__Rectangle:
     x: float                            # `float`: Rectangle top-left corner position x
@@ -59,9 +55,7 @@ class Rectangle(_StructLike[Rectangle], _wrapped__Rectangle):
     def __init__(self): ...
     @overload
     def __init__(self, x: float, y: float, width: float, height: float): ...
-
-class Rectangle_p(Pointer[Rectangle]):
-    """Wraps `Rectangle *`"""
+Rectangle_p = void_p
 
 class _wrapped__Image:
     data: void_p                        # `void *`: Image raw data
@@ -76,9 +70,7 @@ class Image(_StructLike[Image], _wrapped__Image):
     def __init__(self): ...
     @overload
     def __init__(self, data: void_p, width: int, height: int, mipmaps: int, format: int): ...
-
-class Image_p(Pointer[Image]):
-    """Wraps `Image *`"""
+Image_p = void_p
 
 class _wrapped__Texture:
     id: int                             # `unsigned int`: OpenGL texture id
@@ -93,9 +85,7 @@ class Texture(_StructLike[Texture], _wrapped__Texture):
     def __init__(self): ...
     @overload
     def __init__(self, id: int, width: int, height: int, mipmaps: int, format: int): ...
-
-class Texture_p(Pointer[Texture]):
-    """Wraps `Texture *`"""
+Texture_p = void_p
 
 class _wrapped__RenderTexture:
     id: int                             # `unsigned int`: OpenGL framebuffer object id
@@ -108,9 +98,7 @@ class RenderTexture(_StructLike[RenderTexture], _wrapped__RenderTexture):
     def __init__(self): ...
     @overload
     def __init__(self, id: int, texture: Texture, depth: Texture): ...
-
-class RenderTexture_p(Pointer[RenderTexture]):
-    """Wraps `RenderTexture *`"""
+RenderTexture_p = void_p
 
 class _wrapped__NPatchInfo:
     source: Rectangle                   # `Rectangle`: Texture source rectangle
@@ -126,9 +114,7 @@ class NPatchInfo(_StructLike[NPatchInfo], _wrapped__NPatchInfo):
     def __init__(self): ...
     @overload
     def __init__(self, source: Rectangle, left: int, top: int, right: int, bottom: int, layout: int): ...
-
-class NPatchInfo_p(Pointer[NPatchInfo]):
-    """Wraps `NPatchInfo *`"""
+NPatchInfo_p = void_p
 
 class _wrapped__GlyphInfo:
     value: int                          # `int`: Character value (Unicode)
@@ -143,9 +129,7 @@ class GlyphInfo(_StructLike[GlyphInfo], _wrapped__GlyphInfo):
     def __init__(self): ...
     @overload
     def __init__(self, value: int, offsetX: int, offsetY: int, advanceX: int, image: Image): ...
-
-class GlyphInfo_p(Pointer[GlyphInfo]):
-    """Wraps `GlyphInfo *`"""
+GlyphInfo_p = void_p
 
 class _wrapped__Font:
     baseSize: int                       # `int`: Base size (default chars height)
@@ -161,9 +145,7 @@ class Font(_StructLike[Font], _wrapped__Font):
     def __init__(self): ...
     @overload
     def __init__(self, baseSize: int, glyphCount: int, glyphPadding: int, texture: Texture2D, recs: 'Rectangle_p', glyphs: 'GlyphInfo_p'): ...
-
-class Font_p(Pointer[Font]):
-    """Wraps `Font *`"""
+Font_p = void_p
 
 class _wrapped__Camera3D:
     position: vec3                      # `Vector3`: Camera position
@@ -178,9 +160,7 @@ class Camera3D(_StructLike[Camera3D], _wrapped__Camera3D):
     def __init__(self): ...
     @overload
     def __init__(self, position: vec3, target: vec3, up: vec3, fovy: float, projection: int): ...
-
-class Camera3D_p(Pointer[Camera3D]):
-    """Wraps `Camera3D *`"""
+Camera3D_p = void_p
 
 class _wrapped__Camera2D:
     offset: vec2                        # `Vector2`: Camera offset (displacement from target)
@@ -194,9 +174,7 @@ class Camera2D(_StructLike[Camera2D], _wrapped__Camera2D):
     def __init__(self): ...
     @overload
     def __init__(self, offset: vec2, target: vec2, rotation: float, zoom: float): ...
-
-class Camera2D_p(Pointer[Camera2D]):
-    """Wraps `Camera2D *`"""
+Camera2D_p = void_p
 
 class _wrapped__Mesh:
     vertexCount: int                    # `int`: Number of vertices stored in arrays
@@ -221,9 +199,7 @@ class Mesh(_StructLike[Mesh], _wrapped__Mesh):
     def __init__(self): ...
     @overload
     def __init__(self, vertexCount: int, triangleCount: int, vertices: float_p, texcoords: float_p, texcoords2: float_p, normals: float_p, tangents: float_p, colors: uchar_p, indices: ushort_p, animVertices: float_p, animNormals: float_p, boneIds: uchar_p, boneWeights: float_p, vaoId: int, vboId: uint_p): ...
-
-class Mesh_p(Pointer[Mesh]):
-    """Wraps `Mesh *`"""
+Mesh_p = void_p
 
 class _wrapped__Shader:
     id: int                             # `unsigned int`: Shader program id
@@ -235,9 +211,7 @@ class Shader(_StructLike[Shader], _wrapped__Shader):
     def __init__(self): ...
     @overload
     def __init__(self, id: int, locs: int_p): ...
-
-class Shader_p(Pointer[Shader]):
-    """Wraps `Shader *`"""
+Shader_p = void_p
 
 class _wrapped__MaterialMap:
     texture: Texture2D                  # `Texture2D`: Material map texture
@@ -250,9 +224,7 @@ class MaterialMap(_StructLike[MaterialMap], _wrapped__MaterialMap):
     def __init__(self): ...
     @overload
     def __init__(self, texture: Texture2D, color: Color, value: float): ...
-
-class MaterialMap_p(Pointer[MaterialMap]):
-    """Wraps `MaterialMap *`"""
+MaterialMap_p = void_p
 
 class _wrapped__Material:
     shader: Shader                      # `Shader`: Material shader
@@ -265,9 +237,7 @@ class Material(_StructLike[Material], _wrapped__Material):
     def __init__(self): ...
     @overload
     def __init__(self, shader: Shader, maps: 'MaterialMap_p', params: float_p): ...
-
-class Material_p(Pointer[Material]):
-    """Wraps `Material *`"""
+Material_p = void_p
 
 class _wrapped__Transform:
     translation: vec3                   # `Vector3`: Translation
@@ -280,9 +250,7 @@ class Transform(_StructLike[Transform], _wrapped__Transform):
     def __init__(self): ...
     @overload
     def __init__(self, translation: vec3, rotation: Quaternion, scale: vec3): ...
-
-class Transform_p(Pointer[Transform]):
-    """Wraps `Transform *`"""
+Transform_p = void_p
 
 class _wrapped__BoneInfo:
     name: char_p                        # `char[32]`: Bone name
@@ -294,9 +262,7 @@ class BoneInfo(_StructLike[BoneInfo], _wrapped__BoneInfo):
     def __init__(self): ...
     @overload
     def __init__(self, name: char_p, parent: int): ...
-
-class BoneInfo_p(Pointer[BoneInfo]):
-    """Wraps `BoneInfo *`"""
+BoneInfo_p = void_p
 
 class _wrapped__Model:
     transform: Matrix                   # `Matrix`: Local transform matrix
@@ -315,9 +281,7 @@ class Model(_StructLike[Model], _wrapped__Model):
     def __init__(self): ...
     @overload
     def __init__(self, transform: Matrix, meshCount: int, materialCount: int, meshes: 'Mesh_p', materials: 'Material_p', meshMaterial: int_p, boneCount: int, bones: 'BoneInfo_p', bindPose: 'Transform_p'): ...
-
-class Model_p(Pointer[Model]):
-    """Wraps `Model *`"""
+Model_p = void_p
 
 class _wrapped__ModelAnimation:
     boneCount: int                      # `int`: Number of bones
@@ -332,9 +296,7 @@ class ModelAnimation(_StructLike[ModelAnimation], _wrapped__ModelAnimation):
     def __init__(self): ...
     @overload
     def __init__(self, boneCount: int, frameCount: int, bones: 'BoneInfo_p', framePoses: void_p, name: char_p): ...
-
-class ModelAnimation_p(Pointer[ModelAnimation]):
-    """Wraps `ModelAnimation *`"""
+ModelAnimation_p = void_p
 
 class _wrapped__Ray:
     position: vec3                      # `Vector3`: Ray position (origin)
@@ -346,9 +308,7 @@ class Ray(_StructLike[Ray], _wrapped__Ray):
     def __init__(self): ...
     @overload
     def __init__(self, position: vec3, direction: vec3): ...
-
-class Ray_p(Pointer[Ray]):
-    """Wraps `Ray *`"""
+Ray_p = void_p
 
 class _wrapped__RayCollision:
     hit: bool                           # `bool`: Did the ray hit something?
@@ -362,9 +322,7 @@ class RayCollision(_StructLike[RayCollision], _wrapped__RayCollision):
     def __init__(self): ...
     @overload
     def __init__(self, hit: bool, distance: float, point: vec3, normal: vec3): ...
-
-class RayCollision_p(Pointer[RayCollision]):
-    """Wraps `RayCollision *`"""
+RayCollision_p = void_p
 
 class _wrapped__BoundingBox:
     min: vec3                           # `Vector3`: Minimum vertex box-corner
@@ -376,9 +334,7 @@ class BoundingBox(_StructLike[BoundingBox], _wrapped__BoundingBox):
     def __init__(self): ...
     @overload
     def __init__(self, min: vec3, max: vec3): ...
-
-class BoundingBox_p(Pointer[BoundingBox]):
-    """Wraps `BoundingBox *`"""
+BoundingBox_p = void_p
 
 class _wrapped__Wave:
     frameCount: int                     # `unsigned int`: Total number of frames (considering channels)
@@ -393,9 +349,7 @@ class Wave(_StructLike[Wave], _wrapped__Wave):
     def __init__(self): ...
     @overload
     def __init__(self, frameCount: int, sampleRate: int, sampleSize: int, channels: int, data: void_p): ...
-
-class Wave_p(Pointer[Wave]):
-    """Wraps `Wave *`"""
+Wave_p = void_p
 
 class _wrapped__AudioStream:
     buffer: void_p                      # `rAudioBuffer *`: Pointer to internal data used by the audio system
@@ -410,9 +364,7 @@ class AudioStream(_StructLike[AudioStream], _wrapped__AudioStream):
     def __init__(self): ...
     @overload
     def __init__(self, buffer: void_p, processor: void_p, sampleRate: int, sampleSize: int, channels: int): ...
-
-class AudioStream_p(Pointer[AudioStream]):
-    """Wraps `AudioStream *`"""
+AudioStream_p = void_p
 
 class _wrapped__Sound:
     stream: AudioStream                 # `AudioStream`: Audio stream
@@ -424,9 +376,7 @@ class Sound(_StructLike[Sound], _wrapped__Sound):
     def __init__(self): ...
     @overload
     def __init__(self, stream: AudioStream, frameCount: int): ...
-
-class Sound_p(Pointer[Sound]):
-    """Wraps `Sound *`"""
+Sound_p = void_p
 
 class _wrapped__Music:
     stream: AudioStream                 # `AudioStream`: Audio stream
@@ -441,9 +391,7 @@ class Music(_StructLike[Music], _wrapped__Music):
     def __init__(self): ...
     @overload
     def __init__(self, stream: AudioStream, frameCount: int, looping: bool, ctxType: int, ctxData: void_p): ...
-
-class Music_p(Pointer[Music]):
-    """Wraps `Music *`"""
+Music_p = void_p
 
 class _wrapped__VrDeviceInfo:
     hResolution: int                    # `int`: Horizontal resolution in pixels
@@ -462,9 +410,7 @@ class VrDeviceInfo(_StructLike[VrDeviceInfo], _wrapped__VrDeviceInfo):
     def __init__(self): ...
     @overload
     def __init__(self, hResolution: int, vResolution: int, hScreenSize: float, vScreenSize: float, eyeToScreenDistance: float, lensSeparationDistance: float, interpupillaryDistance: float, lensDistortionValues: float_p, chromaAbCorrection: float_p): ...
-
-class VrDeviceInfo_p(Pointer[VrDeviceInfo]):
-    """Wraps `VrDeviceInfo *`"""
+VrDeviceInfo_p = void_p
 
 class _wrapped__VrStereoConfig:
     projection: 'Matrix_p'              # `Matrix[2]`: VR projection matrices (per eye)
@@ -482,9 +428,7 @@ class VrStereoConfig(_StructLike[VrStereoConfig], _wrapped__VrStereoConfig):
     def __init__(self): ...
     @overload
     def __init__(self, projection: 'Matrix_p', viewOffset: 'Matrix_p', leftLensCenter: float_p, rightLensCenter: float_p, leftScreenCenter: float_p, rightScreenCenter: float_p, scale: float_p, scaleIn: float_p): ...
-
-class VrStereoConfig_p(Pointer[VrStereoConfig]):
-    """Wraps `VrStereoConfig *`"""
+VrStereoConfig_p = void_p
 
 class _wrapped__FilePathList:
     capacity: int                       # `unsigned int`: Filepaths max entries
@@ -497,9 +441,7 @@ class FilePathList(_StructLike[FilePathList], _wrapped__FilePathList):
     def __init__(self): ...
     @overload
     def __init__(self, capacity: int, count: int, paths: void_p): ...
-
-class FilePathList_p(Pointer[FilePathList]):
-    """Wraps `FilePathList *`"""
+FilePathList_p = void_p
 
 class _wrapped__AutomationEvent:
     frame: int                          # `unsigned int`: Event frame
@@ -512,9 +454,7 @@ class AutomationEvent(_StructLike[AutomationEvent], _wrapped__AutomationEvent):
     def __init__(self): ...
     @overload
     def __init__(self, frame: int, type: int, params: int_p): ...
-
-class AutomationEvent_p(Pointer[AutomationEvent]):
-    """Wraps `AutomationEvent *`"""
+AutomationEvent_p = void_p
 
 class _wrapped__AutomationEventList:
     capacity: int                       # `unsigned int`: Events max entries (MAX_AUTOMATION_EVENTS)
@@ -527,9 +467,7 @@ class AutomationEventList(_StructLike[AutomationEventList], _wrapped__Automation
     def __init__(self): ...
     @overload
     def __init__(self, capacity: int, count: int, events: 'AutomationEvent_p'): ...
-
-class AutomationEventList_p(Pointer[AutomationEventList]):
-    """Wraps `AutomationEventList *`"""
+AutomationEventList_p = void_p
 
 RAYLIB_VERSION_MAJOR: int = 5
 RAYLIB_VERSION_MINOR: int = 1
@@ -538,8 +476,7 @@ RAYLIB_VERSION: str = "5.1-dev"
 PI: float = 3.141592653589793
 
 ########## ConfigFlags ##########
-# System/Window config flags
-ConfigFlags_NAMES: dict[int, str]
+ConfigFlags_NAMES: dict[int, str]    # System/Window config flags
 FLAG_VSYNC_HINT = 64                            # Set to try enabling V-Sync on GPU
 FLAG_FULLSCREEN_MODE = 2                        # Set to run program in fullscreen
 FLAG_WINDOW_RESIZABLE = 4                       # Set to allow resizable window
@@ -558,8 +495,7 @@ FLAG_MSAA_4X_HINT = 32                          # Set to try enabling MSAA 4X
 FLAG_INTERLACED_HINT = 65536                    # Set to try enabling interlaced video format (for V3D)
 
 ########## TraceLogLevel ##########
-# Trace log level
-TraceLogLevel_NAMES: dict[int, str]
+TraceLogLevel_NAMES: dict[int, str]    # Trace log level
 LOG_ALL = 0                                     # Display all logs
 LOG_TRACE = 1                                   # Trace logging, intended for internal use only
 LOG_DEBUG = 2                                   # Debug logging, used for internal debugging, it should be disabled on release builds
@@ -570,8 +506,7 @@ LOG_FATAL = 6                                   # Fatal logging, used to abort p
 LOG_NONE = 7                                    # Disable logging
 
 ########## KeyboardKey ##########
-# Keyboard keys (US keyboard layout)
-KeyboardKey_NAMES: dict[int, str]
+KeyboardKey_NAMES: dict[int, str]    # Keyboard keys (US keyboard layout)
 KEY_NULL = 0                                    # Key: NULL, used for no key pressed
 KEY_APOSTROPHE = 39                             # Key: '
 KEY_COMMA = 44                                  # Key: ,
@@ -684,8 +619,7 @@ KEY_VOLUME_UP = 24                              # Key: Android volume up button
 KEY_VOLUME_DOWN = 25                            # Key: Android volume down button
 
 ########## MouseButton ##########
-# Mouse buttons
-MouseButton_NAMES: dict[int, str]
+MouseButton_NAMES: dict[int, str]    # Mouse buttons
 MOUSE_BUTTON_LEFT = 0                           # Mouse button left
 MOUSE_BUTTON_RIGHT = 1                          # Mouse button right
 MOUSE_BUTTON_MIDDLE = 2                         # Mouse button middle (pressed wheel)
@@ -695,8 +629,7 @@ MOUSE_BUTTON_FORWARD = 5                        # Mouse button forward (advanced
 MOUSE_BUTTON_BACK = 6                           # Mouse button back (advanced mouse device)
 
 ########## MouseCursor ##########
-# Mouse cursor
-MouseCursor_NAMES: dict[int, str]
+MouseCursor_NAMES: dict[int, str]    # Mouse cursor
 MOUSE_CURSOR_DEFAULT = 0                        # Default pointer shape
 MOUSE_CURSOR_ARROW = 1                          # Arrow shape
 MOUSE_CURSOR_IBEAM = 2                          # Text writing cursor shape
@@ -710,8 +643,7 @@ MOUSE_CURSOR_RESIZE_ALL = 9                     # The omnidirectional resize/mov
 MOUSE_CURSOR_NOT_ALLOWED = 10                   # The operation-not-allowed shape
 
 ########## GamepadButton ##########
-# Gamepad buttons
-GamepadButton_NAMES: dict[int, str]
+GamepadButton_NAMES: dict[int, str]    # Gamepad buttons
 GAMEPAD_BUTTON_UNKNOWN = 0                      # Unknown button, just for error checking
 GAMEPAD_BUTTON_LEFT_FACE_UP = 1                 # Gamepad left DPAD up button
 GAMEPAD_BUTTON_LEFT_FACE_RIGHT = 2              # Gamepad left DPAD right button
@@ -732,8 +664,7 @@ GAMEPAD_BUTTON_LEFT_THUMB = 16                  # Gamepad joystick pressed butto
 GAMEPAD_BUTTON_RIGHT_THUMB = 17                 # Gamepad joystick pressed button right
 
 ########## GamepadAxis ##########
-# Gamepad axis
-GamepadAxis_NAMES: dict[int, str]
+GamepadAxis_NAMES: dict[int, str]    # Gamepad axis
 GAMEPAD_AXIS_LEFT_X = 0                         # Gamepad left stick X axis
 GAMEPAD_AXIS_LEFT_Y = 1                         # Gamepad left stick Y axis
 GAMEPAD_AXIS_RIGHT_X = 2                        # Gamepad right stick X axis
@@ -742,8 +673,7 @@ GAMEPAD_AXIS_LEFT_TRIGGER = 4                   # Gamepad back trigger left, pre
 GAMEPAD_AXIS_RIGHT_TRIGGER = 5                  # Gamepad back trigger right, pressure level: [1..-1]
 
 ########## MaterialMapIndex ##########
-# Material map index
-MaterialMapIndex_NAMES: dict[int, str]
+MaterialMapIndex_NAMES: dict[int, str]    # Material map index
 MATERIAL_MAP_ALBEDO = 0                         # Albedo material (same as: MATERIAL_MAP_DIFFUSE)
 MATERIAL_MAP_METALNESS = 1                      # Metalness material (same as: MATERIAL_MAP_SPECULAR)
 MATERIAL_MAP_NORMAL = 2                         # Normal material
@@ -757,8 +687,7 @@ MATERIAL_MAP_PREFILTER = 9                      # Prefilter material (NOTE: Uses
 MATERIAL_MAP_BRDF = 10                          # Brdf material
 
 ########## ShaderLocationIndex ##########
-# Shader location index
-ShaderLocationIndex_NAMES: dict[int, str]
+ShaderLocationIndex_NAMES: dict[int, str]    # Shader location index
 SHADER_LOC_VERTEX_POSITION = 0                  # Shader location: vertex attribute: position
 SHADER_LOC_VERTEX_TEXCOORD01 = 1                # Shader location: vertex attribute: texcoord01
 SHADER_LOC_VERTEX_TEXCOORD02 = 2                # Shader location: vertex attribute: texcoord02
@@ -787,8 +716,7 @@ SHADER_LOC_MAP_PREFILTER = 24                   # Shader location: samplerCube t
 SHADER_LOC_MAP_BRDF = 25                        # Shader location: sampler2d texture: brdf
 
 ########## ShaderUniformDataType ##########
-# Shader uniform data type
-ShaderUniformDataType_NAMES: dict[int, str]
+ShaderUniformDataType_NAMES: dict[int, str]    # Shader uniform data type
 SHADER_UNIFORM_FLOAT = 0                        # Shader uniform type: float
 SHADER_UNIFORM_VEC2 = 1                         # Shader uniform type: vec2 (2 float)
 SHADER_UNIFORM_VEC3 = 2                         # Shader uniform type: vec3 (3 float)
@@ -800,16 +728,14 @@ SHADER_UNIFORM_IVEC4 = 7                        # Shader uniform type: ivec4 (4 
 SHADER_UNIFORM_SAMPLER2D = 8                    # Shader uniform type: sampler2d
 
 ########## ShaderAttributeDataType ##########
-# Shader attribute data types
-ShaderAttributeDataType_NAMES: dict[int, str]
+ShaderAttributeDataType_NAMES: dict[int, str]    # Shader attribute data types
 SHADER_ATTRIB_FLOAT = 0                         # Shader attribute type: float
 SHADER_ATTRIB_VEC2 = 1                          # Shader attribute type: vec2 (2 float)
 SHADER_ATTRIB_VEC3 = 2                          # Shader attribute type: vec3 (3 float)
 SHADER_ATTRIB_VEC4 = 3                          # Shader attribute type: vec4 (4 float)
 
 ########## PixelFormat ##########
-# Pixel formats
-PixelFormat_NAMES: dict[int, str]
+PixelFormat_NAMES: dict[int, str]    # Pixel formats
 PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1          # 8 bit per pixel (no alpha)
 PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA = 2         # 8*2 bpp (2 channels)
 PIXELFORMAT_UNCOMPRESSED_R5G6B5 = 3             # 16 bpp
@@ -836,8 +762,7 @@ PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA = 23       # 8 bpp
 PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA = 24       # 2 bpp
 
 ########## TextureFilter ##########
-# Texture parameters: filter mode
-TextureFilter_NAMES: dict[int, str]
+TextureFilter_NAMES: dict[int, str]    # Texture parameters: filter mode
 TEXTURE_FILTER_POINT = 0                        # No filter, just pixel approximation
 TEXTURE_FILTER_BILINEAR = 1                     # Linear filtering
 TEXTURE_FILTER_TRILINEAR = 2                    # Trilinear filtering (linear with mipmaps)
@@ -846,16 +771,14 @@ TEXTURE_FILTER_ANISOTROPIC_8X = 4               # Anisotropic filtering 8x
 TEXTURE_FILTER_ANISOTROPIC_16X = 5              # Anisotropic filtering 16x
 
 ########## TextureWrap ##########
-# Texture parameters: wrap mode
-TextureWrap_NAMES: dict[int, str]
+TextureWrap_NAMES: dict[int, str]    # Texture parameters: wrap mode
 TEXTURE_WRAP_REPEAT = 0                         # Repeats texture in tiled mode
 TEXTURE_WRAP_CLAMP = 1                          # Clamps texture to edge pixel in tiled mode
 TEXTURE_WRAP_MIRROR_REPEAT = 2                  # Mirrors and repeats the texture in tiled mode
 TEXTURE_WRAP_MIRROR_CLAMP = 3                   # Mirrors and clamps to border the texture in tiled mode
 
 ########## CubemapLayout ##########
-# Cubemap layouts
-CubemapLayout_NAMES: dict[int, str]
+CubemapLayout_NAMES: dict[int, str]    # Cubemap layouts
 CUBEMAP_LAYOUT_AUTO_DETECT = 0                  # Automatically detect layout type
 CUBEMAP_LAYOUT_LINE_VERTICAL = 1                # Layout is defined by a vertical line with faces
 CUBEMAP_LAYOUT_LINE_HORIZONTAL = 2              # Layout is defined by a horizontal line with faces
@@ -864,15 +787,13 @@ CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE = 4          # Layout is defined by a 4x3 cro
 CUBEMAP_LAYOUT_PANORAMA = 5                     # Layout is defined by a panorama image (equirrectangular map)
 
 ########## FontType ##########
-# Font type, defines generation method
-FontType_NAMES: dict[int, str]
+FontType_NAMES: dict[int, str]    # Font type, defines generation method
 FONT_DEFAULT = 0                                # Default font generation, anti-aliased
 FONT_BITMAP = 1                                 # Bitmap font generation, no anti-aliasing
 FONT_SDF = 2                                    # SDF font generation, requires external shader
 
 ########## BlendMode ##########
-# Color blending modes (pre-defined)
-BlendMode_NAMES: dict[int, str]
+BlendMode_NAMES: dict[int, str]    # Color blending modes (pre-defined)
 BLEND_ALPHA = 0                                 # Blend textures considering alpha (default)
 BLEND_ADDITIVE = 1                              # Blend textures adding colors
 BLEND_MULTIPLIED = 2                            # Blend textures multiplying colors
@@ -883,8 +804,7 @@ BLEND_CUSTOM = 6                                # Blend textures using custom sr
 BLEND_CUSTOM_SEPARATE = 7                       # Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendFactorsSeparate())
 
 ########## Gesture ##########
-# Gesture
-Gesture_NAMES: dict[int, str]
+Gesture_NAMES: dict[int, str]    # Gesture
 GESTURE_NONE = 0                                # No gesture
 GESTURE_TAP = 1                                 # Tap gesture
 GESTURE_DOUBLETAP = 2                           # Double tap gesture
@@ -898,8 +818,7 @@ GESTURE_PINCH_IN = 256                          # Pinch in gesture
 GESTURE_PINCH_OUT = 512                         # Pinch out gesture
 
 ########## CameraMode ##########
-# Camera system modes
-CameraMode_NAMES: dict[int, str]
+CameraMode_NAMES: dict[int, str]    # Camera system modes
 CAMERA_CUSTOM = 0                               # Custom camera
 CAMERA_FREE = 1                                 # Free camera
 CAMERA_ORBITAL = 2                              # Orbital camera
@@ -907,14 +826,12 @@ CAMERA_FIRST_PERSON = 3                         # First person camera
 CAMERA_THIRD_PERSON = 4                         # Third person camera
 
 ########## CameraProjection ##########
-# Camera projection
-CameraProjection_NAMES: dict[int, str]
+CameraProjection_NAMES: dict[int, str]    # Camera projection
 CAMERA_PERSPECTIVE = 0                          # Perspective projection
 CAMERA_ORTHOGRAPHIC = 1                         # Orthographic projection
 
 ########## NPatchLayout ##########
-# N-patch layout
-NPatchLayout_NAMES: dict[int, str]
+NPatchLayout_NAMES: dict[int, str]    # N-patch layout
 NPATCH_NINE_PATCH = 0                           # Npatch layout: 3x3 tiles
 NPATCH_THREE_PATCH_VERTICAL = 1                 # Npatch layout: 1x3 tiles
 NPATCH_THREE_PATCH_HORIZONTAL = 2               # Npatch layout: 3x1 tiles
