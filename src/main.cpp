@@ -13,7 +13,13 @@ namespace pkpy{
 static VM* vm;
 
 int error_screen(Str msg){
-    msg = _S("Oops! The game encountered an error.", "\n", get_system_info(), "\n\n", msg);
+    msg = _S(
+        "Oops! The game encountered an error.\n",
+        get_system_info(), '\n',
+        pool64_info(), '\n',
+        pool128_info(), '\n',
+        '\n',
+    msg);
     int render_width = GetRenderWidth();
     int font_size = render_width / 500 * 10;
     int line_spacing = font_size * 1.2;
