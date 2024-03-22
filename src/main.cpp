@@ -20,8 +20,8 @@ int error_screen(Str msg){
         pool128_info(), '\n',
         '\n',
     msg);
-    int render_width = GetRenderWidth();
-    int font_size = render_width / 500 * 10;
+    int width = (GetScreenWidth() + GetRenderWidth()) / 2;
+    int font_size = width / 500 * 10;
     int line_spacing = font_size * 1.2;
     while(!WindowShouldClose()){
         // raylib default font size is 10, use 10/20/30 to be pixel perfect
