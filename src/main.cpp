@@ -16,8 +16,7 @@ int error_screen(Str msg){
     msg = _S(
         "Oops! The game encountered an error.\n",
         get_system_info(), '\n',
-        pool64_info(), '\n',
-        pool128_info(), '\n',
+        pool64_info(), " & ", pool128_info(), '\n',
         '\n',
     msg);
     int width = (GetScreenWidth() + GetRenderWidth()) / 2;
