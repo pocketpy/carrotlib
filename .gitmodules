@@ -1,3 +1,6 @@
 [submodule "3rd/pocketpy"]
 	path = 3rd/pocketpy
 	url = https://github.com/blueloveth/pocketpy
+[submodule "3rd/raylib"]
+	path = 3rd/raylib
+	url = https://github.com/blueloveth/raylib

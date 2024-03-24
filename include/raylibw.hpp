@@ -1659,8 +1659,8 @@ void add_module_raylib(VM* vm){
     _bind(vm, mod, "SetShaderValueMatrix(shader: Shader, locIndex: int, mat: Matrix) -> None", &SetShaderValueMatrix);
     _bind(vm, mod, "SetShaderValueTexture(shader: Shader, locIndex: int, texture: Texture2D) -> None", &SetShaderValueTexture);
     _bind(vm, mod, "UnloadShader(shader: Shader) -> None", &UnloadShader);
-    _bind(vm, mod, "GetScreenToWorldRay(mousePosition: vec2, camera: Camera) -> Ray", &GetScreenToWorldRay);
-    _bind(vm, mod, "GetScreenToWorldRayEx(mousePosition: vec2, camera: Camera, width: float, height: float) -> Ray", &GetScreenToWorldRayEx);
+    _bind(vm, mod, "GetScreenToWorldRay(position: vec2, camera: Camera) -> Ray", &GetScreenToWorldRay);
+    _bind(vm, mod, "GetScreenToWorldRayEx(position: vec2, camera: Camera, width: float, height: float) -> Ray", &GetScreenToWorldRayEx);
     _bind(vm, mod, "GetWorldToScreen(position: vec3, camera: Camera) -> vec2", &GetWorldToScreen);
     _bind(vm, mod, "GetWorldToScreenEx(position: vec3, camera: Camera, width: int, height: int) -> vec2", &GetWorldToScreenEx);
     _bind(vm, mod, "GetWorldToScreen2D(position: vec2, camera: Camera2D) -> vec2", &GetWorldToScreen2D);

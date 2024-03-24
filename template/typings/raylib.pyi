@@ -1365,16 +1365,16 @@ def UnloadShader(shader: Shader) -> None:
     Wraps: `void UnloadShader(Shader shader)`
     """
 
-def GetScreenToWorldRay(mousePosition: vec2, camera: Camera) -> Ray:
-    """Get a ray trace from mouse position
+def GetScreenToWorldRay(position: vec2, camera: Camera) -> Ray:
+    """Get a ray trace from screen position (i.e mouse)
 
-    Wraps: `Ray GetScreenToWorldRay(Vector2 mousePosition, Camera camera)`
+    Wraps: `Ray GetScreenToWorldRay(Vector2 position, Camera camera)`
     """
 
-def GetScreenToWorldRayEx(mousePosition: vec2, camera: Camera, width: float, height: float) -> Ray:
-    """Get a ray trace from mouse position in a viewport
+def GetScreenToWorldRayEx(position: vec2, camera: Camera, width: float, height: float) -> Ray:
+    """Get a ray trace from screen position (i.e mouse) in a viewport
 
-    Wraps: `Ray GetScreenToWorldRayEx(Vector2 mousePosition, Camera camera, float width, float height)`
+    Wraps: `Ray GetScreenToWorldRayEx(Vector2 position, Camera camera, float width, float height)`
     """
 
 def GetWorldToScreen(position: vec3, camera: Camera) -> vec2:
@@ -1974,7 +1974,7 @@ def GetTouchPosition(index: int) -> vec2:
 def GetTouchPointId(index: int) -> int:
     """Get touch point identifier for given index
 
-    Wraps: `int GetTouchPointId(int index)`
+    Wraps: `long long GetTouchPointId(int index)`
     """
 
 def GetTouchPointCount() -> int:
