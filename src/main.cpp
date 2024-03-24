@@ -50,6 +50,12 @@ static void fatal_error(Str msg){
         fatal_error(_S("std::exception: ", e.what()));  \
     }
 
+extern "C"{
+    void ios_ready();
+    void ios_update();
+    void ios_destroy();
+}
+
 void ios_ready(){
     vm = new VM();
     vm->_import_handler = &platform_load_asset;
