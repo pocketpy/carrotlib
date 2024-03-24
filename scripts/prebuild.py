@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, io
 import shutil
 from sync_template import sync_template
 
@@ -19,9 +19,7 @@ if not os.path.exists('src/tmp'):
 def gen_hardcoded_assets(type: str):
     assert type in ['assets', 'sources']
     cpp_file = f'src/tmp/_hardcoded_{type}.cpp'
-
-    with open(cpp_file, 'wt', encoding='utf-8', newline='\n') as f:
-
+    with io.StringIO(newline='\n') as f:
         f.write(f'''
     #include <map>
     #include <string_view>
@@ -51,11 +49,19 @@ def gen_hardcoded_assets(type: str):
                 f.write(f'    Assets["{filepath}"] = {{ _{index}, {len(content)} }};\n')
                 index += 1
         f.write('}\n')
+        content = f.getvalue()
 
-    # print file size of the cpp file
-    cpp_file_size = os.path.getsize(cpp_file)
-    cpp_file_size = cpp_file_size // 1024
-    print(f'Generated {cpp_file} of {index} files of total size {cpp_file_size} KB')
+    with open(cpp_file, 'rt', encoding='utf-8') as f:
+        old_content = f.read()
+    if old_content != content:
+        with open(cpp_file, 'wt', encoding='utf-8') as f:
+            f.write(content)
+        # print file size of the cpp file
+        cpp_file_size = os.path.getsize(cpp_file)
+        cpp_file_size = cpp_file_size // 1024
+        print(f'Generated {cpp_file} of {index} files of total size {cpp_file_size} KB')
+    else:
+        print(f'{cpp_file} is up-to-date')
 
 gen_hardcoded_assets('assets')
 gen_hardcoded_assets('sources')
