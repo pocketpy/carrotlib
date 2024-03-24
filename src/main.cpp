@@ -43,8 +43,7 @@ static void fatal_error(Str msg){
     ).str();
 }
 
-#define PROTECTED_BLOCK(__block)   \
-    try{  __block  }            \
+#define CATCH_EXCEPTION()               \
     catch(Exception& py_exc){           \
         fatal_error(py_exc.summary());  \
     }catch(std::exception& e){          \
@@ -56,7 +55,12 @@ void ios_ready(){
     vm->_import_handler = &platform_load_asset;
     vm->_stdout = [](const char* s, int n){ platform_log_info(Str(s, n)); };
     vm->_stderr = [](const char* s, int n){ platform_log_error(Str(s, n)); };
-    vm->heap._gc_marker_ex = [](VM* vm){ PK_OBJ_MARK(cached.game); };
+    vm->heap._gc_marker_ex = [](VM* vm){
+        PK_OBJ_MARK(cached.game);
+        PK_OBJ_MARK(cached.on_ready);
+        PK_OBJ_MARK(cached.on_update);
+        PK_OBJ_MARK(cached.on_destroy);
+    };
 
     SetLoadFileDataCallback([](const char* filename, int* dataSize) -> unsigned char*{
         int out_size;
@@ -111,7 +115,7 @@ void ios_ready(){
     Str entry_file_string((char*)out, out_size);
     free(out);
 
-    PROTECTED_BLOCK(
+    try{
         CodeObject_ co = vm->compile(entry_file_string, entry_file, EXEC_MODE);
         if(!vm->_exec(co, vm->_main)){
             fatal_error("`vm->_exec(co, vm->_main)` returns nullptr");
@@ -133,7 +137,7 @@ void ios_ready(){
         }
         if(!cached.game) fatal_error("failed to find a class derived from `cl.Game`");
         vm->call(cached.on_ready);
-    )
+    } CATCH_EXCEPTION()
 }
 
 void ios_update(){
@@ -150,16 +154,16 @@ void ios_update(){
         EndDrawing();
         return;
     }
-    PROTECTED_BLOCK(
+    try{
         vm->call(cached.on_update);
-    )
+    } CATCH_EXCEPTION()
 }
 
 void ios_destroy(){
     if(!is_initialized()) return;
-    PROTECTED_BLOCK(
+    try{
         vm->call(cached.on_destroy);
-    )
+    } CATCH_EXCEPTION()
     delete vm;
 }
 
