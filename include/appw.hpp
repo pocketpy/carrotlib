@@ -1,8 +1,6 @@
 #pragma once
 
 #include "pocketpy.h"
-
-#include <optional>
 #include <filesystem>
 
 using namespace pkpy;
@@ -15,11 +13,7 @@ namespace ct{
     void platform_log_error(const Str& text);
     
     unsigned char* platform_load_asset(const char*, int, int*);
-    std::optional<std::vector<Str>> platform_list_assets(const Str& root);
-
-    void set_console_cp_utf8_on_win32();
-    void set_input_method_on_win32();
-
+    std::vector<std::string> platform_list_assets(std::string_view);
     void add_module__ct(VM* vm);
 
     Str get_system_info();

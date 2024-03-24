@@ -7,7 +7,7 @@ using namespace pkpy;
 
 using namespace pkpy;
 
-AAssetManager* get_android_asset_manager(){
+static AAssetManager* get_android_asset_manager(){
     return GetAndroidApp()->activity->assetManager;
 }
 
@@ -32,13 +32,13 @@ namespace ct{
         return (unsigned char*)buffer;
     }
 
-    std::optional<std::vector<Str>> platform_list_assets(const Str& root){
-        std::string s_root = root.str();
+    std::vector<std::string> platform_list_assets(std::string_view root){
+        std::string s_root(root);
         if(s_root == ".") s_root = "";
         if(s_root.size()>2 && s_root[0]=='.' && s_root[1]=='/') s_root = s_root.substr(2);
         AAssetDir* dir = AAssetManager_openDir(get_android_asset_manager(), s_root.c_str());
-        if(!dir) return std::nullopt;
-        std::vector<Str> list;
+        if(!dir) return {};
+        std::vector<std::string> list;
         const char* name = nullptr;
         while((name = AAssetDir_getNextFileName(dir)) != nullptr){
             list.emplace_back(name);

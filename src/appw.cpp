@@ -71,11 +71,11 @@ void add_module__ct(VM *vm){
     vm->bind(mod, "list_assets(name: str)",
         [](VM* vm, ArgsView args){
             const Str& name = CAST(Str&, args[0]);
-            std::optional<std::vector<Str>> res = platform_list_assets(name);
-            if(!res) vm->IOError(_S("failed to list assets: ", name));
-            List ret(res.value().size());
-            for(int i = 0; i < res.value().size(); i++){
-                ret[i] = VAR(res.value()[i]);
+            std::vector<std::string> res = platform_list_assets(name);
+            if(res.empty()) vm->IOError(_S("failed to list assets: ", name));
+            List ret(res.size());
+            for(int i = 0; i < res.size(); i++){
+                ret[i] = VAR(res[i]);
             }
             return VAR(std::move(ret));
         });

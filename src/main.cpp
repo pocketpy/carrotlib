@@ -39,11 +39,6 @@ int main(int argc, char** argv){
     vm->_stdout = [](const char* s, int n){ platform_log_info(Str(s, n)); };
     vm->_stderr = [](const char* s, int n){ platform_log_error(Str(s, n)); };
 
-#if PK_DEBUG_GC_STATS
-    static int counter = 0;
-    vm->heap._gc_marker_ex = [](VM* vm) { platform_log_info(_S("======== ", counter++, " ========\n")); };
-#endif
-
     SetLoadFileDataCallback([](const char* filename, int* dataSize) -> unsigned char*{
         int out_size;
         unsigned char* out = platform_load_asset(filename, strlen(filename), &out_size);
@@ -71,9 +66,11 @@ int main(int argc, char** argv){
     add_module__ct(vm);
 
 #if _WIN32
-    set_console_cp_utf8_on_win32();
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
 #endif
 
+// desktop platforms
 #if PK_SYS_PLATFORM == 0 || PK_SYS_PLATFORM == 3 || PK_SYS_PLATFORM == 5
     if(argc != 2){
         std::cerr << "usage: " << argv[0] << " [project_dir]" << std::endl;
@@ -87,10 +84,7 @@ int main(int argc, char** argv){
     platform_log_info(std::filesystem::current_path().string() + "\n");
 #endif
 
-#if PK_SYS_PLATFORM == 1
-    std::filesystem::current_path("workdir");
-    platform_log_info(std::filesystem::current_path().string() + "\n");
-#endif
+    // android, ios, emscripten can use hardcoded asset backend
 
     std::string entry_file = "main.py";
     int out_size;

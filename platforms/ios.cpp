@@ -1,9 +1,5 @@
 #include "appw.hpp"
-
-#if _WIN32
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
-#endif
+#include "assets.hpp"
 
 using namespace pkpy;
 
@@ -17,18 +13,11 @@ namespace ct{
     }
 
     unsigned char* platform_load_asset(const char* name_p, int name_size, int* out_size){
-        return _default_import_handler(name_p, name_size, out_size);
+        return _platform_load_asset(name_p, name_size, out_size);
     }
 
     std::vector<std::string> platform_list_assets(std::string_view root){
-        std::vector<std::string> result;
-        std::filesystem::path path(root);
-        bool exists = std::filesystem::exists(path);
-        if(!exists) return {};
-        for(auto& p: std::filesystem::directory_iterator(path)){
-            result.push_back(p.path().string());
-        }
-        return result;
+        return _platform_list_assets(root);
     }
 
     Str get_system_info(){
