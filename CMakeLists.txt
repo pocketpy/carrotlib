@@ -11,6 +11,12 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/3rd)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/include)
 aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/src PROJECT_SRC)
 
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /utf-8 /O2")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -frtti -O2")
+endif()
+
 if (ANDROID)
     set(ANDROID_STL c++_shared)
     include_directories(${ANDROID_NDK}/sources/android/native_app_glue)
