@@ -32,6 +32,6 @@ namespace ct{
     }
 
     Str get_system_info(){
-        return _S("sys.platform: ", pkpy::kPlatformStrings[PK_SYS_PLATFORM]);
+        return _S("sys.platform: ", kPlatformStrings[PK_SYS_PLATFORM]);
     }
 }   // namespace ct

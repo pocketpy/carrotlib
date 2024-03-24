@@ -32,7 +32,7 @@ elseif(EMSCRIPTEN)
     add_executable(
         ${PROJECT_NAME}
         ${PROJECT_SRC}
-        platforms/standalone.cpp
+        platforms/emscripten.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/tmp/_hardcoded_assets.cpp
     )
 
