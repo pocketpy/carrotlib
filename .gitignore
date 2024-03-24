@@ -41,3 +41,4 @@ __pycache__
 main.yml
 
 projects/
+src/tmp/

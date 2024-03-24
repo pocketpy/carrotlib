@@ -14,7 +14,7 @@ assert not os.path.exists(assets_dir)
 shutil.copytree(project, assets_dir, ignore=shutil.ignore_patterns('*.pyi', '*.ase', '*.aseprite', '*.DS_Store'))
 
 # create a cpp file that hardcoded all assets
-cpp_file = 'hardcoded_assets.cpp'
+cpp_file = 'src/tmp/_hardcoded_assets.cpp'
 
 with open(cpp_file, 'wt', encoding='utf-8', newline='\n') as f:
 

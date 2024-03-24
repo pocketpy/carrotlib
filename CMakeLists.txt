@@ -40,7 +40,6 @@ else()
         ${PROJECT_NAME}
         ${PROJECT_SRC}
         platforms/standalone.cpp
-        hardcoded_assets.cpp
     )
 
     target_link_libraries(
