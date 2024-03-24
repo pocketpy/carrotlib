@@ -31,7 +31,7 @@ def gen_hardcoded_assets(type: str):
         std::pair<const unsigned char*, int>,
         std::less<>
     >& Assets) {{
-    ''')
+''')
         SRC_PATTERNS = ['.py', '.pyi', '.json', '.txt', '.csv']
         index = 0
         for root, dirs, files in os.walk(assets_dir):
