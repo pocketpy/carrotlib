@@ -39,7 +39,7 @@ void init_hardcoded_assets(std::map<
                 content = const_f.read()
             print(filepath, len(content) // 1024, 'KB')
             const_array = ','.join([str(b) for b in content])
-            f.write(f'    const unsigned char _{index}[] = {{ {const_array} }};\n')
+            f.write(f'    const static unsigned char _{index}[] = {{ {const_array} }};\n')
             f.write(f'    Assets["{filepath}"] = {{ _{index}, {len(content)} }};\n')
             index += 1
     f.write('}\n')
