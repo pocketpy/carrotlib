@@ -37,7 +37,6 @@ elseif(EMSCRIPTEN)
     )
 
     target_link_libraries(${PROJECT_NAME} 3rdparty)
-
     # -fexceptions is required by pocketpy
     set(EMCC_LINKER_FLAGS "-s USE_GLFW=3 -fexceptions --allow-memory-growth -s TOTAL_MEMORY=512MB -sASYNCIFY -sASSERTIONS")
     set(CMAKE_EXECUTABLE_SUFFIX ".html")

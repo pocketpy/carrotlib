@@ -71,7 +71,7 @@ int main(int argc, char** argv){
 #endif
 
 // desktop platforms
-#if PK_SYS_PLATFORM == 0 || PK_SYS_PLATFORM == 3 || PK_SYS_PLATFORM == 5
+#if PK_IS_DESKTOP_PLATFORM == 1
     if(argc != 2){
         std::cerr << "usage: " << argv[0] << " [project_dir]" << std::endl;
         exit(1);
