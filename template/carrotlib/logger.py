@@ -1,9 +1,12 @@
 from datetime import datetime
+import sys
 
 def _now() -> str:
     return str(datetime.now())
 
 def _colorize(msg: str, fg: int = None, bg: int = None) -> str:
+    if sys.platform not in ('win32', 'linux', 'darwin'):
+        return msg
     if fg is None and bg is None:
         return msg
     elif fg is None:
