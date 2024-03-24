@@ -50,17 +50,19 @@ add_library(
     ${RLIMGUI_SRC}
 )
 
-target_link_libraries(
-    ${PROJECT_NAME}
-    pocketpy
-    box2d
-)
-
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
     add_subdirectory(raylib)
     target_link_libraries(
         ${PROJECT_NAME}
+        pocketpy
+        box2d
         raylib
+    )
+else()
+    target_link_libraries(
+        ${PROJECT_NAME}
+        pocketpy
+        box2d
     )
 endif()
 

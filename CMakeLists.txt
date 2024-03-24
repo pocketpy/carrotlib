@@ -35,15 +35,12 @@ if (ANDROID)
         android EGL GLESv3 log 3rdparty
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
-    message("Building for iOS static library!!")
-
     add_library(${PROJECT_NAME} STATIC
         ${PROJECT_SRC}
         platforms/ios.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/tmp/_hardcoded_assets.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/tmp/_hardcoded_sources.cpp
     )
-
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_IOS=1)
     target_link_libraries(${PROJECT_NAME} 3rdparty)
 elseif(EMSCRIPTEN)
