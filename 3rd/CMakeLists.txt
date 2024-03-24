@@ -30,7 +30,6 @@ option(SUPPORT_FILEFORMAT_MOD "" OFF)
 option(SUPPORT_FILEFORMAT_QOA "" OFF)
 
 option(SUPPORT_STANDARD_FILEIO "" OFF)
-add_subdirectory(raylib)
 
 option(PK_ENABLE_OS "" ON)
 option(PK_NO_EXPORT_C_API "" ON)
@@ -53,10 +52,17 @@ add_library(
 
 target_link_libraries(
     ${PROJECT_NAME}
-    raylib
     pocketpy
     box2d
 )
+
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    add_subdirectory(raylib)
+    target_link_libraries(
+        ${PROJECT_NAME}
+        raylib
+    )
+endif()
 
 target_include_directories(
     ${PROJECT_NAME}
