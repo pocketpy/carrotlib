@@ -9,7 +9,7 @@ from ._viewport import get_mouse_position, get_mouse_delta, set_camera_transform
 from ._event import Event
 from ._light import PointLight2D, GlobalLight2D, ParticleLight2D, Lightmap
 from ._material import UnlitMaterial, DiffuseMaterial, Material
-from ._setup import main, Callbacks
+from ._setup import Game
 
 from ._renderer import *
 from ._resources import *

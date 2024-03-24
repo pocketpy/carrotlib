@@ -20,8 +20,70 @@ from ._material import UnlitMaterial
 class RestartException(Exception):
     pass
 
-class Callbacks:
+class Game:
+    instance: 'Game' = None
+
+    def __init__(self):
+        assert Game.instance is None
+        Game.instance = self
+
+    @property
+    def design_size(self) -> tuple[int, int]:
+        raise NotImplementedError
+    
+    @property
+    def window_size(self) -> tuple[int, int]:
+        return self.design_size
+    
+    @property
+    def title(self):
+        return "Game"
+
     def on_ready(self):
+        rl.SetTraceLogLevel(rl.LOG_WARNING)
+
+        if not rl.IsWindowReady():
+            rl.InitWindow(self.window_size[0], self.window_size[1], self.title)
+            rl.InitAudioDevice()
+            imgui.rlImGuiSetup(True)
+            imgui.GetIO().IniFilename = None    # disable imgui.ini
+
+        # determine viewport scale
+        design_size = self.design_size
+        g.viewport_width, g.viewport_height = design_size
+        assert type(design_size[0]) is int and type(design_size[1]) is int
+
+        if g.viewport_height == 0:
+            assert g.viewport_width != 0
+            g.viewport_scale = rl.GetScreenWidth() / g.viewport_width
+            g.viewport_height = int(rl.GetScreenHeight() / g.viewport_scale)
+        elif g.viewport_width == 0:
+            assert g.viewport_height != 0
+            g.viewport_scale = rl.GetScreenHeight() / g.viewport_height
+            g.viewport_width = int(rl.GetScreenWidth() / g.viewport_scale)
+        else:
+            g.viewport_scale = rl.GetScreenHeight() / g.viewport_height
+
+        print('sys.version:', sys.version)
+        print('viewport_size:', g.viewport_width, g.viewport_height)
+        print('viewport_scale:', g.viewport_scale)
+        print('screen_size:', rl.GetScreenWidth(), rl.GetScreenHeight())
+        print('render_size:', rl.GetRenderWidth(), rl.GetRenderHeight())
+        print('window_scale_dpi:', rl.GetWindowScaleDPI())
+
+        #############################################
+        # temporary variables
+        self.all_nodes = []
+        self.all_nodes__append = self.all_nodes.append
+        self.node_sort_key = lambda n: n.total_z_index()
+        self.interactable_controls = []
+
+        self.PIXEL_UNIT_TRANSFORM = mat3x3.trs(
+                    vec2(g.viewport_width/2, g.viewport_height/2),
+                    0,
+                    vec2(g.PIXEL_PER_UNIT, g.PIXEL_PER_UNIT),
+                )
+        #############################################
         g.rl_camera_2d = rl.Camera2D(vec2(0,0), vec2(0,0), 0, g.viewport_scale)
         g.root = Node('root')
         g.b2_world = box2d.World()
@@ -30,71 +92,12 @@ class Callbacks:
         g.default_material = UnlitMaterial()
         g.root.start_coroutine(_update_managed_sounds_coro())
 
-    def on_pre_render(self):
-        if g.default_lightmap:
-            g.default_lightmap.update()
+    def on_update(self):
+        all_nodes: list[Node] = self.all_nodes
+        all_nodes__append = self.all_nodes__append
+        node_sort_key = self.node_sort_key
+        interactable_controls: list[Control] = self.interactable_controls
 
-    def on_destroy(self):
-        _unload_all_sound_aliases()
-        _unload_all_resources()
-        for child in g.root.children.values():
-            child.destroy()
-        if g.default_lightmap:
-            g.default_lightmap.destroy()
-
-
-def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: tuple[int, int]=None, title="Game"):
-    assert design_size is not None
-
-    if window_size is None:
-        window_size = design_size
-
-    rl.SetTraceLogLevel(rl.LOG_WARNING)
-
-    if not rl.IsWindowReady():
-        rl.InitWindow(window_size[0], window_size[1], title)
-        rl.InitAudioDevice()
-        imgui.rlImGuiSetup(True)
-        imgui.GetIO().IniFilename = None    # disable imgui.ini
-
-    # determine viewport scale
-    g.viewport_width, g.viewport_height = design_size
-    assert type(design_size[0]) is int and type(design_size[1]) is int
-
-    if g.viewport_height == 0:
-        assert g.viewport_width != 0
-        g.viewport_scale = rl.GetScreenWidth() / g.viewport_width
-        g.viewport_height = int(rl.GetScreenHeight() / g.viewport_scale)
-    elif g.viewport_width == 0:
-        assert g.viewport_height != 0
-        g.viewport_scale = rl.GetScreenHeight() / g.viewport_height
-        g.viewport_width = int(rl.GetScreenWidth() / g.viewport_scale)
-    else:
-        g.viewport_scale = rl.GetScreenHeight() / g.viewport_height
-
-    print('sys.version:', sys.version)
-    print('viewport_size:', g.viewport_width, g.viewport_height)
-    print('viewport_scale:', g.viewport_scale)
-    print('screen_size:', rl.GetScreenWidth(), rl.GetScreenHeight())
-    print('render_size:', rl.GetRenderWidth(), rl.GetRenderHeight())
-    print('window_scale_dpi:', rl.GetWindowScaleDPI())
-
-    # intialization
-    callbacks.on_ready()
-
-    # temporary variables
-    all_nodes: list[Node] = []
-    all_nodes__append = all_nodes.append
-    node_sort_key = lambda n: n.total_z_index()
-    interactable_controls: list[Control] = []
-
-    PIXEL_UNIT_TRANSFORM = mat3x3.trs(
-                vec2(g.viewport_width/2, g.viewport_height/2),
-                0,
-                vec2(g.PIXEL_PER_UNIT, g.PIXEL_PER_UNIT),
-            )
-
-    while not rl.WindowShouldClose():
         all_nodes.clear()
         g.root.apply(all_nodes__append)
         fast_apply(Node._ready, all_nodes)
@@ -124,9 +127,10 @@ def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: t
 
         # 4. render
         # update world_to_viewport
-        PIXEL_UNIT_TRANSFORM.matmul(g.world_to_camera, out=g.world_to_viewport)
+        self.PIXEL_UNIT_TRANSFORM.matmul(g.world_to_camera, out=g.world_to_viewport)
 
-        callbacks.on_pre_render()
+        if g.default_lightmap:
+            g.default_lightmap.update()
 
         rl.BeginDrawing()
         rl.BeginMode2D(g.rl_camera_2d)
@@ -172,14 +176,20 @@ def main(callbacks: Callbacks, design_size: tuple[int, int]=None, window_size: t
         imgui.Render()
         rl.EndDrawing()
 
-        # hot reload feature
-        if rl.IsKeyPressed(rl.KEY_F5):
-            callbacks.on_destroy()
-            raise RestartException
+        # TODO: hot reload feature
+        # if rl.IsKeyPressed(rl.KEY_F5):
+        #     callbacks.on_destroy()
+        #     raise RestartException
 
-    callbacks.on_destroy()
+    def on_destroy(self):
+        _unload_all_sound_aliases()
+        _unload_all_resources()
+        for child in g.root.children.values():
+            child.destroy()
+        if g.default_lightmap:
+            g.default_lightmap.destroy()
 
-    imgui.rlImGuiShutdown()
-    rl.CloseAudioDevice()
-    rl.CloseWindow()
-
+        # full destroy!!
+        imgui.rlImGuiShutdown()
+        rl.CloseAudioDevice()
+        rl.CloseWindow()
