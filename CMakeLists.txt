@@ -40,6 +40,7 @@ elseif(EMSCRIPTEN)
         ${PROJECT_SRC}
         platforms/emscripten.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/tmp/_hardcoded_assets.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/tmp/_hardcoded_sources.cpp
     )
 
     target_link_libraries(${PROJECT_NAME} 3rdparty)
