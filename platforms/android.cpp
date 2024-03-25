@@ -22,11 +22,11 @@ namespace ct{
     }
 
     void platform_log_info(const Str& text){
-        __android_log_print(ANDROID_LOG_INFO, "Engine", "%s", text.c_str());
+        __android_log_print(ANDROID_LOG_INFO, "CarrotLib", "%s", text.c_str());
     }
 
     void platform_log_error(const Str& text){
-        __android_log_print(ANDROID_LOG_ERROR, "Engine", "%s", text.c_str());
+        __android_log_print(ANDROID_LOG_ERROR, "CarrotLib", "%s", text.c_str());
     }
 
     unsigned char* platform_load_asset(const char* name_p, int name_size, int* out_size){
