@@ -9,6 +9,7 @@ namespace ct{
     void patch_module_ct(VM* vm, PyObject* mod);
 
     // platform interfaces
+    void platform_init();
     void platform_log_info(const Str& text);
     void platform_log_error(const Str& text);
     
@@ -18,11 +19,3 @@ namespace ct{
 
     Str get_system_info();
 }
-
-#ifdef __ANDROID__
-#include "android_native_app_glue.h"
-
-extern "C" {
-    struct android_app *GetAndroidApp(void);
-}
-#endif

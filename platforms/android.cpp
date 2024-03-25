@@ -2,16 +2,25 @@
 
 using namespace pkpy;
 
+#include "android_native_app_glue.h"
 #include <android/log.h>
 #include <sys/system_properties.h>
 
 using namespace pkpy;
+
+extern "C" {
+    extern struct android_app *GetAndroidApp(void);
+}
 
 static AAssetManager* get_android_asset_manager(){
     return GetAndroidApp()->activity->assetManager;
 }
 
 namespace ct{
+    void platform_init(){
+        // do nothing
+    }
+
     void platform_log_info(const Str& text){
         __android_log_print(ANDROID_LOG_INFO, "Engine", "%s", text.c_str());
     }

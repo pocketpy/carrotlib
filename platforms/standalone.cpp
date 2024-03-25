@@ -8,6 +8,13 @@
 using namespace pkpy;
 
 namespace ct{
+    void platform_init(){
+#if _WIN32
+        SetConsoleOutputCP(CP_UTF8);
+        SetConsoleCP(CP_UTF8);
+#endif
+    }
+
     void platform_log_info(const Str& text){
         std::cout << text;
     }

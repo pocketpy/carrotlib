@@ -57,6 +57,8 @@ extern "C"{
 }
 
 void ios_ready(){
+    platform_init();
+
     vm = new VM();
     vm->_import_handler = &platform_load_asset;
     vm->_stdout = [](const char* s, int n){ platform_log_info(Str(s, n)); };
@@ -94,11 +96,6 @@ void ios_ready(){
     add_module_imgui(vm);
     add_module__ct(vm);
 
-#if _WIN32
-    SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);
-#endif
-
 // desktop platforms
 #if PK_IS_DESKTOP_PLATFORM == 1
     if(main_argc != 2){
@@ -117,7 +114,7 @@ void ios_ready(){
     int out_size;
     unsigned char* out = platform_load_asset(entry_file.data(), entry_file.size(), &out_size);
     if(out == nullptr) fatal_error(_S("failed to load ", entry_file));
-    
+
     Str entry_file_string((char*)out, out_size);
     free(out);
 
