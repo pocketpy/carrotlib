@@ -51,8 +51,11 @@ def gen_hardcoded_assets(type: str):
         f.write('}\n')
         content = f.getvalue()
 
-    with open(cpp_file, 'rt', encoding='utf-8') as f:
-        old_content = f.read()
+    if os.path.exists(cpp_file):
+        with open(cpp_file, 'rt', encoding='utf-8') as f:
+            old_content = f.read()
+    else:
+        old_content = None
     if old_content != content:
         with open(cpp_file, 'wt', encoding='utf-8') as f:
             f.write(content)
