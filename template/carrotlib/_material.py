@@ -43,8 +43,8 @@ return mix(1.055 * pow(rgb, vec3(1.0 / 2.4)) - 0.055,
                 '#version 330 core',
                 '#define _IN_ in',
                 '#define _OUT_ out',
-                '#define _DEFINE_FRAG_OUT_ out vec4 _out_0;',
-                '#define _FRAG_OUT_ _out_0',
+                '#define _DEFINE_FRAG_OUT_COLOR_ out vec4 _out_0;',
+                '#define _FRAG_OUT_COLOR_ _out_0',
                 fsCode
             ])
     elif GRAPHICS_API_OPENGL_ES2 or GRAPHICS_API_OPENGL_ES3:
@@ -62,8 +62,8 @@ return mix(1.055 * pow(rgb, vec3(1.0 / 2.4)) - 0.055,
                 '#version 100',
                 'precision mediump float;',
                 '#define _IN_ varying',
-                '#define _DEFINE_FRAG_OUT_',    # nothing
-                '#define _FRAG_OUT_ gl_FragColor',
+                '#define _DEFINE_FRAG_OUT_COLOR_',    # nothing
+                '#define _FRAG_OUT_COLOR_ gl_FragColor',
                 '#define texture texture2D',
                 fsCode
             ])
@@ -101,7 +101,7 @@ _IN_ vec4 fragColor;
 uniform sampler2D texture0;
 uniform vec4 colDiffuse;        // tint color
 
-_DEFINE_FRAG_OUT_
+_DEFINE_FRAG_OUT_COLOR_
 
 void main()
 {
@@ -109,7 +109,7 @@ void main()
     texel.xyz = sRGBToLinear(texel.xyz);
     vec4 finalColor = texel * colDiffuse * fragColor;
     finalColor.xyz = LinearToSRGB(finalColor.xyz);
-    _FRAG_OUT_ = finalColor;
+    _FRAG_OUT_COLOR_ = finalColor;
 }"""
 
 DIFFUSE_SHADER = """
@@ -154,7 +154,7 @@ uniform sampler2D texture0;
 uniform sampler2D texture1;     // lightmap texture
 uniform vec4 colDiffuse;        // tint color
 
-_DEFINE_FRAG_OUT_
+_DEFINE_FRAG_OUT_COLOR_
 
 void main()
 {
@@ -164,7 +164,7 @@ void main()
     texel.xyz = sRGBToLinear(texel.xyz);
     vec4 finalColor = texel * colDiffuse * fragColor * light;
     finalColor.xyz = LinearToSRGB(finalColor.xyz);
-    _FRAG_OUT_ = finalColor;
+    _FRAG_OUT_COLOR_ = finalColor;
 }"""
 
 class Material:
