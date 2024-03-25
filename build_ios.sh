@@ -11,6 +11,7 @@ cmake --build simulatorarm64 --config Release
 
 function merge() {
     echo "merge $1 $2"
+    find $1/** -name '*.a' -print
     libtool -static -o $1/libGame-$1.a $(find $1/** -name '*.a')
 }
 
