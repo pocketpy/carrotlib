@@ -17,8 +17,6 @@ def _get_cjk_codepoints() -> tuple[int_p, int]:
 def _rlDrawTextBoxed(render: bool, limitHeight: bool, lineSpacing: float, font: rl.Font, text: str, rec: rl.Rectangle, fontSize: float, spacing: float, wordWrap: bool, tint: rl.Color) -> vec2:
     ...
 
-PIXEL_SNAP_SHADER: str
-
 GRAPHICS_API_OPENGL_33: bool
 GRAPHICS_API_OPENGL_ES2: bool
 GRAPHICS_API_OPENGL_ES3: bool

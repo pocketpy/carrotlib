@@ -173,7 +173,8 @@ void ios_destroy(){
     delete vm;
 }
 
-#ifndef PLATFORM_IOS
+// not iOS
+#if PK_SYS_PLATFORM != 2
 int main(int argc, char** argv){
     main_argc = argc;
     main_argv = argv;

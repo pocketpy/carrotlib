@@ -89,40 +89,40 @@ void add_module__ct(VM *vm){
             return VAR(Tuple(VAR(codepoints.data()), VAR(codepoints.size())));
         });
 
-    const char *defaultVShaderCode =
-#if defined(GRAPHICS_API_OPENGL_21)
-    "#version 120                       \n"
-    "attribute vec3 vertexPosition;     \n"
-    "attribute vec2 vertexTexCoord;     \n"
-    "attribute vec4 vertexColor;        \n"
-    "varying vec2 fragTexCoord;         \n"
-    "varying vec4 fragColor;            \n"
-#elif defined(GRAPHICS_API_OPENGL_33)
-    "#version 330                       \n"
-    "in vec3 vertexPosition;            \n"
-    "in vec2 vertexTexCoord;            \n"
-    "in vec4 vertexColor;               \n"
-    "out vec2 fragTexCoord;             \n"
-    "out vec4 fragColor;                \n"
-#endif
-#if defined(GRAPHICS_API_OPENGL_ES2)
-    "#version 100                       \n"
-    "precision mediump float;           \n"     // Precision required for OpenGL ES2 (WebGL) (on some browsers)
-    "attribute vec3 vertexPosition;     \n"
-    "attribute vec2 vertexTexCoord;     \n"
-    "attribute vec4 vertexColor;        \n"
-    "varying vec2 fragTexCoord;         \n"
-    "varying vec4 fragColor;            \n"
-#endif
-    "uniform mat4 mvp;                  \n"
-    "void main()                        \n"
-    "{                                  \n"
-    "  vec3 pos = floor(vertexPosition + 0.5);  \n"
-    "  gl_Position = mvp*vec4(pos, 1.0);        \n"
-    "  fragTexCoord = vertexTexCoord + 1e-5;    \n"
-    "  fragColor = vertexColor;                 \n"
-    "}                                  \n";
-    mod->attr().set("PIXEL_SNAP_SHADER", VAR(defaultVShaderCode));
+//     const char *defaultVShaderCode =
+// #if defined(GRAPHICS_API_OPENGL_21)
+//     "#version 120                       \n"
+//     "attribute vec3 vertexPosition;     \n"
+//     "attribute vec2 vertexTexCoord;     \n"
+//     "attribute vec4 vertexColor;        \n"
+//     "varying vec2 fragTexCoord;         \n"
+//     "varying vec4 fragColor;            \n"
+// #elif defined(GRAPHICS_API_OPENGL_33)
+//     "#version 330                       \n"
+//     "in vec3 vertexPosition;            \n"
+//     "in vec2 vertexTexCoord;            \n"
+//     "in vec4 vertexColor;               \n"
+//     "out vec2 fragTexCoord;             \n"
+//     "out vec4 fragColor;                \n"
+// #endif
+// #if defined(GRAPHICS_API_OPENGL_ES2)
+//     "#version 100                       \n"
+//     "precision mediump float;           \n"     // Precision required for OpenGL ES2 (WebGL) (on some browsers)
+//     "attribute vec3 vertexPosition;     \n"
+//     "attribute vec2 vertexTexCoord;     \n"
+//     "attribute vec4 vertexColor;        \n"
+//     "varying vec2 fragTexCoord;         \n"
+//     "varying vec4 fragColor;            \n"
+// #endif
+//     "uniform mat4 mvp;                  \n"
+//     "void main()                        \n"
+//     "{                                  \n"
+//     "  vec3 pos = floor(vertexPosition + 0.5);  \n"
+//     "  gl_Position = mvp*vec4(pos, 1.0);        \n"
+//     "  fragTexCoord = vertexTexCoord + 1e-5;    \n"
+//     "  fragColor = vertexColor;                 \n"
+//     "}                                  \n";
+//     mod->attr().set("PIXEL_SNAP_SHADER", VAR(defaultVShaderCode));
 
 #if defined(GRAPHICS_API_OPENGL_33)
     mod->attr().set("GRAPHICS_API_OPENGL_33", vm->True);

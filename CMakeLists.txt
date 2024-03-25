@@ -34,6 +34,7 @@ if (ANDROID)
     target_link_libraries(${PROJECT_NAME}Android PRIVATE
         android EGL GLESv3 log 3rdparty
     )
+    target_compile_definitions(${PROJECT_NAME}Android PRIVATE GRAPHICS_API_OPENGL_ES2)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
     add_library(${PROJECT_NAME} STATIC
         ${PROJECT_SRC}
@@ -41,8 +42,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
         ${CMAKE_CURRENT_LIST_DIR}/src/tmp/_hardcoded_assets.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/tmp/_hardcoded_sources.cpp
     )
-    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_IOS GRAPHICS_API_OPENGL_ES3)
     target_link_libraries(${PROJECT_NAME} 3rdparty)
+    # iOS always uses `GRAPHICS_API_OPENGL_ES3`
+    target_compile_definitions(${PROJECT_NAME} PRIVATE GRAPHICS_API_OPENGL_ES3)
 elseif(EMSCRIPTEN)
     add_executable(
         ${PROJECT_NAME}
@@ -51,12 +53,12 @@ elseif(EMSCRIPTEN)
         ${CMAKE_CURRENT_LIST_DIR}/src/tmp/_hardcoded_assets.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/tmp/_hardcoded_sources.cpp
     )
-
     target_link_libraries(${PROJECT_NAME} 3rdparty)
     # -fexceptions is required by pocketpy
     set(EMCC_LINKER_FLAGS "-s USE_GLFW=3 -fexceptions --allow-memory-growth -s TOTAL_MEMORY=512MB -sASYNCIFY -sASSERTIONS")
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS ${EMCC_LINKER_FLAGS})
+    target_compile_definitions(${PROJECT_NAME} PRIVATE GRAPHICS_API_OPENGL_ES2)
 else()
     add_executable(${PROJECT_NAME} ${PROJECT_SRC} platforms/standalone.cpp)
     target_link_libraries(${PROJECT_NAME} 3rdparty)
