@@ -10,7 +10,8 @@ cmake -B simulatorarm64 -G Xcode $FLAGS -DPLATFORM=SIMULATORARM64 ../..
 cmake --build simulatorarm64 --config Release
 
 function merge() {
-    find $1/**/$2/*.a | xargs libtool -static -o $1/libGame-$1.a
+    echo "merge $1 $2"
+    libtool -static -o $1/libGame-$1.a $(find $1/** -name '*.a')
 }
 
 merge os64 Release-iphoneos
