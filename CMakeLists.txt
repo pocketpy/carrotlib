@@ -41,7 +41,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
         ${CMAKE_CURRENT_LIST_DIR}/src/tmp/_hardcoded_assets.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/tmp/_hardcoded_sources.cpp
     )
-    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_IOS)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_IOS GRAPHICS_API_OPENGL_ES3)
     target_link_libraries(${PROJECT_NAME} 3rdparty)
 elseif(EMSCRIPTEN)
     add_executable(
