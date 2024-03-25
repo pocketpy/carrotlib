@@ -43,8 +43,8 @@ return mix(1.055 * pow(rgb, vec3(1.0 / 2.4)) - 0.055,
                 '#version 330 core',
                 '#define _IN_ in',
                 '#define _OUT_ out',
-                '#define _DEFINE_FRAG_OUT_ out vec4 __out_0;',
-                '#define _FRAG_OUT_ __out_0',
+                '#define _DEFINE_FRAG_OUT_ out vec4 _out_0;',
+                '#define _FRAG_OUT_ _out_0',
                 fsCode
             ])
     elif GRAPHICS_API_OPENGL_ES2 or GRAPHICS_API_OPENGL_ES3:
