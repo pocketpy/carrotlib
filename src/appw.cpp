@@ -124,16 +124,21 @@ void add_module__ct(VM *vm){
     "}                                  \n";
     mod->attr().set("PIXEL_SNAP_SHADER", VAR(defaultVShaderCode));
 
-#if defined(GRAPHICS_API_OPENGL_21)
-    int GLSL_VERSION = 120;
-#elif defined(GRAPHICS_API_OPENGL_33)
-    int GLSL_VERSION = 330;
-#elif defined(GRAPHICS_API_OPENGL_ES2)
-    int GLSL_VERSION = 100;
+#if defined(GRAPHICS_API_OPENGL_33)
+    mod->attr().set("GRAPHICS_API_OPENGL_33", vm->True);
 #else
-    int GLSL_VERSION = 0;
+    mod->attr().set("GRAPHICS_API_OPENGL_33", vm->False);
 #endif
-    mod->attr().set("GLSL_VERSION", VAR(GLSL_VERSION));
+#if defined(GRAPHICS_API_OPENGL_ES2)
+    mod->attr().set("GRAPHICS_API_OPENGL_ES2", vm->True);
+#else
+    mod->attr().set("GRAPHICS_API_OPENGL_ES2", vm->False);
+#endif
+#if defined(GRAPHICS_API_OPENGL_ES3)
+    mod->attr().set("GRAPHICS_API_OPENGL_ES3", vm->True);
+#else
+    mod->attr().set("GRAPHICS_API_OPENGL_ES3", vm->False);
+#endif
 
     _bind(vm, mod, "_rlDrawTextBoxed(render: bool, limitHeight: bool, lineSpacing: float, font: rl.Font, text: str, rec: rl.Rectangle, fontSize: float, spacing: float, wordWrap: bool, tint: rl.Color) -> vec2", &DrawTextBoxed);
 }

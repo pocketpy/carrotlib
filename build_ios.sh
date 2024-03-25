@@ -11,12 +11,15 @@ cmake --build simulatorarm64 --config Release
 
 function merge() {
     echo "merge $1 $2"
+    rm -f $1/libGame-$1.a
     find $1/** -name '*.a' -print
     libtool -static -o $1/libGame-$1.a $(find $1/** -name '*.a')
 }
 
 merge os64 Release-iphoneos
 merge simulatorarm64 Release-iphonesimulator
+
+rm -rf Game.xcframework
 
 xcodebuild -create-xcframework \
     -library os64/libGame-os64.a \

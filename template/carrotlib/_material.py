@@ -1,38 +1,82 @@
 import raylib as rl
+from _carrotlib import GRAPHICS_API_OPENGL_33, GRAPHICS_API_OPENGL_ES2, GRAPHICS_API_OPENGL_ES3
+
 from ._light import Lightmap
 from . import g as _g
 
-FS_INCLUDE = """
+def _compile_shader(vsCode: str = None, fsCode: str = None):
+    FS_INCLUDE = """
 vec3 sRGBToLinear(vec3 rgb)
 {
-  // See https://gamedev.stackexchange.com/questions/92015/optimized-linear-to-srgb-glsl
-  return mix(pow((rgb + 0.055) * (1.0 / 1.055), vec3(2.4)),
-             rgb * (1.0/12.92),
-             lessThanEqual(rgb, vec3(0.04045)));
+// See https://gamedev.stackexchange.com/questions/92015/optimized-linear-to-srgb-glsl
+return mix(pow((rgb + 0.055) * (1.0 / 1.055), vec3(2.4)),
+            rgb * (1.0/12.92),
+            lessThanEqual(rgb, vec3(0.04045)));
 }
 
 vec3 LinearToSRGB(vec3 rgb)
 {
-  // See https://gamedev.stackexchange.com/questions/92015/optimized-linear-to-srgb-glsl
-  return mix(1.055 * pow(rgb, vec3(1.0 / 2.4)) - 0.055,
-             rgb * 12.92,
-             lessThanEqual(rgb, vec3(0.0031308)));
+// See https://gamedev.stackexchange.com/questions/92015/optimized-linear-to-srgb-glsl
+return mix(1.055 * pow(rgb, vec3(1.0 / 2.4)) - 0.055,
+            rgb * 12.92,
+            lessThanEqual(rgb, vec3(0.0031308)));
 }
 """
+    if fsCode is not None:
+        fsCode = FS_INCLUDE + fsCode
 
-UNLIT_SHADER = """#version 330 core
+    if GRAPHICS_API_OPENGL_33:
+        if vsCode is not None:
+            vsCode = '\n'.join([
+                '#version 330 core',
+                '#define _IN_ in',
+                '#define _OUT_ out',
+                vsCode
+            ])
+        if fsCode is not None:
+            fsCode = '\n'.join([
+                '#version 330 core',
+                '#define _IN_ in',
+                '#define _OUT_ out',
+                '#define _DEFINE_FRAG_OUT_ out vec4 __out_0;',
+                '#define _FRAG_OUT_ __out_0',
+                fsCode
+            ])
+    elif GRAPHICS_API_OPENGL_ES2 or GRAPHICS_API_OPENGL_ES3:
+        if vsCode is not None:
+            vsCode = '\n'.join([
+                '#version 100',
+                'precision mediump float;',
+                '#define _IN_ attribute',
+                '#define _OUT_ varying',
+                vsCode
+            ])
+        if fsCode is not None:
+            fsCode = '\n'.join([
+                '#version 100',
+                'precision mediump float;',
+                '#define _IN_ varying',
+                '#define _DEFINE_FRAG_OUT_',    # nothing
+                '#define _FRAG_OUT_ gl_FragColor',
+                fsCode
+            ])
+    else:
+        raise RuntimeError("current graphics API not supported")
+    return vsCode, fsCode
 
+
+UNLIT_SHADER = """
 // Input vertex attributes
-in vec3 vertexPosition;
-in vec2 vertexTexCoord;
-in vec4 vertexColor;
+_IN_ vec3 vertexPosition;
+_IN_ vec2 vertexTexCoord;
+_IN_ vec4 vertexColor;
 
 // Input uniform values
 uniform mat4 mvp;
 
 // Output vertex attributes (to fragment shader)
-out vec2 fragTexCoord;
-out vec4 fragColor;
+_OUT_ vec2 fragTexCoord;
+_OUT_ vec4 fragColor;
 
 void main()
 {
@@ -41,7 +85,7 @@ void main()
     vec4 clipPos = mvp * vec4(vertexPosition, 1.0);
     gl_Position = clipPos;
 }
-""", '#version 330 core' + FS_INCLUDE + """
+""", """
 // Input vertex attributes (from vertex shader)
 in vec2 fragTexCoord;
 in vec4 fragColor;
@@ -50,31 +94,30 @@ in vec4 fragColor;
 uniform sampler2D texture0;
 uniform vec4 colDiffuse;        // tint color
 
-// Output fragment color
-out vec4 finalColor;
+_DEFINE_FRAG_OUT_
 
 void main()
 {
     vec4 texel = texture(texture0, fragTexCoord);
     texel.xyz = sRGBToLinear(texel.xyz);
-    finalColor = texel * colDiffuse * fragColor;
+    vec4 finalColor = texel * colDiffuse * fragColor;
     finalColor.xyz = LinearToSRGB(finalColor.xyz);
+    _FRAG_OUT_ = finalColor;
 }"""
 
-DIFFUSE_SHADER = """#version 330 core
-
+DIFFUSE_SHADER = """
 // Input vertex attributes
-in vec3 vertexPosition;
-in vec2 vertexTexCoord;
-in vec4 vertexColor;
+_IN_ vec3 vertexPosition;
+_IN_ vec2 vertexTexCoord;
+_IN_ vec4 vertexColor;
 
 // Input uniform values
 uniform mat4 mvp;
 
 // Output vertex attributes (to fragment shader)
-out vec4 screenPos;
-out vec2 fragTexCoord;
-out vec4 fragColor;
+_OUT_ vec4 screenPos;
+_OUT_ vec2 fragTexCoord;
+_OUT_ vec4 fragColor;
 
 vec4 ComputeScreenPos(vec4 pos){
     vec4 o;
@@ -93,27 +136,28 @@ void main()
     screenPos = ComputeScreenPos(clipPos);
     gl_Position = clipPos;
 }
-""", '#version 330 core' + FS_INCLUDE + """
+""", """
 // Input vertex attributes (from vertex shader)
-in vec2 fragTexCoord;
-in vec4 fragColor;
-in vec4 screenPos;
+_IN_ vec2 fragTexCoord;
+_IN_ vec4 fragColor;
+_IN_ vec4 screenPos;
 
 // Input uniform values
 uniform sampler2D texture0;
 uniform sampler2D texture1;     // lightmap texture
 uniform vec4 colDiffuse;        // tint color
 
-// Output fragment color
-out vec4 finalColor;
+_DEFINE_FRAG_OUT_
+
 void main()
 {
     vec2 screenCoord = screenPos.xy / screenPos.w;
     vec4 texel = texture(texture0, fragTexCoord);   // Get texel color
     vec4 light = texture(texture1, screenCoord);    // Get light color
     texel.xyz = sRGBToLinear(texel.xyz);
-    finalColor = texel * colDiffuse * fragColor * light;
+    vec4 finalColor = texel * colDiffuse * fragColor * light;
     finalColor.xyz = LinearToSRGB(finalColor.xyz);
+    _FRAG_OUT_ = finalColor;
 }"""
 
 class Material:
@@ -122,7 +166,7 @@ class Material:
     def __init__(self):
         cls = type(self)
         if cls not in self.cached_shaders:
-            self.cached_shaders[cls] = rl.LoadShaderFromMemory(*cls.glsl())
+            self.cached_shaders[cls] = rl.LoadShaderFromMemory(*_compile_shader(*cls.glsl()))
         self.shader = self.cached_shaders[cls]
 
     @classmethod

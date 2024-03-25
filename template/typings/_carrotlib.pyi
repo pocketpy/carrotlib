@@ -18,7 +18,10 @@ def _rlDrawTextBoxed(render: bool, limitHeight: bool, lineSpacing: float, font: 
     ...
 
 PIXEL_SNAP_SHADER: str
-GLSL_VERSION: int
+
+GRAPHICS_API_OPENGL_33: bool
+GRAPHICS_API_OPENGL_ES2: bool
+GRAPHICS_API_OPENGL_ES3: bool
 
 def _bake_global_light(image: rl.Image_p, color: rl.Color, intensity: float) -> None:
     ...
