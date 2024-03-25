@@ -5,7 +5,7 @@ import raylib as rl
 
 import imgui
 
-from _carrotlib import fast_apply
+from _carrotlib import fast_apply, GRAPHICS_API_OPENGL_33, GRAPHICS_API_OPENGL_ES2, GRAPHICS_API_OPENGL_ES3
 
 from . import g
 from ._node import Node
@@ -70,6 +70,9 @@ class Game:
         print('screen_size:', rl.GetScreenWidth(), rl.GetScreenHeight())
         print('render_size:', rl.GetRenderWidth(), rl.GetRenderHeight())
         print('window_scale_dpi:', rl.GetWindowScaleDPI())
+        print('GRAPHICS_API_OPENGL_33:', GRAPHICS_API_OPENGL_33)
+        print('GRAPHICS_API_OPENGL_ES2:', GRAPHICS_API_OPENGL_ES2)
+        print('GRAPHICS_API_OPENGL_ES3:', GRAPHICS_API_OPENGL_ES3)
 
         #############################################
         # temporary variables
