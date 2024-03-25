@@ -51,9 +51,9 @@ static void fatal_error(Str msg){
     }
 
 extern "C"{
-    void ios_ready();
-    void ios_update();
-    void ios_destroy();
+    PK_EXPORT void ios_ready();
+    PK_EXPORT void ios_update();
+    PK_EXPORT void ios_destroy();
 }
 
 void ios_ready(){
