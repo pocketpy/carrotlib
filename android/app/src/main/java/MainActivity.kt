@@ -7,6 +7,8 @@ import android.view.View
 class MainActivity : NativeActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // https://developer.android.com/develop/ui/views/layout/immersive
+        // https://developer.android.com/develop/ui/views/layout/edge-to-edge#system-gesture-insets
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
