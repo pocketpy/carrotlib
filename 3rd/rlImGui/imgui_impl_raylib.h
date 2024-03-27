@@ -6,7 +6,7 @@
 *
 *   LICENSE: ZLIB
 *
-*   Copyright (c) 2023 Jeffery Myers
+*   Copyright (c) 2024 Jeffery Myers
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -44,11 +44,11 @@
 #include "imgui.h"      // IMGUI_IMPL_API
 #ifndef IMGUI_DISABLE
 
-IMGUI_IMPL_API bool ImGui_ImplRaylib_Init();
-IMGUI_IMPL_API void Imgui_ImplRaylib_BuildFontAtlas();
-IMGUI_IMPL_API void ImGui_ImplRaylib_Shutdown();
-IMGUI_IMPL_API void ImGui_ImplRaylib_NewFrame();
+IMGUI_IMPL_API bool ImGui_ImplRaylib_Init(void);
+IMGUI_IMPL_API void Imgui_ImplRaylib_BuildFontAtlas(void);
+IMGUI_IMPL_API void ImGui_ImplRaylib_Shutdown(void);
+IMGUI_IMPL_API void ImGui_ImplRaylib_NewFrame(void);
 IMGUI_IMPL_API void ImGui_ImplRaylib_RenderDrawData(ImDrawData* draw_data);
-IMGUI_IMPL_API bool ImGui_ImplRaylib_ProcessEvents();
+IMGUI_IMPL_API bool ImGui_ImplRaylib_ProcessEvents(void);
 
 #endif // #ifndef IMGUI_DISABLE
