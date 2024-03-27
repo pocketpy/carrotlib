@@ -40,8 +40,6 @@ class Game:
         return "Game"
 
     def on_ready(self):
-        rl.SetTraceLogLevel(rl.LOG_WARNING)
-
         if not rl.IsWindowReady():
             rl.InitWindow(self.window_size[0], self.window_size[1], self.title)
             rl.InitAudioDevice()
