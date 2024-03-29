@@ -94,6 +94,36 @@ def hello_coro():
 # 启动协程：node.start_coroutine(hello_coro())
 ```
 
+## 绘图
+
+#### 绘制纹理
+
+`cl.draw_texture(transform: mat3x3, tex: rl.Texture2D, src_rect: rl.Rectangle=None, flip_x=False, flip_y=False, color: rl.Color = None, origin: vec2 = None)`
+
++ `transform`，基础变换
++ `tex`，纹理
++ `src_rect`，源矩形
++ `flip_x`，翻转x轴
++ `flip_y`，翻转y轴
++ `color`，颜色
++ `origin`，锚点（默认为中心)
+
+#### 绘制文本
+
+`cl.draw_text(font: rl.Font, pos: vec2, text: str, font_size: int, color: rl.Color, spacing: int = 0, line_spacing: int = 0, origin: vec2 = None)`
+
+#### 绘制圆
+
+`cl.draw_circle(center: vec2, radius: float, color: rl.Color, solid=True)`
+
+#### 绘制矩形
+
+`cl.draw_rect(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = None, solid=True)`
+
+#### 绘制线段
+
+`cl.draw_line(begin: vec2, end: vec2, color: rl.Color)`
+
 ## 资源管理
 
 游戏中会用到很多资源，比如纹理、声音、字体和源代码等，它们被存放在对应的项目文件夹中。
