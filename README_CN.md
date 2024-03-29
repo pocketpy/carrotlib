@@ -145,9 +145,17 @@ font: rl.Font = cl.load_font_cjk("path/to/font.ttf")
 sound: rl.Sound = cl.load_sound("path/to/sound.wav")
 ```
 
+> 要播放一次性的声音，可使用`cl.play_sound`。
+
 ## 构建与发布
 
-#### Windows
+在构建之前，运行如下命令来预构建。
+
+```
+python scripts\prebuild.py projects\<your_project>
+```
+
+#### Windows/Linux/MacOS
 
 ```
 mkdir build
@@ -161,15 +169,22 @@ Debug\Game.exe ..\..\projects\<your_project>
 
 #### Android
 
-First sync your project folder with the android assets folder.
 ```bash
-python scripts\prebuild.py projects\<your_project>
-```
-
-Run the following commands to build the android project.
-```bash
-pip install cmake==3.26.3
 cd android
 chmod +x ./gradlew
 ./gradlew --no-daemon assembleDebug
 ```
+
+#### iOS
+
+```
+bash build_ios.h
+```
+
+#### Web
+
+```
+bash build_web.h
+python -m http.server -d build/web
+```
+
