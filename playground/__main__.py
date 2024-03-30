@@ -98,7 +98,9 @@ class ProjectView:
 
         full_width = imgui.get_window_width()
         if imgui.button(f"{Icons.ICON_FOLDER} 新建项目", width=full_width):
-            backend.new_project("...")
+            backend.new_project("new_project")
+            self.root = "projects/new_project"
+            self.selected_file = f"{self.root}/main.py"
         if imgui.button(f"{Icons.ICON_FOLDER_OPEN} 打开项目", width=full_width):
             backend.run_project(os.path.abspath(self.root))
         if imgui.button(f"{Icons.ICON_CODE} 启动 VSCode", width=full_width):

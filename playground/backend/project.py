@@ -12,8 +12,7 @@ project_pyright_config = {
 }
 
 def sync_project_template(project: str):
-    project_path = os.path.join("projects", project)
-    if not os.path.exists(project_path):
+    if not os.path.exists(project):
         print(f"{project} 不存在")
         return
     for td in ['carrotlib']:
@@ -29,7 +28,21 @@ def new_project(name: str):
         print(f"项目 {name} 已存在")
         return
     os.makedirs(project_path)
-    sync_project_template(name)
+    sync_project_template(project_path)
+    # create main.py
+    with open(os.path.join(project_path, "main.py"), "wt") as f:
+        f.write("""
+import carrotlib as cl
+
+class MyGame(cl.Game):
+    def on_ready(self):
+        super().on_ready()
+        # TODO: 初始化你的游戏
+
+    @property
+    def design_size(self):
+        return (1280, 720)
+""")
 
 def run_project(path: str):
     assert is_framework_compiled()
