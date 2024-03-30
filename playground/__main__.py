@@ -14,7 +14,6 @@ from playground import backend
 from playground.IconsFontAwesome6 import IconsFontAwesome6 as Icons
 from playground.IconsFontAwesome6Brands import IconsFontAwesome6Brands as IconBrands
 
-
 class ProjectView:
     def __init__(self):
         glyph_ranges = imgui.get_io().fonts.get_glyph_ranges_chinese()
@@ -104,7 +103,13 @@ class ProjectView:
         if imgui.button(f"{Icons.ICON_FOLDER_OPEN} 打开项目", width=full_width):
             backend.run_project(os.path.abspath(self.root))
         if imgui.button(f"{Icons.ICON_CODE} 启动 VSCode", width=full_width):
-            backend.run_project(os.path.abspath(self.root))
+            if sys.platform == "win32":
+                import winreg
+                key = winreg.OpenKey(winreg.HKEY_CLASSES_ROOT, "Applications\\code.exe\\shell\\open\\command")
+                code_path = winreg.QueryValue(key, None)
+                backend.cmd([code_path.replace("%1", os.path.abspath(self.root))])
+            else:
+                raise NotImplementedError
 
         imgui.spacing()
 
@@ -149,7 +154,6 @@ class ProjectView:
         imgui.next_column()
 
         if sys.platform != "darwin":
-            # disable
             imgui.push_style_var(imgui.STYLE_ALPHA, 0.4)
             if imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width):
                 pass
