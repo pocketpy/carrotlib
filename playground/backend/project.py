@@ -27,6 +27,7 @@ def sync_project_template(project: str):
     # create .gitignore
     with open(os.path.join(project, ".gitignore"), "wt", encoding='utf-8') as f:
         f.write('__pycache__/\n')
+        f.write('build/\n')
         f.write('.vscode/\n')
         f.write('carrotlib/\n')
         f.write('*.DS_Store\n')

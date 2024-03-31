@@ -65,7 +65,7 @@ def prebuild(project: str, hardcode_assets: bool):
     assert not os.path.exists(ANDROID_ASSETS_DIR)
     # ignore build/
     shutil.copytree(project, ANDROID_ASSETS_DIR, ignore=shutil.ignore_patterns(
-        '*.pyi', '*.ase', '*.aseprite', '*.DS_Store', 'pyrightconfig.json', 'build'
+        '*.pyi', '*.ase', '*.aseprite', '*.DS_Store', 'pyrightconfig.json', 'build', '.gitignore',
     ))
     print(f"{project} 预购建成功")
 

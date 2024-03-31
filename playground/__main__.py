@@ -171,6 +171,8 @@ class ProjectView:
 
         full_width = imgui.get_window_width()
         if imgui.button(f"{Icons.ICON_FOLDER} 新建项目", width=full_width):
+            if not os.path.exists("projects"):
+                os.mkdir("projects")
             path = backend.open_directory("选择一个空文件夹作为新项目的存储位置", "projects")
             if path:
                 if len(os.listdir(path)) != 0:
