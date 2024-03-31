@@ -52,5 +52,7 @@ class MyGame(cl.Game):
 """)
 
 def run_project(path: str):
-    assert is_framework_compiled()
+    if not is_framework_compiled():
+        print("框架未编译，请先编译框架")
+        return
     cmd([FRAMEWORK_EXE_PATH, path], cwd=FRAMEWORK_BUILD_DIR)
