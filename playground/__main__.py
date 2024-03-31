@@ -28,6 +28,13 @@ class Timer:
         return False
 
 
+def get_file_time(path):
+    if not os.path.exists(path):
+        return None
+    t = os.path.getmtime(path)
+    t = datetime.fromtimestamp(t).strftime("%Y-%m-%d %H:%M:%S")
+    return t
+
 class ProjectView:
     def load_font(self, size, glyph_ranges):
         imgui.get_io().fonts.add_font_from_file_ttf(
@@ -54,7 +61,6 @@ class ProjectView:
         self.task = None
 
         self.devices = []
-        self.framework_compile_time = None
         self.timer = Timer(1.0)
 
         glyph_ranges = imgui.get_io().fonts.get_glyph_ranges_chinese()
@@ -191,15 +197,7 @@ class ProjectView:
 
     def render(self):
         if project_view.timer.test_and_set():
-            # update devices
             project_view.devices = backend.get_android_devices()
-            # test if framework is compiled
-            if backend.is_framework_compiled():
-                t = os.path.getmtime(backend.FRAMEWORK_EXE_PATH)
-                t = datetime.fromtimestamp(t).strftime("%Y-%m-%d %H:%M:%S")
-                project_view.framework_compile_time = t
-            else:
-                project_view.framework_compile_time = None
 
         # -------------------------- #
         window_width, window_height = imgui.get_window_size()
@@ -240,10 +238,14 @@ class ProjectView:
 
         with imgui.begin_tab_item(" 控制台 ") as tab:
             if tab.selected:
-                if project_view.framework_compile_time:
-                    imgui.text(f"框架编译时间: {project_view.framework_compile_time}")
+                framework_compile_time = get_file_time(backend.FRAMEWORK_EXE_PATH)
+                project_template_time = get_file_time(os.path.join(project_view.root_abspath, "carrotlib"))
+                framework_template_time = get_file_time("template/carrotlib")
+                imgui.text(f"框架编译时间: {framework_compile_time}")
+                if project_template_time != framework_template_time:
+                    imgui.text(f"模板更新时间: {project_template_time} (需要同步)")
                 else:
-                    imgui.text("框架编译时间: 未编译")
+                    imgui.text(f"模板更新时间: {project_template_time}")
 
                 imgui.spacing()
 
