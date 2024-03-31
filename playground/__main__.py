@@ -145,11 +145,8 @@ class ProjectView:
         imgui.next_column()
         if imgui.button(f"{Icons.ICON_CIRCLE_PLAY} 运行项目", width=column_width):
             backend.run_project(self.root_abspath)
+        # ------------------------- #
         imgui.next_column()
-
-        imgui.columns(1)
-        imgui.columns(4, border=False)
-
         if imgui.button(f"{IconBrands.ICON_WINDOWS} 构建 Windows", width=column_width):
             pass
         imgui.next_column()
