@@ -19,10 +19,12 @@ class WebDevice(MobileDevice):
     pass
 
 def get_android_devices() -> list[AndroidDevice]:
-    # adb devices -l
-    pipe = subprocess.Popen(["adb", "devices", "-l"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
-    stdout, stderr = pipe.communicate()
-    if pipe.returncode != 0:
+    try:
+        pipe = subprocess.Popen(["adb", "devices", "-l"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
+        stdout, stderr = pipe.communicate()
+        if pipe.returncode != 0:
+            return []
+    except:
         return []
     
     devices = []
