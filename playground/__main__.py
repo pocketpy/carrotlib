@@ -29,6 +29,27 @@ class Timer:
 
 
 class ProjectView:
+    def load_font(self, size, glyph_ranges):
+        imgui.get_io().fonts.add_font_from_file_ttf(
+            "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
+            size,
+            glyph_ranges=glyph_ranges
+        )
+        icon_min, icon_max = Icons.ICON_MIN, Icons.ICON_MAX
+        imgui.get_io().fonts.add_font_from_file_ttf(
+            f"playground/assets/fonts/{Icons.FONT_ICON_FILE_NAME_FAR}",
+            size,
+            font_config=imgui.FontConfig(merge_mode=True),
+            glyph_ranges=imgui.core.GlyphRanges([icon_min, icon_max, 0])
+        )
+        icon_min, icon_max = IconBrands.ICON_MIN, IconBrands.ICON_MAX
+        return imgui.get_io().fonts.add_font_from_file_ttf(
+            f"playground/assets/fonts/{IconBrands.FONT_ICON_FILE_NAME_FAB}",
+            size,
+            font_config=imgui.FontConfig(merge_mode=True),
+            glyph_ranges=imgui.core.GlyphRanges([icon_min, icon_max, 0])
+        )
+
     def __init__(self):
         self.task = None
 
@@ -37,26 +58,8 @@ class ProjectView:
         self.timer = Timer(1.0)
 
         glyph_ranges = imgui.get_io().fonts.get_glyph_ranges_chinese()
-        imgui.get_io().fonts.add_font_from_file_ttf(
-            "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
-            24,
-            glyph_ranges=glyph_ranges
-        )
-        icon_min, icon_max = Icons.ICON_MIN, Icons.ICON_MAX
-        imgui.get_io().fonts.add_font_from_file_ttf(
-            f"playground/assets/fonts/{Icons.FONT_ICON_FILE_NAME_FAR}",
-            24,
-            font_config=imgui.FontConfig(merge_mode=True),
-            glyph_ranges=imgui.core.GlyphRanges([icon_min, icon_max, 0])
-        )
-        icon_min, icon_max = IconBrands.ICON_MIN, IconBrands.ICON_MAX
-        self.default_font = imgui.get_io().fonts.add_font_from_file_ttf(
-            f"playground/assets/fonts/{IconBrands.FONT_ICON_FILE_NAME_FAB}",
-            24,
-            font_config=imgui.FontConfig(merge_mode=True),
-            glyph_ranges=imgui.core.GlyphRanges([icon_min, icon_max, 0])
-        )
 
+        self.default_font = self.load_font(24, glyph_ranges)
         self.source_font = imgui.get_io().fonts.add_font_from_file_ttf(
             "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
             24,
@@ -248,11 +251,12 @@ class ProjectView:
                 imgui.text(f"已连接设备：{len(self.devices)}")
                 for device in self.devices:
                     imgui.text(f"{IconBrands.ICON_ANDROID} {device.title}")
-                    imgui.same_line(spacing=10)
-                    if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} 运行"):
+                    imgui.same_line(spacing=32)
+
+                    if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} Run"):
                         project_view.start_task(backend.install_apk_and_run(device, self.root_abspath))
-                    imgui.same_line(spacing=10)
-                    if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} 构建并运行"):
+                    imgui.same_line(spacing=16)
+                    if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} Build & Run"):
                         project_view.start_task(backend.SeqTask(
                             backend.build_android(self.root_abspath, open_dir=False),
                             backend.install_apk_and_run(device, self.root_abspath)
