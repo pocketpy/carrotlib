@@ -45,9 +45,39 @@ class ProjectView:
         )
 
         imgui.get_io().delta_time = 1.0 / 60.0
+        
+        self._selected_file = None
+        self._selected_content = None
+        self.open_project("projects/magicpd")
 
-        self.root = "projects/magicpd"
-        self.selected_file = f"main.py"
+    @property
+    def selected_file(self):
+        return self._selected_file
+    
+    @property
+    def selected_content(self):
+        return self._selected_content
+    
+    @selected_file.setter
+    def selected_file(self, value: str):
+        self._selected_file = value
+        if value:
+            try:
+                with open(self.selected_file_abspath, "rt") as f:
+                    self._selected_content = f.read()
+            except Exception as e:
+                print(e)
+                self._selected_content = None
+        glfw.set_window_title(
+            glfw.get_current_context(),
+            f"CarrotLib🥕 Playground - {os.path.basename(self.root)} - {self.selected_file}"
+        )
+
+    def open_project(self, root: str):
+        if not root or not os.path.exists(root):
+            return
+        self.root = root
+        self.selected_file = 'main.py'
 
     @property
     def root_abspath(self):
@@ -80,16 +110,13 @@ class ProjectView:
         input_fg_color = (171/255, 178/255, 191/255, 1.0)
         imgui.push_style_color(imgui.COLOR_FRAME_BACKGROUND, *input_bg_color)
         imgui.push_style_color(imgui.COLOR_TEXT, *input_fg_color)
-        if not os.path.exists(self.selected_file_abspath):
-            self.selected_file = None
         if self.selected_file:
-            flags = 0
-            try:
-                with open(self.selected_file_abspath, "rt") as f:
-                    buffer = f.read()
-            except:
+            if self.selected_content is None:
+                flags = imgui.INPUT_TEXT_READ_ONLY
                 buffer = "[不支持的文件类型]"
-                flags |= imgui.INPUT_TEXT_READ_ONLY
+            else:
+                flags = 0
+                buffer = self.selected_content
             width, height = imgui.get_window_size()
             buffer = imgui.input_text_multiline(
                 "##source",
@@ -108,12 +135,17 @@ class ProjectView:
 
         full_width = imgui.get_window_width()
         if imgui.button(f"{Icons.ICON_FOLDER} 新建项目", width=full_width):
-            backend.new_project("new_project")
-            self.root = "projects/new_project"
-            self.selected_file = "main.py"
+            path = backend.open_directory("选择一个空文件夹作为新项目的存储位置", "projects")
+            if path:
+                if len(os.listdir(path)) != 0:
+                    print("文件夹不为空，无法创建项目")
+                else:
+                    backend.new_project(path)
+                    self.open_project(path)
         if imgui.button(f"{Icons.ICON_FOLDER_OPEN} 打开项目", width=full_width):
-            backend.run_project(self.root_abspath)
-
+            path = backend.open_directory("选择项目", "projects")
+            if path:
+                self.open_project(path)
         imgui.spacing()
 
         self.render_file_hierarchy(self.root)
@@ -154,17 +186,14 @@ class ProjectView:
             backend.build_android(self.root_abspath)
         imgui.next_column()
 
-        if sys.platform != "darwin":
-            imgui.push_style_var(imgui.STYLE_ALPHA, 0.4)
-            if imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width):
-                pass
-            imgui.pop_style_var()
-        else:
-            if imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width):
-                pass
+        imgui.push_style_var(imgui.STYLE_ALPHA, 0.4)
+        if imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width):
+            pass
         imgui.next_column()
         if imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width):
             pass
+        imgui.pop_style_var()
+
         imgui.next_column()
 
         imgui.columns(1)

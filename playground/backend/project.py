@@ -26,15 +26,11 @@ def sync_project_template(project: str):
         f.write(json.dumps(project_pyright_config, indent=4))
     print(f"{project} 模板同步完成")
 
-def new_project(name: str):
-    project_path = os.path.join("projects", name)
-    if os.path.exists(project_path):
-        print(f"项目 {name} 已存在")
-        return
-    os.makedirs(project_path)
-    sync_project_template(project_path)
+def new_project(root: str):
+    assert len(os.listdir(root)) == 0
+    sync_project_template(root)
     # create main.py
-    with open(os.path.join(project_path, "main.py"), "wt") as f:
+    with open(os.path.join(root, "main.py"), "wt") as f:
         f.write("""
 import carrotlib as cl
 

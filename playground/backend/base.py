@@ -1,11 +1,11 @@
 import subprocess
 import sys
 
-def cmd(args, cwd=None, shell=False):
+def cmd(args, cwd=None, shell=False) -> bool:
     print(' '.join(args))
     pipe = subprocess.Popen(args, cwd=cwd, shell=shell)
     pipe.wait()
-    assert pipe.returncode == 0, pipe.returncode
+    return pipe.returncode == 0
 
 def start_vscode(file: str, root: str):
     if sys.platform == "win32":

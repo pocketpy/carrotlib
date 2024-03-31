@@ -16,10 +16,10 @@ FRAMEWORK_BUILD_DIR = f"build/{sys.platform}"
 def compile_framework():
     shutil.rmtree(FRAMEWORK_BUILD_DIR, ignore_errors=True)
     os.makedirs(FRAMEWORK_BUILD_DIR, exist_ok=True)
-    # cmake ../..
-    cmd(["cmake", "../.."], cwd=FRAMEWORK_BUILD_DIR)
-    # cmake --build . --config Release
-    cmd(["cmake", "--build", ".", "--config", "Release"], cwd=FRAMEWORK_BUILD_DIR)
+    if not cmd(["cmake", "../.."], cwd=FRAMEWORK_BUILD_DIR):
+        return
+    if not cmd(["cmake", "--build", ".", "--config", "Release"], cwd=FRAMEWORK_BUILD_DIR):
+        return
     assert is_framework_compiled()
 
 def is_framework_compiled():
