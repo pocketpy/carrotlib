@@ -174,7 +174,7 @@ class TextBase(Control):
     font: rl.Font
     text: str
 
-    SPACING: int | float = 0
+    SPACING: float = 1.0
     LINE_SPACING: int = 0
 
     @property

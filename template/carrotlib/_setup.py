@@ -90,6 +90,8 @@ class Game:
         g.b2_world = box2d.World()
         g.b2_world.set_debug_draw(DebugDraw())
         g.debug_window = DebugWindow()
+        g.default_font = rl.GetFontDefault()
+        g.default_font_size = 20
         g.default_material = UnlitMaterial()
         g.root.start_coroutine(_update_managed_sounds_coro())
 

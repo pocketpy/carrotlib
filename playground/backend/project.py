@@ -39,8 +39,7 @@ def new_project(root: str):
     sync_project_template(root)
     # create main.py
     with open(os.path.join(root, "main.py"), "wt", encoding='utf-8') as f:
-        f.write("""
-import carrotlib as cl
+        f.write("""import carrotlib as cl
 
 class MyGame(cl.Game):
     def on_ready(self):
