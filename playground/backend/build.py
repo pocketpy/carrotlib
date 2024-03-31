@@ -3,6 +3,7 @@ import os, io, sys
 
 from .project import sync_project_template
 from .base import cmd, TaskCommand
+from .framework import FRAMEWORK_EXE_PATH
 
 ANDROID_ASSETS_DIR = 'android/app/src/main/assets'
 
@@ -62,8 +63,9 @@ def prebuild(project: str, hardcode_assets: bool):
     # sync assets into the android template project
     shutil.rmtree(ANDROID_ASSETS_DIR, ignore_errors=True)
     assert not os.path.exists(ANDROID_ASSETS_DIR)
+    # ignore build/
     shutil.copytree(project, ANDROID_ASSETS_DIR, ignore=shutil.ignore_patterns(
-        '*.pyi', '*.ase', '*.aseprite', '*.DS_Store', 'pyrightconfig.json'
+        '*.pyi', '*.ase', '*.aseprite', '*.DS_Store', 'pyrightconfig.json', 'build'
     ))
     print(f"{project} 预购建成功")
 
@@ -81,6 +83,19 @@ def build_android(project: str):
         return TaskCommand([os.path.abspath("android\\gradlew.bat")], cwd="android", shell=True)
     else:
         print("功能还未实现")
+
+
+def build_win32(project: str):
+    prebuild(project, False)
+    target_dir = os.path.join(project, "build/win32/")
+    shutil.rmtree(target_dir, ignore_errors=True)
+    # copy assets
+    shutil.copytree(ANDROID_ASSETS_DIR, target_dir)
+    # copy Game.exe
+    shutil.copy(FRAMEWORK_EXE_PATH, target_dir)
+    # open target dir
+    if sys.platform == 'win32':
+        os.startfile(target_dir)
         
 
 def build_ios(project: str):

@@ -98,15 +98,13 @@ void ios_ready(){
 
 // desktop platforms
 #if PK_IS_DESKTOP_PLATFORM == 1
-    if(main_argc != 2){
-        std::cerr << "usage: " << main_argv[0] << " [project_dir]" << std::endl;
-        exit(1);
+    if(main_argc == 2){
+        if(!std::filesystem::exists(main_argv[1])){
+            std::cerr << "error: " << main_argv[1] << " does not exist" << std::endl;
+            exit(1);
+        }
+        std::filesystem::current_path(main_argv[1]);
     }
-    if(!std::filesystem::exists(main_argv[1])){
-        std::cerr << "error: " << main_argv[1] << " does not exist" << std::endl;
-        exit(1);
-    }
-    std::filesystem::current_path(main_argv[1]);
     platform_log_info(std::filesystem::current_path().string() + "\n");
 #endif
 

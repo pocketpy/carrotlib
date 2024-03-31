@@ -218,7 +218,7 @@ class ProjectView:
         # ------------------------- #
         imgui.next_column()
         if imgui.button(f"{IconBrands.ICON_WINDOWS} 构建 Windows", width=column_width):
-            pass
+            project_view.start_task(backend.build_win32(self.root_abspath))
         imgui.next_column()
         if imgui.button(f"{IconBrands.ICON_ANDROID} 构建 Android", width=column_width):
             project_view.start_task(backend.build_android(self.root_abspath))
