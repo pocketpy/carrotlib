@@ -115,9 +115,12 @@ class ProjectView:
         imgui.push_style_color(imgui.COLOR_FRAME_BACKGROUND, *input_bg_color)
 
         # allow line wrap
-        imgui.push_text_wrap_pos(0)
-        imgui.text(backend.get_logs())
-        imgui.pop_text_wrap_pos()
+        for line in backend.get_logs():
+            imgui.push_text_wrap_pos(0)
+            imgui.text(line)
+            imgui.pop_text_wrap_pos()
+
+        imgui.text("")
         
         if self.task is not None:
             imgui.set_scroll_here_y(1.0)

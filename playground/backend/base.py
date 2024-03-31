@@ -5,14 +5,14 @@ LOG_FILE = 'playground.log'
 if os.path.exists(LOG_FILE):
     os.remove(LOG_FILE)
 
-fd = open(LOG_FILE, 'wt', encoding='utf-8', buffering=1)
+fd = open(LOG_FILE, 'wt', encoding='utf-8', buffering=1, newline='\n')
 
 sys.stdout = fd
 sys.stderr = fd
 
 def get_logs():
-    with open(LOG_FILE, 'rt', encoding='utf-8') as f:
-        return f.read()
+    with open(LOG_FILE, 'rt', encoding='utf-8', buffering=1, newline='\n') as f:
+        return f.readlines()
 
 class TaskCommand:
     def __init__(self, args, cwd=None, shell=False):
