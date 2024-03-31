@@ -287,14 +287,24 @@ class ProjectView:
                     project_view.start_task(backend.build_android(self.root_abspath))
                 imgui.next_column()
 
-                imgui.push_style_var(imgui.STYLE_ALPHA, 0.4)
-                if imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width):
-                    pass
-                imgui.next_column()
-                if imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width):
-                    pass
-                imgui.pop_style_var()
+                if sys.platform != 'darwin':
+                    imgui.push_style_var(imgui.STYLE_ALPHA, 0.4)
+                    imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width)
+                    imgui.pop_style_var()
+                else:
+                    if imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width):
+                        print("功能还未实现")
 
+                imgui.next_column()
+
+                if sys.platform == 'win32':
+                    imgui.push_style_var(imgui.STYLE_ALPHA, 0.4)
+                    imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width)
+                    imgui.pop_style_var()
+                else:
+                    if imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width):
+                        project_view.start_task(backend.build_web(self.root_abspath))
+                
                 imgui.next_column()
 
                 imgui.columns(1)
@@ -308,6 +318,7 @@ class ProjectView:
 
         with imgui.begin_tab_item("  文件  ") as tab:
             if tab.selected:
+                # scroll area
                 imgui.begin_child("FileContent", flags=imgui.WINDOW_NO_BACKGROUND)
                 imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (10, 10))
                 self.render_text_editor()

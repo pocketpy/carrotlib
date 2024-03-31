@@ -92,6 +92,14 @@ def build_android(project: str, open_dir=True):
     else:
         print("功能还未实现")
 
+def build_web(project: str, open_dir=True):
+    prebuild(project, True)
+    target_dir = os.path.join(project, "build/web/")
+    # run build_web.sh
+    task = TaskCommand(['bash', 'build_web.sh'], cwd=project, shell=True)
+    yield from task
+    if task.returncode == 0 and open_dir:
+        os.startfile(target_dir)
 
 def build_win32(project: str):
     prebuild(project, False)

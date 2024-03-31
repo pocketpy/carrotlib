@@ -1,6 +1,6 @@
 import subprocess
-import re
-import os
+import re, os
+from typing import List
 
 from .base import TaskCommand
 
@@ -18,7 +18,7 @@ class IOSDevice(MobileDevice):
 class WebDevice(MobileDevice):
     pass
 
-def get_android_devices() -> list[AndroidDevice]:
+def get_android_devices() -> List[AndroidDevice]:
     try:
         pipe = subprocess.Popen(["adb", "devices", "-l"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
         stdout, stderr = pipe.communicate()
