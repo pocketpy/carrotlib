@@ -118,8 +118,7 @@ class ProjectView:
         imgui.push_text_wrap_pos(0)
         imgui.text(backend.get_logs())
         imgui.pop_text_wrap_pos()
-        imgui.text("")
-
+        
         if self.task is not None:
             imgui.set_scroll_here_y(1.0)
         imgui.pop_style_color()
@@ -161,6 +160,7 @@ class ProjectView:
 
     def render(self):
         window_width, window_height = imgui.get_window_size()
+        window_height -= 20
 
         # two column with splitter, drag to resize width
         imgui.begin_child("File Hierarchy", width=window_width * 0.25, height=window_height)
