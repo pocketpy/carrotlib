@@ -42,7 +42,7 @@ class ProjectView:
 
         self.source_font = imgui.get_io().fonts.add_font_from_file_ttf(
             "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
-            20,
+            12,
             font_config=imgui.FontConfig(oversample_h=2, oversample_v=2),
             glyph_ranges=glyph_ranges
         )
@@ -152,13 +152,14 @@ class ProjectView:
             else:
                 buffer = self.selected_content
             width, height = imgui.get_window_size()
-            buffer = imgui.input_text_multiline(
-                "##source",
-                buffer,
-                width=width,
-                height=height,
-                flags=flags
-            )
+            with imgui.font(self.source_font):
+                buffer = imgui.input_text_multiline(
+                    "##source",
+                    buffer,
+                    width=width,
+                    height=height,
+                    flags=flags
+                )
         imgui.pop_style_color(count=2)
 
     def render(self):
