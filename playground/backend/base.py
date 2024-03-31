@@ -10,9 +10,9 @@ fd = open(LOG_FILE, 'wt', encoding='utf-8', buffering=1)
 sys.stdout = fd
 sys.stderr = fd
 
-def get_logs() -> list[str]:
+def get_logs():
     with open(LOG_FILE, 'rt', encoding='utf-8') as f:
-        return f.readlines()
+        return f.read()
 
 class TaskCommand:
     def __init__(self, args, cwd=None, shell=False):
@@ -43,6 +43,6 @@ def start_vscode(file: str, root: str):
         code_path = winreg.QueryValue(key, None)
         if code_path:
             program = code_path.split('"')[1]
-            cmd([program, root, file], shell=True)
+            return TaskCommand([program, root, file], shell=True)
     else:
-        raise NotImplementedError
+        print("功能还未实现")

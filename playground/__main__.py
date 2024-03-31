@@ -62,6 +62,8 @@ class ProjectView:
                 self.task = None
 
     def start_task(self, task):
+        if task is None:
+            return
         if self.task is not None:
             return
         self.task = task
@@ -111,8 +113,11 @@ class ProjectView:
     def render_console(self):
         input_bg_color = (44/255, 40/255, 52/255, 1.0)
         imgui.push_style_color(imgui.COLOR_FRAME_BACKGROUND, *input_bg_color)
-        for log in backend.get_logs():
-            imgui.text(log)
+
+        # allow line wrap
+        imgui.push_text_wrap_pos(0)
+        imgui.text(backend.get_logs())
+        imgui.pop_text_wrap_pos()
         imgui.text("")
 
         if self.task is not None:
@@ -202,7 +207,7 @@ class ProjectView:
             backend.sync_project_template(self.root_abspath)
         imgui.next_column()
         if imgui.button(f"{Icons.ICON_V} 启动 VSCode", width=column_width):
-            backend.start_vscode(self.selected_file_abspath, self.root_abspath)
+            project_view.start_task(backend.start_vscode(self.selected_file_abspath, self.root_abspath))
         imgui.next_column()
         if imgui.button(f"{Icons.ICON_CIRCLE_PLAY} 运行项目", width=column_width):
             project_view.start_task(backend.run_project(self.root_abspath))
