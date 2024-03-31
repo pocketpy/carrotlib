@@ -1,12 +1,40 @@
 import subprocess
-import sys
-from typing import TYPE_CHECKING
+import sys, os
 
-def cmd(args, cwd=None, shell=False) -> bool:
+LOG_FILE = 'playground.log'
+if os.path.exists(LOG_FILE):
+    os.remove(LOG_FILE)
+
+fd = open(LOG_FILE, 'wt', encoding='utf-8', buffering=1)
+
+sys.stdout = fd
+sys.stderr = fd
+
+def get_logs() -> list[str]:
+    with open(LOG_FILE, 'rt', encoding='utf-8') as f:
+        return f.readlines()
+
+class TaskCommand:
+    def __init__(self, args, cwd=None, shell=False):
+        print(' '.join(args))
+        self.pipe = subprocess.Popen(args, cwd=cwd, shell=shell, stdout=fd, stderr=fd)
+        self.returncode = None
+
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        ret = self.pipe.poll()
+        if ret is None:
+            return None
+        self.returncode = ret
+        raise StopIteration
+
+def cmd(args, cwd=None, shell=False):
     print(' '.join(args))
-    pipe = subprocess.Popen(args, cwd=cwd, shell=shell)
+    pipe = subprocess.Popen(args, cwd=cwd, shell=shell, stdout=fd, stderr=fd)
     pipe.wait()
-    return pipe.returncode == 0
+    return pipe.returncode
 
 def start_vscode(file: str, root: str):
     if sys.platform == "win32":

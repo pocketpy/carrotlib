@@ -14,8 +14,11 @@ from playground import backend
 from playground.IconsFontAwesome6 import IconsFontAwesome6 as Icons
 from playground.IconsFontAwesome6Brands import IconsFontAwesome6Brands as IconBrands
 
+
 class ProjectView:
     def __init__(self):
+        self.task = None
+
         glyph_ranges = imgui.get_io().fonts.get_glyph_ranges_chinese()
         imgui.get_io().fonts.add_font_from_file_ttf(
             "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
@@ -51,6 +54,18 @@ class ProjectView:
         self._selected_content = None
         self.open_project("examples/01_HelloWorld")
 
+    def poll_task(self):
+        if self.task is not None:
+            try:
+                next(self.task)
+            except StopIteration:
+                self.task = None
+
+    def start_task(self, task):
+        if self.task is not None:
+            return
+        self.task = task
+
     @property
     def selected_file(self):
         return self._selected_file
@@ -79,6 +94,7 @@ class ProjectView:
             return
         self.root = root
         self.selected_file = 'main.py'
+        print('打开项目:', self.root)
 
     @property
     def root_abspath(self):
@@ -91,6 +107,17 @@ class ProjectView:
         if not self.selected_file:
             return None
         return os.path.join(self.root_abspath, self.selected_file)
+    
+    def render_console(self):
+        input_bg_color = (44/255, 40/255, 52/255, 1.0)
+        imgui.push_style_color(imgui.COLOR_FRAME_BACKGROUND, *input_bg_color)
+        for log in backend.get_logs():
+            imgui.text(log)
+        imgui.text("")
+
+        if self.task is not None:
+            imgui.set_scroll_here_y(1.0)
+        imgui.pop_style_color()
 
     def render_file_hierarchy(self, root: str):
         # use recursive function to render file hierarchy
@@ -169,7 +196,7 @@ class ProjectView:
         column_width = imgui.get_column_width()
         
         if imgui.button(f"{Icons.ICON_C} 编译框架", width=column_width):
-            backend.compile_framework()
+            project_view.start_task(backend.compile_framework())
         imgui.next_column()
         if imgui.button(f"{Icons.ICON_T} 同步模板", width=column_width):
             backend.sync_project_template(self.root_abspath)
@@ -185,7 +212,7 @@ class ProjectView:
             pass
         imgui.next_column()
         if imgui.button(f"{IconBrands.ICON_ANDROID} 构建 Android", width=column_width):
-            backend.build_android(self.root_abspath)
+            project_view.start_task(backend.build_android(self.root_abspath))
         imgui.next_column()
 
         imgui.push_style_var(imgui.STYLE_ALPHA, 0.4)
@@ -200,10 +227,13 @@ class ProjectView:
 
         imgui.columns(1)
 
-        with imgui.font(self.source_font):
-            imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (10, 10))
-            self.render_text_editor()
-            imgui.pop_style_var()
+        imgui.begin_child("Console", flags=imgui.WINDOW_NO_DECORATION | imgui.WINDOW_NO_BACKGROUND)
+        imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (10, 10))
+        # self.render_text_editor()
+        self.render_console()
+        imgui.pop_style_var()
+        imgui.end_child()
+
         imgui.end_child()
 
 
@@ -228,10 +258,13 @@ if __name__ == "__main__":
 
     # Main loop
     while not glfw.window_should_close(window):
+        project_view.poll_task()
         glfw.poll_events()
 
         # Start the Dear ImGui frame
-        impl.process_inputs()
+        if project_view.task is None:
+            impl.process_inputs()
+
         imgui.new_frame()
 
         with imgui.font(project_view.default_font):

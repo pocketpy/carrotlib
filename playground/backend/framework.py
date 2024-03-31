@@ -2,7 +2,7 @@ import os
 import sys
 import shutil
 
-from .base import cmd
+from .base import cmd, TaskCommand
 
 assert sys.platform in ["win32", "linux", "darwin"]
 
@@ -16,9 +16,13 @@ FRAMEWORK_BUILD_DIR = f"build/{sys.platform}"
 def compile_framework():
     shutil.rmtree(FRAMEWORK_BUILD_DIR, ignore_errors=True)
     os.makedirs(FRAMEWORK_BUILD_DIR, exist_ok=True)
-    if not cmd(["cmake", "../.."], cwd=FRAMEWORK_BUILD_DIR):
+    task = TaskCommand(["cmake", "../.."], cwd=FRAMEWORK_BUILD_DIR)
+    yield from task
+    if task.returncode != 0:
         return
-    if not cmd(["cmake", "--build", ".", "--config", "Release"], cwd=FRAMEWORK_BUILD_DIR):
+    task = TaskCommand(["cmake", "--build", ".", "--config", "Release"], cwd=FRAMEWORK_BUILD_DIR)
+    yield from task
+    if task.returncode != 0:
         return
     assert is_framework_compiled()
 

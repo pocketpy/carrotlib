@@ -2,7 +2,7 @@ import shutil
 import os, io, sys
 
 from .project import sync_project_template
-from .base import cmd
+from .base import cmd, TaskCommand
 
 ANDROID_ASSETS_DIR = 'android/app/src/main/assets'
 
@@ -78,9 +78,9 @@ def prebuild(project: str, hardcode_assets: bool):
 def build_android(project: str):
     prebuild(project, False)
     if sys.platform == 'win32':
-        cmd([os.path.abspath("android\\gradlew.bat")], cwd="android", shell=True)
+        return TaskCommand([os.path.abspath("android\\gradlew.bat")], cwd="android", shell=True)
     else:
-        raise NotImplementedError
+        print("功能还未实现")
         
 
 def build_ios(project: str):
