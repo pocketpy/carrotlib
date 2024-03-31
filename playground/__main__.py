@@ -59,7 +59,7 @@ class ProjectView:
 
         self.source_font = imgui.get_io().fonts.add_font_from_file_ttf(
             "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
-            12,
+            24,
             font_config=imgui.FontConfig(oversample_h=2, oversample_v=2),
             glyph_ranges=glyph_ranges
         )
@@ -99,7 +99,14 @@ class ProjectView:
         if value:
             try:
                 with open(self.selected_file_abspath, "rt", encoding='utf-8') as f:
-                    self._selected_content = f.read()
+                    # get file size
+                    f.seek(0, os.SEEK_END)
+                    filesize = f.tell()
+                    f.seek(0)
+                    if filesize > 500 * 1024:      # 500 KB
+                        self._selected_content = None
+                    else:
+                        self._selected_content = f.read()
             except Exception as e:
                 print(e)
                 self._selected_content = None
@@ -133,7 +140,7 @@ class ProjectView:
 
         # allow line wrap
         for line in backend.get_logs():
-            imgui.push_text_wrap_pos(0)
+            imgui.push_text_wrap_pos()
             imgui.text(line)
             imgui.pop_text_wrap_pos()
 
@@ -180,11 +187,24 @@ class ProjectView:
         imgui.pop_style_color(count=2)
 
     def render(self):
+        if project_view.timer.test_and_set():
+            # update devices
+            project_view.devices = backend.get_android_devices()
+            # test if framework is compiled
+            if backend.is_framework_compiled():
+                t = os.path.getmtime(backend.FRAMEWORK_EXE_PATH)
+                t = datetime.fromtimestamp(t).strftime("%Y-%m-%d %H:%M:%S")
+                project_view.framework_compile_time = t
+            else:
+                project_view.framework_compile_time = None
+
+        # -------------------------- #
         window_width, window_height = imgui.get_window_size()
         window_height -= 20
+        window_width -= 20
 
         # two column with splitter, drag to resize width
-        imgui.begin_child("File Hierarchy", width=window_width * 0.25, height=window_height)
+        imgui.begin_child("L", width=window_width * 0.25, height=window_height)
 
         full_width = imgui.get_window_width()
         if imgui.button(f"{Icons.ICON_FOLDER} 新建项目", width=full_width):
@@ -208,87 +228,89 @@ class ProjectView:
 
         imgui.end_child()
 
+        ######################################################################################
         imgui.same_line()
 
-        imgui.begin_child("Text Editor", width=window_width * 0.75, height=window_height, border=True)
+        imgui.begin_child("R", width=window_width * 0.75, height=window_height, border=True)
 
-        if project_view.timer.test_and_set():
-            # update devices
-            project_view.devices = backend.get_android_devices()
-            # test if framework is compiled
-            if backend.is_framework_compiled():
-                t = os.path.getmtime(backend.FRAMEWORK_EXE_PATH)
-                t = datetime.fromtimestamp(t).strftime("%Y-%m-%d %H:%M:%S")
-                project_view.framework_compile_time = t
-            else:
-                project_view.framework_compile_time = None
+        imgui.begin_tab_bar("TabBar")
 
+        with imgui.begin_tab_item(" 控制台 ") as tab:
+            if tab.selected:
+                if project_view.framework_compile_time:
+                    imgui.text(f"框架编译时间: {project_view.framework_compile_time}")
+                else:
+                    imgui.text("框架编译时间: 未编译")
 
-        if project_view.framework_compile_time:
-            imgui.text(f"框架编译时间: {project_view.framework_compile_time}")
-        else:
-            imgui.text("框架编译时间: 未编译")
+                imgui.spacing()
 
-        imgui.spacing()
+                imgui.separator()
+                imgui.text(f"已连接设备：{len(self.devices)}")
+                for device in self.devices:
+                    imgui.text(f"{IconBrands.ICON_ANDROID} {device.title}")
+                    imgui.same_line(spacing=10)
+                    if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} 运行"):
+                        project_view.start_task(backend.install_apk_and_run(device, self.root_abspath))
+                    imgui.same_line(spacing=10)
+                    if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} 构建并运行"):
+                        project_view.start_task(backend.SeqTask(
+                            backend.build_android(self.root_abspath, open_dir=False),
+                            backend.install_apk_and_run(device, self.root_abspath)
+                        ))
+                imgui.spacing()
+                imgui.separator()
 
-        # drop fields
-        imgui.separator()
-        imgui.text(f"已连接设备：{len(self.devices)}")
-        for device in self.devices:
-            imgui.text(f"{IconBrands.ICON_ANDROID} {device.title}")
-            imgui.same_line(spacing=10)
-            if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} 运行"):
-                project_view.start_task(backend.install_apk_and_run(device, self.root_abspath))
-            imgui.same_line(spacing=10)
-            if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} 构建并运行"):
-                project_view.start_task(backend.SeqTask(
-                    backend.build_android(self.root_abspath, open_dir=False),
-                    backend.install_apk_and_run(device, self.root_abspath)
-                ))
-        imgui.spacing()
-        imgui.separator()
+                imgui.columns(4, border=False)
+                column_width = imgui.get_column_width()
+                
+                if imgui.button(f"{Icons.ICON_C} 编译框架", width=column_width):
+                    project_view.start_task(backend.compile_framework())
+                imgui.next_column()
+                if imgui.button(f"{Icons.ICON_T} 同步模板", width=column_width):
+                    backend.sync_project_template(self.root_abspath)
+                imgui.next_column()
+                if imgui.button(f"{Icons.ICON_V} 启动 VSCode", width=column_width):
+                    project_view.start_task(backend.start_vscode(self.selected_file_abspath, self.root_abspath))
+                imgui.next_column()
+                if imgui.button(f"{Icons.ICON_CIRCLE_PLAY} 运行项目", width=column_width):
+                    project_view.start_task(backend.run_project(self.root_abspath))
+                # ------------------------- #
+                imgui.next_column()
+                if imgui.button(f"{IconBrands.ICON_WINDOWS} 构建 Windows", width=column_width):
+                    project_view.start_task(backend.build_win32(self.root_abspath))
+                imgui.next_column()
+                if imgui.button(f"{IconBrands.ICON_ANDROID} 构建 Android", width=column_width):
+                    project_view.start_task(backend.build_android(self.root_abspath))
+                imgui.next_column()
 
-        imgui.columns(4, border=False)
-        column_width = imgui.get_column_width()
-        
-        if imgui.button(f"{Icons.ICON_C} 编译框架", width=column_width):
-            project_view.start_task(backend.compile_framework())
-        imgui.next_column()
-        if imgui.button(f"{Icons.ICON_T} 同步模板", width=column_width):
-            backend.sync_project_template(self.root_abspath)
-        imgui.next_column()
-        if imgui.button(f"{Icons.ICON_V} 启动 VSCode", width=column_width):
-            project_view.start_task(backend.start_vscode(self.selected_file_abspath, self.root_abspath))
-        imgui.next_column()
-        if imgui.button(f"{Icons.ICON_CIRCLE_PLAY} 运行项目", width=column_width):
-            project_view.start_task(backend.run_project(self.root_abspath))
-        # ------------------------- #
-        imgui.next_column()
-        if imgui.button(f"{IconBrands.ICON_WINDOWS} 构建 Windows", width=column_width):
-            project_view.start_task(backend.build_win32(self.root_abspath))
-        imgui.next_column()
-        if imgui.button(f"{IconBrands.ICON_ANDROID} 构建 Android", width=column_width):
-            project_view.start_task(backend.build_android(self.root_abspath))
-        imgui.next_column()
+                imgui.push_style_var(imgui.STYLE_ALPHA, 0.4)
+                if imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width):
+                    pass
+                imgui.next_column()
+                if imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width):
+                    pass
+                imgui.pop_style_var()
 
-        imgui.push_style_var(imgui.STYLE_ALPHA, 0.4)
-        if imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width):
-            pass
-        imgui.next_column()
-        if imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width):
-            pass
-        imgui.pop_style_var()
+                imgui.next_column()
 
-        imgui.next_column()
+                imgui.columns(1)
 
-        imgui.columns(1)
+                # scroll area
+                imgui.begin_child("Console", flags=imgui.WINDOW_NO_BACKGROUND, border=True)
+                imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (10, 10))
+                self.render_console()
+                imgui.pop_style_var()
+                imgui.end_child()
 
-        imgui.begin_child("Console", flags=imgui.WINDOW_NO_DECORATION | imgui.WINDOW_NO_BACKGROUND)
-        imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (10, 10))
-        # self.render_text_editor()
-        self.render_console()
-        imgui.pop_style_var()
-        imgui.end_child()
+        with imgui.begin_tab_item("  文件  ") as tab:
+            if tab.selected:
+                imgui.begin_child("FileContent", flags=imgui.WINDOW_NO_BACKGROUND)
+                imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (10, 10))
+                self.render_text_editor()
+                imgui.pop_style_var()
+                imgui.end_child()
+
+        imgui.end_tab_bar()
 
         imgui.end_child()
 
@@ -328,7 +350,7 @@ if __name__ == "__main__":
             imgui.set_next_window_position(0, 0)
             window_size = glfw.get_window_size(window)
             imgui.set_next_window_size(window_size[0], window_size[1])
-            imgui.begin("CarrotLib Playground", flags=imgui.WINDOW_NO_DECORATION | imgui.WINDOW_NO_BACKGROUND)
+            imgui.begin("playground", flags=imgui.WINDOW_NO_DECORATION | imgui.WINDOW_NO_BACKGROUND)
             project_view.render()
             imgui.end()
             imgui.pop_style_var()
