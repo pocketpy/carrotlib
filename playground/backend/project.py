@@ -3,7 +3,7 @@ import shutil
 import json
 
 from .framework import FRAMEWORK_EXE_PATH, FRAMEWORK_BUILD_DIR, is_framework_compiled
-from .base import cmd
+from .base import cmd, TaskCommand
 
 project_pyright_config = {
     "stubPath": os.path.abspath("template/typings"),
@@ -55,4 +55,4 @@ def run_project(path: str):
     if not is_framework_compiled():
         print("框架未编译，请先编译框架")
         return
-    cmd([FRAMEWORK_EXE_PATH, path], cwd=FRAMEWORK_BUILD_DIR)
+    return TaskCommand([FRAMEWORK_EXE_PATH, path], cwd=FRAMEWORK_BUILD_DIR)
