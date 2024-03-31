@@ -250,6 +250,7 @@ class ProjectView:
                 imgui.separator()
                 imgui.text(f"已连接设备：{len(self.devices)}")
                 for device in self.devices:
+                    imgui.spacing()
                     imgui.text(f"{IconBrands.ICON_ANDROID} {device.title}")
                     imgui.same_line(spacing=32)
 
@@ -296,15 +297,8 @@ class ProjectView:
                         print("功能还未实现")
 
                 imgui.next_column()
-
-                if sys.platform == 'win32':
-                    imgui.push_style_var(imgui.STYLE_ALPHA, 0.4)
-                    imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width)
-                    imgui.pop_style_var()
-                else:
-                    if imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width):
-                        project_view.start_task(backend.build_web(self.root_abspath))
-                
+                if imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width):
+                    project_view.start_task(backend.build_web(self.root_abspath))
                 imgui.next_column()
 
                 imgui.columns(1)

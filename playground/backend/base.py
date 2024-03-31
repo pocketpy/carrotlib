@@ -61,5 +61,7 @@ def start_vscode(file: str, root: str):
         if code_path:
             program = code_path.split('"')[1]
             return TaskCommand([program, root, file], shell=True)
+    if sys.platform == "darwin":
+        return TaskCommand(["open", "-a", "Visual Studio Code", root, file])
     else:
         print("功能还未实现")
