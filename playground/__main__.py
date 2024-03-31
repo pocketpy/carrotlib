@@ -237,9 +237,14 @@ class ProjectView:
         for device in self.devices:
             imgui.text(f"{IconBrands.ICON_ANDROID} {device.title}")
             imgui.same_line(spacing=10)
-            # small text button
             if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} 运行"):
                 project_view.start_task(backend.install_apk_and_run(device, self.root_abspath))
+            imgui.same_line(spacing=10)
+            if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} 构建并运行"):
+                project_view.start_task(backend.SeqTask(
+                    backend.build_android(self.root_abspath, open_dir=False),
+                    backend.install_apk_and_run(device, self.root_abspath)
+                ))
         imgui.spacing()
         imgui.separator()
 

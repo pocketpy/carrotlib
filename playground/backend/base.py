@@ -14,6 +14,23 @@ def get_logs():
     with open(LOG_FILE, 'rt', encoding='utf-8', buffering=1, newline='\n') as f:
         return f.readlines()
 
+class SeqTask:
+    def __init__(self, *tasks):
+        self.tasks = tasks
+        self.index = 0
+
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.index >= len(self.tasks):
+            raise StopIteration
+        task = self.tasks[self.index]
+        try:
+            ret = next(task)
+        except StopIteration:
+            self.index += 1
+
 class TaskCommand:
     def __init__(self, args, cwd=None, shell=False):
         print(' '.join(args))

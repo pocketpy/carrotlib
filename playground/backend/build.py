@@ -77,7 +77,7 @@ def prebuild(project: str, hardcode_assets: bool):
         print(f"{project} 资源数据库构建成功")
 
 
-def build_android(project: str):
+def build_android(project: str, open_dir=True):
     prebuild(project, False)
     target_dir = os.path.join(project, "build/android/")
     shutil.rmtree(target_dir, ignore_errors=True)
@@ -87,7 +87,8 @@ def build_android(project: str):
         yield from task
         if task.returncode == 0:
             shutil.copy(os.path.join('android/app/build/outputs/apk/debug/app-debug.apk'), target_dir)
-            os.startfile(target_dir)
+            if open_dir:
+                os.startfile(target_dir)
     else:
         print("功能还未实现")
 

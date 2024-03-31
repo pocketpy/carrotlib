@@ -50,5 +50,5 @@ def install_apk_and_run(device: AndroidDevice, root: str):
     yield from task
     if task.returncode != 0:
         return
-    task = TaskCommand(["adb", "-s", device.id, "logcat", "-s", "CarrotLib:*", "raylib:*"])
-    yield from task
+    # task = TaskCommand(["adb", "-s", device.id, "logcat", "-s", "CarrotLib:*", "raylib:*"])
+    # yield from task
