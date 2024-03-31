@@ -46,9 +46,10 @@ class ProjectView:
 
         imgui.get_io().delta_time = 1.0 / 60.0
         
+        self.root = None
         self._selected_file = None
         self._selected_content = None
-        self.open_project("projects/magicpd")
+        self.open_project("examples/01_HelloWorld")
 
     @property
     def selected_file(self):
@@ -63,7 +64,7 @@ class ProjectView:
         self._selected_file = value
         if value:
             try:
-                with open(self.selected_file_abspath, "rt") as f:
+                with open(self.selected_file_abspath, "rt", encoding='utf-8') as f:
                     self._selected_content = f.read()
             except Exception as e:
                 print(e)
@@ -111,11 +112,10 @@ class ProjectView:
         imgui.push_style_color(imgui.COLOR_FRAME_BACKGROUND, *input_bg_color)
         imgui.push_style_color(imgui.COLOR_TEXT, *input_fg_color)
         if self.selected_file:
+            flags = imgui.INPUT_TEXT_READ_ONLY
             if self.selected_content is None:
-                flags = imgui.INPUT_TEXT_READ_ONLY
                 buffer = "[不支持的文件类型]"
             else:
-                flags = 0
                 buffer = self.selected_content
             width, height = imgui.get_window_size()
             buffer = imgui.input_text_multiline(
@@ -131,7 +131,7 @@ class ProjectView:
         window_width, window_height = imgui.get_window_size()
 
         # two column with splitter, drag to resize width
-        imgui.begin_child("File Hierarchy", width=window_width * 0.3, height=window_height)
+        imgui.begin_child("File Hierarchy", width=window_width * 0.25, height=window_height)
 
         full_width = imgui.get_window_width()
         if imgui.button(f"{Icons.ICON_FOLDER} 新建项目", width=full_width):
@@ -143,17 +143,19 @@ class ProjectView:
                     backend.new_project(path)
                     self.open_project(path)
         if imgui.button(f"{Icons.ICON_FOLDER_OPEN} 打开项目", width=full_width):
-            path = backend.open_directory("选择项目", "projects")
+            path = backend.open_directory("选择项目", "examples")
             if path:
                 self.open_project(path)
         imgui.spacing()
 
-        self.render_file_hierarchy(self.root)
+        if self.root:
+            self.render_file_hierarchy(self.root)
+
         imgui.end_child()
 
         imgui.same_line()
 
-        imgui.begin_child("Text Editor", width=window_width * 0.7, height=window_height, border=True)
+        imgui.begin_child("Text Editor", width=window_width * 0.75, height=window_height, border=True)
 
         if backend.is_framework_compiled():
             framework_compile_time = os.path.getmtime(backend.FRAMEWORK_EXE_PATH)
@@ -209,7 +211,7 @@ if __name__ == "__main__":
     assert glfw.init()
 
     # Create a windowed mode window and its OpenGL context
-    window = glfw.create_window(1280, 720, "CarrotLib🥕 Playground", None, None)
+    window = glfw.create_window(1440, 720, "CarrotLib🥕 Playground", None, None)
     if not window:
         glfw.terminate()
         exit(1)

@@ -1,5 +1,6 @@
 import subprocess
 import sys
+from typing import TYPE_CHECKING
 
 def cmd(args, cwd=None, shell=False) -> bool:
     print(' '.join(args))
