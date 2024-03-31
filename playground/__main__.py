@@ -15,9 +15,26 @@ from playground.IconsFontAwesome6 import IconsFontAwesome6 as Icons
 from playground.IconsFontAwesome6Brands import IconsFontAwesome6Brands as IconBrands
 
 
+class Timer:
+    def __init__(self, timeout: float):
+        self.timeout = timeout
+        self.start_time = imgui.get_time()
+
+    def test_and_set(self):
+        delta = imgui.get_time() - self.start_time
+        if delta >= self.timeout:
+            self.start_time = imgui.get_time()
+            return True
+        return False
+
+
 class ProjectView:
     def __init__(self):
         self.task = None
+
+        self.devices = []
+        self.framework_compile_time = None
+        self.timer = Timer(1.0)
 
         glyph_ranges = imgui.get_io().fonts.get_glyph_ranges_chinese()
         imgui.get_io().fonts.add_font_from_file_ttf(
@@ -195,14 +212,37 @@ class ProjectView:
 
         imgui.begin_child("Text Editor", width=window_width * 0.75, height=window_height, border=True)
 
-        if backend.is_framework_compiled():
-            framework_compile_time = os.path.getmtime(backend.FRAMEWORK_EXE_PATH)
-            framework_compile_time = datetime.fromtimestamp(framework_compile_time).strftime("%Y-%m-%d %H:%M:%S")
-            imgui.text(f"框架编译时间: {framework_compile_time}")
+        if project_view.timer.test_and_set():
+            # update devices
+            project_view.devices = backend.get_android_devices()
+            # test if framework is compiled
+            if backend.is_framework_compiled():
+                t = os.path.getmtime(backend.FRAMEWORK_EXE_PATH)
+                t = datetime.fromtimestamp(t).strftime("%Y-%m-%d %H:%M:%S")
+                project_view.framework_compile_time = t
+            else:
+                project_view.framework_compile_time = None
+
+
+        if project_view.framework_compile_time:
+            imgui.text(f"框架编译时间: {project_view.framework_compile_time}")
         else:
             imgui.text("框架编译时间: 未编译")
 
+        imgui.spacing()
+
+        # drop fields
         imgui.separator()
+        imgui.text(f"已连接设备：{len(self.devices)}")
+        for device in self.devices:
+            imgui.text(f"{IconBrands.ICON_ANDROID} {device.title}")
+            imgui.same_line(spacing=10)
+            # small text button
+            if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} 运行"):
+                project_view.start_task(backend.install_apk_and_run(device, self.root_abspath))
+        imgui.spacing()
+        imgui.separator()
+
         imgui.columns(4, border=False)
         column_width = imgui.get_column_width()
         

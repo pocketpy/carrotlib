@@ -79,8 +79,15 @@ def prebuild(project: str, hardcode_assets: bool):
 
 def build_android(project: str):
     prebuild(project, False)
+    target_dir = os.path.join(project, "build/android/")
+    shutil.rmtree(target_dir, ignore_errors=True)
+    os.makedirs(target_dir, exist_ok=True)
     if sys.platform == 'win32':
-        return TaskCommand([os.path.abspath("android\\gradlew.bat")], cwd="android", shell=True)
+        task = TaskCommand([os.path.abspath("android\\gradlew.bat")], cwd="android", shell=True)
+        yield from task
+        if task.returncode == 0:
+            shutil.copy(os.path.join('android/app/build/outputs/apk/debug/app-debug.apk'), target_dir)
+            os.startfile(target_dir)
     else:
         print("功能还未实现")
 
