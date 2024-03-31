@@ -1,12 +1,13 @@
 import os
 import shutil
+import json
 
 from .framework import FRAMEWORK_EXE_PATH, FRAMEWORK_BUILD_DIR, is_framework_compiled
 from .base import cmd
 
 project_pyright_config = {
     "stubPath": os.path.abspath("template/typings"),
-    "extraPaths": [os.path.abspath("template"), os.path.abspath("3rd/pocketpy/include/typings")],
+    "extraPaths": [ os.path.abspath("3rd/pocketpy/include/typings")],
     "reportMissingModuleSource": "none",
     "pythonVersion": "3.10"
 }
@@ -20,6 +21,9 @@ def sync_project_template(project: str):
         if os.path.exists(path):
             shutil.rmtree(path, ignore_errors=False)
         shutil.copytree(os.path.join('template', td), path)
+    # create pyrightconfig.json
+    with open(os.path.join(project, "pyrightconfig.json"), "wt") as f:
+        f.write(json.dumps(project_pyright_config, indent=4))
     print(f"{project} 模板同步完成")
 
 def new_project(name: str):

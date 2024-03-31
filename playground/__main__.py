@@ -47,8 +47,19 @@ class ProjectView:
         imgui.get_io().delta_time = 1.0 / 60.0
 
         self.root = "projects/magicpd"
-        self.selected_file = f"{self.root}/main.py"
+        self.selected_file = f"main.py"
 
+    @property
+    def root_abspath(self):
+        if not self.root:
+            return None
+        return os.path.abspath(self.root)
+    
+    @property
+    def selected_file_abspath(self):
+        if not self.selected_file:
+            return None
+        return os.path.join(self.root_abspath, self.selected_file)
 
     def render_file_hierarchy(self, root: str):
         # use recursive function to render file hierarchy
@@ -62,19 +73,19 @@ class ProjectView:
             else:
                 imgui.tree_node(item, flags=imgui.TREE_NODE_LEAF | imgui.TREE_NODE_NO_TREE_PUSH_ON_OPEN | flags)
                 if imgui.is_item_clicked(0):
-                    self.selected_file = item_path
+                    self.selected_file = os.path.relpath(item_path, self.root)
 
     def render_text_editor(self):
         input_bg_color = (44/255, 40/255, 52/255, 1.0)
         input_fg_color = (171/255, 178/255, 191/255, 1.0)
         imgui.push_style_color(imgui.COLOR_FRAME_BACKGROUND, *input_bg_color)
         imgui.push_style_color(imgui.COLOR_TEXT, *input_fg_color)
-        if not os.path.exists(self.selected_file):
+        if not os.path.exists(self.selected_file_abspath):
             self.selected_file = None
         if self.selected_file:
             flags = 0
             try:
-                with open(self.selected_file, "rt") as f:
+                with open(self.selected_file_abspath, "rt") as f:
                     buffer = f.read()
             except:
                 buffer = "[不支持的文件类型]"
@@ -99,17 +110,9 @@ class ProjectView:
         if imgui.button(f"{Icons.ICON_FOLDER} 新建项目", width=full_width):
             backend.new_project("new_project")
             self.root = "projects/new_project"
-            self.selected_file = f"{self.root}/main.py"
+            self.selected_file = "main.py"
         if imgui.button(f"{Icons.ICON_FOLDER_OPEN} 打开项目", width=full_width):
-            backend.run_project(os.path.abspath(self.root))
-        if imgui.button(f"{Icons.ICON_CODE} 启动 VSCode", width=full_width):
-            if sys.platform == "win32":
-                import winreg
-                key = winreg.OpenKey(winreg.HKEY_CLASSES_ROOT, "Applications\\code.exe\\shell\\open\\command")
-                code_path = winreg.QueryValue(key, None)
-                backend.cmd([code_path.replace("%1", os.path.abspath(self.root))])
-            else:
-                raise NotImplementedError
+            backend.run_project(self.root_abspath)
 
         imgui.spacing()
 
@@ -134,13 +137,14 @@ class ProjectView:
         if imgui.button(f"{Icons.ICON_C} 编译框架", width=column_width):
             backend.compile_framework()
         imgui.next_column()
+        if imgui.button(f"{Icons.ICON_T} 同步模板", width=column_width):
+            backend.sync_project_template(self.root_abspath)
+        imgui.next_column()
+        if imgui.button(f"{Icons.ICON_V} 启动 VSCode", width=column_width):
+            backend.start_vscode(self.selected_file_abspath, self.root_abspath)
+        imgui.next_column()
         if imgui.button(f"{Icons.ICON_CIRCLE_PLAY} 运行项目", width=column_width):
-            backend.run_project(os.path.abspath(self.root))
-        imgui.next_column()
-        if imgui.button(f"{Icons.ICON_CIRCLE_PLAY} 运行 Android", width=column_width):
-            backend.run_project(os.path.abspath(self.root))
-        imgui.next_column()
-        # ...
+            backend.run_project(self.root_abspath)
         imgui.next_column()
 
         imgui.columns(1)
@@ -150,7 +154,7 @@ class ProjectView:
             pass
         imgui.next_column()
         if imgui.button(f"{IconBrands.ICON_ANDROID} 构建 Android", width=column_width):
-            backend.build_android(os.path.abspath(self.root))
+            backend.build_android(self.root_abspath)
         imgui.next_column()
 
         if sys.platform != "darwin":
