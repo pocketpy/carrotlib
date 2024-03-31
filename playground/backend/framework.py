@@ -14,6 +14,13 @@ else:
 FRAMEWORK_BUILD_DIR = f"build/{sys.platform}"
 
 def compile_framework():
+    if not os.path.exists("3rd/pocketpy/CMakelists.txt"):
+        print("初始化子模块")
+        task = TaskCommand(["git", "submodule", "update", "--init", "--recursive"])
+        yield from task
+        if task.returncode != 0:
+            return
+
     shutil.rmtree(FRAMEWORK_BUILD_DIR, ignore_errors=True)
     os.makedirs(FRAMEWORK_BUILD_DIR, exist_ok=True)
     task = TaskCommand(["cmake", "../.."], cwd=FRAMEWORK_BUILD_DIR)
