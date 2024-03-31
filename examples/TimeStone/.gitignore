@@ -1,0 +1,6 @@
+__pycache__/
+build/
+.vscode/
+carrotlib/
+*.DS_Store
+pyrightconfig.json
