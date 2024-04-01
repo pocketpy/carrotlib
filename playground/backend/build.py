@@ -1,5 +1,5 @@
 import shutil
-import os, io, sys
+import os, io, sys, re
 
 from .project import sync_project_template
 from .base import cmd, TaskCommand
@@ -101,11 +101,43 @@ def build_android(project: str, open_dir=True):
 def build_ios(project: str, open_dir=True):
     prebuild(project, True)
     target_dir = prepare_build_dir(project, 'ios')
+    # build Game.xcframework
     task = TaskCommand(['bash', '-e', os.path.join(os.getcwd(), 'build_ios.sh')])
     yield from task
     if task.returncode == 0:
-        shutil.copytree('build/ios/Game.xcframework', os.path.join(target_dir, 'Game.xcframework'))
-        if open_dir:
+        # copy raylib ios template
+        xcode15_dir = os.path.join(target_dir, 'XCode15')
+        shutil.copytree('3rd/raylib/projects/XCode15', xcode15_dir)
+        shutil.unpack_archive(
+            "playground/assets/Frameworks.zip",
+            os.path.join(xcode15_dir, 'raylib/Frameworks')
+        )
+        game_xcframework_path = os.path.join(os.getcwd(), 'build/ios/Game.xcframework')
+        raylib_src_path = os.path.abspath(os.path.join(os.getcwd(), "3rd/raylib/src"))
+        pbxproj_path = os.path.join(xcode15_dir, 'raylib.xcodeproj/project.pbxproj')
+        os.remove(os.path.join(xcode15_dir, 'main.c'))
+        # remove main.c and link Game.xcframework
+        from pbxproj import XcodeProject
+        pbx = XcodeProject.load(os.path.join(xcode15_dir, 'raylib.xcodeproj/project.pbxproj'))
+        assert pbx.remove_file_by_id('1BF3FCFC2BAF2CFD00D3B043')
+        pbx.add_file(os.path.join(game_xcframework_path, 'ios-arm64/libGame-os64.a'), tree='BUILT_PRODUCTS_DIR')
+        pbx.save()
+        # alter raylib.xcodeproj
+        mapping = {
+            '../../../src': raylib_src_path,
+            '../../src': raylib_src_path
+        }
+        with open(pbxproj_path, 'rt', encoding='utf-8') as f:
+            pbxproj = f.read()
+        for key, value in mapping.items():
+            pbxproj = pbxproj.replace(key, value)
+        with open(pbxproj_path, 'wt', encoding='utf-8') as f:
+            f.write(pbxproj)
+        # build app on real device
+        script = "xcodebuild -project raylib.xcodeproj -scheme raylib -destination 'generic/platform=iOS' -configuration Debug -sdk iphoneos"
+        task = TaskCommand(['bash', '-e', '-c', script], cwd=xcode15_dir)
+        yield from task
+        if task.returncode == 0 and open_dir:
             startfile(target_dir)
 
 
