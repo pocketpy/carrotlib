@@ -4,6 +4,7 @@ import os, io, sys
 from .project import sync_project_template
 from .base import cmd, TaskCommand
 from .framework import FRAMEWORK_EXE_PATH
+from .platform import startfile
 
 ANDROID_ASSETS_DIR = 'android/app/src/main/assets'
 
@@ -88,7 +89,7 @@ def build_android(project: str, open_dir=True):
         if task.returncode == 0:
             shutil.copy(os.path.join('android/app/build/outputs/apk/debug/app-debug.apk'), target_dir)
             if open_dir:
-                os.startfile(target_dir)
+                startfile(target_dir)
     else:
         print("功能还未实现")
 
@@ -96,12 +97,12 @@ def build_web(project: str, open_dir=True):
     prebuild(project, True)
     target_dir = os.path.join(project, "build/web/")
     # run build_web.sh
-    task = TaskCommand(['bash', 'build_web.sh'], cwd=project, shell=True)
+    task = TaskCommand(['bash', '-e', os.path.join(os.getcwd(), 'build_web.sh')], cwd=project)
     yield from task
     if task.returncode == 0 and open_dir:
-        os.startfile(target_dir)
+        startfile(target_dir)
 
-def build_win32(project: str):
+def build_win32(project: str, open_dir=True):
     prebuild(project, False)
     target_dir = os.path.join(project, "build/win32/")
     shutil.rmtree(target_dir, ignore_errors=True)
@@ -110,8 +111,8 @@ def build_win32(project: str):
     # copy Game.exe
     shutil.copy(FRAMEWORK_EXE_PATH, target_dir)
     # open target dir
-    if sys.platform == 'win32':
-        os.startfile(target_dir)
+    if open_dir:
+        startfile(target_dir)
         
 
 def build_ios(project: str):

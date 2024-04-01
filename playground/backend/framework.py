@@ -7,11 +7,11 @@ from .base import cmd, TaskCommand
 assert sys.platform in ["win32", "linux", "darwin"]
 
 if sys.platform == "win32":
-    FRAMEWORK_EXE_PATH = "build/win32/Release/Game.exe"
+    FRAMEWORK_EXE_PATH = os.path.abspath("build/win32/Release/Game.exe")
 else:
-    FRAMEWORK_EXE_PATH = f"build/{sys.platform}/Game"
+    FRAMEWORK_EXE_PATH = os.path.abspath(f"build/{sys.platform}/Game")
 
-FRAMEWORK_BUILD_DIR = f"build/{sys.platform}"
+FRAMEWORK_BUILD_DIR = os.path.abspath(f"build/{sys.platform}")
 
 def compile_framework():
     if not os.path.exists("3rd/pocketpy/CMakelists.txt"):

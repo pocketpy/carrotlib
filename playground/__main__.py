@@ -205,8 +205,8 @@ class ProjectView:
 
         # -------------------------- #
         window_width, window_height = imgui.get_window_size()
-        window_height -= 20 / DPI_SCALE
-        window_width -= 20 / DPI_SCALE
+        window_height *= 0.95
+        window_width *= 0.96
 
         # two column with splitter, drag to resize width
         imgui.begin_child("L", width=window_width * 0.25, height=window_height)

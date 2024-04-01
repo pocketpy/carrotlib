@@ -1,5 +1,6 @@
 source ~/emsdk/emsdk_env.sh
 
+rm -rf build/web
 mkdir -p build/web
 cd build/web
 
