@@ -78,11 +78,15 @@ def prebuild(project: str, hardcode_assets: bool):
         print(f"{project} 资源数据库构建成功")
 
 
+def prepare_build_dir(project: str, platform: str):
+    build_dir = os.path.join(project, f"build/{platform}/")
+    shutil.rmtree(build_dir, ignore_errors=True)
+    os.makedirs(build_dir, exist_ok=True)
+    return build_dir
+
 def build_android(project: str, open_dir=True):
     prebuild(project, False)
-    target_dir = os.path.join(project, "build/android/")
-    shutil.rmtree(target_dir, ignore_errors=True)
-    os.makedirs(target_dir, exist_ok=True)
+    target_dir = prepare_build_dir(project, 'android')
     if sys.platform == 'win32':
         task = TaskCommand([os.path.abspath("android\\gradlew.bat")], cwd="android", shell=True)
         yield from task
@@ -93,14 +97,29 @@ def build_android(project: str, open_dir=True):
     else:
         print("功能还未实现")
 
+
+def build_ios(project: str, open_dir=True):
+    prebuild(project, True)
+    target_dir = prepare_build_dir(project, 'ios')
+    task = TaskCommand(['bash', '-e', os.path.join(os.getcwd(), 'build_ios.sh')])
+    yield from task
+    if task.returncode == 0:
+        shutil.copytree('build/ios/Game.xcframework', os.path.join(target_dir, 'Game.xcframework'))
+        if open_dir:
+            startfile(target_dir)
+
+
 def build_web(project: str, open_dir=True):
     prebuild(project, True)
-    target_dir = os.path.join(project, "build/web/")
+    target_dir = prepare_build_dir(project, 'web')
     # run build_web.sh
-    task = TaskCommand(['bash', '-e', os.path.join(os.getcwd(), 'build_web.sh')], cwd=project)
+    task = TaskCommand(['bash', '-e', os.path.join(os.getcwd(), 'build_web.sh')])
     yield from task
-    if task.returncode == 0 and open_dir:
-        startfile(target_dir)
+    if task.returncode == 0:
+        shutil.rmtree(target_dir, ignore_errors=True)
+        shutil.copytree('build/web', target_dir)
+        if open_dir:
+            startfile(target_dir)
 
 def build_win32(project: str, open_dir=True):
     prebuild(project, False)
@@ -113,7 +132,3 @@ def build_win32(project: str, open_dir=True):
     # open target dir
     if open_dir:
         startfile(target_dir)
-        
-
-def build_ios(project: str):
-    prebuild(project, True)

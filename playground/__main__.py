@@ -300,7 +300,7 @@ class ProjectView:
                     imgui.pop_style_var()
                 else:
                     if imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width):
-                        print("功能还未实现")
+                        project_view.start_task(backend.build_ios(self.root_abspath))
 
                 imgui.next_column()
                 if imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width):
