@@ -16,8 +16,10 @@ from playground.IconsFontAwesome6Brands import IconsFontAwesome6Brands as IconBr
 
 if sys.platform == 'darwin':
     DPI_SCALE = 2
+    WINDOW_WIDTH, WINDOW_HEIGHT = 720+100, 360+100
 else:
     DPI_SCALE = 1
+    WINDOW_WIDTH, WINDOW_HEIGHT = 1440, 720
 
 class Timer:
     def __init__(self, timeout: float):
@@ -338,16 +340,14 @@ if __name__ == "__main__":
     glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 3)
     glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
 
-    WINDOW_WIDTH, WINDOW_HEIGHT = 1440, 720
-
 if sys.platform == 'darwin':
     # https://github.com/ocornut/imgui/pull/229/files
     glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, gl.GL_TRUE)
 
     # Create a windowed mode window and its OpenGL context
     window = glfw.create_window(
-        WINDOW_WIDTH//DPI_SCALE,
-        WINDOW_HEIGHT//DPI_SCALE,
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT,
         "CarrotLib🥕 Playground", None, None
     )
 
