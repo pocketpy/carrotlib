@@ -2,7 +2,7 @@ import imgui
 from imgui.integrations.glfw import GlfwRenderer
 from datetime import datetime
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 if TYPE_CHECKING:
     import pyimgui as imgui
 
@@ -62,6 +62,8 @@ class ProjectView:
             font_config=imgui.FontConfig(merge_mode=True),
             glyph_ranges=imgui.core.GlyphRanges([icon_min, icon_max, 0])
         )
+
+    devices: List[backend.MobileDevice]
 
     def __init__(self):
         self.task = None
@@ -263,7 +265,7 @@ class ProjectView:
                     imgui.same_line(spacing=32 / DPI_SCALE)
 
                     if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} Run"):
-                        project_view.start_task(backend.install_apk_and_run(device, self.root_abspath))
+                        project_view.start_task(device.install_and_run(self.root_abspath))
                     imgui.same_line(spacing=16 / DPI_SCALE)
                     if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} Build & Run"):
                         project_view.start_task(backend.SeqTask(

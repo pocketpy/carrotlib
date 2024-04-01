@@ -9,13 +9,29 @@ class MobileDevice:
         self.id = id
         self.title = title
 
+    def install_and_run(self, root: str):
+        raise NotImplementedError
+
+
 class AndroidDevice(MobileDevice):
-    pass
+    def install_and_run(self, root: str):
+        apk_path = f"{root}/build/android/app-debug.apk"
+        if not os.path.exists(apk_path):
+            print(f"{apk_path} 不存在")
+            return
+        task = TaskCommand(["adb", "-s", self.id, "install", "-r", apk_path])
+        yield from task
+        if task.returncode != 0:
+            return
+        task = TaskCommand(["adb", "-s", self.id, "shell", "am", "start", "-n", "game.example.android/.MainActivity"])
+        yield from task
+        if task.returncode != 0:
+            return
+        # task = TaskCommand(["adb", "-s", self.id, "logcat", "-s", "CarrotLib:*", "raylib:*"])
+        # yield from task
+
 
 class IOSDevice(MobileDevice):
-    pass
-
-class WebDevice(MobileDevice):
     pass
 
 def get_android_devices() -> List[AndroidDevice]:
@@ -40,20 +56,3 @@ def get_android_devices() -> List[AndroidDevice]:
             title = "Unknown"
         devices.append(AndroidDevice(id, title))
     return devices
-
-def install_apk_and_run(device: AndroidDevice, root: str):
-    assert isinstance(device, AndroidDevice)
-    apk_path = f"{root}/build/android/app-debug.apk"
-    if not os.path.exists(apk_path):
-        print(f"{apk_path} 不存在")
-        return
-    task = TaskCommand(["adb", "-s", device.id, "install", "-r", apk_path])
-    yield from task
-    if task.returncode != 0:
-        return
-    task = TaskCommand(["adb", "-s", device.id, "shell", "am", "start", "-n", "game.example.android/.MainActivity"])
-    yield from task
-    if task.returncode != 0:
-        return
-    # task = TaskCommand(["adb", "-s", device.id, "logcat", "-s", "CarrotLib:*", "raylib:*"])
-    # yield from task
