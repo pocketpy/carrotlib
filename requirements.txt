@@ -1,2 +1,3 @@
 cmake
 imgui[glfw]
+numpy

@@ -14,6 +14,10 @@ from playground import backend
 from playground.IconsFontAwesome6 import IconsFontAwesome6 as Icons
 from playground.IconsFontAwesome6Brands import IconsFontAwesome6Brands as IconBrands
 
+if sys.platform == 'darwin':
+    DPI_SCALE = 2
+else:
+    DPI_SCALE = 1
 
 class Timer:
     def __init__(self, timeout: float):
@@ -201,8 +205,8 @@ class ProjectView:
 
         # -------------------------- #
         window_width, window_height = imgui.get_window_size()
-        window_height -= 20
-        window_width -= 20
+        window_height -= 20 / DPI_SCALE
+        window_width -= 20 / DPI_SCALE
 
         # two column with splitter, drag to resize width
         imgui.begin_child("L", width=window_width * 0.25, height=window_height)
@@ -254,11 +258,11 @@ class ProjectView:
                 for device in self.devices:
                     imgui.spacing()
                     imgui.text(f"{IconBrands.ICON_ANDROID} {device.title}")
-                    imgui.same_line(spacing=32)
+                    imgui.same_line(spacing=32 / DPI_SCALE)
 
                     if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} Run"):
                         project_view.start_task(backend.install_apk_and_run(device, self.root_abspath))
-                    imgui.same_line(spacing=16)
+                    imgui.same_line(spacing=16 / DPI_SCALE)
                     if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} Build & Run"):
                         project_view.start_task(backend.SeqTask(
                             backend.build_android(self.root_abspath, open_dir=False),
@@ -307,7 +311,7 @@ class ProjectView:
 
                 # scroll area
                 imgui.begin_child("Console", flags=imgui.WINDOW_NO_BACKGROUND, border=True)
-                imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (10, 10))
+                imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (10/DPI_SCALE, 10/DPI_SCALE))
                 self.render_console()
                 imgui.pop_style_var()
                 imgui.end_child()
@@ -316,7 +320,7 @@ class ProjectView:
             if tab.selected:
                 # scroll area
                 imgui.begin_child("FileContent", flags=imgui.WINDOW_NO_BACKGROUND)
-                imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (10, 10))
+                imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (10/DPI_SCALE, 10/DPI_SCALE))
                 self.render_text_editor()
                 imgui.pop_style_var()
                 imgui.end_child()
@@ -329,9 +333,26 @@ class ProjectView:
 if __name__ == "__main__":
     assert glfw.init()
 
+    # use opengl 330 core
+    glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR, 3)
+    glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 3)
+    glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
+
+    WINDOW_WIDTH, WINDOW_HEIGHT = 1440, 720
+
+if sys.platform == 'darwin':
+    # https://github.com/ocornut/imgui/pull/229/files
+    glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, gl.GL_TRUE)
+
     # Create a windowed mode window and its OpenGL context
-    window = glfw.create_window(1440, 720, "CarrotLib🥕 Playground", None, None)
+    window = glfw.create_window(
+        WINDOW_WIDTH//DPI_SCALE,
+        WINDOW_HEIGHT//DPI_SCALE,
+        "CarrotLib🥕 Playground", None, None
+    )
+
     if not window:
+        print("Failed to create window")
         glfw.terminate()
         exit(1)
 
@@ -341,6 +362,8 @@ if __name__ == "__main__":
     # Setup Dear ImGui context
     imgui.create_context()
     impl = GlfwRenderer(window)
+
+    imgui.get_io().font_global_scale = 1.0 / DPI_SCALE
 
     project_view = ProjectView()
     impl.refresh_font_texture()
@@ -357,7 +380,7 @@ if __name__ == "__main__":
         imgui.new_frame()
 
         with imgui.font(project_view.default_font):
-            imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (0, 10))
+            imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (0, 10/DPI_SCALE))
             imgui.set_next_window_position(0, 0)
             window_size = glfw.get_window_size(window)
             imgui.set_next_window_size(window_size[0], window_size[1])
