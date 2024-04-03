@@ -4,3 +4,4 @@ from .build import build_android, build_ios, build_win32, build_web
 from .base import cmd, start_vscode, get_logs, TaskCommand, SeqTask
 from .platform import open_directory, get_string
 from .mobile import get_android_devices, MobileDevice
+from .config import config

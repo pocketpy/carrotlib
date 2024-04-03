@@ -41,6 +41,7 @@ def get_file_time(path):
     t = datetime.fromtimestamp(t).strftime("%Y-%m-%d %H:%M:%S")
     return t
 
+
 class ProjectView:
     def load_font(self, size, glyph_ranges):
         imgui.get_io().fonts.add_font_from_file_ttf(
@@ -86,7 +87,7 @@ class ProjectView:
         self.root = None
         self._selected_file = None
         self._selected_content = None
-        self.open_project("examples/01_HelloWorld")
+        self.open_project(backend.config.project)
 
     def poll_task(self):
         if self.task is not None:
