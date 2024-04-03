@@ -342,9 +342,9 @@ if __name__ == "__main__":
     glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 3)
     glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
 
-if sys.platform == 'darwin':
-    # https://github.com/ocornut/imgui/pull/229/files
-    glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, gl.GL_TRUE)
+    if sys.platform == 'darwin':
+        # https://github.com/ocornut/imgui/pull/229/files
+        glfw.window_hint(glfw.OPENGL_FORWARD_COMPAT, gl.GL_TRUE)
 
     # Create a windowed mode window and its OpenGL context
     window = glfw.create_window(
