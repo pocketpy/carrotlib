@@ -1,7 +1,7 @@
 mkdir -p build/ios
 cd build/ios
 
-FLAGS="-DCMAKE_TOOLCHAIN_FILE=~/ios-cmake/ios.toolchain.cmake -DDEPLOYMENT_TARGET=13.0"
+FLAGS="-DCMAKE_TOOLCHAIN_FILE=3rd/pocketpy/3rd/ios.toolchain.cmake -DDEPLOYMENT_TARGET=13.0"
 
 cmake -B os64 -G Xcode $FLAGS -DPLATFORM=OS64 ../..
 cmake --build os64 --config Release
