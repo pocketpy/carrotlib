@@ -42,7 +42,7 @@ class ProjectView:
             glyph_ranges=glyph_ranges
         )
 
-        imgui.get_io().delta_time = 1.0 / 60.0
+        imgui.get_io().delta_time = 1 / 30
         
         self.root = None
         self._selected_file = None
