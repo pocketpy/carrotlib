@@ -286,7 +286,8 @@ class ProjectView:
                 if imgui.button(f"{Icons.ICON_CIRCLE_PLAY} 运行项目", width=column_width):
                     project_view.start_task(backend.run_project(self.root_abspath))
                 imgui.next_column()
-                ...
+                if imgui.button(f"{Icons.ICON_TRASH_CAN} 清理项目", width=column_width):
+                    backend.clean_build_dir(self.root_abspath)
                 imgui.next_column()
                 ...
                 # ------------------------- #

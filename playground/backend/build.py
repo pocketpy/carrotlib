@@ -89,16 +89,13 @@ def build_android(project: str, open_dir=True):
     target_dir = prepare_build_dir(project, 'android')
     if sys.platform == 'win32':
         gradlew_path = os.path.abspath("android\\gradlew.bat")
-        # task = TaskCommand([gradlew_path, 'clean'], cwd="android", shell=True)
-        # yield from task
-        if True:
-            task = TaskCommand([gradlew_path, 'build', 'assembleDebug'], cwd="android", shell=True)
-            yield from task
-            if task.returncode == 0:
-                apk_file = 'android/app/build/outputs/apk/debug/app-debug.apk'
-                shutil.copy(apk_file, target_dir)
-                if open_dir:
-                    startfile(target_dir)
+        task = TaskCommand([gradlew_path, 'build', 'assembleDebug'], cwd="android", shell=True)
+        yield from task
+        if task.returncode == 0:
+            apk_file = 'android/app/build/outputs/apk/debug/app-debug.apk'
+            shutil.copy(apk_file, target_dir)
+            if open_dir:
+                startfile(target_dir)
     else:
         print("功能还未实现")
 
@@ -169,3 +166,10 @@ def build_win32(project: str, open_dir=True):
     # open target dir
     if open_dir:
         startfile(target_dir)
+
+
+def clean_build_dir(project: str):
+    dirs = [os.path.join(project, 'build'), 'android/app/build']
+    for d in dirs:
+        shutil.rmtree(d, ignore_errors=True)
+        print(f"已删除 {d}")
