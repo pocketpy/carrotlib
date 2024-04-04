@@ -1,10 +1,8 @@
 import imgui
 from imgui.integrations.glfw import GlfwRenderer
 from datetime import datetime
-import threading
-import time
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     import pyimgui as imgui
 
@@ -31,29 +29,6 @@ def get_file_time(path):
     t = datetime.fromtimestamp(t).strftime("%Y-%m-%d %H:%M:%S")
     return t
 
-
-class ThreadingTask:
-    devices: List[backend.MobileDevice]
-
-    def __init__(self):
-        self.devices = []
-        self._disposed = False
-        self._thread = threading.Thread(target=self._task).start()
-
-    def _task(self):
-        while not self._disposed:
-            devices = backend.get_android_devices()
-            if devices is not None:
-                self.devices = devices
-            else:
-                break       # break the loop if adb not found
-            time.sleep(1)
-
-    def dispose(self):
-        self._disposed = True
-        self._thread.join()
-
-
 class ProjectView:
     def __init__(self):
         self.task = None
@@ -75,7 +50,7 @@ class ProjectView:
         self.open_project(backend.config.project)
 
         # start threading task
-        self.threading_task = ThreadingTask()
+        self.threading_task = backend.ThreadingTask()
     
     def load_font(self, size, glyph_ranges):
         imgui.get_io().fonts.add_font_from_file_ttf(

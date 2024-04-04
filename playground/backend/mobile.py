@@ -27,8 +27,8 @@ class AndroidDevice(MobileDevice):
         yield from task
         if task.returncode != 0:
             return
-        # task = TaskCommand(["adb", "-s", self.id, "logcat", "-s", "CarrotLib:*", "raylib:*"])
-        # yield from task
+        task = TaskCommand(["adb", "-s", self.id, "logcat", "-s", "CarrotLib:*", "raylib:*"])
+        yield from task
 
 
 class IOSDevice(MobileDevice):
@@ -56,3 +56,29 @@ def get_android_devices() -> List[AndroidDevice] | None:
             title = "Unknown"
         devices.append(AndroidDevice(id, title))
     return devices
+
+###############################################################
+import threading
+
+class ThreadingTask:
+    devices: List[MobileDevice]
+
+    def __init__(self):
+        self.devices = []
+        self.exit_signal = threading.Event()
+        self._thread = threading.Thread(target=self._task).start()
+
+    def _task(self):
+        while True:
+            if self.exit_signal.wait(1):
+                break
+            devices = get_android_devices()
+            if devices is not None:
+                self.devices = devices
+            else:
+                break       # break the loop if adb not found
+ 
+    def dispose(self):
+        self.exit_signal.set()
+        self._thread.join()
+

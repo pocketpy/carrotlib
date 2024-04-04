@@ -46,6 +46,10 @@ class TaskCommand:
             return None
         self.returncode = ret
         raise StopIteration
+    
+    def kill(self):
+        self.pipe.kill()
+
 
 def cmd(args, cwd=None, shell=False):
     print(' '.join(args))

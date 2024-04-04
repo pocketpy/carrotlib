@@ -3,5 +3,5 @@ from .project import new_project, sync_project_template, run_project
 from .build import build_android, build_ios, build_win32, build_web
 from .base import cmd, start_vscode, get_logs, TaskCommand, SeqTask
 from .platform import open_directory, get_string
-from .mobile import get_android_devices, MobileDevice
+from .mobile import get_android_devices, MobileDevice, ThreadingTask
 from .config import config
