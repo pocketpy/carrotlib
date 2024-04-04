@@ -54,13 +54,14 @@ class TaskCommand:
         raise StopIteration
     
     def kill(self):
-        self.pipe.kill()
+        if self.pipe is not None:
+            self.pipe.kill()
+            self.pipe.wait()
         self.pipe = None
         TaskCommand.instance = None
 
     def __del__(self):
-        if self.pipe is not None:
-            self.pipe.kill()
+        self.kill()
 
 
 def start_vscode(file: str, root: str):

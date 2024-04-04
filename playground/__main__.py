@@ -395,6 +395,9 @@ if __name__ == "__main__":
         glfw.swap_buffers(window)
 
     # Cleanup
+    current_task = backend.TaskCommand.instance
+    if current_task is not None:
+        current_task.kill()
     project_view.threading_task.dispose()
     impl.shutdown()
     glfw.terminate()
