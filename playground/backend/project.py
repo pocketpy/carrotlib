@@ -64,4 +64,4 @@ def run_project(path: str):
         return
     if not os.path.exists(os.path.join(path, "carrotlib")):
         sync_project_template(path)
-    return TaskCommand([FRAMEWORK_EXE_PATH, path], cwd=FRAMEWORK_BUILD_DIR)
+    yield from TaskCommand([FRAMEWORK_EXE_PATH, path], cwd=FRAMEWORK_BUILD_DIR)

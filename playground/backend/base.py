@@ -71,8 +71,8 @@ def start_vscode(file: str, root: str):
         code_path = winreg.QueryValue(key, None)
         if code_path:
             program = code_path.split('"')[1]
-            return TaskCommand([program, root, file], shell=True)
-    if sys.platform == "darwin":
-        return TaskCommand(["open", "-a", "Visual Studio Code", root, file])
+            yield from TaskCommand([program, root, file], shell=True)
+    elif sys.platform == "darwin":
+        yield from TaskCommand(["open", "-a", "Visual Studio Code", root, file])
     else:
         print("功能还未实现")
