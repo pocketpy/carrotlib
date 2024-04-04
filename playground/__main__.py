@@ -272,10 +272,10 @@ class ProjectView:
                 current_task = backend.TaskCommand.instance
                 if current_task is None:
                     imgui.push_style_var(imgui.STYLE_ALPHA, 0.5)
-                    imgui.button(f"{Icons.ICON_STOPWATCH} 停止任务", width=column_width)
+                    imgui.button(f"{Icons.ICON_CIRCLE_STOP} 停止任务", width=column_width)
                     imgui.pop_style_var()
                 else:
-                    if imgui.button(f"{Icons.ICON_STOPWATCH} 停止任务", width=column_width):
+                    if imgui.button(f"{Icons.ICON_CIRCLE_STOP} 停止任务", width=column_width):
                         current_task.kill()
                 imgui.next_column()
                 ...
