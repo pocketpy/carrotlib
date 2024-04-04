@@ -5,13 +5,13 @@ LOG_FILE = 'playground.log'
 if os.path.exists(LOG_FILE):
     os.remove(LOG_FILE)
 
-fd = open(LOG_FILE, 'wt', buffering=1, newline='\n')
+fd = open(LOG_FILE, 'wt', buffering=1, newline='\n', encoding='utf-8')
 
 sys.stdout = fd
 sys.stderr = fd
 
 def get_logs():
-    with open(LOG_FILE, 'rt', buffering=1, newline='\n') as f:
+    with open(LOG_FILE, 'rt', buffering=1, newline='\n', encoding='utf-8') as f:
         return f.readlines()
 
 class SeqTask:
