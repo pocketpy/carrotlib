@@ -378,18 +378,22 @@ if __name__ == "__main__":
 
         imgui.new_frame()
 
-        with imgui.font(project_view.default_font):
-            imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (0, 10/DPI_SCALE))
-            imgui.set_next_window_position(0, 0)
-            window_size = glfw.get_window_size(window)
-            imgui.set_next_window_size(window_size[0], window_size[1])
-            imgui.begin("playground", flags=imgui.WINDOW_NO_DECORATION | imgui.WINDOW_NO_BACKGROUND)
-            project_view.render()
-            imgui.end()
-            imgui.pop_style_var()
+        window_focused = glfw.get_window_attrib(window, glfw.FOCUSED)
 
-        gl.glClearColor(33/255, 37/255, 43/255, 1.0)
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+        if window_focused:
+            with imgui.font(project_view.default_font):
+                imgui.push_style_var(imgui.STYLE_FRAME_PADDING, (0, 10/DPI_SCALE))
+                imgui.set_next_window_position(0, 0)
+                window_size = glfw.get_window_size(window)
+                imgui.set_next_window_size(window_size[0], window_size[1])
+                imgui.begin("playground", flags=imgui.WINDOW_NO_DECORATION | imgui.WINDOW_NO_BACKGROUND)
+                project_view.render()
+                imgui.end()
+                imgui.pop_style_var()
+
+            gl.glClearColor(33/255, 37/255, 43/255, 1.0)
+            gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+
         imgui.render()
         impl.render(imgui.get_draw_data())
 
