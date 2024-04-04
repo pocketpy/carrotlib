@@ -36,7 +36,7 @@ class ProjectView:
         self.default_font = self.load_font(24, glyph_ranges)
         self.source_font = imgui.get_io().fonts.add_font_from_file_ttf(
             "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
-            24,
+            18,
             font_config=imgui.FontConfig(oversample_h=2, oversample_v=2),
             glyph_ranges=glyph_ranges
         )
@@ -137,20 +137,20 @@ class ProjectView:
         return os.path.join(self.root_abspath, self.selected_file)
     
     def render_console(self):
-        input_bg_color = (44/255, 40/255, 52/255, 1.0)
-        imgui.push_style_color(imgui.COLOR_FRAME_BACKGROUND, *input_bg_color)
+        with imgui.font(self.source_font):
+            input_bg_color = (44/255, 40/255, 52/255, 1.0)
+            imgui.push_style_color(imgui.COLOR_FRAME_BACKGROUND, *input_bg_color)
 
-        # allow line wrap
-        for line in backend.get_logs():
-            imgui.push_text_wrap_pos()
-            imgui.extra.text_ansi(line)
-            imgui.pop_text_wrap_pos()
+            for line in backend.get_logs():
+                imgui.push_text_wrap_pos(0)
+                imgui.text(line)
+                imgui.pop_text_wrap_pos()
 
-        imgui.text("")
-        
-        if self.task is not None:
-            imgui.set_scroll_here_y(1.0)
-        imgui.pop_style_color()
+            imgui.text("")
+            
+            if self.task is not None:
+                imgui.set_scroll_here_y(1.0)
+            imgui.pop_style_color()
 
     def render_file_hierarchy(self, root: str):
         # use recursive function to render file hierarchy
