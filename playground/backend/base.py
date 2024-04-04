@@ -32,30 +32,36 @@ class SeqTask:
             self.index += 1
 
 class TaskCommand:
+    instance: 'TaskCommand' = None
+
     def __init__(self, args, cwd=None, shell=False):
         print(' '.join(args))
         self.pipe = subprocess.Popen(args, cwd=cwd, shell=shell, stdout=fd, stderr=fd)
         self.returncode = None
+        TaskCommand.instance = self
 
     def __iter__(self):
         return self
     
     def __next__(self):
+        if self.pipe is None:
+            raise StopIteration
         ret = self.pipe.poll()
         if ret is None:
             return None
         self.returncode = ret
+        TaskCommand.instance = None
         raise StopIteration
     
     def kill(self):
         self.pipe.kill()
+        self.pipe = None
+        TaskCommand.instance = None
 
+    def __del__(self):
+        if self.pipe is not None:
+            self.pipe.kill()
 
-def cmd(args, cwd=None, shell=False):
-    print(' '.join(args))
-    pipe = subprocess.Popen(args, cwd=cwd, shell=shell, stdout=fd, stderr=fd)
-    pipe.wait()
-    return pipe.returncode
 
 def start_vscode(file: str, root: str):
     if sys.platform == "win32":

@@ -2,7 +2,7 @@ import shutil
 import os, io, sys, re
 
 from .project import sync_project_template
-from .base import cmd, TaskCommand
+from .base import TaskCommand
 from .framework import FRAMEWORK_EXE_PATH
 from .platform import startfile
 

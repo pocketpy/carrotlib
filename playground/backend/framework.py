@@ -2,7 +2,7 @@ import os
 import sys
 import shutil
 
-from .base import cmd, TaskCommand
+from .base import TaskCommand
 
 assert sys.platform in ["win32", "linux", "darwin"]
 

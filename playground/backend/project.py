@@ -3,7 +3,7 @@ import shutil
 import json
 
 from .framework import FRAMEWORK_EXE_PATH, FRAMEWORK_BUILD_DIR, is_framework_compiled
-from .base import cmd, TaskCommand
+from .base import TaskCommand
 
 project_pyright_config = {
     "stubPath": os.path.abspath("template/typings"),

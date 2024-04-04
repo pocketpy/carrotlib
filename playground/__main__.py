@@ -19,7 +19,7 @@ if sys.platform == 'darwin':
     WINDOW_WIDTH, WINDOW_HEIGHT = 720+100, 360+100
 else:
     DPI_SCALE = 1
-    WINDOW_WIDTH, WINDOW_HEIGHT = 1440, 720
+    WINDOW_WIDTH, WINDOW_HEIGHT = 1440, 800
 
 
 def get_file_time(path):
@@ -191,8 +191,8 @@ class ProjectView:
     def render(self):
         # -------------------------- #
         window_width, window_height = imgui.get_window_size()
-        window_height *= 0.95
-        window_width *= 0.96
+        window_height *= 0.97
+        window_width -= 32 / DPI_SCALE
 
         # two column with splitter, drag to resize width
         imgui.begin_child("L", width=window_width * 0.25, height=window_height)
@@ -244,15 +244,15 @@ class ProjectView:
                 for device in self.threading_task.devices:
                     imgui.spacing()
                     imgui.text(f"{IconBrands.ICON_ANDROID} {device.title}")
-                    imgui.same_line(spacing=32 / DPI_SCALE)
+                    imgui.same_line(spacing=32/DPI_SCALE)
 
                     if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} Run"):
                         project_view.start_task(device.install_and_run(self.root_abspath))
-                    imgui.same_line(spacing=16 / DPI_SCALE)
+                    imgui.same_line(spacing=16/DPI_SCALE)
                     if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} Build & Run"):
                         project_view.start_task(backend.SeqTask(
                             backend.build_android(self.root_abspath, open_dir=False),
-                            backend.install_apk_and_run(device, self.root_abspath)
+                            device.install_and_run(self.root_abspath)
                         ))
                 imgui.spacing()
                 imgui.separator()
@@ -265,12 +265,30 @@ class ProjectView:
                 imgui.next_column()
                 if imgui.button(f"{Icons.ICON_T} 同步模板", width=column_width):
                     backend.sync_project_template(self.root_abspath)
+                # ------------------------- #
+                imgui.next_column()
+
+
+                current_task = backend.TaskCommand.instance
+                if current_task is None:
+                    imgui.push_style_var(imgui.STYLE_ALPHA, 0.5)
+                    imgui.button(f"{Icons.ICON_STOPWATCH} 停止任务", width=column_width)
+                    imgui.pop_style_var()
+                else:
+                    if imgui.button(f"{Icons.ICON_STOPWATCH} 停止任务", width=column_width):
+                        current_task.kill()
+                imgui.next_column()
+                ...
                 imgui.next_column()
                 if imgui.button(f"{Icons.ICON_V} 启动 VSCode", width=column_width):
                     project_view.start_task(backend.start_vscode(self.selected_file_abspath, self.root_abspath))
                 imgui.next_column()
                 if imgui.button(f"{Icons.ICON_CIRCLE_PLAY} 运行项目", width=column_width):
                     project_view.start_task(backend.run_project(self.root_abspath))
+                imgui.next_column()
+                ...
+                imgui.next_column()
+                ...
                 # ------------------------- #
                 imgui.next_column()
                 if imgui.button(f"{IconBrands.ICON_WINDOWS} 构建 Windows", width=column_width):
@@ -279,19 +297,18 @@ class ProjectView:
                 if imgui.button(f"{IconBrands.ICON_ANDROID} 构建 Android", width=column_width):
                     project_view.start_task(backend.build_android(self.root_abspath))
                 imgui.next_column()
-
                 if sys.platform != 'darwin':
-                    imgui.push_style_var(imgui.STYLE_ALPHA, 0.4)
+                    imgui.push_style_var(imgui.STYLE_ALPHA, 0.5)
                     imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width)
                     imgui.pop_style_var()
                 else:
                     if imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width):
                         project_view.start_task(backend.build_ios(self.root_abspath))
-
                 imgui.next_column()
                 if imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width):
                     project_view.start_task(backend.build_web(self.root_abspath))
                 imgui.next_column()
+                # ------------------------- #
 
                 imgui.columns(1)
 
@@ -356,10 +373,7 @@ if __name__ == "__main__":
     while not glfw.window_should_close(window):
         project_view.poll_task()
         glfw.poll_events()
-
-        # Start the Dear ImGui frame
-        if project_view.task is None:
-            impl.process_inputs()
+        impl.process_inputs()
 
         imgui.new_frame()
 

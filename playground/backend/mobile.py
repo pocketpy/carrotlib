@@ -66,10 +66,11 @@ class ThreadingTask:
     def __init__(self):
         self.devices = []
         self.exit_signal = threading.Event()
-        self._thread = threading.Thread(target=self._task).start()
+        self._thread = threading.Thread(target=self._task)
+        self._thread.start()
 
     def _task(self):
-        while True:
+        while threading.main_thread().is_alive():
             if self.exit_signal.wait(1):
                 break
             devices = get_android_devices()
