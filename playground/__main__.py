@@ -1,6 +1,8 @@
 import imgui
 from imgui.integrations.glfw import GlfwRenderer
 from datetime import datetime
+import threading
+import time
 
 from typing import TYPE_CHECKING, List
 if TYPE_CHECKING:
@@ -21,18 +23,6 @@ else:
     DPI_SCALE = 1
     WINDOW_WIDTH, WINDOW_HEIGHT = 1440, 720
 
-class Timer:
-    def __init__(self, timeout: float):
-        self.timeout = timeout
-        self.start_time = imgui.get_time()
-
-    def test_and_set(self):
-        delta = imgui.get_time() - self.start_time
-        if delta >= self.timeout:
-            self.start_time = imgui.get_time()
-            return True
-        return False
-
 
 def get_file_time(path):
     if not os.path.exists(path):
@@ -42,7 +32,51 @@ def get_file_time(path):
     return t
 
 
+class ThreadingTask:
+    devices: List[backend.MobileDevice]
+
+    def __init__(self):
+        self.devices = []
+        self._disposed = False
+        self._thread = threading.Thread(target=self._task).start()
+
+    def _task(self):
+        while not self._disposed:
+            devices = backend.get_android_devices()
+            if devices is not None:
+                self.devices = devices
+            else:
+                break       # break the loop if adb not found
+            time.sleep(1)
+
+    def dispose(self):
+        self._disposed = True
+        self._thread.join()
+
+
 class ProjectView:
+    def __init__(self):
+        self.task = None
+        glyph_ranges = imgui.get_io().fonts.get_glyph_ranges_chinese()
+
+        self.default_font = self.load_font(24, glyph_ranges)
+        self.source_font = imgui.get_io().fonts.add_font_from_file_ttf(
+            "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
+            24,
+            font_config=imgui.FontConfig(oversample_h=2, oversample_v=2),
+            glyph_ranges=glyph_ranges
+        )
+
+        imgui.get_io().delta_time = 1.0 / 60.0
+        
+        self.root = None
+        self._selected_file = None
+        self._selected_content = None
+        self.open_project(backend.config.project)
+
+        # start threading task
+        self.threading_task = ThreadingTask()
+    
     def load_font(self, size, glyph_ranges):
         imgui.get_io().fonts.add_font_from_file_ttf(
             "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
@@ -63,31 +97,6 @@ class ProjectView:
             font_config=imgui.FontConfig(merge_mode=True),
             glyph_ranges=imgui.core.GlyphRanges([icon_min, icon_max, 0])
         )
-
-    devices: List[backend.MobileDevice]
-
-    def __init__(self):
-        self.task = None
-
-        self.devices = []
-        self.timer = Timer(1.0)
-
-        glyph_ranges = imgui.get_io().fonts.get_glyph_ranges_chinese()
-
-        self.default_font = self.load_font(24, glyph_ranges)
-        self.source_font = imgui.get_io().fonts.add_font_from_file_ttf(
-            "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
-            24,
-            font_config=imgui.FontConfig(oversample_h=2, oversample_v=2),
-            glyph_ranges=glyph_ranges
-        )
-
-        imgui.get_io().delta_time = 1.0 / 60.0
-        
-        self.root = None
-        self._selected_file = None
-        self._selected_content = None
-        self.open_project(backend.config.project)
 
     def poll_task(self):
         if self.task is not None:
@@ -205,9 +214,6 @@ class ProjectView:
         imgui.pop_style_color(count=2)
 
     def render(self):
-        if project_view.timer.test_and_set():
-            project_view.devices = backend.get_android_devices()
-
         # -------------------------- #
         window_width, window_height = imgui.get_window_size()
         window_height *= 0.95
@@ -259,8 +265,8 @@ class ProjectView:
                 imgui.spacing()
 
                 imgui.separator()
-                imgui.text(f"已连接设备：{len(self.devices)}")
-                for device in self.devices:
+                imgui.text(f"已连接设备：{len(self.threading_task.devices)}")
+                for device in self.threading_task.devices:
                     imgui.spacing()
                     imgui.text(f"{IconBrands.ICON_ANDROID} {device.title}")
                     imgui.same_line(spacing=32 / DPI_SCALE)
@@ -400,5 +406,6 @@ if __name__ == "__main__":
         glfw.swap_buffers(window)
 
     # Cleanup
+    project_view.threading_task.dispose()
     impl.shutdown()
     glfw.terminate()

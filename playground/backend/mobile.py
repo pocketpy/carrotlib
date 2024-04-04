@@ -34,14 +34,14 @@ class AndroidDevice(MobileDevice):
 class IOSDevice(MobileDevice):
     pass
 
-def get_android_devices() -> List[AndroidDevice]:
+def get_android_devices() -> List[AndroidDevice] | None:
     try:
         pipe = subprocess.Popen(["adb", "devices", "-l"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
         stdout, stderr = pipe.communicate()
         if pipe.returncode != 0:
-            return []
+            return None
     except:
-        return []
+        return None
     
     devices = []
     for line in stdout.splitlines():
