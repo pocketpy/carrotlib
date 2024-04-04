@@ -63,6 +63,7 @@ class Game:
             g.viewport_scale = rl.GetScreenHeight() / g.viewport_height
 
         print('sys.version:', sys.version)
+        print('sys.platform:', sys.platform)
         print('viewport_size:', g.viewport_width, g.viewport_height)
         print('viewport_scale:', g.viewport_scale)
         print('screen_size:', rl.GetScreenWidth(), rl.GetScreenHeight())

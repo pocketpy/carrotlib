@@ -84,6 +84,7 @@ class ProjectView:
         if task is None:
             return
         if self.task is not None:
+            print("已经有一个任务在运行中")
             return
         self.task = task
 
@@ -267,7 +268,6 @@ class ProjectView:
                     backend.sync_project_template(self.root_abspath)
                 # ------------------------- #
                 imgui.next_column()
-
 
                 current_task = backend.TaskCommand.instance
                 if current_task is None:

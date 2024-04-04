@@ -38,9 +38,9 @@ class TaskCommand:
         print(' '.join(args))
         self.pipe = subprocess.Popen(args, cwd=cwd, shell=shell, stdout=fd, stderr=fd)
         self.returncode = None
-        TaskCommand.instance = self
-
+        
     def __iter__(self):
+        TaskCommand.instance = self
         return self
     
     def __next__(self):

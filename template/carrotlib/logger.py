@@ -18,6 +18,9 @@ def _colorize(msg: str, fg: int = None, bg: int = None) -> str:
 
 def _log(level: str, *args, fg=None, bg=None):
     msg = ' '.join(map(str, args))
+    if sys.platform == 'android':
+        print(msg)
+        return
     level = level.ljust(8)
     prefix = _colorize(_now(), fg=90) + ' | ' + _colorize(level, fg=fg, bg=bg) + ' | '
     print(prefix + _colorize(msg, fg=fg, bg=bg))

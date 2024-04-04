@@ -27,7 +27,7 @@ class AndroidDevice(MobileDevice):
         yield from task
         if task.returncode != 0:
             return
-        task = TaskCommand(["adb", "-s", self.id, "logcat", "-s", "CarrotLib:*", "raylib:*"])
+        task = TaskCommand(["adb", "-s", self.id, "logcat", "-s", "CarrotLib:*", "raylib:E"])
         yield from task
 
 
