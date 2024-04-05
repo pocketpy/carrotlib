@@ -127,7 +127,7 @@ class Image(Control):
     def __init__(self, name=None, parent=None) -> None:
         super().__init__(name, parent)
         self.texture = None
-        self.color = Colors.White
+        self.color = Colors.White.copy()
         self.origin = vec2(0.5, 0.5)
         self.hfill_amount = 1.0
         self.vfill_amount = 1.0
