@@ -42,6 +42,7 @@ class ButtonState:
         return self.colors[self.value]
 
     def update(self):
+        old_value = self.value
         if not self.control.interactable:
             self.value = 'disabled'
 
@@ -70,14 +71,16 @@ class ButtonState:
                     self.on_long_press()
                     self.value = 'hover'
                 self._pressed_time = None
-                return
-            if rl.IsMouseButtonReleased(0):
+            elif rl.IsMouseButtonReleased(0):
                 if self.control.is_hovering():
                     if self.on_click:
                         self.on_click()
                     self.value = 'hover'
                 else:
                     self.value = 'normal'
+                self._pressed_time = None
+
+        return self.value != old_value
 
 
         
