@@ -44,4 +44,6 @@ default_font: rl.Font = None
 default_font_size: int = None
 default_material: Material = None
 default_lightmap: Lightmap = None
+default_text_spacing: float = 1.0
+default_text_line_spacing: int = 0
 ##########################################################################
