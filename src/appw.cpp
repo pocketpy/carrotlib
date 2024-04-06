@@ -311,7 +311,9 @@ void setup_imgui_font(){
     std::string_view font_path = "carrotlib/assets/SourceCodePro-Medium.otf";
     int data_size;
     void* data = platform_load_asset(font_path.data(), font_path.size(), &data_size);
-    ImGui::GetIO().FontDefault = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(data, data_size, 18.0f);
+    int width = (GetScreenWidth() + GetRenderWidth()) / 2;
+    float font_size = width / 100f;
+    ImGui::GetIO().FontDefault = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(data, data_size, font_size);
     rlImGuiReloadFonts();
     free(data);
 }

@@ -90,12 +90,8 @@ class DebugWindow:
         self.python_console = PythonConsole()
 
         # set window size
-        if sys.platform in ('android', 'ios'):
-            self.w = rl.GetScreenWidth() * 0.4
-            self.h = rl.GetScreenHeight() * 0.8
-        else:
-            self.w = rl.GetScreenWidth() * 0.3
-            self.h = rl.GetScreenHeight() * 0.6
+        self.w = rl.GetScreenWidth() * 0.3
+        self.h = rl.GetScreenHeight() * 0.6
 
     @property
     def selected(self):
