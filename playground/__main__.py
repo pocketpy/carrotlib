@@ -311,7 +311,7 @@ class ProjectView:
                 ...
                 # ------------------------- #
                 imgui.next_column()
-                if imgui.button(f"{IconBrands.ICON_WINDOWS} 构建 Windows", width=column_width):
+                if imgui.button(f"{IconBrands.ICON_WINDOWS} 构建 Desktop", width=column_width):
                     backend.build_win32(self.root_abspath)
                 imgui.next_column()
                 if imgui.button(f"{IconBrands.ICON_ANDROID} 构建 Android", width=column_width):
