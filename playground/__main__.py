@@ -128,6 +128,10 @@ class ProjectView:
     def open_project(self, root: str):
         if not root or not os.path.exists(root):
             return
+        main_path = os.path.join(root, "main.py")
+        if not os.path.exists(main_path):
+            print(f"{root} 没有找到 main.py 文件，无法打开")
+            return
         self.root = root
         self.selected_file = 'main.py'
         print('打开项目:', self.root)
