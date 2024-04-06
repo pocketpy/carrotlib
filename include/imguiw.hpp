@@ -1151,6 +1151,11 @@ void add_module_imgui(VM* vm){
         [](VM* vm, ArgsView args){
             bool darkTheme = CAST(bool, args[0]);
             rlImGuiSetup(darkTheme);
+
+            ImFont* font = ImGui::GetIO().Fonts->AddFontFromFileTTF("carrotlib/assets/SourceCodePro-Medium.otf", 18);
+            ImGui::GetIO().FontDefault = font;
+            rlImGuiReloadFonts();
+
             return vm->None;
         });
 
@@ -1169,7 +1174,6 @@ void add_module_imgui(VM* vm){
 
     // image API
     vm->bind(imgui, "rlImGuiImage(image: Texture_p)",
-        "Wraps `void rlImGuiImage(const Texture *image);`",
         [](VM* vm, ArgsView args){
             Texture* image = CAST(Texture*, args[0]);
             rlImGuiImage(image);
@@ -1177,7 +1181,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "rlImGuiImageSize(image: Texture_p, width: int, height: int)",
-        "Wraps `void rlImGuiImageSize(const Texture *image, int width, int height);`",
         [](VM* vm, ArgsView args){
             Texture* image = CAST(Texture*, args[0]);
             int width = CAST(int, args[1]);
@@ -1187,7 +1190,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "rlImGuiImageSizeV(image: Texture_p, size: vec2)",
-        "Wraps `void rlImGuiImageSizeV(const Texture *image, Vector2 size);`",
         [](VM* vm, ArgsView args){
             Texture* image = CAST(Texture*, args[0]);
             Vector2 size = CAST(Vector2, args[1]);
@@ -1196,7 +1198,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "rlImGuiImageRect(image: Texture_p, destWidth: int, destHeight: int, sourceRect: Rectangle)",
-        "Wraps `void rlImGuiImageRect(const Texture* image, int destWidth, int destHeight, Rectangle sourceRect);`",
         [](VM* vm, ArgsView args){
             Texture* image = CAST(Texture*, args[0]);
             int destWidth = CAST(int, args[1]);
@@ -1207,7 +1208,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "rlImGuiImageRenderTexture(image: RenderTexture_p)",
-        "Wraps `void rlImGuiImageRenderTexture(const RenderTexture* image);`",
         [](VM* vm, ArgsView args){
             RenderTexture* image = CAST(RenderTexture*, args[0]);
             rlImGuiImageRenderTexture(image);
@@ -1215,7 +1215,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "rlImGuiImageRenderTextureFit(image: RenderTexture_p, center: bool)",
-        "Wraps `void rlImGuiImageRenderTextureFit(const RenderTexture* image, bool center);`",
         [](VM* vm, ArgsView args){
             RenderTexture* image = CAST(RenderTexture*, args[0]);
             bool center = CAST(bool, args[1]);
@@ -1224,7 +1223,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "rlImGuiImageButton(name: str, image: Texture_p) -> bool",
-        "Wraps `bool rlImGuiImageButton(const char* name, const Texture* image);`",
         [](VM* vm, ArgsView args){
             const char* name = CAST(const char*, args[0]);
             Texture* image = CAST(Texture*, args[1]);
@@ -1233,7 +1231,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "rlImGuiImageButtonSize(name: str, image: Texture_p, size: vec2) -> bool",
-        "Wraps `bool rlImGuiImageButtonSize(const char* name, const Texture* image, struct ImVec2 size);`",
         [](VM* vm, ArgsView args){
             const char* name = CAST(CString, args[0]);
             Texture* image = CAST(Texture*, args[1]);
@@ -1269,38 +1266,31 @@ void add_module_imgui(VM* vm){
     
     // Main
     vm->bind(imgui, "GetIO() -> _IO",
-        "access the IO structure (mouse/keyboard/gamepad inputs, time, various configuration options/flags)",
         PK_LAMBDA(VAR_T(PyImGuiIO, &ImGui::GetIO()))
         );
 
     vm->bind(imgui, "GetStyle() -> _Style",
-        "access the Style structure (colors, sizes). Always use PushStyleCol(), PushStyleVar() to modify style mid-frame!",
         PK_LAMBDA(VAR_T(PyImGuiStyle, &ImGui::GetStyle()))
         );
 
     vm->bind(imgui, "NewFrame()",
-        "Wraps `void rlImGuiBegin();`",
         PK_ACTION(rlImGuiBegin())
         );
 
     vm->bind(imgui, "EndFrame()",
-        "ends the Dear ImGui frame. automatically called by Render(). If you don't need to render data (skipping rendering) you may call EndFrame() without Render()... but you'll have wasted CPU already! If you don't need to render, better to not create any windows and not call NewFrame() at all!",
         PK_ACTION(ImGui::EndFrame())
         );
 
     vm->bind(imgui, "Render()",
-        "Wraps `void rlImGuiEnd();`",
         PK_ACTION(rlImGuiEnd())
         );
 
     vm->bind(imgui, "GetDrawData() -> void_p",
-        "valid after Render() and until the next call to NewFrame(). this is what you have to render.",
         PK_VAR_LAMBDA(ImGui::GetDrawData())
         );
 
     // Demo, Debug, Information
     vm->bind(imgui, "ShowDemoWindow(p_open: bool_p = None)",
-        "create Demo window. demonstrate most ImGui features. call this to learn about the library! try to make it always available in your application!",
         [](VM* vm, ArgsView args){
             bool* p_open = CAST(bool*, args[0]);
             ImGui::ShowDemoWindow(p_open);
@@ -1317,18 +1307,15 @@ void add_module_imgui(VM* vm){
     // ...
 
     vm->bind(imgui, "GetVersion() -> str",
-        "get the compiled version string e.g. \"1.80 WIP\" (essentially the value for IMGUI_VERSION from the compiled version of imgui.cpp)",
         PK_VAR_LAMBDA(ImGui::GetVersion())
         );
 
     // Styles
     vm->bind(imgui, "StyleColorsDark()",
-        "new, recommended style (default)",
         PK_ACTION(ImGui::StyleColorsDark())
         );
 
     vm->bind(imgui, "StyleColorsLight()",
-        "best used with borders and a custom, thicker font",
         PK_ACTION(ImGui::StyleColorsLight())
         );
 
@@ -1339,17 +1326,6 @@ void add_module_imgui(VM* vm){
 
     // Windows
     vm->bind(imgui, "Begin(name: str, p_open: bool_p = None, flags=0) -> bool",
-"- Begin() = push window to the stack and start appending to it. End() = pop window from the stack.\n"
-"- Passing 'bool* p_open != NULL' shows a window-closing widget in the upper-right corner of the window,\n"
-"   which clicking will set the boolean to false when clicked.\n"
-"- You may append multiple times to the same window during the same frame by calling Begin()/End() pairs multiple times.\n"
-"    Some information such as 'flags' or 'p_open' will only be considered by the first call to Begin().\n"
-"- Begin() return false to indicate the window is collapsed or fully clipped, so you may early out and omit submitting\n"
-"    anything to the window. Always call a matching End() for each Begin() call, regardless of its return value!\n"
-"    [Important: due to legacy reason, this is inconsistent with most other functions such as BeginMenu/EndMenu,\n"
-"    BeginPopup/EndPopup, etc. where the EndXXX call should only be called if the corresponding BeginXXX function\n"
-"    returned true. Begin and BeginChild are the only odd ones out. Will be fixed in a future update.]\n"
-"- Note that the bottom of window stack always contains a window called 'Debug'.\n",
         [](VM* vm, ArgsView args){
             const char* name = CAST(CString, args[0]);
             bool* p_open = CAST(bool*, args[1]);
@@ -1364,13 +1340,6 @@ void add_module_imgui(VM* vm){
 
     // Child Windows
     vm->bind(imgui, "BeginChild(str_id: str, size: vec2 = None, border=False, flags=0)",
-"- Use child windows to begin into a self-contained independent scrolling/clipping regions within a host window. Child windows can embed their own child.\n"
-"- For each independent axis of 'size': ==0.0f: use remaining host window size / >0.0f: fixed size / <0.0f: use remaining window size minus abs(size) / Each axis can use a different mode, e.g. ImVec2(0,400).\n"
-"- BeginChild() returns false to indicate the window is collapsed or fully clipped, so you may early out and omit submitting anything to the window.\n"
-"    Always call a matching EndChild() for each BeginChild() call, regardless of its return value.\n"
-"    [Important: due to legacy reason, this is inconsistent with most other functions such as BeginMenu/EndMenu,\n"
-"    BeginPopup/EndPopup, etc. where the EndXXX call should only be called if the corresponding BeginXXX function\n"
-"    returned true. Begin and BeginChild are the only odd ones out. Will be fixed in a future update.]\n",
         [](VM* vm, ArgsView args){
             const char* str_id = CAST(CString, args[0]);
             ImVec2 size = CAST_DEFAULT(ImVec2, args[1], ImVec2(0, 0));
@@ -1395,41 +1364,34 @@ void add_module_imgui(VM* vm){
         );
 
     vm->bind(imgui, "IsWindowFocused(flags=0) -> bool",
-        "is current window focused? or its root/child, depending on flags. see flags for options.",
         [](VM* vm, ArgsView args){
             ImGuiFocusedFlags flags = CAST(int, args[0]);
             return VAR(ImGui::IsWindowFocused(flags));
         });
 
     vm->bind(imgui, "IsWindowHovered(flags=0) -> bool",
-        "is current window hovered (and typically: not blocked by a popup/modal)? see flags for options. NB: If you are trying to check whether your mouse should be dispatched to imgui or to your app, you should use the 'io.WantCaptureMouse' boolean for that! Please read the FAQ!",
         [](VM* vm, ArgsView args){
             ImGuiHoveredFlags flags = CAST(int, args[0]);
             return VAR(ImGui::IsWindowHovered(flags));
         });
 
     vm->bind(imgui, "GetWindowDrawList() -> void_p",
-        "get draw list associated to the current window, to append your own drawing primitives",
         PK_VAR_LAMBDA(ImGui::GetWindowDrawList())
         );
 
     vm->bind(imgui, "GetWindowPos() -> vec2",
-        "get current window position in screen space (useful if you want to do your own drawing via the DrawList API)",
         PK_VAR_LAMBDA(ImGui::GetWindowPos())
         );
 
     vm->bind(imgui, "GetWindowSize() -> vec2",
-        "get current window size",
         PK_VAR_LAMBDA(ImGui::GetWindowSize())
         );
 
     vm->bind(imgui, "GetWindowWidth() -> float",
-        "get current window width (shortcut for GetWindowSize().x)",
         PK_VAR_LAMBDA(ImGui::GetWindowWidth())
         );
 
     vm->bind(imgui, "GetWindowHeight() -> float",
-        "get current window height (shortcut for GetWindowSize().y)",
         PK_VAR_LAMBDA(ImGui::GetWindowHeight())
         );
 
@@ -1437,7 +1399,6 @@ void add_module_imgui(VM* vm){
     // - Prefer using SetNextXXX functions (before Begin) rather that SetXXX functions (after Begin).
     // [SKIP: SetXXX functions]
     vm->bind(imgui, "SetNextWindowPos(pos: vec2, cond=0, pivot=None)",
-        "set next window position. call before Begin(). use pivot=(0.5f,0.5f) to center on given point, etc.",
         [](VM* vm, ArgsView args){
             ImVec2 pos = CAST(ImVec2, args[0]);
             ImGuiCond cond = CAST(int, args[1]);
@@ -1447,7 +1408,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "SetNextWindowSize(size: vec2, cond=0)",
-        "set next window size. set axis to 0.0f to force an auto-fit on this axis. call before Begin()",
         [](VM* vm, ArgsView args){
             ImVec2 size = CAST(ImVec2, args[0]);
             ImGuiCond cond = CAST(int, args[1]);
@@ -1456,7 +1416,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "SetNextWindowSizeConstraints(size_min: vec2, size_max: vec2)",
-        "set next window size limits. use -1,-1 on either X/Y axis to preserve the current size. Sizes will be rounded down. Use callback to apply non-trivial programmatic constraints.",
         [](VM* vm, ArgsView args){
             ImVec2 size_min = CAST(ImVec2, args[0]);
             ImVec2 size_max = CAST(ImVec2, args[1]);
@@ -1465,7 +1424,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "SetNextWindowContentSize(size: vec2)",
-        "set next window content size (~ scrollable client area, which enforce the range of scrollbars). Not including window decorations (title bar, menu bar, etc.) nor WindowPadding. set an axis to 0.0f to leave it automatic. call before Begin()",
         [](VM* vm, ArgsView args){
             ImVec2 size = CAST(ImVec2, args[0]);
             ImGui::SetNextWindowContentSize(size);
@@ -1473,7 +1431,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "SetNextWindowCollapsed(collapsed: bool, cond=0)",
-        "set next window collapsed state. call before Begin()",
         [](VM* vm, ArgsView args){
             bool collapsed = CAST(bool, args[0]);
             ImGuiCond cond = CAST(int, args[1]);
@@ -1482,14 +1439,12 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "SetNextWindowFocus()",
-        "set next window to be focused / top-most. call before Begin()",
         [](VM* vm, ArgsView args){
             ImGui::SetNextWindowFocus();
             return vm->None;
         });
 
     vm->bind(imgui, "SetNextWindowScroll(scroll: vec2)",
-        "set next window scrolling value (use < 0.0f to not affect a given axis).",
         [](VM* vm, ArgsView args){
             ImVec2 scroll = CAST(ImVec2, args[0]);
             ImGui::SetNextWindowScroll(scroll);
@@ -1497,7 +1452,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "SetNextWindowBgAlpha(alpha: float)",
-        "set next window background alpha.",
         [](VM* vm, ArgsView args){
             float alpha = CAST_F(args[0]);
             ImGui::SetNextWindowBgAlpha(alpha);
@@ -1508,22 +1462,18 @@ void add_module_imgui(VM* vm){
     // - Retrieve available space from a given point. GetContentRegionAvail() is frequently useful.
     // - Those functions are bound to be redesigned (they are confusing, incomplete and the Min/Max return values are in local window coordinates which increases confusion)
     vm->bind(imgui, "GetContentRegionAvail() -> vec2",
-        "== GetContentRegionMax() - GetCursorPos()",
         PK_VAR_LAMBDA(ImGui::GetContentRegionAvail())
         );
 
     vm->bind(imgui, "GetContentRegionMax() -> vec2",
-        "current content boundaries (typically window boundaries including scrolling, or current column boundaries), in windows coordinates",
         PK_VAR_LAMBDA(ImGui::GetContentRegionMax())
         );
 
     vm->bind(imgui, "GetWindowContentRegionMin() -> vec2",
-        "content boundaries min (roughly (0,0)-Scroll), in window coordinates",
         PK_VAR_LAMBDA(ImGui::GetWindowContentRegionMin())
         );
 
     vm->bind(imgui, "GetWindowContentRegionMax() -> vec2",
-        "content boundaries max (roughly (0,0)+Size-Scroll) where Size can be override with SetNextWindowContentSize(), in window coordinates",
         PK_VAR_LAMBDA(ImGui::GetWindowContentRegionMax())
         );
 
@@ -1531,17 +1481,14 @@ void add_module_imgui(VM* vm){
     // - Any change of Scroll will be applied at the beginning of next frame in the first call to Begin().
     // - You may instead use SetNextWindowScroll() prior to calling Begin() to avoid this delay, as an alternative to using SetScrollX()/SetScrollY().
     vm->bind(imgui, "GetScrollX()",
-        "get scrolling amount [0 .. GetScrollMaxX()]",
         PK_VAR_LAMBDA(ImGui::GetScrollX())
         );
 
     vm->bind(imgui, "GetScrollY()",
-        "get scrolling amount [0 .. GetScrollMaxY()]",
         PK_VAR_LAMBDA(ImGui::GetScrollY())
         );
 
     vm->bind(imgui, "SetScrollX(scroll_x: float)",
-        "set scrolling amount [0 .. GetScrollMaxX()]",
         [](VM* vm, ArgsView args){
             float scroll_x = CAST_F(args[0]);
             ImGui::SetScrollX(scroll_x);
@@ -1549,7 +1496,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "SetScrollY(scroll_y: float)",
-        "set scrolling amount [0 .. GetScrollMaxY()]",
         [](VM* vm, ArgsView args){
             float scroll_y = CAST_F(args[0]);
             ImGui::SetScrollY(scroll_y);
@@ -1557,17 +1503,14 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "GetScrollMaxX()",
-        "get maximum scrolling amount ~~ ContentSize.x - WindowSize.x - DecorationsSize.x",
         PK_VAR_LAMBDA(ImGui::GetScrollMaxX())
         );
 
     vm->bind(imgui, "GetScrollMaxY()",
-        "get maximum scrolling amount ~~ ContentSize.y - WindowSize.y - DecorationsSize.y",
         PK_VAR_LAMBDA(ImGui::GetScrollMaxY())
         );
 
     vm->bind(imgui, "SetScrollHereX(center_x_ratio=0.5)",
-        "adjust scrolling amount to make current cursor position visible. center_x_ratio=0.0: left, 0.5: center, 1.0: right. When using to make a \"default/current item\" visible, consider using SetItemDefaultFocus() instead.",
         [](VM* vm, ArgsView args){
             float center_x_ratio = CAST_F(args[0]);
             ImGui::SetScrollHereX(center_x_ratio);
@@ -1575,7 +1518,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "SetScrollHereY(center_y_ratio=0.5)",
-        "adjust scrolling amount to make current cursor position visible. center_y_ratio=0.0: top, 0.5: center, 1.0: bottom. When using to make a \"default/current item\" visible, consider using SetItemDefaultFocus() instead.",
         [](VM* vm, ArgsView args){
             float center_y_ratio = CAST_F(args[0]);
             ImGui::SetScrollHereY(center_y_ratio);
@@ -1583,7 +1525,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "SetScrollFromPosX(local_x: float, center_x_ratio=0.5)",
-        "adjust scrolling amount to make given position visible. Generally GetCursorStartPos() + offset to compute a valid position.",
         [](VM* vm, ArgsView args){
             float local_x = CAST_F(args[0]);
             float center_x_ratio = CAST_F(args[1]);
@@ -1592,7 +1533,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "SetScrollFromPosY(local_y: float, center_y_ratio=0.5)",
-        "adjust scrolling amount to make given position visible. Generally GetCursorStartPos() + offset to compute a valid position.",
         [](VM* vm, ArgsView args){
             float local_y = CAST_F(args[0]);
             float center_y_ratio = CAST_F(args[1]);
@@ -1614,7 +1554,6 @@ void add_module_imgui(VM* vm){
         );
 
     vm->bind(imgui, "PushStyleColor(idx: int, col: vec4)",
-        "modify a style color. always use this if you modify the style after NewFrame().",
         [](VM* vm, ArgsView args){
             ImGuiCol idx = CAST(ImGuiCol, args[0]);
             ImVec4 col = CAST(ImVec4, args[1]);
@@ -1630,7 +1569,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "PushStyleVar(idx: int, val: float)",
-        "modify a style float variable. always use this if you modify the style after NewFrame().",
         [](VM* vm, ArgsView args){
             ImGuiStyleVar idx = CAST(ImGuiStyleVar, args[0]);
             float val = CAST_F(args[1]);
@@ -1639,7 +1577,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "PushStyleVar(idx: int, val: vec2)",
-        "modify a style ImVec2 variable. always use this if you modify the style after NewFrame().",
         [](VM* vm, ArgsView args){
             ImGuiStyleVar idx = CAST(ImGuiStyleVar, args[0]);
             ImVec2 val = CAST(ImVec2, args[1]);
@@ -1655,7 +1592,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "PushTabStop(tab_stop: bool)",
-        "== tab stop enable. Allow focusing using TAB/Shift-TAB, enabled by default but you can disable it for certain widgets",
         [](VM* vm, ArgsView args){
             bool tab_stop = CAST(bool, args[0]);
             ImGui::PushTabStop(tab_stop);
@@ -1667,7 +1603,6 @@ void add_module_imgui(VM* vm){
         );
 
     vm->bind(imgui, "PushButtonRepeat(repeat: bool)",
-        "in 'repeat' mode, Button*() functions return repeated true in a typematic manner (using io.KeyRepeatDelay/io.KeyRepeatRate setting). Note that you can call IsItemActive() after any Button() to tell if the button is held in the current frame.",
         [](VM* vm, ArgsView args){
             bool repeat = CAST(bool, args[0]);
             ImGui::PushButtonRepeat(repeat);
@@ -1680,7 +1615,6 @@ void add_module_imgui(VM* vm){
 
     // Parameters stacks (current window)
     vm->bind(imgui, "PushItemWidth(item_width: float)",
-        "push width of items for common large \"item+label\" widgets. >0.0f: width in pixels, <0.0f align xx pixels to the right of window (so -FLT_MIN always align width to the right side).",
         [](VM* vm, ArgsView args){
             float item_width = CAST_F(args[0]);
             ImGui::PushItemWidth(item_width);
@@ -1692,7 +1626,6 @@ void add_module_imgui(VM* vm){
         );
 
     vm->bind(imgui, "SetNextItemWidth(item_width: float)",
-        "set width of the _next_ common large \"item+label\" widget. >0.0f: width in pixels, <0.0f align xx pixels to the right of window (so -FLT_MIN always align width to the right side)",
         [](VM* vm, ArgsView args){
             float item_width = CAST_F(args[0]);
             ImGui::SetNextItemWidth(item_width);
@@ -1700,12 +1633,10 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "CalcItemWidth() -> float",
-        "width of item given pushed settings and current cursor position. NOT necessarily the width of last item unlike most 'Item' functions.",
         PK_VAR_LAMBDA(ImGui::CalcItemWidth())
         );
 
     vm->bind(imgui, "PushTextWrapPos(wrap_local_pos_x: float = 0.0)",
-        "push word-wrapping position for Text*() commands. < 0.0f: no wrapping; 0.0f: wrap to end of window (or column); > 0.0f: wrap at 'wrap_pos_x' position in window local space",
         [](VM* vm, ArgsView args){
             float wrap_local_pos_x = CAST_F(args[0]);
             ImGui::PushTextWrapPos(wrap_local_pos_x);
@@ -1725,16 +1656,13 @@ void add_module_imgui(VM* vm){
     //     });
 
     vm->bind(imgui, "GetFontSize() -> float",
-        "get current font size (= height in pixels) of current font with current scale applied",
         PK_VAR_LAMBDA(ImGui::GetFontSize())
         );
 
     vm->bind(imgui, "GetFontTexUvWhitePixel() -> vec2",
-        "get UV coordinate for a while pixel, useful to draw custom shapes via the ImDrawList API",
         PK_VAR_LAMBDA(ImGui::GetFontTexUvWhitePixel())
         );
     vm->bind(imgui, "GetStyleColorVec4(idx: int) -> vec4",
-        "retrieve style color as stored in ImGuiStyle structure. use to feed back into PushStyleColor(), otherwise use GetColorU32() to get style color with style alpha baked in.",
         [](VM* vm, ArgsView args){
             ImGuiCol idx = CAST(ImGuiCol, args[0]);
             ImVec4 v = ImGui::GetStyleColorVec4(idx);
@@ -1749,12 +1677,10 @@ void add_module_imgui(VM* vm){
     //    Window-local coordinates:   SameLine(), GetCursorPos(), SetCursorPos(), GetCursorStartPos(), GetContentRegionMax(), GetWindowContentRegion*(), PushTextWrapPos()
     //    Absolute coordinate:        GetCursorScreenPos(), SetCursorScreenPos(), all ImDrawList:: functions.
     vm->bind(imgui, "Separator()",
-        "separator, generally horizontal. inside a menu bar or in horizontal layout mode, this becomes a vertical separator.",
         PK_ACTION(ImGui::Separator())
         );
 
     vm->bind(imgui, "SameLine(offset_from_start_x=0.0, spacing=-1.0)",
-        "call between widgets or groups to layout them horizontally. X position given in window coordinates.",
         [](VM* vm, ArgsView args){
             float offset_from_start_x = CAST_F(args[0]);
             float spacing = CAST_F(args[1]);
@@ -1763,17 +1689,14 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "NewLine()",
-        "undo a SameLine() or force a new line when in a horizontal-layout context.",
         PK_ACTION(ImGui::NewLine())
         );
 
     vm->bind(imgui, "Spacing()",
-        "add vertical spacing.",
         PK_ACTION(ImGui::Spacing())
         );
 
     vm->bind(imgui, "Dummy(size: vec2)",
-        "add a dummy item of given size. unlike InvisibleButton(), Dummy() won't take the mouse click or be navigable into.",
         [](VM* vm, ArgsView args){
             ImVec2 size = CAST(ImVec2, args[0]);
             ImGui::Dummy(size);
@@ -1781,7 +1704,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "Indent(indent_w=0.0)",
-        "move content position toward the right, by indent_w, or style.IndentSpacing if indent_w <= 0",
         [](VM* vm, ArgsView args){
             float indent_w = CAST_F(args[0]);
             ImGui::Indent(indent_w);
@@ -1789,7 +1711,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "Unindent(indent_w=0.0)",
-        "move content position back to the left, by indent_w, or style.IndentSpacing if indent_w <= 0",
         [](VM* vm, ArgsView args){
             float indent_w = CAST_F(args[0]);
             ImGui::Unindent(indent_w);
@@ -1797,17 +1718,14 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "BeginGroup()",
-        "lock horizontal starting position",
         PK_ACTION(ImGui::BeginGroup())
         );
 
     vm->bind(imgui, "EndGroup()",
-        "unlock horizontal starting position + capture the whole group bounding box into one \"item\" (so you can use IsItemHovered() or layout primitives such as SameLine() on whole group, etc.)",
         PK_ACTION(ImGui::EndGroup())
         );
 
     vm->bind(imgui, "GetCursorPos() -> vec2",
-        "cursor position in window coordinates (relative to window position)",
         PK_VAR_LAMBDA(ImGui::GetCursorPos())
         );
 
@@ -1820,7 +1738,6 @@ void add_module_imgui(VM* vm){
         );
 
     vm->bind(imgui, "SetCursorPos(local_pos: vec2)",
-        "cursor position in window coordinates (relative to window position)",
         [](VM* vm, ArgsView args){
             ImVec2 local_pos = CAST(ImVec2, args[0]);
             ImGui::SetCursorPos(local_pos);
@@ -1842,17 +1759,14 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "GetCursorStartPos() -> vec2",
-        "initial cursor position in window coordinates",
         PK_VAR_LAMBDA(ImGui::GetCursorStartPos())
         );
 
     vm->bind(imgui, "GetCursorScreenPos() -> vec2",
-        "cursor position in absolute screen coordinates (0..io.DisplaySize) or natural OS coordinates when using multiple viewport. useful to work with ImDrawList API.",
         PK_VAR_LAMBDA(ImGui::GetCursorScreenPos())
         );
 
     vm->bind(imgui, "SetCursorScreenPos(pos: vec2)",
-        "cursor position in absolute screen coordinates (0..io.DisplaySize) or natural OS coordinates when using multiple viewport. useful to work with ImDrawList API.",
         [](VM* vm, ArgsView args){
             ImVec2 pos = CAST(ImVec2, args[0]);
             ImGui::SetCursorScreenPos(pos);
@@ -1860,27 +1774,22 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "AlignTextToFramePadding()",
-        "vertically align/lower upcoming text to FramePadding.y so that it will aligns to upcoming widgets (call if you have text on a line before regular widgets)",
         PK_ACTION(ImGui::AlignTextToFramePadding())
         );
 
     vm->bind(imgui, "GetTextLineHeight() -> float",
-        "~ FontSize",
         PK_VAR_LAMBDA(ImGui::GetTextLineHeight())
         );
 
     vm->bind(imgui, "GetTextLineHeightWithSpacing() -> float",
-        "~ FontSize + style.ItemSpacing.y (distance in pixels between 2 consecutive lines of text)",
         PK_VAR_LAMBDA(ImGui::GetTextLineHeightWithSpacing())
         );
 
     vm->bind(imgui, "GetFrameHeight() -> float",
-        "~ FontSize + style.FramePadding.y * 2",
         PK_VAR_LAMBDA(ImGui::GetFrameHeight())
         );
 
     vm->bind(imgui, "GetFrameHeightWithSpacing() -> float",
-        "~ FontSize + style.FramePadding.y * 2 + style.ItemSpacing.y (distance in pixels between 2 consecutive lines of framed widgets)",
         PK_VAR_LAMBDA(ImGui::GetFrameHeightWithSpacing())
         );
     
@@ -1960,7 +1869,6 @@ void add_module_imgui(VM* vm){
     // - Most widgets return true when the value has been changed or when pressed/selected
     // - You may also use one of the many IsItemXXX functions (e.g. IsItemActive, IsItemHovered, etc.) to query widget state.
     vm->bind(imgui, "Button(label: str, size=None) -> bool",
-        "button",
         [](VM* vm, ArgsView args){
             const char* label = CAST(CString, args[0]);
             ImVec2 size = CAST_DEFAULT(ImVec2, args[1], ImVec2(0, 0));
@@ -1969,7 +1877,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "SmallButton(label: str) -> bool",
-        "button with FramePadding=(0,0) to easily embed within text",
         [](VM* vm, ArgsView args){
             const char* label = CAST(CString, args[0]);
             bool ret = ImGui::SmallButton(label);
@@ -1977,7 +1884,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "InvisibleButton(str_id: str, size: vec2, flags=0) -> bool",
-        "flexible button behavior without the visuals, frequently useful to build custom behaviors using the public api (along with IsItemActive, IsItemHovered, etc.)",
         [](VM* vm, ArgsView args){
             const char* str_id = CAST(CString, args[0]);
             ImVec2 size = CAST(ImVec2, args[1]);
@@ -1987,7 +1893,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "ArrowButton(str_id: str, dir: int) -> bool",
-        "square button with an arrow shape",
         [](VM* vm, ArgsView args){
             const char* str_id = CAST(CString, args[0]);
             ImGuiDir dir = CAST(ImGuiDir, args[1]);
@@ -2013,7 +1918,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "RadioButton(label: str, active: bool) -> bool",
-        "use with e.g. if (RadioButton(\"one\", my_value==1)) { my_value = 1; }",
         [](VM* vm, ArgsView args){
             const char* label = CAST(CString, args[0]);
             bool active = CAST(bool, args[1]);
@@ -2031,7 +1935,6 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "Bullet()",
-        "draw a small circle + keep the cursor on the same line. advance cursor x position by GetTreeNodeToLabelSpacing(), same distance that TreeNode() uses",
         PK_ACTION(ImGui::Bullet())
         );
 
@@ -2066,7 +1969,6 @@ void add_module_imgui(VM* vm){
 
     // Widgets: Combo Box (Dropdown)
     vm->bind(imgui, "BeginCombo(label: str, preview_value: str, flags=0) -> bool",
-        "The BeginCombo()/EndCombo() api allows you to manage your contents and selection state however you want it, by creating e.g. Selectable() items.",
         [](VM* vm, ArgsView args){
             const char* label = CAST(CString, args[0]);
             const char* preview_value = CAST(CString, args[1]);
@@ -2075,11 +1977,9 @@ void add_module_imgui(VM* vm){
         });
 
     vm->bind(imgui, "EndCombo()",
-        "only call EndCombo() if BeginCombo() returns true!",
         PK_ACTION(ImGui::EndCombo()));
 
     vm->bind(imgui, "Combo(label: str, current_item: int_p, items: list[str], popup_max_height_in_items=-1)",
-        "The old Combo() api are helpers over BeginCombo()/EndCombo() which are kept available for convenience purpose. This is analogous to how ListBox are created.",
         [](VM* vm, ArgsView args){
             const char* label = CAST(CString, args[0]);
             int* current_item = CAST(int*, args[1]);
@@ -2277,7 +2177,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
 
     // Tooltips
     vm->bind(imgui, "BeginTooltip() -> bool",
-        "begin/append a tooltip window. to create full-featured tooltip (with any kind of items).",
         PK_VAR_LAMBDA(ImGui::BeginTooltip()));
 
     vm->bind(imgui, "EndTooltip()",
@@ -2285,7 +2184,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         PK_ACTION(ImGui::EndTooltip()));
 
     vm->bind(imgui, "SetTooltip(text: str)",
-        "set a text-only tooltip, typically use with ImGui::IsItemHovered(). override any previous call to SetTooltip().",
         [](VM* vm, ArgsView args){
             const char* text = CAST(CString, args[0]);
             ImGui::SetTooltip("%s", text);
@@ -2293,11 +2191,9 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "BeginItemTooltip() -> bool",
-        "begin/append a tooltip window. to create full-featured tooltip (with any kind of items).",
         PK_VAR_LAMBDA(ImGui::BeginTooltip()));
 
     vm->bind(imgui, "SetItemTooltip(text: str)",
-        "set a text-only tooltip, typically use with ImGui::IsItemHovered(). override any previous call to SetTooltip().",
         [](VM* vm, ArgsView args){
             const char* text = CAST(CString, args[0]);
             ImGui::SetTooltip("%s", text);
@@ -2307,7 +2203,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
     // Popups, Modals
     // Popups: begin/end functions
     vm->bind(imgui, "BeginPopup(str_id: str, flags: int = 0) -> bool",
-        "return true if the popup is open, and you can start outputting to it.",
         [](VM* vm, ArgsView args){
             const char* str_id = CAST(CString, args[0]);
             ImGuiWindowFlags flags = CAST_DEFAULT(ImGuiWindowFlags, args[1], ImGuiWindowFlags(0));
@@ -2316,7 +2211,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "BeginPopupModal(name: str, p_open=None, flags: int = 0) -> bool",
-        "return true if the modal is open, and you can start outputting to it.",
         [](VM* vm, ArgsView args){
             const char* name = CAST(CString, args[0]);
             bool* p_open = CAST_DEFAULT(bool*, args[1], NULL);
@@ -2326,7 +2220,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "EndPopup()",
-        "only call EndPopup() if BeginPopupXXX() returns true!",
         [](VM* vm, ArgsView args){
             ImGui::EndPopup();
             return vm->None;
@@ -2334,7 +2227,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
 
     // Popups: open/close functions
     vm->bind(imgui, "OpenPopup(str_id: str, popup_flags: int = 0)",
-        "call to mark popup as open (don't call every frame!).",
         [](VM* vm, ArgsView args){
             const char* str_id = CAST(CString, args[0]);
             ImGuiPopupFlags popup_flags = CAST(int, args[1]);
@@ -2343,7 +2235,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "OpenPopupOnItemClick(str_id: str = None, popup_flags: int = 1)",
-        "helper to open popup when clicked on last item. Default to ImGuiPopupFlags_MouseButtonRight == 1. (note: actually triggers on the mouse _released_ event to be consistent with popup behaviors)",
         [](VM* vm, ArgsView args){
             const char* str_id = CAST_DEFAULT(CString, args[0], NULL);
             ImGuiPopupFlags popup_flags = CAST(int, args[1]);
@@ -2352,12 +2243,10 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "CloseCurrentPopup()",
-        "manually close the popup we have begin-ed into.",
         PK_ACTION(ImGui::CloseCurrentPopup()));
 
     // Popups: open+begin combined functions helpers
     vm->bind(imgui, "BeginPopupContextItem(str_id: str = None, popup_flags: int = 1) -> bool",
-        "open+begin popup when clicked on last item. Use str_id==None to associate the popup to previous item. If you want to use that on a non-interactive item such as Text() you need to pass in an explicit ID here. read comments in .cpp!",
         [](VM* vm, ArgsView args){
             const char* str_id = CAST_DEFAULT(CString, args[0], NULL);
             ImGuiPopupFlags popup_flags = CAST(int, args[1]);
@@ -2366,7 +2255,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "BeginPopupContextWindow(str_id: str = None, popup_flags: int = 1) -> bool",
-        "open+begin popup when clicked on current window.",
         [](VM* vm, ArgsView args){
             const char* str_id = CAST_DEFAULT(CString, args[0], NULL);
             ImGuiPopupFlags popup_flags = CAST(int, args[1]);
@@ -2375,7 +2263,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "BeginPopupContextVoid(str_id: str = None, popup_flags: int = 1) -> bool",
-        "open+begin popup when clicked in void (where there are no windows).",
         [](VM* vm, ArgsView args){
             const char* str_id = CAST_DEFAULT(CString, args[0], NULL);
             ImGuiPopupFlags popup_flags = CAST(int, args[1]);
@@ -2385,7 +2272,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
 
     // Popups: query functions
     vm->bind(imgui, "IsPopupOpen(str_id: str, flags: int = 0) -> bool",
-        "return true if the popup is open.",
         [](VM* vm, ArgsView args){
             const char* str_id = CAST(CString, args[0]);
             ImGuiPopupFlags flags = CAST(int, args[1]);
@@ -2398,7 +2284,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
 
     // Tab Bars, Tabs
     vm->bind(imgui, "BeginTabBar(str_id: str, flags: int = 0) -> bool",
-        "create and append into a TabBar",
         [](VM* vm, ArgsView args){
             const char* str_id = CAST(CString, args[0]);
             ImGuiTabBarFlags flags = CAST(int, args[1]);
@@ -2407,11 +2292,9 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "EndTabBar()",
-        "only call EndTabBar() if BeginTabBar() returns true!",
         PK_ACTION(ImGui::EndTabBar()));
 
     vm->bind(imgui, "BeginTabItem(label: str, p_open=None, flags: int = 0) -> bool",
-        "create a Tab. Returns true if the Tab is selected.",
         [](VM* vm, ArgsView args){
             const char* label = CAST(CString, args[0]);
             bool* p_open = CAST_DEFAULT(bool*, args[1], NULL);
@@ -2421,11 +2304,9 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "EndTabItem()",
-        "only call EndTabItem() if BeginTabItem() returns true!",
         PK_ACTION(ImGui::EndTabItem()));
 
     vm->bind(imgui, "TabItemButton(label: str, flags: int = 0) -> bool",
-        "create a Tab behaving like a button. return true when clicked. cannot be selected in the tab bar.",
         [](VM* vm, ArgsView args){
             const char* label = CAST(CString, args[0]);
             ImGuiTabItemFlags flags = CAST(int, args[1]);
@@ -2434,7 +2315,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "SetTabItemClosed(tab_or_docked_window_label: str)",
-        "notify TabBar or Docking system of a closed tab/window ahead (useful to reduce visual flicker on reorderable tab bars). For tab-bar: call after BeginTabBar() and before Tab submissions. Otherwise call with a window name.",
         [](VM* vm, ArgsView args){
             const char* tab_or_docked_window_label = CAST(CString, args[0]);
             ImGui::SetTabItemClosed(tab_or_docked_window_label);
@@ -2450,9 +2330,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
 
     // Disabling [BETA API]
     vm->bind(imgui, "BeginDisabled(disabled: bool = True)",
-"- Disable all user interactions and dim items visuals (applying style.DisabledAlpha over current colors)\n"
-"- Those can be nested but it cannot be used to enable an already disabled section (a single BeginDisabled(true) in the stack is enough to keep everything disabled)\n"
-"- BeginDisabled(false) essentially does nothing useful but is provided to facilitate use of boolean expressions. If you can avoid calling BeginDisabled(False)/EndDisabled() best to avoid it.\n",
         [](VM* vm, ArgsView args){
             bool disabled = CAST(bool, args[0]);
             ImGui::BeginDisabled(disabled);
@@ -2477,11 +2354,9 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
 
     // Focus, Activation
     vm->bind(imgui, "SetItemDefaultFocus()",
-        "make last item the default focused item of a window.",
         PK_ACTION(ImGui::SetItemDefaultFocus()));
 
     vm->bind(imgui, "SetKeyboardFocusHere(offset: int = 0)",
-        "focus keyboard on the next widget. Use positive 'offset' to access sub components of a multiple component widget. Use -1 to access previous widget.",
         [](VM* vm, ArgsView args){
             int offset = CAST(int, args[0]);
             ImGui::SetKeyboardFocusHere(offset);
@@ -2492,7 +2367,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
     // - Most of the functions are referring to the previous Item that has been submitted.
     // - See Demo Window under "Widgets->Querying Status" for an interactive visualization of most of those functions.
     vm->bind(imgui, "IsItemHovered(flags: int = 0) -> bool",
-        "is the last item hovered? (and usable, aka not blocked by a popup, etc.). See ImGuiHoveredFlags for more options.",
         [](VM* vm, ArgsView args){
             ImGuiHoveredFlags flags = CAST(int, args[0]);
             bool ret = ImGui::IsItemHovered(flags);
@@ -2500,15 +2374,12 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "IsItemActive() -> bool",
-        "is the last item active? (e.g. button being held, text field being edited. This will continuously return true while holding mouse button on an item. Items that don't interact will always return false)",
         PK_VAR_LAMBDA(ImGui::IsItemActive()));
 
     vm->bind(imgui, "IsItemFocused() -> bool",
-        "is the last item focused for keyboard/gamepad navigation?",
         PK_VAR_LAMBDA(ImGui::IsItemFocused()));
 
     vm->bind(imgui, "IsItemClicked(mouse_button: int = 0) -> bool",
-        "is the last item hovered and mouse clicked on? (**)  == IsMouseClicked(mouse_button) && IsItemHovered()Important. (**) this is NOT equivalent to the behavior of e.g. Button(). Read comments in function definition.",
         [](VM* vm, ArgsView args){
             ImGuiMouseButton mouse_button = CAST(int, args[0]);
             bool ret = ImGui::IsItemClicked(mouse_button);
@@ -2516,55 +2387,42 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "IsItemVisible() -> bool",
-        "is the last item visible? (items may be out of sight because of clipping/scrolling)",
         PK_VAR_LAMBDA(ImGui::IsItemVisible()));
 
     vm->bind(imgui, "IsItemEdited() -> bool",
-        "did the last item modify its underlying value this frame? or was pressed? This is generally the same as the \"bool\" return value of many widgets.",
         PK_VAR_LAMBDA(ImGui::IsItemEdited()));
 
     vm->bind(imgui, "IsItemActivated() -> bool",
-        "was the last item just made active (item was previously inactive).",
         PK_VAR_LAMBDA(ImGui::IsItemActivated()));
 
     vm->bind(imgui, "IsItemDeactivated() -> bool",
-        "was the last item just made inactive (item was previously active). Useful for Undo/Redo patterns with widgets that require continuous editing.",
         PK_VAR_LAMBDA(ImGui::IsItemDeactivated()));
 
     vm->bind(imgui, "IsItemDeactivatedAfterEdit() -> bool",
-        "was the last item just made inactive and made a value change when it was active? (e.g. Slider/Drag moved). Useful for Undo/Redo patterns with widgets that require continuous editing. Note that you may get false positives (some widgets such as Combo()/ListBox()/Selectable() will return true even when clicking an already selected item).",
         PK_VAR_LAMBDA(ImGui::IsItemDeactivatedAfterEdit()));
 
     vm->bind(imgui, "IsItemToggledOpen() -> bool",
-        "was the last item open state toggled? set by TreeNode().",
         PK_VAR_LAMBDA(ImGui::IsItemToggledOpen()));
 
     vm->bind(imgui, "IsAnyItemHovered() -> bool",
-        "is any item hovered?",
         PK_VAR_LAMBDA(ImGui::IsAnyItemHovered()));
 
     vm->bind(imgui, "IsAnyItemActive() -> bool",
-        "is any item active?",
         PK_VAR_LAMBDA(ImGui::IsAnyItemActive()));
 
     vm->bind(imgui, "IsAnyItemFocused() -> bool",
-        "is any item focused?",
         PK_VAR_LAMBDA(ImGui::IsAnyItemFocused()));
 
     vm->bind(imgui, "GetItemRectMin() -> vec2",
-        "get upper-left bounding rectangle of the last item (screen space)",
         PK_VAR_LAMBDA(ImGui::GetItemRectMin()));
 
     vm->bind(imgui, "GetItemRectMax() -> vec2",
-        "get lower-right bounding rectangle of the last item (screen space)",
         PK_VAR_LAMBDA(ImGui::GetItemRectMax()));
 
     vm->bind(imgui, "GetItemRectSize() -> vec2",
-        "get size of last item",
         PK_VAR_LAMBDA(ImGui::GetItemRectSize()));
 
     vm->bind(imgui, "SetItemAllowOverlap()",
-        "allow last item to be overlapped by a subsequent item. sometimes useful with invisible buttons, selectables, etc. to catch unused area.",
         PK_ACTION(ImGui::SetItemAllowOverlap()));
 
     // Viewports
@@ -2573,14 +2431,12 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
 
     // Background/Foreground Draw Lists
     vm->bind(imgui, "GetBackgroundDrawList() -> void_p",
-        "get background draw list for the current active window.",
         [](VM* vm, ArgsView args){
             ImDrawList* ret = ImGui::GetBackgroundDrawList();
             return VAR(ret);
         });
 
     vm->bind(imgui, "GetForegroundDrawList() -> void_p",
-        "get foreground draw list for the current active window.",
         [](VM* vm, ArgsView args){
             ImDrawList* ret = ImGui::GetForegroundDrawList();
             return VAR(ret);
@@ -2588,7 +2444,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
 
     // Miscellaneous Utilities
     vm->bind(imgui, "IsRectVisible(size: vec2) -> bool",
-        "test if rectangle (of given size, starting from cursor position) is visible / not clipped.",
         [](VM* vm, ArgsView args){
             ImVec2 size = CAST(ImVec2, args[0]);
             bool ret = ImGui::IsRectVisible(size);
@@ -2596,28 +2451,24 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "GetTime() -> float",
-        "get global imgui time. incremented by io.DeltaTime every frame.",
         [](VM* vm, ArgsView args){
             double ret = ImGui::GetTime();
             return VAR(ret);
         });
 
     vm->bind(imgui, "GetFrameCount() -> int",
-        "get global imgui frame count. incremented by 1 every frame.",
         [](VM* vm, ArgsView args){
             int ret = ImGui::GetFrameCount();
             return VAR(ret);
         });
 
     vm->bind(imgui, "GetDrawListSharedData() -> void_p",
-        "you may use this when creating your own ImDrawList instances.",
         [](VM* vm, ArgsView args){
             ImDrawListSharedData* ret = ImGui::GetDrawListSharedData();
             return VAR(ret);
         });
 
     vm->bind(imgui, "GetStyleColorName(idx: int) -> str",
-        "get a string corresponding to the enum value (for display, saving, etc.).",
         [](VM* vm, ArgsView args){
             ImGuiCol idx = CAST(ImGuiCol, args[0]);
             const char* ret = ImGui::GetStyleColorName(idx);
@@ -2625,7 +2476,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "SetStateStorage(storage: void_p)",
-        "replace current window storage with our own (if you want to manipulate it yourself, typically clear subsection of it)",
         [](VM* vm, ArgsView args){
             ImGuiStorage* storage = CAST(ImGuiStorage*, args[0]);
             ImGui::SetStateStorage(storage);
@@ -2639,7 +2489,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "BeginChildFrame(id: int, size: vec2, flags: int = 0) -> bool",
-        "helper to create a child window / scrolling region that looks like a normal widget frame",
         [](VM* vm, ArgsView args){
             ImGuiID id = CAST(ImGuiID, args[0]);
             ImVec2 size = CAST(ImVec2, args[1]);
@@ -2649,7 +2498,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "EndChildFrame()",
-        "always call EndChildFrame() regardless of BeginChildFrame() return values (which indicates a collapsed/clipped window)",
         [](VM* vm, ArgsView args){
             ImGui::EndChildFrame();
             return vm->None;
@@ -2657,7 +2505,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
 
     // Text Utilities
     vm->bind(imgui, "CalcTextSize(text: str, hide_text_after_double_hash=False, wrap_width=-1.0) -> vec2",
-        "calculate text size. text can be multi-line. optionally ignore text after double-space (for e.g. for logging to file, etc.)",
         [](VM* vm, ArgsView args){
             const char* text = CAST(const char*, args[0]);
             bool hide_text_after_double_hash = CAST_DEFAULT(bool, args[1], false);
@@ -2671,7 +2518,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
 
     // Inputs Utilities: Keyboard/Mouse/Gamepad
     vm->bind(imgui, "IsKeyDown(key: int) -> bool",
-        "is key being held.",
         [](VM* vm, ArgsView args){
             int key = CAST(int, args[0]);
             bool ret = ImGui::IsKeyDown((ImGuiKey)key);
@@ -2679,7 +2525,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "IsKeyPressed(key: int, repeat=True) -> bool",
-        "was key pressed (went from !Down to Down)? if repeat=true, uses io.KeyRepeatDelay / KeyRepeatRate",
         [](VM* vm, ArgsView args){
             int key = CAST(int, args[0]);
             bool repeat = CAST_DEFAULT(bool, args[1], true);
@@ -2688,7 +2533,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "IsKeyReleased(key: int) -> bool",
-        "was key released (went from Down to !Down)?",
         [](VM* vm, ArgsView args){
             int key = CAST(int, args[0]);
             bool ret = ImGui::IsKeyReleased((ImGuiKey)key);
@@ -2696,7 +2540,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "GetKeyPressedAmount(key: int, repeat_delay: float, rate: float) -> int",
-        "uses provided repeat rate/delay. return a count, most often 0 or 1 but might be >1 if RepeatRate is small enough that DeltaTime > RepeatRate",
         [](VM* vm, ArgsView args){
             int key = CAST(int, args[0]);
             float repeat_delay = CAST_F(args[1]);
@@ -2706,7 +2549,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "GetKeyName(key: int) -> str",
-        "[DEBUG] returns English name of the key. Those names a provided for debugging purpose and are not meant to be saved persistently not compared.",
         [](VM* vm, ArgsView args){
             int key = CAST(int, args[0]);
             const char* ret = ImGui::GetKeyName((ImGuiKey)key);
@@ -2714,7 +2556,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "SetNextFrameWantCaptureKeyboard(want_capture_keyboard: bool)",
-        "Override io.WantCaptureKeyboard flag next frame (said flag is left for your application to handle, typically when true it instructs your app to ignore inputs). e.g. force capture keyboard when your widget is being hovered. This is equivalent to setting \"io.WantCaptureKeyboard = want_capture_keyboard\"; after the next NewFrame() call.",
         [](VM* vm, ArgsView args){
             bool want_capture_keyboard = CAST(bool, args[0]);
             ImGui::SetNextFrameWantCaptureKeyboard(want_capture_keyboard);
@@ -2723,7 +2564,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
 
     // Inputs Utilities: Mouse specific
     vm->bind(imgui, "IsMouseDown(button: int) -> bool",
-        "is mouse button held?",
         [](VM* vm, ArgsView args){
             int button = CAST(int, args[0]);
             bool ret = ImGui::IsMouseDown(button);
@@ -2731,7 +2571,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "IsMouseClicked(button: int, repeat=False) -> bool",
-        "did mouse button clicked? (went from !Down to Down). Same as GetMouseClickedCount() == 1.",
         [](VM* vm, ArgsView args){
             int button = CAST(int, args[0]);
             bool repeat = CAST(bool, args[1]);
@@ -2740,7 +2579,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "IsMouseReleased(button: int) -> bool",
-        "did mouse button released? (went from Down to !Down)",
         [](VM* vm, ArgsView args){
             int button = CAST(int, args[0]);
             bool ret = ImGui::IsMouseReleased(button);
@@ -2748,7 +2586,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "IsMouseDoubleClicked(button: int) -> bool",
-        "did mouse button double-clicked? Same as GetMouseClickedCount() == 2. (note that a double-click will also report IsMouseClicked() == true)",
         [](VM* vm, ArgsView args){
             int button = CAST(int, args[0]);
             bool ret = ImGui::IsMouseDoubleClicked(button);
@@ -2756,7 +2593,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "GetMouseClickedCount(button: int) -> int",
-        "return the number of successive mouse-clicks at the time where a click happen (otherwise 0).",
         [](VM* vm, ArgsView args){
             int button = CAST(int, args[0]);
             int ret = ImGui::GetMouseClickedCount(button);
@@ -2764,7 +2600,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "IsMouseHoveringRect(r_min: vec2, r_max: vec2, clip=True) -> bool",
-        "is mouse hovering given bounding rect (in screen space). clipped by current clipping settings, but disregarding of other consideration of focus/window ordering/popup-block.",
         [](VM* vm, ArgsView args){
             ImVec2 r_min = CAST(ImVec2, args[0]);
             ImVec2 r_max = CAST(ImVec2, args[1]);
@@ -2774,7 +2609,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "IsMousePosValid(mouse_pos: vec2 = None) -> bool",
-        "by convention we use (-FLT_MAX,-FLT_MAX) to denote that there is no mouse available",
         [](VM* vm, ArgsView args){
             ImVec2 mouse_pos = CAST(ImVec2, args[0]);
             bool ret = ImGui::IsMousePosValid(&mouse_pos);
@@ -2782,28 +2616,24 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "IsAnyMouseDown() -> bool",
-        "[WILL OBSOLETE] is any mouse button held? This was designed for backends, but prefer having backend maintain a mask of held mouse buttons, because upcoming input queue system will make this invalid.",
         [](VM* vm, ArgsView args){
             bool ret = ImGui::IsAnyMouseDown();
             return VAR(ret);
         });
 
     vm->bind(imgui, "GetMousePos() -> vec2",
-        "shortcut to ImGui::GetIO().MousePos provided by user, to be consistent with other calls",
         [](VM* vm, ArgsView args){
             ImVec2 ret = ImGui::GetMousePos();
             return VAR(ret);
         });
 
     vm->bind(imgui, "GetMousePosOnOpeningCurrentPopup() -> vec2",
-        "retrieve mouse position at the time of opening popup we have BeginPopup() into (helper to avoid user backing that value themselves)",
         [](VM* vm, ArgsView args){
             ImVec2 ret = ImGui::GetMousePosOnOpeningCurrentPopup();
             return VAR(ret);
         });
 
     vm->bind(imgui, "IsMouseDragging(button: int, lock_threshold=-1.0) -> bool",
-        "is mouse dragging? (if lock_threshold < -1.0f, uses io.MouseDraggingThreshold)",
         [](VM* vm, ArgsView args){
             int button = CAST(int, args[0]);
             float lock_threshold = CAST_F(args[1]);
@@ -2812,7 +2642,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "GetMouseDragDelta(button: int=0, lock_threshold=-1.0) -> vec2",
-        "return the delta from the initial clicking position while the mouse button is pressed or was just released. This is locked and return 0.0f until the mouse moves past a distance threshold at least once (if lock_threshold < -1.0f, uses io.MouseDraggingThreshold)",
         [](VM* vm, ArgsView args){
             int button = CAST(int, args[0]);
             float lock_threshold = CAST_F(args[1]);
@@ -2821,7 +2650,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "ResetMouseDragDelta(button: int=0) -> None",
-        "reset the dragging state when the mouse has been dragging (0=left, 1=right, 2=middle)",
         [](VM* vm, ArgsView args){
             int button = CAST(int, args[0]);
             ImGui::ResetMouseDragDelta(button);
@@ -2829,14 +2657,12 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "GetMouseCursor() -> int",
-        "get desired cursor type, reset in end frame. valid before Render(). if you use software rendering by setting io.MouseDrawCursor ImGui will render those for you",
         [](VM* vm, ArgsView args){
             ImGuiMouseCursor ret = ImGui::GetMouseCursor();
             return VAR(ret);
         });
 
     vm->bind(imgui, "SetMouseCursor(type: int) -> None",
-        "set desired cursor type",
         [](VM* vm, ArgsView args){
             ImGuiMouseCursor type = CAST(ImGuiMouseCursor, args[0]);
             ImGui::SetMouseCursor(type);
@@ -2844,7 +2670,6 @@ vm->bind(imgui, #name "(label: str, v: int_p, flags=0) -> bool",  \
         });
 
     vm->bind(imgui, "SetNextFrameWantCaptureMouse(want_capture_mouse: bool)",
-        "set next window ala Begin() to be focused / hovered for input handling without navigation",
         [](VM* vm, ArgsView args){
             bool want_capture_mouse = CAST(bool, args[0]);
             ImGui::SetNextFrameWantCaptureMouse(want_capture_mouse);

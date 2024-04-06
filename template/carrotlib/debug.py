@@ -143,7 +143,7 @@ class DebugWindow:
             flags |= imgui.ImGuiTreeNodeFlags_Leaf
 
         if isinstance(root, (list, dict, set)):
-            title = root.__class__.__name__
+            title = root.__class__.__name__ + f" (len={len(root)})"
         else:
             title = repr(root)
 
