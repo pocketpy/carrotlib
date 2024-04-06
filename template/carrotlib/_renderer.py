@@ -14,6 +14,15 @@ class SubTexture2D:
         self.width = width
         self.height = height
 
+    def __repr__(self):
+        return f"SubTexture2D({self.main_tex!r}, {self.src_x}, {self.src_y}, {self.width}, {self.height})"
+
+
+def Texture2D__repr__(self: rl.Texture2D):
+    return f"Texture2D(width={self.width}, height={self.height})"
+rl.Texture2D.__repr__ = Texture2D__repr__
+
+
 def draw_texture(transform: mat3x3, tex: rl.Texture2D, src_rect: rl.Rectangle=None, flip_x=False, flip_y=False, color: rl.Color = None, origin: vec2 = None):
     if _g.is_rendering_ui:
         pos = transform._t()
