@@ -11,8 +11,9 @@ sys.stdout = fd
 sys.stderr = fd
 
 def get_logs():
-    with open(LOG_FILE, 'rt', buffering=1, newline='\n', encoding='utf-8') as f:
+    with open(LOG_FILE, 'rt', buffering=1, newline='\n', encoding='utf-8', errors='backslashreplace') as f:
         return f.readlines()
+
 
 class SeqTask:
     def __init__(self, *tasks):
@@ -36,7 +37,7 @@ class TaskCommand:
 
     def __init__(self, args, cwd=None, shell=False):
         print(' '.join(args))
-        self.pipe = subprocess.Popen(args, cwd=cwd, shell=shell, stdout=fd, stderr=fd)
+        self.pipe = subprocess.Popen(args, cwd=cwd, shell=shell, stdout=fd, stderr=fd, encoding='utf-8')
         self.returncode = None
         
     def __iter__(self):
