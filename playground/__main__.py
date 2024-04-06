@@ -34,7 +34,7 @@ class ProjectView:
         glyph_ranges = imgui.get_io().fonts.get_glyph_ranges_chinese()
 
         self.default_font = self.load_font(24, glyph_ranges)
-        self.source_font = self.load_font(22, glyph_ranges)
+        self.source_font = self.default_font
 
         imgui.get_io().delta_time = 1 / 30
         
