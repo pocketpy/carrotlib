@@ -1,6 +1,7 @@
 from linalg import *
 import raylib as rl
 import box2d
+import math
 from typing import Literal
 
 from _carrotlib import fast_apply
@@ -62,6 +63,15 @@ class Node:
     def __repr__(self):
         cls_name = type(self).__name__
         return f'<{cls_name} {self.path}>'
+    
+    def __debuginfo__(self):
+        degree = math.degrees(self.rotation)
+        return [
+            f"position: {self.position}",
+            f"rotation: {self.rotation:.2f} ({degree:.1f}°)",
+            f"scale: {self.scale}",
+            f"total_z_index: {self.total_z_index()}",
+        ]
     
     @property
     def path(self) -> str:

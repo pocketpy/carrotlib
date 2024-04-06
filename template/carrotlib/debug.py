@@ -134,7 +134,7 @@ class DebugWindow:
 
     def render(self):
         # set window size
-        imgui.SetNextWindowSize(vec2(500, 500), imgui.ImGuiCond_FirstUseEver)
+        imgui.SetNextWindowSize(vec2(500, 600), imgui.ImGuiCond_FirstUseEver)
         imgui.SetNextWindowPos(vec2(0, 0), imgui.ImGuiCond_FirstUseEver)
         imgui.SetNextWindowCollapsed(True, imgui.ImGuiCond_FirstUseEver)
         imgui.Begin("Debug Window")
@@ -142,7 +142,7 @@ class DebugWindow:
         imgui.BeginTabBar("DebugTabBar")
         if imgui.BeginTabItem("Hierarchy"):
             height = imgui.GetFrameHeight()
-            imgui.BeginChild("Hierarchy", vec2(0, height-140), False, 0)
+            imgui.BeginChild("Hierarchy", vec2(0, height-200), False, 0)
             self.render_hierarchy(g.root)
             imgui.EndChild()
 
@@ -150,11 +150,10 @@ class DebugWindow:
 
             imgui.BeginChild("Properties", vec2(0, 0), False, 0)
             if self.selected:
-                imgui.Text(f"position: {self.selected.position}")
-                degree = math.degrees(self.selected.rotation)
-                imgui.Text(f"rotation: {self.selected.rotation:.2f} ({degree:.1f}°)")
-                imgui.Text(f"scale: {self.selected.scale}")
-                imgui.Text(f"total_z_index: {self.selected.total_z_index()}")
+                for line in self.selected.__debuginfo__():
+                    imgui.PushTextWrapPos()
+                    imgui.Text(line)
+                    imgui.PopTextWrapPos()
             else:
                 imgui.Text("Nothing selected")
             imgui.EndChild()
