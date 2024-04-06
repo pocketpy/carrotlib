@@ -187,15 +187,16 @@ class DebugWindow:
 
     def render(self):
         # set window size
-        imgui.SetNextWindowSize(vec2(500, 600), imgui.ImGuiCond_FirstUseEver)
+        w = imgui.GetIO().DisplaySize.x * 0.3
+        h = imgui.GetIO().DisplaySize.y * 0.6
+        imgui.SetNextWindowSize(vec2(w, h), imgui.ImGuiCond_FirstUseEver)
         imgui.SetNextWindowPos(vec2(0, 0), imgui.ImGuiCond_FirstUseEver)
         imgui.SetNextWindowCollapsed(True, imgui.ImGuiCond_FirstUseEver)
         imgui.Begin("Debug Window")
 
         imgui.BeginTabBar("DebugTabBar")
         if imgui.BeginTabItem("Hierarchy"):
-            height = imgui.GetFrameHeight()
-            imgui.BeginChild("Hierarchy", vec2(0, height-200), False, 0)
+            imgui.BeginChild("Hierarchy", vec2(0, h * 0.6), False, 0)
             self.render_hierarchy(g.root)
             imgui.EndChild()
 
