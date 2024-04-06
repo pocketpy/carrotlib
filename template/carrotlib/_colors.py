@@ -57,3 +57,7 @@ class Colors:
     Magenta = rl.Color(255, 0, 255, 255)
     RayWhite = rl.Color(245, 245, 245, 255)
 
+
+def Color__repr__(self: rl.Color):
+    return f"Color({self.r}, {self.g}, {self.b}, {self.a})"
+rl.Color.__repr__ = Color__repr__
