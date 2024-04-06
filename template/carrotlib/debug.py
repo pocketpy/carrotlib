@@ -179,10 +179,10 @@ class DebugWindow:
                 for k, v in root.items():
                     self.render_inspector(v, k, depth+1)
             elif root_d:
-                for name, v in root_d.items():
+                for name in sorted(root_d.keys()):
                     if name.startswith('_'):
                         continue
-                    self.render_inspector(v, name, depth+1)
+                    self.render_inspector(root_d[name], name, depth+1)
             imgui.TreePop()
 
     def render(self):
