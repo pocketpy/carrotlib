@@ -90,7 +90,7 @@ class DebugWindow:
         self.python_console = PythonConsole()
 
         # set window size
-        self.w = rl.GetScreenWidth() * 0.3
+        self.w = rl.GetScreenWidth() * 0.4
         self.h = rl.GetScreenHeight() * 0.6
 
     @property

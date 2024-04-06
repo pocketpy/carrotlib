@@ -312,8 +312,8 @@ void setup_imgui_font(){
     int data_size;
     void* data = platform_load_asset(font_path.data(), font_path.size(), &data_size);
     int width = (GetScreenWidth() + GetRenderWidth()) / 2;
-    float font_size = width / 100.0f;
-    ImGui::GetIO().FontDefault = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(data, data_size, font_size);
+    float font_size = width / 90.0f + 0.5f;
+    ImGui::GetIO().FontDefault = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(data, data_size, (int)font_size);
     rlImGuiReloadFonts();
     free(data);
 }
