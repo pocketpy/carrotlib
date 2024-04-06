@@ -41,7 +41,13 @@ class ProjectView:
         self.root = None
         self._selected_file = None
         self._selected_content = None
-        self.open_project(backend.config.project)
+
+        if len(sys.argv) > 1:
+            ok = self.open_project(sys.argv[-1])
+        else:
+            ok = False
+        if not ok:
+            self.open_project(backend.config.project)
 
         # start threading task
         self.threading_task = backend.ThreadingTask()
@@ -127,14 +133,16 @@ class ProjectView:
 
     def open_project(self, root: str):
         if not root or not os.path.exists(root):
-            return
+            print(f"无效的项目路径: {root}")
+            return False
         main_path = os.path.join(root, "main.py")
         if not os.path.exists(main_path):
             print(f"{root} 没有找到 main.py 文件，无法打开")
-            return
+            return False
         self.root = root
         self.selected_file = 'main.py'
         print('打开项目:', self.root)
+        return True
 
     @property
     def root_abspath(self):
