@@ -2,6 +2,7 @@ from linalg import vec2, vec4
 import traceback
 import raylib as rl
 import c
+import sys
 
 import imgui
 
@@ -87,6 +88,14 @@ class DebugWindow:
 
         self.variables = {}
         self.python_console = PythonConsole()
+
+        # set window size
+        if sys.platform in ('android', 'ios'):
+            self.w = rl.GetScreenWidth() * 0.4
+            self.h = rl.GetScreenHeight() * 0.9
+        else:
+            self.w = rl.GetScreenWidth() * 0.3
+            self.h = rl.GetScreenHeight() * 0.6
 
     @property
     def selected(self):
@@ -186,17 +195,14 @@ class DebugWindow:
             imgui.TreePop()
 
     def render(self):
-        # set window size
-        w = rl.GetScreenWidth() * 0.3
-        h = rl.GetScreenHeight() * 0.6
-        imgui.SetNextWindowSize(vec2(w, h), imgui.ImGuiCond_FirstUseEver)
+        imgui.SetNextWindowSize(vec2(self.w, self.h), imgui.ImGuiCond_FirstUseEver)
         imgui.SetNextWindowPos(vec2(0, 0), imgui.ImGuiCond_FirstUseEver)
         imgui.SetNextWindowCollapsed(True, imgui.ImGuiCond_FirstUseEver)
         imgui.Begin("Debug Window")
 
         imgui.BeginTabBar("DebugTabBar")
         if imgui.BeginTabItem("Hierarchy"):
-            imgui.BeginChild("Hierarchy", vec2(0, h * 0.6), False, 0)
+            imgui.BeginChild("Hierarchy", vec2(0, self.h * 0.6), False, 0)
             self.render_hierarchy(g.root)
             imgui.EndChild()
 
