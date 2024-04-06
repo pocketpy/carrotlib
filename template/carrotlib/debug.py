@@ -135,24 +135,30 @@ class DebugWindow:
     def render_inspector(self, root, name=None, depth=0):
         """Render everything about the selected node with tree view"""
         root_d = root.__dict__
-        is_container = isinstance(root, (list, dict)) or root_d
-        flags = imgui.ImGuiTreeNodeFlags_OpenOnArrow \
-            | imgui.ImGuiTreeNodeFlags_SpanFullWidth
+        is_container = isinstance(root, (list, dict, set)) or root_d
+        flags = imgui.ImGuiTreeNodeFlags_SpanFullWidth
         if depth == 0:
             flags |= imgui.ImGuiTreeNodeFlags_DefaultOpen
         if not is_container:
             flags |= imgui.ImGuiTreeNodeFlags_Leaf
 
-        if isinstance(root, (list, dict)):
+        if isinstance(root, (list, dict, set)):
             title = root.__class__.__name__
         else:
             title = repr(root)
 
         if len(title) > 100:
             title = title[:100] + '...'
+
         if name is not None:
-            title = f"{name}: {title}"
-        expand = imgui.TreeNode(title, flags)
+            # title = f"{name}: {title}"
+            imgui.PushStyleColor(imgui.ImGuiCol_Text, vec4(0, 1, 0, 1))
+            expand = imgui.TreeNode(name, flags)
+            imgui.PopStyleColor()
+            imgui.SameLine()
+            imgui.Text(": " + title)
+        else:
+            expand = imgui.TreeNode(title, flags)
 
         if expand:
             if isinstance(root, list):
