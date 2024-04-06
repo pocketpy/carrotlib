@@ -34,12 +34,7 @@ class ProjectView:
         glyph_ranges = imgui.get_io().fonts.get_glyph_ranges_chinese()
 
         self.default_font = self.load_font(24, glyph_ranges)
-        self.source_font = imgui.get_io().fonts.add_font_from_file_ttf(
-            "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
-            18,
-            font_config=imgui.FontConfig(oversample_h=2, oversample_v=2),
-            glyph_ranges=glyph_ranges
-        )
+        self.source_font = self.load_font(22, glyph_ranges)
 
         imgui.get_io().delta_time = 1 / 30
         
@@ -53,8 +48,21 @@ class ProjectView:
     
     def load_font(self, size, glyph_ranges):
         imgui.get_io().fonts.add_font_from_file_ttf(
-            "playground/assets/fonts/ark-pixel-12px-monospaced-zh_cn.otf",
+            "template/carrotlib/assets/SourceCodePro-Medium.otf",
             size,
+            glyph_ranges=glyph_ranges
+        )
+        if sys.platform == 'win32':
+            SYSTEM_FONT_PATH = "C:\\Windows\\Fonts\\msyh.ttc"
+        elif sys.platform == 'darwin':
+            SYSTEM_FONT_PATH = "/System/Library/Fonts/PingFang.ttc"
+        else:
+            raise NotImplementedError
+        
+        imgui.get_io().fonts.add_font_from_file_ttf(
+            SYSTEM_FONT_PATH,
+            size,
+            font_config=imgui.FontConfig(merge_mode=True),
             glyph_ranges=glyph_ranges
         )
         icon_min, icon_max = Icons.ICON_MIN, Icons.ICON_MAX
@@ -226,7 +234,7 @@ class ProjectView:
 
         imgui.begin_tab_bar("TabBar")
 
-        with imgui.begin_tab_item(" 控制台 ") as tab:
+        with imgui.begin_tab_item("   控制台   ") as tab:
             if tab.selected:
                 framework_compile_time = get_file_time(backend.FRAMEWORK_EXE_PATH)
                 project_template_time = get_file_time(os.path.join(project_view.root_abspath, "carrotlib"))
@@ -319,7 +327,7 @@ class ProjectView:
                 imgui.pop_style_var()
                 imgui.end_child()
 
-        with imgui.begin_tab_item("  文件  ") as tab:
+        with imgui.begin_tab_item("    文件    ") as tab:
             if tab.selected:
                 # scroll area
                 imgui.begin_child("FileContent", flags=imgui.WINDOW_NO_BACKGROUND)
