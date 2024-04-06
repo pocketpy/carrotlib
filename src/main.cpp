@@ -26,6 +26,7 @@ struct _Cached{
     PyObject* on_ready = nullptr;
     PyObject* on_update = nullptr;
     PyObject* on_destroy = nullptr;
+    bool hot_reload_needed = false;
 }cached;
 
 static bool is_initialized(){
@@ -94,7 +95,12 @@ void ios_ready(){
     add_module_box2d(vm);
     add_module_raylib(vm);
     add_module_imgui(vm);
-    add_module__ct(vm);
+
+    vm->bind(add_module__ct(vm), "_request_hot_reload()",
+        [](VM* vm, ArgsView args){
+            cached.hot_reload_needed = true;
+            return vm->None;
+        });
 
 // desktop platforms
 #if PK_IS_DESKTOP_PLATFORM == 1
@@ -174,7 +180,18 @@ int main(int argc, char** argv){
     main_argc = argc;
     main_argv = argv;
     ios_ready();
-    while(!WindowShouldClose()) ios_update();
+    while(!WindowShouldClose()){
+        if(cached.hot_reload_needed){
+            // reset everything
+            delete vm;
+            vm = nullptr;
+            memset(&cached, 0, sizeof(cached));
+            error_screen_msg.clear();
+            main(argc, argv);
+            return 0;
+        }
+        ios_update();
+    }
     ios_destroy();
     return 0;
 }

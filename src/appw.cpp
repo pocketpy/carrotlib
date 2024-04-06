@@ -11,7 +11,7 @@ namespace ct{
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_rectangle_bounds.c
 static Vector2 DrawTextBoxed(bool, bool, float, Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint);   // Draw text using font inside rectangle limits
 
-void add_module__ct(VM *vm){
+PyObject* add_module__ct(VM *vm){
     PyObject* mod = vm->new_module("_carrotlib");
 
     vm->bind(mod, "_bake_global_light(image, color, intensity)",
@@ -141,6 +141,8 @@ void add_module__ct(VM *vm){
 #endif
 
     _bind(vm, mod, "_rlDrawTextBoxed(render: bool, limitHeight: bool, lineSpacing: float, font: rl.Font, text: str, rec: rl.Rectangle, fontSize: float, spacing: float, wordWrap: bool, tint: rl.Color) -> vec2", &DrawTextBoxed);
+
+    return mod;
 }
 
 // Draw text using font inside rectangle limits

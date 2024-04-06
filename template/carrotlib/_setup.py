@@ -5,7 +5,7 @@ import raylib as rl
 
 import imgui
 
-from _carrotlib import fast_apply, GRAPHICS_API_OPENGL_33, GRAPHICS_API_OPENGL_ES2, GRAPHICS_API_OPENGL_ES3
+from _carrotlib import fast_apply, GRAPHICS_API_OPENGL_33, GRAPHICS_API_OPENGL_ES2, GRAPHICS_API_OPENGL_ES3, _request_hot_reload
 
 from . import g
 from ._node import Node
@@ -180,12 +180,12 @@ class Game:
         imgui.Render()
         rl.EndDrawing()
 
-        # TODO: hot reload feature
-        # if rl.IsKeyPressed(rl.KEY_F5):
-        #     callbacks.on_destroy()
-        #     raise RestartException
+        # hot reload feature
+        if rl.IsKeyPressed(rl.KEY_F5):
+            self._unload_resources()
+            _request_hot_reload()
 
-    def on_destroy(self):
+    def _unload_resources(self):
         _unload_all_sound_aliases()
         _unload_all_resources()
         for child in g.root.children.values():
@@ -193,7 +193,8 @@ class Game:
         if g.default_lightmap:
             g.default_lightmap.destroy()
 
-        # full destroy!!
+    def on_destroy(self):
+        self._unload_resources()
         imgui.rlImGuiShutdown()
         rl.CloseAudioDevice()
         rl.CloseWindow()

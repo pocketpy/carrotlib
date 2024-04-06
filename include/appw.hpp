@@ -15,7 +15,7 @@ namespace ct{
     
     unsigned char* platform_load_asset(const char*, int, int*);
     std::vector<std::string> platform_list_assets(std::string_view);
-    void add_module__ct(VM* vm);
+    PyObject* add_module__ct(VM* vm);
 
     Str get_system_info();
 }

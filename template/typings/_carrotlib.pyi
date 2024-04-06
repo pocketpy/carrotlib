@@ -11,6 +11,9 @@ def list_assets(root: str) -> list[str]:
 def fast_apply(f: callable, a: list | tuple, *args) -> None:
     """Equivalent to `for x in a: f(x, *args)` but much faster."""
 
+def _request_hot_reload():
+    ...
+
 def _get_cjk_codepoints() -> tuple[int_p, int]:
     ...
 
