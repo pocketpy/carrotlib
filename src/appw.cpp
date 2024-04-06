@@ -304,4 +304,17 @@ static Vector2 DrawTextBoxed(bool render, bool limitHeight, float lineSpacing, F
 #undef MOVE_NEXT_LINE
 }
 
+void setup_imgui_font(){
+    static bool once = false;
+    if(once) return;
+    once = true;
+    std::string_view font_path = "carrotlib/assets/SourceCodePro-Medium.otf";
+    int data_size;
+    void* data = platform_load_asset(font_path.data(), font_path.size(), &data_size);
+    ImFont* font = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(data, data_size, 18.0f);
+    ImGui::GetIO().FontDefault = font;
+    rlImGuiReloadFonts();
+    free(data);
+}
+
 }   // namespace ct

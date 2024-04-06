@@ -1151,14 +1151,6 @@ void add_module_imgui(VM* vm){
         [](VM* vm, ArgsView args){
             bool darkTheme = CAST(bool, args[0]);
             rlImGuiSetup(darkTheme);
-
-            const char* font_path = "carrotlib/assets/SourceCodePro-Medium.otf";
-            int data_size;
-            void* data = _default_import_handler(font_path, strlen(font_path), &data_size);
-            ImFont* font = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(data, data_size, 18.0f);
-            ImGui::GetIO().FontDefault = font;
-            rlImGuiReloadFonts();
-
             return vm->None;
         });
 

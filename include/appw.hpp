@@ -18,4 +18,5 @@ namespace ct{
     PyObject* add_module__ct(VM* vm);
 
     Str get_system_info();
+    void setup_imgui_font();
 }

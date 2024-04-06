@@ -145,6 +145,8 @@ void ios_ready(){
         if(!cached.game) fatal_error("failed to find a class derived from `cl.Game`");
         vm->call(cached.on_ready);
     } CATCH_EXCEPTION()
+
+    setup_imgui_font();
 }
 
 void ios_update(){

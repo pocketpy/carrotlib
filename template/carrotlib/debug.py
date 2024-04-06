@@ -1,6 +1,6 @@
 from linalg import vec2, vec4
 import traceback
-import math
+import raylib as rl
 import c
 
 import imgui
@@ -187,8 +187,8 @@ class DebugWindow:
 
     def render(self):
         # set window size
-        w = imgui.GetIO().DisplaySize.x * 0.3
-        h = imgui.GetIO().DisplaySize.y * 0.6
+        w = rl.GetScreenWidth() * 0.3
+        h = rl.GetScreenHeight() * 0.6
         imgui.SetNextWindowSize(vec2(w, h), imgui.ImGuiCond_FirstUseEver)
         imgui.SetNextWindowPos(vec2(0, 0), imgui.ImGuiCond_FirstUseEver)
         imgui.SetNextWindowCollapsed(True, imgui.ImGuiCond_FirstUseEver)
