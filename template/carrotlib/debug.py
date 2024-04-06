@@ -80,12 +80,23 @@ class PythonConsole:
             c.memset(self.buffer.addr(), 0, self.buffer.sizeof())
 
 class DebugWindow:
-    selected: Node
+    _selected: Node
 
     def __init__(self):
-        self.selected = None
+        self._selected = None
+
         self.variables = {}
         self.python_console = PythonConsole()
+
+    @property
+    def selected(self):
+        if self._selected and self._selected._state != 1:
+            self._selected = None
+        return self._selected
+    
+    @selected.setter
+    def selected(self, value):
+        self._selected = value
 
     def render_tree_colored_tag(self, text: str, color: vec4):
         imgui.SameLine(0, 8)
