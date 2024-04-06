@@ -177,7 +177,7 @@ class DebugWindow:
                     self.render_inspector(root[i], f"[{i}]", depth+1)
             elif isinstance(root, dict):
                 for k, v in root.items():
-                    self.render_inspector(v, k, depth+1)
+                    self.render_inspector(v, repr(k), depth+1)
             elif root_d:
                 for name in sorted(root_d.keys()):
                     if name.startswith('_'):
