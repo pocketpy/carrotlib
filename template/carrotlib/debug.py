@@ -132,6 +132,33 @@ class DebugWindow:
                 self.render_hierarchy(child, depth+1)
             imgui.TreePop()
 
+    def render_inspector(self, root, name=None, depth=0):
+        """Render everything about the selected node with tree view"""
+        if depth == 3:
+            return
+        root_d = root.__dict__
+        flags = imgui.ImGuiTreeNodeFlags_OpenOnArrow \
+            | imgui.ImGuiTreeNodeFlags_SpanFullWidth
+        if depth == 0:
+            flags |= imgui.ImGuiTreeNodeFlags_DefaultOpen
+        if not root_d:
+            flags |= imgui.ImGuiTreeNodeFlags_Leaf
+
+        title = repr(root)
+        if len(title) > 100:
+            title = title[:100] + '...'
+        if name is not None:
+            title = f"{name}: {title}"
+        expand = imgui.TreeNode(title, flags)
+
+        if expand:
+            if root_d:
+                for name, v in root_d.items():
+                    if name.startswith('_'):
+                        continue
+                    self.render_inspector(v, name, depth+1)
+            imgui.TreePop()
+
     def render(self):
         # set window size
         imgui.SetNextWindowSize(vec2(500, 600), imgui.ImGuiCond_FirstUseEver)
@@ -172,6 +199,13 @@ class DebugWindow:
 
         if imgui.BeginTabItem("Console"):
             self.python_console.render()
+            imgui.EndTabItem()
+
+        if imgui.BeginTabItem("Inspector"):
+            if self.selected is None:
+                imgui.Text("Nothing selected")
+            else:
+                self.render_inspector(self.selected)
             imgui.EndTabItem()
 
         imgui.EndTabBar()

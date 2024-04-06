@@ -75,9 +75,13 @@ class Node:
     
     @property
     def path(self) -> str:
-        if self.parent is None:
-            return ''   # omit `root`
-        return self.parent.path + '/' + self.name
+        cpnts = []
+        node = self
+        while node is not _g.root:
+            cpnts.append(node.name)
+            node = node.parent
+        cpnts.reverse()
+        return '/'.join(cpnts)
     
     def total_z_index(self) -> int | float:
         if self.parent is None:
