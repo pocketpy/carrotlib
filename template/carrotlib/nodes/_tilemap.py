@@ -216,14 +216,24 @@ class Tilemap(Node):
         # draw_circle(self.global_position, 0.2, Colors.Red)
 
     def draw(self, transform: mat3x3):
-        w2s = _g.world_to_viewport
-        scale = (w2s @ transform)._s() / _g.PIXEL_PER_UNIT
+        w2v = _g.world_to_viewport
+        scale = (w2v @ transform)._s() / _g.PIXEL_PER_UNIT
+
+        bound_x_min = -_g.viewport_width * 0.5
+        bound_x_max = _g.viewport_width * 1.5
+        bound_y_min = -_g.viewport_height * 0.5
+        bound_y_max = _g.viewport_height * 1.5
 
         for x, y, info in self.tiles:
             y += self.render_offset_y
             pos = vec2(x, y) * self.cell_size
             # optimized draw_sprite
-            pos = w2s.transform_point(transform.transform_point(pos))
+            pos = w2v.transform_point(transform.transform_point(pos))
+
+            # if pos is far away from the screen, skip it
+            if pos.x<bound_x_min or pos.x>bound_x_max or pos.y<bound_y_min or pos.y>bound_y_max:
+                continue
+
             src_rect = rl.Rectangle(info.srcX, info.srcY, self.grid_size, self.grid_size)
             dest_width = src_rect.width * scale.x
             dest_height = src_rect.height * scale.y
@@ -234,19 +244,36 @@ class Tilemap(Node):
             dest_rect = rl.Rectangle(pos.x, pos.y, dest_width, dest_height)
             rl.DrawTexturePro(self.tex, src_rect, dest_rect, vec2(0, 0), 0, Colors.White)
 
-    def bake_box2d_bodies(self, node: Node) -> list[box2d.Body]:
+    def bake_box2d_bodies(self, node: Node, optimize=True) -> list[box2d.Body]:
         bodies = []
         transform = node.transform()
         scale = transform._s()
+        cell_extent = scale * self.cell_size / 2
+
         for y in range(self.height):
+            body: box2d.Body = None
+            merged_init_pos: vec2 = None
+            merged_count = 1
             for x in range(self.width):
                 if self.data[x, y] != 1:
                     continue
                 pos = vec2(x, y) * self.cell_size
-                cell_extent = scale * self.cell_size / 2
+
+                curr_pos = transform.transform_point(pos) + cell_extent
+                if optimize:
+                    if x > 0 and self.data[x-1, y] == 1:
+                        merged_count += 1
+                        # update position and size
+                        body.position = (merged_init_pos + curr_pos) / 2
+                        body.set_box_shape(cell_extent.x * merged_count, cell_extent.y)
+                        continue
+                    else:
+                        merged_count = 1
+
                 body = node.create_body()
                 body.type = 0
-                body.position = transform.transform_point(pos) + cell_extent
+                body.position = curr_pos
+                merged_init_pos = curr_pos
                 body.set_box_shape(cell_extent.x, cell_extent.y)
                 bodies.append(body)
         return bodies
