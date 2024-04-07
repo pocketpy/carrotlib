@@ -68,8 +68,12 @@ def prebuild(project: str, hardcode_assets: bool):
     ))
     # add everything in template/
     for td in os.listdir('template'):
-        path = os.path.join(project, td)
-        shutil.copytree(os.path.join('template', td), path)
+        src = os.path.join('template', td)
+        dst = os.path.join(project, td)
+        if os.path.exists(dst):
+            shutil.rmtree(dst)
+        print(f"复制 {src} -> {dst}")
+        shutil.copytree(src, dst)
     print(f"{project} 预购建成功")
 
     if hardcode_assets:
