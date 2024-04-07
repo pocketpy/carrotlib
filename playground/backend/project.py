@@ -16,7 +16,7 @@ def sync_project_template(project: str):
     if not os.path.exists(project):
         print(f"{project} 不存在")
         return
-    for td in ['carrotlib']:
+    for td in ['carrotlib', 'dungeon']:
         path = os.path.join(project, td)
         if os.path.exists(path):
             shutil.rmtree(path, ignore_errors=False)
