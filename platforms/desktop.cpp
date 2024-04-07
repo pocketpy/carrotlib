@@ -32,17 +32,8 @@ namespace ct{
         if(template_path == NULL) return NULL;
         std::filesystem::path path(template_path);
         path /= std::string(name_p, name_size);
-        if(!std::filesystem::exists(path)) return NULL;
-        // fopen
-        FILE* f = fopen(path.string().c_str(), "rb");
-        if(f == NULL) return NULL;
-        // get file size
-        fseek(f, 0, SEEK_END); *out_size = ftell(f); fseek(f, 0, SEEK_SET);
-        // read file
-        unsigned char* out = new unsigned char[*out_size];
-        fread(out, 1, *out_size, f);
-        fclose(f);
-        return out;
+        std::string path_string = path.string();
+        return _default_import_handler(path_string.c_str(), path_string.size(), out_size);
     }
 
     std::vector<std::string> platform_list_assets(std::string_view root){
