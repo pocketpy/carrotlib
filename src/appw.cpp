@@ -308,7 +308,8 @@ void setup_imgui_font(){
     static bool once = false;
     if(once) return;
     once = true;
-    std::string_view font_path = "carrotlib/assets/SourceCodePro-Medium.otf";
+
+    std::string_view font_path(SourceCodePro_Medium);
     int data_size;
     void* data = platform_load_asset(font_path.data(), font_path.size(), &data_size);
     int width = (GetScreenWidth() + GetRenderWidth()) / 2;

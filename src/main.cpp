@@ -152,14 +152,14 @@ void ios_ready(){
 void ios_update(){
     if(!error_screen_msg.empty()){
         // error_screen_update
+        static Font font = LoadFontEx(SourceCodePro_Medium, 64, NULL, 0);
         int width = (GetScreenWidth() + GetRenderWidth()) / 2;
-        int font_size = width / 500 * 10;
-        int line_spacing = font_size * 1.2;
-        // raylib default font size is 10, use 10/20/30 to be pixel perfect
+        float font_size = (int)(width / 54.0f);
+        int line_spacing = font_size;
         BeginDrawing();
         ClearBackground({255, 130, 45, 255});   // 🥕 orange
         SetTextLineSpacing(line_spacing);
-        DrawText(error_screen_msg.c_str(), font_size, font_size, font_size, WHITE);
+        DrawTextEx(font, error_screen_msg.c_str(), {font_size, font_size}, font_size, 0, WHITE);
         EndDrawing();
         return;
     }
