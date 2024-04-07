@@ -60,7 +60,7 @@ elseif(EMSCRIPTEN)
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS ${EMCC_LINKER_FLAGS})
     target_compile_definitions(${PROJECT_NAME} PRIVATE GRAPHICS_API_OPENGL_ES2)
 else()
-    add_executable(${PROJECT_NAME} ${PROJECT_SRC} platforms/standalone.cpp)
+    add_executable(${PROJECT_NAME} ${PROJECT_SRC} platforms/desktop.cpp)
     target_link_libraries(${PROJECT_NAME} 3rdparty)
 
     # Checks if OSX and links appropriate frameworks (Only required on MacOS)

@@ -1,5 +1,5 @@
 {
-    "stubPath": "template/typings",
+    "stubPath": "include/typings",
     "extraPaths": ["template", "3rd/pocketpy/include/typings"],
     "reportMissingModuleSource": "none",
     "pythonVersion": "3.10"

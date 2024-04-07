@@ -8,6 +8,9 @@ using namespace pkpy;
 namespace ct{
     inline const char* SourceCodePro_Medium = "carrotlib/assets/SourceCodePro-Medium.otf";
 
+    void set_template_path(const char*);
+    const char* get_template_path();
+
     void patch_module_ct(VM* vm, PyObject* mod);
 
     // platform interfaces

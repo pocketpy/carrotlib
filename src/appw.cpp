@@ -11,6 +11,16 @@ namespace ct{
 // https://github.com/raysan5/raylib/blob/master/examples/text/text_rectangle_bounds.c
 static Vector2 DrawTextBoxed(bool, bool, float, Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint);   // Draw text using font inside rectangle limits
 
+static const char* template_path = NULL;
+
+void set_template_path(const char *path){
+    template_path = path;
+}
+
+const char* get_template_path(){
+    return template_path;
+}
+
 PyObject* add_module__ct(VM *vm){
     PyObject* mod = vm->new_module("_carrotlib");
 

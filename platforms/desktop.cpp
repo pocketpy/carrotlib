@@ -26,14 +26,34 @@ namespace ct{
     }
 
     unsigned char* platform_load_asset(const char* name_p, int name_size, int* out_size){
-        return _default_import_handler(name_p, name_size, out_size);
+        unsigned char* res = _default_import_handler(name_p, name_size, out_size);
+        if(res != NULL) return res;
+        const char* template_path = get_template_path();
+        if(template_path == NULL) return NULL;
+        std::filesystem::path path(template_path);
+        path /= std::string(name_p, name_size);
+        if(!std::filesystem::exists(path)) return NULL;
+        // fopen
+        FILE* f = fopen(path.string().c_str(), "rb");
+        if(f == NULL) return NULL;
+        // get file size
+        fseek(f, 0, SEEK_END); *out_size = ftell(f); fseek(f, 0, SEEK_SET);
+        // read file
+        unsigned char* out = new unsigned char[*out_size];
+        fread(out, 1, *out_size, f);
+        fclose(f);
+        return out;
     }
 
     std::vector<std::string> platform_list_assets(std::string_view root){
         std::vector<std::string> result;
         std::filesystem::path path(root);
-        bool exists = std::filesystem::exists(path);
-        if(!exists) return {};
+        if(!std::filesystem::exists(path)){
+            const char* template_path = get_template_path();
+            if(template_path == NULL) return {};
+            path = std::filesystem::path(template_path) / root;
+        }
+        if(!std::filesystem::exists(path)) return {};
         for(auto& p: std::filesystem::directory_iterator(path)){
             result.push_back(p.path().string());
         }

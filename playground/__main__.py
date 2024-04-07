@@ -249,13 +249,7 @@ class ProjectView:
         with imgui.begin_tab_item("   控制台   ") as tab:
             if tab.selected:
                 framework_compile_time = get_file_time(backend.FRAMEWORK_EXE_PATH)
-                project_template_time = get_file_time(os.path.join(project_view.root_abspath, "carrotlib"))
-                framework_template_time = get_file_time("template/carrotlib")
                 imgui.text(f"框架编译时间: {framework_compile_time}")
-                if project_template_time != framework_template_time:
-                    imgui.text(f"模板更新时间: {project_template_time} (需要同步)")
-                else:
-                    imgui.text(f"模板更新时间: {project_template_time}")
 
                 imgui.spacing()
 

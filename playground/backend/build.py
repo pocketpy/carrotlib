@@ -60,14 +60,16 @@ def gen_hardcoded_assets(type: str):
 
 
 def prebuild(project: str, hardcode_assets: bool):
-    sync_project_template(project)
-    # sync assets into the android template project
     shutil.rmtree(ANDROID_ASSETS_DIR, ignore_errors=True)
     assert not os.path.exists(ANDROID_ASSETS_DIR)
     # ignore build/
     shutil.copytree(project, ANDROID_ASSETS_DIR, ignore=shutil.ignore_patterns(
         '*.pyi', '*.ase', '*.aseprite', '*.DS_Store', 'pyrightconfig.json', 'build', '.gitignore',
     ))
+    # add everything in template/
+    for td in os.listdir('template'):
+        path = os.path.join(project, td)
+        shutil.copytree(os.path.join('template', td), path)
     print(f"{project} 预购建成功")
 
     if hardcode_assets:
