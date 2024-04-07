@@ -32,12 +32,14 @@ class PythonConsole:
     
     def render_history(self):
         for type, msg in self.history:
+            imgui.PushTextWrapPos()
             if type == 'stdout':
                 imgui.TextColored(vec4(0.5, 1, 0.5, 1), msg)
             elif type == 'stderr':
                 imgui.TextColored(vec4(1, 0.5, 0.5, 1), msg)
             else:
                 imgui.Text(f'>>> {msg}')
+            imgui.PopTextWrapPos()
 
     def render(self):
         height = imgui.GetFrameHeight()
