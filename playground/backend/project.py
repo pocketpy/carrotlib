@@ -30,6 +30,7 @@ def sync_project_template(project: str):
         f.write('build/\n')
         f.write('.vscode/\n')
         f.write('carrotlib/\n')
+        f.write('dungeon/\n')
         f.write('*.DS_Store\n')
         f.write('pyrightconfig.json\n')
                 
