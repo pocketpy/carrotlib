@@ -8,7 +8,7 @@ from ._font import SpriteFont
 from ._viewport import get_mouse_position, get_mouse_delta, set_camera_transform
 from ._event import Event
 from ._light import PointLight2D, GlobalLight2D, ParticleLight2D, Lightmap
-from ._material import UnlitMaterial, DiffuseMaterial, Material
+from ._material import UnlitMaterial, DiffuseMaterial, Material, PureColorMaterial
 from ._setup import Game
 
 from ._renderer import *

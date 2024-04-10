@@ -87,6 +87,14 @@ class Material:
     @classmethod
     def frag(cls) -> str | None:
         return None
+    
+    def __enter__(self):
+        rl.BeginShaderMode(self.shader)
+        return self
+    
+    def __exit__(self, *args):
+        rl.EndShaderMode()
+        return self
 
 
 class UnlitMaterial(Material):
@@ -97,14 +105,6 @@ class UnlitMaterial(Material):
     @classmethod
     def frag(cls) -> str:
         return load_text_asset("carrotlib/assets/shaders/unlit.frag")
-
-    def __enter__(self):
-        rl.BeginShaderMode(self.shader)
-        return self
-    
-    def __exit__(self, *args):
-        rl.EndShaderMode()
-        return self
 
 
 class DiffuseMaterial(Material):
@@ -122,10 +122,12 @@ class DiffuseMaterial(Material):
         return load_text_asset("carrotlib/assets/shaders/diffuse.frag")
 
     def __enter__(self):
-        rl.BeginShaderMode(self.shader)
+        super().__enter__()
         rl.SetShaderValueTexture(self.shader, self._loc_lightmap, self.lightmap.texture)
         return self
-    
-    def __exit__(self, *args):
-        rl.EndShaderMode()
-        return self
+
+
+class PureColorMaterial(Material):
+    @classmethod
+    def frag(cls) -> str:
+        return load_text_asset("carrotlib/assets/shaders/pure_color.frag")
