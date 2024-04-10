@@ -88,9 +88,12 @@ class Node:
         return '/'.join(cpnts)
     
     def total_z_index(self) -> int | float:
-        if self.parent is None:
-            return self.z_index
-        return self.parent.total_z_index() + self.z_index
+        res = self.z_index
+        node = self
+        while node.parent is not None:
+            node = node.parent
+            res += node.z_index
+        return res
 
     def get_node(self, path: str) -> 'Node':
         """get the child node by path"""
