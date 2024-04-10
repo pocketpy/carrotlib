@@ -78,6 +78,15 @@ PyObject* add_module__ct(VM *vm){
             return VAR(Bytes(out, out_size));
         });
 
+    vm->bind(mod, "load_text_asset(name: str)",
+        [](VM* vm, ArgsView args){
+            const Str& name = CAST(Str&, args[0]);
+            int out_size;
+            const char* out = (const char*)platform_load_asset(name.data, name.size, &out_size);
+            if(out == nullptr) vm->IOError(_S("failed to load: ", name));
+            return VAR(std::string_view(out, out_size));
+        });
+
     vm->bind(mod, "list_assets(name: str)",
         [](VM* vm, ArgsView args){
             const Str& name = CAST(Str&, args[0]);

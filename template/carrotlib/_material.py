@@ -1,5 +1,5 @@
 import raylib as rl
-from _carrotlib import GRAPHICS_API_OPENGL_33, GRAPHICS_API_OPENGL_ES2, GRAPHICS_API_OPENGL_ES3
+from _carrotlib import GRAPHICS_API_OPENGL_33, GRAPHICS_API_OPENGL_ES2, GRAPHICS_API_OPENGL_ES3, load_text_asset
 
 from ._light import Lightmap
 from . import g as _g
@@ -71,119 +71,32 @@ return _mix(1.055 * pow(rgb, vec3(1.0 / 2.4)) - 0.055,
         raise RuntimeError("current graphics API not supported")
     return vsCode, fsCode
 
-
-UNLIT_SHADER = """
-// Input vertex attributes
-_IN_ vec3 vertexPosition;
-_IN_ vec2 vertexTexCoord;
-_IN_ vec4 vertexColor;
-
-// Input uniform values
-uniform mat4 mvp;
-
-// Output vertex attributes (to fragment shader)
-_OUT_ vec2 fragTexCoord;
-_OUT_ vec4 fragColor;
-
-void main()
-{
-    fragTexCoord = vertexTexCoord;
-    fragColor = vertexColor;
-    vec4 clipPos = mvp * vec4(vertexPosition, 1.0);
-    gl_Position = clipPos;
-}
-""", """
-// Input vertex attributes (from vertex shader)
-_IN_ vec2 fragTexCoord;
-_IN_ vec4 fragColor;
-
-// Input uniform values
-uniform sampler2D texture0;
-uniform vec4 colDiffuse;        // tint color
-
-_DEFINE_GL_FRAG_COLOR_
-
-void main()
-{
-    vec4 texel = texture(texture0, fragTexCoord);
-    texel.xyz = sRGBToLinear(texel.xyz);
-    vec4 finalColor = texel * colDiffuse * fragColor;
-    finalColor.xyz = LinearToSRGB(finalColor.xyz);
-    _GL_FRAG_COLOR_ = finalColor;
-}"""
-
-DIFFUSE_SHADER = """
-// Input vertex attributes
-_IN_ vec3 vertexPosition;
-_IN_ vec2 vertexTexCoord;
-_IN_ vec4 vertexColor;
-
-// Input uniform values
-uniform mat4 mvp;
-
-// Output vertex attributes (to fragment shader)
-_OUT_ vec4 screenPos;
-_OUT_ vec2 fragTexCoord;
-_OUT_ vec4 fragColor;
-
-vec4 ComputeScreenPos(vec4 pos){
-    vec4 o;
-    o.x = 0.5 * (pos.x + pos.w);
-    o.y = 0.5 * (pos.y + pos.w);
-    o.zw = pos.zw;
-    return o;              
-}
-
-void main()
-{
-    fragTexCoord = vertexTexCoord;
-    fragColor = vertexColor;
-
-    vec4 clipPos = mvp * vec4(vertexPosition, 1.0);
-    screenPos = ComputeScreenPos(clipPos);
-    gl_Position = clipPos;
-}
-""", """
-// Input vertex attributes (from vertex shader)
-_IN_ vec2 fragTexCoord;
-_IN_ vec4 fragColor;
-_IN_ vec4 screenPos;
-
-// Input uniform values
-uniform sampler2D texture0;
-uniform sampler2D texture1;     // lightmap texture
-uniform vec4 colDiffuse;        // tint color
-
-_DEFINE_GL_FRAG_COLOR_
-
-void main()
-{
-    vec2 screenCoord = screenPos.xy / screenPos.w;
-    vec4 texel = texture(texture0, fragTexCoord);   // Get texel color
-    vec4 light = texture(texture1, screenCoord);    // Get light color
-    texel.xyz = sRGBToLinear(texel.xyz);
-    vec4 finalColor = texel * colDiffuse * fragColor * light;
-    finalColor.xyz = LinearToSRGB(finalColor.xyz);
-    _GL_FRAG_COLOR_ = finalColor;
-}"""
-
 class Material:
     cached_shaders: dict[type, rl.Shader] = {}
 
     def __init__(self):
         cls = type(self)
         if cls not in self.cached_shaders:
-            self.cached_shaders[cls] = rl.LoadShaderFromMemory(*_compile_shader(*cls.glsl()))
+            self.cached_shaders[cls] = rl.LoadShaderFromMemory(*_compile_shader(cls.vert(), cls.frag()))
         self.shader = self.cached_shaders[cls]
 
     @classmethod
-    def glsl(cls) -> tuple[str | None, str | None]:
-        raise NotImplementedError
+    def vert(cls) -> str | None:
+        return None
+    
+    @classmethod
+    def frag(cls) -> str | None:
+        return None
+
 
 class UnlitMaterial(Material):
     @classmethod
-    def glsl(cls):
-        return UNLIT_SHADER
+    def vert(cls) -> str:
+        return load_text_asset("carrotlib/assets/shaders/unlit.vert")
+    
+    @classmethod
+    def frag(cls) -> str:
+        return load_text_asset("carrotlib/assets/shaders/unlit.frag")
 
     def __enter__(self):
         rl.BeginShaderMode(self.shader)
@@ -201,8 +114,12 @@ class DiffuseMaterial(Material):
         self._loc_lightmap = rl.GetShaderLocation(self.shader, "texture1")
 
     @classmethod
-    def glsl(cls):
-        return DIFFUSE_SHADER
+    def vert(cls) -> str:
+        return load_text_asset("carrotlib/assets/shaders/diffuse.vert")
+    
+    @classmethod
+    def frag(cls) -> str:
+        return load_text_asset("carrotlib/assets/shaders/diffuse.frag")
 
     def __enter__(self):
         rl.BeginShaderMode(self.shader)

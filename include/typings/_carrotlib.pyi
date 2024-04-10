@@ -5,6 +5,9 @@ from linalg import vec2
 def load_asset(name: str) -> bytes:
     """load an asset from the platform's asset directory as bytes."""
 
+def load_text_asset(name: str) -> str:
+    """load an asset from the platform's asset directory as string."""
+
 def list_assets(root: str) -> list[str]:
     """list the assets in the platform's asset directory."""
 
