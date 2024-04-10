@@ -8,11 +8,13 @@ from _carrotlib import fast_apply
 from . import g as _g
 
 class Node:
-    on_ready = lambda self: None
-    on_update = lambda self: None
-    on_render = lambda self: None
-    on_render_ui = lambda self: None
-    on_destroy = lambda self: None
+    def on_ready(self): pass
+    def on_update(self): pass
+    def on_render(self): pass
+    def on_render_ui(self): pass
+    def on_destroy(self): pass
+    def on_box2d_pre_step(self): pass
+    def on_box2d_post_step(self): pass
 
     parent: 'Node'
     children: dict[str, 'Node']
@@ -195,12 +197,6 @@ class Node:
     def stop_all_coroutines(self):
         for i in range(len(self._coroutines)):
             self._coroutines[i] = None
-
-    def on_box2d_pre_step(self):
-        pass
-
-    def on_box2d_post_step(self):
-        pass
 
 
 
