@@ -10,6 +10,8 @@ _DEFINE_GL_FRAG_COLOR_
 
 void main()
 {
+    vec4 texel = texture(texture0, fragTexCoord);
     vec4 finalColor = colDiffuse * fragColor;
+    finalColor.a *= texel.a;
     _GL_FRAG_COLOR_ = finalColor;
 }

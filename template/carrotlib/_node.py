@@ -62,6 +62,8 @@ class Node:
 
     def __repr__(self):
         cls_name = type(self).__name__
+        if self._state == 2:
+            return f'<{cls_name} (destroyed)>'
         return f'<{cls_name} {self.path}>'
     
     def __debuginfo__(self):
