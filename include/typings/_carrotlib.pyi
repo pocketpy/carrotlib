@@ -14,6 +14,9 @@ def list_assets(root: str) -> list[str]:
 def fast_apply(f: callable, a: list | tuple, *args) -> None:
     """Equivalent to `for x in a: f(x, *args)` but much faster."""
 
+def vibrate(milliseconds: int, amplitude: int = -1):
+    """Vibrate the device."""
+
 def _request_hot_reload():
     ...
 

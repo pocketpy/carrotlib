@@ -20,8 +20,10 @@ namespace ct{
     
     unsigned char* platform_load_asset(const char*, int, int*);
     std::vector<std::string> platform_list_assets(std::string_view);
-    PyObject* add_module__ct(VM* vm);
 
-    Str get_system_info();
+    Str platform_system_info();
+    void platform_vibrate(i64 milliseconds, int amplitude);
+
+    PyObject* add_module__ct(VM* vm);
     void setup_imgui_font();
 }

@@ -56,7 +56,7 @@ namespace ct{
         return list;
     }
 
-    Str get_system_info(){
+    Str platform_system_info(){
         char manufacturer[PROP_VALUE_MAX + 1] = {0};
         char model[PROP_VALUE_MAX + 1] = {0};
         char os_version[PROP_VALUE_MAX + 1] = {0};
@@ -66,5 +66,20 @@ namespace ct{
         __system_property_get("ro.build.version.release", os_version);
         int sdk_version = GetAndroidApp()->activity->sdkVersion;
         return _S("Android ", os_version, " - ", manufacturer, " ", model, " - SDK ", sdk_version, " - NDK ", __NDK_MAJOR__, ".", __NDK_MINOR__);
+    }
+
+    void platform_vibrate(i64 milliseconds, int amplitude){
+        // call `vibrate(milliseconds: long, amplitude: int)` in MainActivity.kt
+        ANativeActivity* activity = GetAndroidApp()->activity;
+        if(activity->vm == nullptr) return;
+        JNIEnv* env = nullptr;
+        activity->vm->AttachCurrentThread(&env, nullptr);
+        if(env == nullptr) return;
+        jclass cls = env->GetObjectClass(activity->clazz);
+        if(cls == nullptr) return;
+        jmethodID method = env->GetMethodID(cls, "vibrate", "(JI)V");
+        if(method == nullptr) return;
+        env->CallVoidMethod(activity->clazz, method, milliseconds, amplitude);
+        activity->vm->DetachCurrentThread();
     }
 }   // namespace ct

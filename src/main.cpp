@@ -38,7 +38,7 @@ static void fatal_error(Str msg){
     if(!is_initialized()) exit(1);
     error_screen_msg = _S(
         "Oops! The game encountered an error.\n",
-        get_system_info(), '\n',
+        platform_system_info(), '\n',
         pool64_info(), " & ", pool128_info(), '\n',
         '\n', msg
     ).str();

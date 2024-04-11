@@ -107,10 +107,11 @@ class ThreadingTask:
         while threading.main_thread().is_alive():
             if self.exit_signal.wait(2):
                 break
-            self.devices.clear()
-            self.devices.extend(get_android_devices() or [])
+            devices = []
+            devices.extend(get_android_devices() or [])
             if sys.platform == 'darwin':
-                self.devices.extend(get_ios_devices() or [])
+                devices.extend(get_ios_devices() or [])
+            self.devices = devices
  
     def dispose(self):
         self.exit_signal.set()

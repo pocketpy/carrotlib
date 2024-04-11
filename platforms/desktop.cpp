@@ -51,7 +51,11 @@ namespace ct{
         return result;
     }
 
-    Str get_system_info(){
+    Str platform_system_info(){
         return _S("sys.platform: ", kPlatformStrings[PK_SYS_PLATFORM]);
+    }
+
+    void platform_vibrate(i64 milliseconds, int amplitude){
+        // unsupported
     }
 }   // namespace ct

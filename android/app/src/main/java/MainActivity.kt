@@ -1,6 +1,8 @@
 package game.example.android
 import android.app.NativeActivity
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
 
 class MainActivity : NativeActivity() {
@@ -29,5 +31,12 @@ class MainActivity : NativeActivity() {
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
+    }
+
+    public fun vibrate(milliseconds: Long, amplitude: Int) {
+        val vibrator = getSystemService(Vibrator::class.java)
+        if(!vibrator.hasVibrator()) return
+        val effect = VibrationEffect.createOneShot(milliseconds, amplitude)
+        vibrator.vibrate(effect)
     }
 }

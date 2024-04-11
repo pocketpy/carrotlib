@@ -24,6 +24,12 @@ const char* get_template_path(){
 PyObject* add_module__ct(VM *vm){
     PyObject* mod = vm->new_module("_carrotlib");
 
+    vm->bind(mod, "vibrate(milliseconds, amplitude=-1)",
+        [](VM* vm, ArgsView args){
+            platform_vibrate(CAST(i64, args[0]), CAST(int, args[1]));
+            return vm->None;
+        });
+
     vm->bind(mod, "_bake_global_light(image, color, intensity)",
         [](VM* vm, ArgsView args){
             Image* image = CAST(Image*, args[0]);
