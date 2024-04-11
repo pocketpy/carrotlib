@@ -61,7 +61,7 @@ class ProjectView:
         if sys.platform == 'win32':
             SYSTEM_FONT_PATH = "C:\\Windows\\Fonts\\msyh.ttc"
         elif sys.platform == 'darwin':
-            SYSTEM_FONT_PATH = "/System/Library/Fonts/PingFang.ttc"
+            SYSTEM_FONT_PATH = "/System/Library/Fonts/STHeiti Light.ttc"
         else:
             raise NotImplementedError
         
@@ -211,8 +211,8 @@ class ProjectView:
     def render(self):
         # -------------------------- #
         window_width, window_height = imgui.get_window_size()
-        window_height *= 0.97
-        window_width -= 32 / DPI_SCALE
+        window_height *= 0.96
+        window_width *= 0.96
 
         # two column with splitter, drag to resize width
         imgui.begin_child("L", width=window_width * 0.25, height=window_height)

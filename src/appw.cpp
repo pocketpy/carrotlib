@@ -50,10 +50,10 @@ PyObject* add_module__ct(VM *vm){
         if(args.size() < 2) vm->TypeError("expected at least 2 arguments");
         PyObject** begin;
         PyObject** end;
-        if(is_non_tagged_type(args[1], vm->tp_list)){
+        if(is_type(args[1], vm->tp_list)){
             begin = PK_OBJ_GET(List, args[1]).begin();
             end = PK_OBJ_GET(List, args[1]).end();
-        }else if(is_non_tagged_type(args[1], vm->tp_tuple)){
+        }else if(is_type(args[1], vm->tp_tuple)){
             begin = PK_OBJ_GET(Tuple, args[1]).begin();
             end = PK_OBJ_GET(Tuple, args[1]).end();
         }else{

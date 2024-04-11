@@ -1791,13 +1791,13 @@ void add_module_imgui(VM* vm){
     // ID stack/scopes
     vm->bind(imgui, "PushID(x)",
         [](VM* vm, ArgsView args){
-            if(is_non_tagged_type(args[0], vm->tp_str)){
+            if(is_type(args[0], vm->tp_str)){
                 const char* str_id = _CAST(CString, args[0]);
                 ImGui::PushID(str_id);
             }else if(is_int(args[0])){
                 int int_id = _CAST(int, args[0]);
                 ImGui::PushID(int_id);
-            }else if(is_non_tagged_type(args[0], VoidP::_type(vm))){
+            }else if(is_type(args[0], VoidP::_type(vm))){
                 void* ptr_id = _CAST(VoidP&, args[0]).ptr;
                 ImGui::PushID(ptr_id);
             }else{
