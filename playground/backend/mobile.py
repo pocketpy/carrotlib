@@ -1,5 +1,5 @@
 import subprocess
-import re, os
+import re, os, sys
 from typing import List
 
 from .base import TaskCommand
@@ -42,7 +42,8 @@ class IOSDevice(MobileDevice):
             "ios-deploy",
             "--noninteractive",
             "--unbuffered",
-            "--nolldb",
+            "--debug",
+            "--justlaunch",
             "--bundle",
             app_path
         ])
@@ -72,6 +73,24 @@ def get_android_devices() -> List[AndroidDevice] | None:
         devices.append(AndroidDevice(id, title))
     return devices
 
+def get_ios_devices() -> List[IOSDevice] | None:
+    try:
+        pipe = subprocess.Popen(["ios-deploy", "--detect"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
+        stdout, stderr = pipe.communicate()
+        if pipe.returncode != 0:
+            return None
+    except:
+        return None
+    # [....] Found 826a36112545b80333cc31181d82d6869160d81a (D20AP, iPhone 8, iphoneos, arm64, 16.7.7, 20H330) ...
+    pattern = re.compile(r"Found ([0-9a-f]+) \((.+?)\)")
+    devices = []
+    for line in stdout.splitlines():
+        m = pattern.search(line)
+        if m:
+            id, title = m.group(1), m.group(2)
+            devices.append(IOSDevice(id, title))
+    return devices
+
 ###############################################################
 import threading
 
@@ -86,13 +105,12 @@ class ThreadingTask:
 
     def _task(self):
         while threading.main_thread().is_alive():
-            if self.exit_signal.wait(1):
+            if self.exit_signal.wait(2):
                 break
-            devices = get_android_devices()
-            if devices is not None:
-                self.devices = devices
-            else:
-                break       # break the loop if adb not found
+            self.devices.clear()
+            self.devices.extend(get_android_devices() or [])
+            if sys.platform == 'darwin':
+                self.devices.extend(get_ios_devices() or [])
  
     def dispose(self):
         self.exit_signal.set()

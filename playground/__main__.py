@@ -257,7 +257,10 @@ class ProjectView:
                 imgui.text(f"已连接设备：{len(self.threading_task.devices)}")
                 for device in self.threading_task.devices:
                     imgui.spacing()
-                    imgui.text(f"{IconBrands.ICON_ANDROID} {device.title}")
+                    if isinstance(device, backend.IOSDevice):
+                        imgui.text(f"{IconBrands.ICON_APPLE} {device.title}")
+                    elif isinstance(device, backend.AndroidDevice):
+                        imgui.text(f"{IconBrands.ICON_ANDROID} {device.title}")
                     imgui.same_line(spacing=32/DPI_SCALE)
 
                     if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} Run"):
