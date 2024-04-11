@@ -137,8 +137,15 @@ def build_ios(project: str, open_dir=True):
         with open(pbxproj_path, 'wt', encoding='utf-8') as f:
             f.write(pbxproj)
         # build app on real device
-        script = "xcodebuild -project raylib.xcodeproj -scheme raylib -destination 'generic/platform=iOS' -configuration Debug -sdk iphoneos"
-        task = TaskCommand(['bash', '-e', '-c', script], cwd=xcode15_dir)
+        task = TaskCommand([
+            'xcodebuild', '-project', 'raylib.xcodeproj',
+            '-scheme', 'raylib',
+            '-destination', 'generic/platform=iOS',
+            '-configuration', 'Debug',
+            '-sdk', 'iphoneos',
+            '-quiet',
+            '-derivedDataPath', f'{target_dir}/DerivedData',
+        ], cwd=xcode15_dir)
         yield from task
         if task.returncode == 0 and open_dir:
             startfile(target_dir)

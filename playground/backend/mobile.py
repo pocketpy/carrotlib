@@ -32,7 +32,22 @@ class AndroidDevice(MobileDevice):
 
 
 class IOSDevice(MobileDevice):
-    pass
+    def install_and_run(self, root: str):
+        # brew install ios-deploy
+        app_path = f"{root}/build/ios/DerivedData/Build/Products/Debug-iphoneos/raylib.app"
+        if not os.path.exists(app_path):
+            print(f"{app_path} 不存在")
+            return
+        task = TaskCommand([
+            "ios-deploy",
+            "--noninteractive",
+            "--unbuffered",
+            "--nolldb",
+            "--bundle",
+            app_path
+        ])
+        yield from task
+
 
 def get_android_devices() -> List[AndroidDevice] | None:
     try:

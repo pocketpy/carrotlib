@@ -16,7 +16,7 @@ from playground.IconsFontAwesome6Brands import IconsFontAwesome6Brands as IconBr
 
 if sys.platform == 'darwin':
     DPI_SCALE = 2
-    WINDOW_WIDTH, WINDOW_HEIGHT = 720+100, 360+100
+    WINDOW_WIDTH, WINDOW_HEIGHT = 720+100, 400+100
 else:
     DPI_SCALE = 1
     WINDOW_WIDTH, WINDOW_HEIGHT = 1440, 800
