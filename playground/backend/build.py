@@ -120,11 +120,9 @@ def build_ios(project: str, open_dir=True):
         game_xcframework_path = os.path.join(os.getcwd(), 'build/ios/Game.xcframework')
         raylib_src_path = os.path.abspath(os.path.join(os.getcwd(), "3rd/raylib/src"))
         pbxproj_path = os.path.join(xcode15_dir, 'raylib.xcodeproj/project.pbxproj')
-        os.remove(os.path.join(xcode15_dir, 'main.c'))
-        # remove main.c and link Game.xcframework
+        # link Game.xcframework
         from pbxproj import XcodeProject
         pbx = XcodeProject.load(os.path.join(xcode15_dir, 'raylib.xcodeproj/project.pbxproj'))
-        assert pbx.remove_file_by_id('1BF3FCFC2BAF2CFD00D3B043')
         pbx.add_file(os.path.join(game_xcframework_path, 'ios-arm64/libGame-os64.a'), tree='BUILT_PRODUCTS_DIR')
         pbx.save()
         # alter raylib.xcodeproj

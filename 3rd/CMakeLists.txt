@@ -64,6 +64,12 @@ else()
         pocketpy
         box2d
     )
+
+    target_compile_definitions(
+        ${PROJECT_NAME}
+        PRIVATE
+        RL_IOS_NO_EXAMPLE   # disable main.c
+    )
 endif()
 
 target_include_directories(
