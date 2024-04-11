@@ -33,7 +33,7 @@ def gen_hardcoded_assets(type: str):
                     continue
                 filepath = os.path.relpath(os.path.join(root, file), ANDROID_ASSETS_DIR)
                 filepath = filepath.replace('\\', '/')
-                with open(os.path.join(root, file), 'rb', encoding='utf-8') as const_f:
+                with open(os.path.join(root, file), 'rb') as const_f:
                     content = const_f.read()
                 # print(filepath, len(content) // 1024, 'KB')
                 const_array = ','.join([str(b) for b in content])
