@@ -101,12 +101,20 @@ def draw_rect(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = None, s
     else:
         rl.DrawRectangleLinesEx(rect, 1, color or Colors.White)
 
-def draw_line(begin: vec2, end: vec2, color: rl.Color):
+def draw_line(begin: vec2, end: vec2, thick: float, color: rl.Color):
     if not _g.is_rendering_ui:
         trans = _g.world_to_viewport
         begin = trans.transform_point(begin)
         end = trans.transform_point(end)
-    rl.DrawLineEx(begin, end, 1, color)
+    rl.DrawLineEx(begin, end, thick, color)
+
+def draw_line_bezier(begin: vec2, end: vec2, thick: float, color: rl.Color):
+    if not _g.is_rendering_ui:
+        trans = _g.world_to_viewport
+        begin = trans.transform_point(begin)
+        end = trans.transform_point(end)
+    rl.DrawLineBezier(begin, end, thick, color)
+
 
 class DebugDraw:
     def draw_polygon(self, vertices: list[vec2], color: vec4):

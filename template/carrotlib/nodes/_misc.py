@@ -78,10 +78,10 @@ class Grid(Node):
             begin.y = -self.count * self.cell_height
             end.x = i * self.cell_width
             end.y = self.count * self.cell_height
-            draw_line(begin, end, self.color)
+            draw_line(begin, end, 1, self.color)
 
             begin.x = -self.count * self.cell_width
             begin.y = i * self.cell_height
             end.x = self.count * self.cell_width
             end.y = i * self.cell_height
-            draw_line(begin, end, self.color)
+            draw_line(begin, end, 1, self.color)
