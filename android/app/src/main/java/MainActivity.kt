@@ -39,4 +39,12 @@ class MainActivity : NativeActivity() {
         val effect = VibrationEffect.createOneShot(milliseconds, amplitude)
         vibrator.vibrate(effect)
     }
+
+    public fun get_caches_directory(): String {
+        return cacheDir.absolutePath
+    }
+
+    public fun get_documents_directory(): String {
+        return filesDir.absolutePath
+    }
 }

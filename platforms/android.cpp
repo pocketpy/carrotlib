@@ -68,26 +68,46 @@ namespace ct{
         return _S("Android ", os_version, " - ", manufacturer, " ", model, " - SDK ", sdk_version, " - NDK ", __NDK_MAJOR__, ".", __NDK_MINOR__);
     }
 
+#define WITH_JNI_ENV(__block)                                           \
+        ANativeActivity* activity = GetAndroidApp()->activity;          \
+        JNIEnv* env = nullptr;                                          \
+        activity->vm->AttachCurrentThread(&env, nullptr);               \
+        jclass cls = env->GetObjectClass(activity->clazz);              \
+        __block                                                         \
+        activity->vm->DetachCurrentThread();
+
     void platform_vibrate(i64 milliseconds, int amplitude){
         // call `vibrate(milliseconds: long, amplitude: int)` in MainActivity.kt
-        ANativeActivity* activity = GetAndroidApp()->activity;
-        if(activity->vm == nullptr) return;
-        JNIEnv* env = nullptr;
-        activity->vm->AttachCurrentThread(&env, nullptr);
-        if(env == nullptr) return;
-        jclass cls = env->GetObjectClass(activity->clazz);
-        if(cls == nullptr) return;
-        jmethodID method = env->GetMethodID(cls, "vibrate", "(JI)V");
-        if(method == nullptr) return;
-        env->CallVoidMethod(activity->clazz, method, milliseconds, amplitude);
-        activity->vm->DetachCurrentThread();
+        WITH_JNI_ENV(
+            jmethodID method = env->GetMethodID(cls, "vibrate", "(JI)V");
+            if(method == nullptr) return;
+            env->CallVoidMethod(activity->clazz, method, milliseconds, amplitude);
+        )
     }
 
     Str platform_caches_directory(){
-        return "";
+        // call get_caches_directory()
+        WITH_JNI_ENV(
+            jmethodID method = env->GetMethodID(cls, "get_caches_directory", "()Ljava/lang/String;");
+            if(method == nullptr) return "";
+            jstring jstr = (jstring)env->CallObjectMethod(activity->clazz, method);
+            Str retval = env->GetStringUTFChars(jstr, nullptr);
+            env->ReleaseStringUTFChars(jstr, str);
+        )
+        return retval;
     }
 
     Str platform_documents_directory(){
-        return "";
+        // call get_documents_directory()
+        WITH_JNI_ENV(
+            jmethodID method = env->GetMethodID(cls, "get_documents_directory", "()Ljava/lang/String;");
+            if(method == nullptr) return "";
+            jstring jstr = (jstring)env->CallObjectMethod(activity->clazz, method);
+            Str retval = env->GetStringUTFChars(jstr, nullptr);
+            env->ReleaseStringUTFChars(jstr, str);
+        )
+        return retval;
     }
+
+#undef WITH_JNI_ENV
 }   // namespace ct
