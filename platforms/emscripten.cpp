@@ -33,10 +33,20 @@ namespace ct{
     }
 
     Str platform_caches_directory(){
-        return ".caches";
+        std::filesystem::path path = std::filesystem::current_path();
+        path /= ".caches";
+        if(!std::filesystem::exists(path)){
+            std::filesystem::create_directory(path);
+        }
+        return path.string();
     }
 
     Str platform_documents_directory(){
-        return ".documents";
+        std::filesystem::path path = std::filesystem::current_path();
+        path /= ".documents";
+        if(!std::filesystem::exists(path)){
+            std::filesystem::create_directory(path);
+        }
+        return path.string();
     }
 }   // namespace ct
