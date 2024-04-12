@@ -109,7 +109,7 @@ class Node:
         return b2_body
     
     def transform(self) -> mat3x3:
-        """get the transform matrix from world space to local space"""
+        """get the transform matrix from local space to global space"""
         if self.parent is None:
             return mat3x3.identity()
         t = self.parent.transform()
