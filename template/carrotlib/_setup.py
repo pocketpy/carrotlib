@@ -33,6 +33,8 @@ class Game:
     
     @property
     def window_size(self) -> tuple[int, int]:
+        if sys.platform in ('android', 'ios'):
+            return (0, 0)
         return self.design_size
     
     @property
