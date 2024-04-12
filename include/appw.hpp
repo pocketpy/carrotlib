@@ -24,6 +24,9 @@ namespace ct{
     Str platform_system_info();
     void platform_vibrate(i64 milliseconds, int amplitude);
 
+    Str platform_caches_directory();
+    Str platform_documents_directory();
+
     PyObject* add_module__ct(VM* vm);
     void setup_imgui_font();
 }

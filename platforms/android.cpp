@@ -82,4 +82,12 @@ namespace ct{
         env->CallVoidMethod(activity->clazz, method, milliseconds, amplitude);
         activity->vm->DetachCurrentThread();
     }
+
+    Str platform_caches_directory(){
+        return "";
+    }
+
+    Str platform_documents_directory(){
+        return "";
+    }
 }   // namespace ct

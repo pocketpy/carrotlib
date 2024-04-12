@@ -105,6 +105,16 @@ PyObject* add_module__ct(VM *vm){
             return VAR(std::move(ret));
         });
 
+    vm->bind(mod, "get_caches_directory() -> str",
+        [](VM* vm, ArgsView args){
+            return VAR(platform_caches_directory());
+        });
+
+    vm->bind(mod, "get_documents_directory() -> str",
+        [](VM* vm, ArgsView args){
+            return VAR(platform_documents_directory());
+        });
+
     vm->bind(mod, "_get_cjk_codepoints() -> tuple[int_p, int]",
         [](VM* vm, ArgsView args){
             const std::u32string_view codepoints = \

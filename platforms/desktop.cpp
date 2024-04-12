@@ -58,4 +58,12 @@ namespace ct{
     void platform_vibrate(i64 milliseconds, int amplitude){
         // unsupported
     }
+
+    Str platform_caches_directory(){
+        return ".caches";
+    }
+
+    Str platform_documents_directory(){
+        return ".documents";
+    }
 }   // namespace ct

@@ -11,6 +11,12 @@ def load_text_asset(name: str) -> str:
 def list_assets(root: str) -> list[str]:
     """list the assets in the platform's asset directory."""
 
+def get_caches_directory() -> str:
+    """get app's caches directory."""
+
+def get_documents_directory() -> str:
+    """get app's documents directory."""
+
 def fast_apply(f: callable, a: list | tuple, *args) -> None:
     """Equivalent to `for x in a: f(x, *args)` but much faster."""
 

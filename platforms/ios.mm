@@ -1,6 +1,8 @@
 #include "appw.hpp"
 #include "assets.hpp"
 
+#include <Foundation/Foundation.h>
+
 using namespace pkpy;
 
 namespace ct{
@@ -32,5 +34,17 @@ namespace ct{
 		// gives a short vibrate on iPhone 6+, no vibration otherwise
         // play system sound 1520
         // AudioServicesPlaySystemSound(1520);
+    }
+
+    Str platform_caches_directory(){
+        NSArray* paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString* cachesDirectory = [paths objectAtIndex:0];
+        return [cachesDirectory UTF8String];
+    }
+
+    Str platform_documents_directory(){
+        NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString* documentsDirectory = [paths objectAtIndex:0];
+        return [documentsDirectory UTF8String];
     }
 }   // namespace ct
