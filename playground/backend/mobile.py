@@ -43,7 +43,7 @@ class IOSDevice(MobileDevice):
             "--noninteractive",
             "--unbuffered",
             "--debug",
-            "--justlaunch",
+            "--no-wifi",
             "--bundle",
             app_path
         ])
