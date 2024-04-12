@@ -29,13 +29,9 @@ struct _Cached{
     bool hot_reload_needed = false;
 }cached;
 
-static bool is_initialized(){
-    return cached.game != nullptr;
-}
-
 static void fatal_error(Str msg){
     platform_log_error(msg + "\n");
-    if(!is_initialized()) exit(1);
+    if(cached.game == nullptr) exit(1);
     error_screen_msg = _S(
         "Oops! The game encountered an error.\n",
         platform_system_info(), '\n',
@@ -176,7 +172,7 @@ void ios_update(){
 }
 
 void ios_destroy(){
-    if(!is_initialized()) return;
+    if(cached.game == nullptr) return;
     try{
         vm->call(cached.on_destroy);
     } CATCH_EXCEPTION()
@@ -189,6 +185,7 @@ int main(int argc, char** argv){
     main_argc = argc;
     main_argv = argv;
     ios_ready();
+    if(cached.game == nullptr) return 1;
     while(!WindowShouldClose()){
         if(cached.hot_reload_needed){
             // reset everything
@@ -196,8 +193,7 @@ int main(int argc, char** argv){
             vm = nullptr;
             memset(&cached, 0, sizeof(cached));
             error_screen_msg.clear();
-            main(argc, argv);
-            return 0;
+            return main(argc, argv);
         }
         ios_update();
     }
