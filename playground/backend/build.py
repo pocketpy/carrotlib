@@ -136,6 +136,11 @@ def build_ios(project: str, open_dir=True):
             pbxproj = pbxproj.replace(key, value)
         with open(pbxproj_path, 'wt', encoding='utf-8') as f:
             f.write(pbxproj)
+
+        # clear main.c
+        with open(os.path.join(xcode15_dir, 'main.c'), 'wt') as f:
+            f.write('')
+
         # build app on real device
         task = TaskCommand([
             'xcodebuild', '-project', 'raylib.xcodeproj',
@@ -181,3 +186,4 @@ def clean_build_dir(project: str):
     for d in dirs:
         shutil.rmtree(d, ignore_errors=True)
         print(f"已删除 {d}")
+    shutil.rmtree('src/tmp', ignore_errors=True)

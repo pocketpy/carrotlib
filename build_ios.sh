@@ -1,6 +1,8 @@
 mkdir -p build/ios
 cd build/ios
 
+rm -rf Game.xcframework
+
 FLAGS="-DCMAKE_TOOLCHAIN_FILE=3rd/pocketpy/3rd/ios.toolchain.cmake -DDEPLOYMENT_TARGET=13.0"
 
 cmake -B os64 -G Xcode $FLAGS -DPLATFORM=OS64 ../..
@@ -18,8 +20,6 @@ function merge() {
 
 merge os64 Release-iphoneos
 merge simulatorarm64 Release-iphonesimulator
-
-rm -rf Game.xcframework
 
 xcodebuild -create-xcframework \
     -library os64/libGame-os64.a \

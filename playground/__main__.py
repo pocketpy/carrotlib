@@ -267,8 +267,9 @@ class ProjectView:
                         project_view.start_task(device.install_and_run(self.root_abspath))
                     imgui.same_line(spacing=16/DPI_SCALE)
                     if imgui.small_button(f"{Icons.ICON_CIRCLE_PLAY} Build & Run"):
+                        f = isinstance(device, backend.AndroidDevice) and backend.build_android or backend.build_ios
                         project_view.start_task(backend.SeqTask(
-                            backend.build_android(self.root_abspath, open_dir=False),
+                            f(self.root_abspath, open_dir=False),
                             device.install_and_run(self.root_abspath)
                         ))
                 imgui.spacing()
