@@ -91,7 +91,8 @@ namespace ct{
             jmethodID method = env->GetMethodID(cls, "get_caches_directory", "()Ljava/lang/String;");
             if(method == nullptr) return "";
             jstring jstr = (jstring)env->CallObjectMethod(activity->clazz, method);
-            Str retval = env->GetStringUTFChars(jstr, nullptr);
+            const char* str = env->GetStringUTFChars(jstr, nullptr);
+            Str retval(str);
             env->ReleaseStringUTFChars(jstr, str);
         )
         return retval;
@@ -103,7 +104,8 @@ namespace ct{
             jmethodID method = env->GetMethodID(cls, "get_documents_directory", "()Ljava/lang/String;");
             if(method == nullptr) return "";
             jstring jstr = (jstring)env->CallObjectMethod(activity->clazz, method);
-            Str retval = env->GetStringUTFChars(jstr, nullptr);
+            const char* str = env->GetStringUTFChars(jstr, nullptr);
+            Str retval(str);
             env->ReleaseStringUTFChars(jstr, str);
         )
         return retval;
