@@ -106,12 +106,12 @@ void ios_ready(){
 #if PK_IS_DESKTOP_PLATFORM == 1
     if(main_argc > 1){
         if(main_argc != 3){
-            std::cerr << "Usage: Game.exe [project_dir] [template_dir]" << std::endl;
+            platform_log_error("Usage: Game.exe [project_dir] [template_dir]\n");
             exit(1);
         }
         for(int i=1; i<main_argc; i++){
             if(!std::filesystem::exists(main_argv[i])){
-                std::cerr << "error: " << main_argv[i] << " does not exist" << std::endl;
+                platform_log_error(_S("Error: ", main_argv[i], " does not exist\n"));
                 exit(1);
             }
         }
@@ -124,7 +124,7 @@ void ios_ready(){
     std::string entry_file = "main.py";
     int out_size;
     unsigned char* out = platform_load_asset(entry_file.data(), entry_file.size(), &out_size);
-    if(out == nullptr) fatal_error(_S("failed to load ", entry_file));
+    if(out == nullptr) fatal_error(_S("Error: failed to load ", entry_file));
 
     Str entry_file_string((char*)out, out_size);
     free(out);
@@ -132,7 +132,7 @@ void ios_ready(){
     try{
         CodeObject_ co = vm->compile(entry_file_string, entry_file, EXEC_MODE);
         if(!vm->_exec(co, vm->_main)){
-            fatal_error("`vm->_exec(co, vm->_main)` returns nullptr");
+            fatal_error("Error: `vm->_exec(co, vm->_main)` returns nullptr");
         }
         // find a class derived from cl.Game
         Type cl_game_t = PK_OBJ_GET(Type, vm->_modules["carrotlib"]->attr("Game"));
@@ -149,7 +149,7 @@ void ios_ready(){
                 }
             }
         }
-        if(!cached.game) fatal_error("failed to find a class derived from `cl.Game`");
+        if(!cached.game) fatal_error("Error: failed to find a class derived from `cl.Game`");
         vm->call(cached.on_ready);
     } CATCH_EXCEPTION()
 
