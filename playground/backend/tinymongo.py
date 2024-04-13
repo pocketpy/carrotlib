@@ -141,14 +141,14 @@ def export_xlsl_to_db(input: str, output: str):
     with open(output, 'wt', encoding='utf-8') as f:
         f.write(COMMON_HEADER)
 
-        AllTypes = ' | '.join([_row_name(name) for name in wb.sheetnames])
+        AllTypes = ' | '.join([_row_name(name) for name in wb.sheetnames] + ['None'])
         f.write(f"""
 def ref(formula: str) -> '{AllTypes}':
     # =Spell!$A$2
     assert formula[0] == '='
     sheet_name, coord = formula[1:].split('!')
     coord = coord.replace('$', '')
-    return getattr(db, sheet_name)[coord]
+    return getattr(db, sheet_name).with_id(coord)
 """)
 
         f.write('\n\n')
