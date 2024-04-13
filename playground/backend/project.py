@@ -45,7 +45,7 @@ def new_project(root: str):
     # create main.py
     with open(os.path.join(root, "main.py"), "wt", encoding='utf-8') as f:
         f.write("""import carrotlib as cl
-from linalg import vec2
+import sys
 
 class MyGame(cl.Game):
     def on_ready(self):
@@ -55,10 +55,14 @@ class MyGame(cl.Game):
         label.text = "Hello, world"
         label.font_size = 100
         label.color = cl.Colors.Black
-        label.position = vec2(640, 360)
+        
+        label.position.x = cl.g.viewport_width / 2
+        label.position.y = cl.g.viewport_height / 2
 
     @property
     def design_size(self):
+        if sys.platform in ('ios', 'android'):
+            return (0, 720)
         return (1280, 720)
 """)
 
