@@ -87,9 +87,9 @@ def draw_rect(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = None, s
     rect = rect.copy()
     if not _g.is_rendering_ui:
         trans = _g.world_to_viewport
-        center = trans.transform_point(vec2(rect.x, rect.y))
-        rect.x = center.x
-        rect.y = center.y
+        left_top = trans.transform_point(vec2(rect.x, rect.y))
+        rect.x = left_top.x
+        rect.y = left_top.y
         scale = trans._s()
         rect.width *= scale.x
         rect.height *= scale.y
