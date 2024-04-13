@@ -312,4 +312,4 @@ class Container(Control):
 
     def on_render_ui(self):
         if self.color is not None:
-            draw_rect(self.rect(), self.color, vec2(0, 0))
+            draw_rect(self.rect(), self.color)

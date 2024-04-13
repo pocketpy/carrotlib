@@ -17,7 +17,7 @@ class DemoGround(cl.Node):
 
     def on_render(self):
         global_pos = self.global_position
-        cl.draw_rect(rl.Rectangle(global_pos.x, global_pos.y, 200, 2), cl.Colors.Gray)
+        cl.draw_rect(rl.Rectangle(global_pos.x, global_pos.y, 200, 2), cl.Colors.Gray, origin=vec2(0.5, 0.5))
 
 
 class ParallaxLayer(cl.Node):

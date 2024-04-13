@@ -93,7 +93,7 @@ def draw_rect(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = None, s
         scale = trans._s()
         rect.width *= scale.x
         rect.height *= scale.y
-    origin = origin or vec2(0.5, 0.5)
+    origin = origin or vec2(0, 0)
     rect.x += rect.width * (0 - origin.x)
     rect.y += rect.height * (0 - origin.y)
     if solid:
