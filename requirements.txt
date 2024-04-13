@@ -2,3 +2,4 @@ cmake
 imgui[glfw]
 numpy
 pbxproj
+openpyxl

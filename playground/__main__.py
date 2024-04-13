@@ -306,7 +306,8 @@ class ProjectView:
                 if imgui.button(f"{Icons.ICON_TRASH_CAN} 清理项目", width=column_width):
                     backend.clean_build_dir(self.root_abspath)
                 imgui.next_column()
-                ...
+                if imgui.button(f"{Icons.ICON_FILE_EXCEL} 构建 Excel", width=column_width):
+                    backend.build_excel(self.root_abspath)
                 # ------------------------- #
                 imgui.next_column()
                 if imgui.button(f"{IconBrands.ICON_WINDOWS} 构建 Desktop", width=column_width):
