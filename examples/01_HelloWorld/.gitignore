@@ -3,5 +3,5 @@ build/
 .vscode/
 *.DS_Store
 pyrightconfig.json
-.caches
-.documents
+.caches/
+.documents/

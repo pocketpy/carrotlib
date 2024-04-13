@@ -34,8 +34,8 @@ def sync_project_template(project: str):
         f.write('.vscode/\n')
         f.write('*.DS_Store\n')
         f.write('pyrightconfig.json\n')
-        f.write('.caches\n')
-        f.write('.documents\n')
+        f.write('.caches/\n')
+        f.write('.documents/\n')
                 
     print(f"{project} 模板同步完成")
 

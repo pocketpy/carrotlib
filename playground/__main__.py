@@ -298,7 +298,7 @@ class ProjectView:
                 ...
                 imgui.next_column()
                 if imgui.button(f"{Icons.ICON_V} 启动 VSCode", width=column_width):
-                    project_view.start_task(backend.start_vscode(self.selected_file_abspath, self.root_abspath))
+                    list(backend.start_vscode(self.selected_file_abspath, self.root_abspath))
                 imgui.next_column()
                 if imgui.button(f"{Icons.ICON_CIRCLE_PLAY} 运行项目", width=column_width):
                     project_view.start_task(backend.run_project(self.root_abspath))
