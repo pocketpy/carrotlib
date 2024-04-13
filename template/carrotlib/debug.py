@@ -2,12 +2,13 @@ from linalg import vec2, vec4
 import traceback
 import raylib as rl
 import c
-import sys
 
 import imgui
 
 from ._node import Node
+from ._renderer import draw_rect, draw_circle
 from .controls import Control
+from .nodes import Sprite
 
 from . import g
 
@@ -89,6 +90,7 @@ class DebugWindow:
         self._selected = None
 
         self.variables = {}
+        self.enabled = False
         self.python_console = PythonConsole()
 
         # set window size
@@ -192,52 +194,66 @@ class DebugWindow:
                     self.render_inspector(root_d[name], name, depth+1)
             imgui.TreePop()
 
+    def render_selected_box(self):
+        if not self.enabled:
+            return
+        color = rl.Color(255-g.background.r, 255-g.background.g, 255-g.background.b, 255)
+        selected = self.selected
+        if selected:
+            if isinstance(selected, Control):
+                g.is_rendering_ui = True
+                draw_rect(selected.rect(), color, solid=False)
+                g.is_rendering_ui = False
+            elif isinstance(selected, Sprite):
+                draw_rect(selected.rect(), color, solid=False)
+
     def render(self):
         imgui.SetNextWindowSize(vec2(self.w, self.h), imgui.ImGuiCond_FirstUseEver)
         imgui.SetNextWindowPos(vec2(0, 0), imgui.ImGuiCond_FirstUseEver)
         imgui.SetNextWindowCollapsed(True, imgui.ImGuiCond_FirstUseEver)
-        imgui.Begin("Debug Window")
 
-        imgui.BeginTabBar("DebugTabBar")
-        if imgui.BeginTabItem("Hierarchy"):
-            imgui.BeginChild("Hierarchy", vec2(0, self.h * 0.6), False, 0)
-            self.render_hierarchy(g.root)
-            imgui.EndChild()
+        self.enabled = imgui.Begin("Debug Window")
+        if self.enabled:
+            imgui.BeginTabBar("DebugTabBar")
+            if imgui.BeginTabItem("Hierarchy"):
+                imgui.BeginChild("Hierarchy", vec2(0, self.h * 0.6), False, 0)
+                self.render_hierarchy(g.root)
+                imgui.EndChild()
 
-            imgui.Separator()
-
-            imgui.BeginChild("Properties", vec2(0, 0), False, 0)
-            if self.selected:
-                for line in self.selected.__debuginfo__():
-                    imgui.PushTextWrapPos()
-                    imgui.Text(line)
-                    imgui.PopTextWrapPos()
-            else:
-                imgui.Text("Nothing selected")
-            imgui.EndChild()
-            imgui.EndTabItem()
-
-        if imgui.BeginTabItem("Variables"):
-            imgui.BeginChild("Variables", vec2(0, 0), False, 0)
-            for name, value in self.variables.items():
-                value_repr = repr(value)
-                value_repr = '\n' + value_repr if '\n' in value_repr else value_repr
-                imgui.Text(f"{name}: {value_repr}")
                 imgui.Separator()
 
-            imgui.EndChild()
-            imgui.EndTabItem()
+                imgui.BeginChild("Properties", vec2(0, 0), False, 0)
+                if self.selected:
+                    for line in self.selected.__debuginfo__():
+                        imgui.PushTextWrapPos()
+                        imgui.Text(line)
+                        imgui.PopTextWrapPos()
+                else:
+                    imgui.Text("Nothing selected")
+                imgui.EndChild()
+                imgui.EndTabItem()
 
-        if imgui.BeginTabItem("Console"):
-            self.python_console.render()
-            imgui.EndTabItem()
+            if imgui.BeginTabItem("Variables"):
+                imgui.BeginChild("Variables", vec2(0, 0), False, 0)
+                for name, value in self.variables.items():
+                    value_repr = repr(value)
+                    value_repr = '\n' + value_repr if '\n' in value_repr else value_repr
+                    imgui.Text(f"{name}: {value_repr}")
+                    imgui.Separator()
 
-        if imgui.BeginTabItem("Inspector"):
-            if self.selected is None:
-                imgui.Text("Nothing selected")
-            else:
-                self.render_inspector(self.selected)
-            imgui.EndTabItem()
+                imgui.EndChild()
+                imgui.EndTabItem()
 
-        imgui.EndTabBar()
-        imgui.End()
+            if imgui.BeginTabItem("Console"):
+                self.python_console.render()
+                imgui.EndTabItem()
+
+            if imgui.BeginTabItem("Inspector"):
+                if self.selected is None:
+                    imgui.Text("Nothing selected")
+                else:
+                    self.render_inspector(self.selected)
+                imgui.EndTabItem()
+
+            imgui.EndTabBar()
+            imgui.End()

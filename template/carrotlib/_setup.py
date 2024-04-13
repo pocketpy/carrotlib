@@ -17,8 +17,7 @@ from .debug import DebugWindow
 from ._viewport import get_mouse_position
 from ._material import UnlitMaterial
 
-class RestartException(Exception):
-    pass
+rl.SetTraceLogLevel(rl.LOG_WARNING)
 
 class Game:
     instance: 'Game' = None
@@ -166,6 +165,8 @@ class Game:
         g.is_rendering_ui = True
         fast_apply(Node._render_ui, all_nodes)
         g.is_rendering_ui = False
+
+        g.debug_window.render_selected_box()
         rl.EndMode2D()
 
         # right top
