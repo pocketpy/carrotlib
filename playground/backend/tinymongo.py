@@ -160,7 +160,7 @@ def build_excel(project: str):
     # walk through all .xlsx files
     for root, dirs, files in os.walk(project):
         for file in files:
-            if file.endswith('.xlsx'):
+            if file.endswith('.xlsx') and not file.startswith('~'):
                 input = os.path.join(root, file)
                 output = os.path.join(root, file.replace('.xlsx', '.py'))
                 try:
