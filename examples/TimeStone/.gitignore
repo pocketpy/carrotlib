@@ -2,6 +2,7 @@ __pycache__/
 build/
 .vscode/
 *.DS_Store
+~$*.xlsx
 pyrightconfig.json
 .caches/
 .documents/

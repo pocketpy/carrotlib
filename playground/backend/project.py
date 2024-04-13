@@ -33,6 +33,7 @@ def sync_project_template(project: str):
         f.write('build/\n')
         f.write('.vscode/\n')
         f.write('*.DS_Store\n')
+        f.write('~$*.xlsx\n')
         f.write('pyrightconfig.json\n')
         f.write('.caches/\n')
         f.write('.documents/\n')
