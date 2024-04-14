@@ -5,6 +5,7 @@ import json, os
 class Config:
     project: str = "examples/01_HelloWorld"
     use_precompile: bool = False
+    use_playground_console: bool = True
 
 if os.path.exists("playground.json"):
     with open("playground.json", "rt", encoding='utf-8') as f:

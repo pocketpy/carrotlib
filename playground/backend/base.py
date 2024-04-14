@@ -1,18 +1,26 @@
 import subprocess
 import sys, os
 
+from .config import config
+
 LOG_FILE = 'playground.log'
 if os.path.exists(LOG_FILE):
     os.remove(LOG_FILE)
 
-fd = open(LOG_FILE, 'wt', buffering=1, newline='\n', encoding='utf-8')
+if config.use_playground_console:
+    fd = open(LOG_FILE, 'wt', buffering=1, newline='\n', encoding='utf-8')
 
-sys.stdout = fd
-sys.stderr = fd
+    sys.stdout = fd
+    sys.stderr = fd
 
-def get_logs():
-    with open(LOG_FILE, 'rt', buffering=1, newline='\n', encoding='utf-8', errors='backslashreplace') as f:
-        return f.readlines()
+    def get_logs():
+        with open(LOG_FILE, 'rt', buffering=1, newline='\n', encoding='utf-8', errors='backslashreplace') as f:
+            return f.readlines()
+else:
+    fd = sys.stdout
+
+    def get_logs():
+        return ["[控制台未启用]"]
 
 
 class SeqTask:
