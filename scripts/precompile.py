@@ -22,4 +22,4 @@ def traverse(root: str):
             precompile(entrypath)
 
 traverse(sys.argv[2])
-print(f'预编译成功，一共处理了{count}个文件')
+print("[INFO]", f'{count} files were precompiled')
