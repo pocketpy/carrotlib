@@ -39,6 +39,7 @@ class ProjectView:
         imgui.get_io().delta_time = 1 / 30
         
         self.root = None
+
         self._selected_file = None
         self._selected_content = None
 
@@ -250,6 +251,12 @@ class ProjectView:
             if tab.selected:
                 framework_compile_time = get_file_time(backend.FRAMEWORK_EXE_PATH)
                 imgui.text(f"框架编译时间: {framework_compile_time}")
+
+                imgui.spacing()
+
+                changed, use_precompile = imgui.checkbox("启用预编译（加密源代码）", backend.config.use_precompile)
+                if changed:
+                    backend.config.use_precompile = use_precompile
 
                 imgui.spacing()
 

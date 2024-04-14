@@ -1,7 +1,7 @@
 import shutil
 import os, io, sys, re
 
-from .project import sync_project_template
+from .config import config
 from .base import TaskCommand
 from .framework import FRAMEWORK_EXE_PATH
 from .platform import startfile
@@ -73,6 +73,16 @@ def prebuild(project: str, hardcode_assets: bool):
         shutil.copytree(src, dst)
     print(f"{project} 预购建成功")
 
+    if config.use_precompile:
+        task = TaskCommand([
+            FRAMEWORK_EXE_PATH,
+            os.path.abspath("scripts/precompile.py"),
+            os.path.abspath(ANDROID_ASSETS_DIR),
+        ])
+        list(task)
+        if task.returncode != 0:
+            print('预编译没有成功，跳过此步骤...')
+
     if hardcode_assets:
         if not os.path.exists('src/tmp'):
             os.mkdir('src/tmp')
@@ -107,7 +117,7 @@ def build_ios(project: str, open_dir=True):
     prebuild(project, True)
     target_dir = prepare_build_dir(project, 'ios')
     # build Game.xcframework
-    task = TaskCommand(['bash', '-e', os.path.join(os.getcwd(), 'build_ios.sh')])
+    task = TaskCommand(['bash', '-e', os.path.abspath('build_ios.sh')])
     yield from task
     if task.returncode == 0:
         # copy raylib ios template
@@ -117,8 +127,8 @@ def build_ios(project: str, open_dir=True):
             "playground/assets/Frameworks.zip",
             os.path.join(xcode15_dir, 'raylib/Frameworks')
         )
-        game_xcframework_path = os.path.join(os.getcwd(), 'build/ios/Game.xcframework')
-        raylib_src_path = os.path.abspath(os.path.join(os.getcwd(), "3rd/raylib/src"))
+        game_xcframework_path = os.path.abspath('build/ios/Game.xcframework')
+        raylib_src_path = os.path.abspath("3rd/raylib/src")
         pbxproj_path = os.path.join(xcode15_dir, 'raylib.xcodeproj/project.pbxproj')
         # link Game.xcframework
         from pbxproj import XcodeProject
@@ -160,7 +170,7 @@ def build_web(project: str, open_dir=True):
     prebuild(project, True)
     target_dir = prepare_build_dir(project, 'web')
     # run build_web.sh
-    task = TaskCommand(['bash', '-e', os.path.join(os.getcwd(), 'build_web.sh')])
+    task = TaskCommand(['bash', '-e', os.path.abspath('build_web.sh')])
     yield from task
     if task.returncode == 0:
         shutil.rmtree(target_dir, ignore_errors=True)

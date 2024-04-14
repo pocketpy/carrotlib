@@ -182,8 +182,27 @@ void ios_destroy(){
 // not iOS
 #if PK_SYS_PLATFORM != 2
 int main(int argc, char** argv){
+    if(argc > 1){
+        std::string_view argv_1(argv[1]);
+        if(argv_1.find(".py") == argv_1.size()-3){
+            platform_init();
+            vm = new VM();
+            vm->set_main_argv(argc, argv);
+            int size;
+            const char* data = (const char*)_default_import_handler(argv_1.data(), argv_1.size(), &size);
+            if(data == nullptr){
+                vm->stderr_write(_S("Error: failed to load ", argv_1, '\n'));
+                return 1;
+            }
+            PyObject* res = vm->exec(std::string_view(data, size), argv_1, EXEC_MODE);
+            delete vm;
+            return res != nullptr ? 0 : 1;
+        }
+    }
+
     main_argc = argc;
     main_argv = argv;
+
     ios_ready();
     if(cached.game == nullptr) return 1;
     while(!WindowShouldClose()){
