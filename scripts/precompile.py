@@ -1,8 +1,12 @@
 import sys
 import os
 
+count = 0
+
 def precompile(filepath: str):
-    print('> ' + filepath)
+    global count
+    ++count
+
     with open(filepath, 'r') as f:
         source = f.read()
     source = compile(source, filepath, 'exec')
@@ -18,4 +22,4 @@ def traverse(root: str):
             precompile(entrypath)
 
 traverse(sys.argv[2])
-
+print(f'预编译成功，一共处理了{count}个文件')

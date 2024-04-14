@@ -15,6 +15,7 @@ from . import g
 class PythonContext:
     def __init__(self, console: 'PythonConsole'):
         self.g = g
+        self.cl = __import__("carrotlib")
         self._console = console
 
     def print(self, obj):
