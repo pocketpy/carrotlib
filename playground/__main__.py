@@ -103,7 +103,7 @@ class ProjectView:
         if task is None:
             return
         if self.task is not None:
-            print("[INFO]", "Another task is running, please wait...")
+            print("[WARNING]", "Another task is running, please wait...")
             return
         self.task = task
 
