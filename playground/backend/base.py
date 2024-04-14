@@ -17,7 +17,7 @@ if config.use_playground_console:
         with open(LOG_FILE, 'rt', buffering=1, newline='\n', encoding='utf-8', errors='backslashreplace') as f:
             return f.readlines()
 else:
-    fd = sys.stdout
+    fd = None
 
     def get_logs():
         return ["[控制台未启用]"]
