@@ -433,4 +433,5 @@ if __name__ == "__main__":
     impl.shutdown()
     glfw.terminate()
 
+    backend.config.project = project_view.root_abspath
     backend.config.save()
