@@ -23,7 +23,7 @@ def compile_framework():
 
     shutil.rmtree(FRAMEWORK_BUILD_DIR, ignore_errors=True)
     os.makedirs(FRAMEWORK_BUILD_DIR, exist_ok=True)
-    task = TaskCommand(["cmake", "../..", "-DCMAKE_BUILD_TYPE=Release"], cwd=FRAMEWORK_BUILD_DIR)
+    task = TaskCommand(["cmake", "../.."], cwd=FRAMEWORK_BUILD_DIR)
     yield from task
     if task.returncode != 0:
         return

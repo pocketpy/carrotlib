@@ -17,7 +17,7 @@ if config.use_playground_console:
         with open(LOG_FILE, 'rt', buffering=1, newline='\n', encoding='utf-8', errors='backslashreplace') as f:
             return f.readlines()
 else:
-    fd = sys.stdout
+    fd = None
 
     def get_logs():
         return ["[控制台未启用]"]
@@ -45,7 +45,10 @@ class TaskCommand:
 
     def __init__(self, args, cwd=None, shell=False):
         print(' '.join(args))
-        self.pipe = subprocess.Popen(args, cwd=cwd, shell=shell, stdout=fd, stderr=fd, encoding='utf-8')
+        if fd is not None:
+            self.pipe = subprocess.Popen(args, cwd=cwd, shell=shell, stdout=fd, stderr=fd, encoding='utf-8')
+        else:
+            self.pipe = subprocess.Popen(args, cwd=cwd, shell=shell, stdout=sys.stdout, stderr=sys.stderr, encoding='utf-8')
         self.returncode = None
         
     def __iter__(self):
