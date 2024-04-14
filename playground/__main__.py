@@ -257,6 +257,10 @@ class ProjectView:
                 changed, use_precompile = imgui.checkbox("启用预编译（加密源代码）", backend.config.use_precompile)
                 if changed:
                     backend.config.use_precompile = use_precompile
+                imgui.same_line(spacing=16)
+                changed, use_playground_console = imgui.checkbox("启用控制台（需要重启）", backend.config.use_playground_console)
+                if changed:
+                    backend.config.use_playground_console = use_playground_console
 
                 imgui.spacing()
 
@@ -428,3 +432,5 @@ if __name__ == "__main__":
     project_view.threading_task.dispose()
     impl.shutdown()
     glfw.terminate()
+
+    backend.config.save()
