@@ -71,12 +71,16 @@ class ProjectView:
         else:
             raise NotImplementedError
         
-        imgui.get_io().fonts.add_font_from_file_ttf(
+        sys_font = imgui.get_io().fonts.add_font_from_file_ttf(
             SYSTEM_FONT_PATH,
             size,
             font_config=next_font_config,
             glyph_ranges=glyph_ranges
         )
+
+        if with_source_code_pro:
+            return sys_font
+
         icon_min, icon_max = Icons.ICON_MIN, Icons.ICON_MAX
         imgui.get_io().fonts.add_font_from_file_ttf(
             f"playground/assets/fonts/{Icons.FONT_ICON_FILE_NAME_FAR}",
