@@ -134,7 +134,6 @@ class ProjectView:
                     else:
                         self._selected_content = f.read()
             except Exception as e:
-                print("[ERROR]", e)
                 self._selected_content = None
         glfw.set_window_title(
             glfw.get_current_context(),
@@ -270,6 +269,8 @@ class ProjectView:
             if tab.selected:
                 framework_compile_time = get_file_time(backend.FRAMEWORK_EXE_PATH)
                 imgui.text(f"Framework compiled at: {framework_compile_time}")
+                imgui.text(f"Project: {self.root}")
+                imgui.text(f"Selected: {self.selected_file}")
 
                 imgui.spacing()
 
