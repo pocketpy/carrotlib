@@ -64,7 +64,7 @@ def prebuild(project: str, hardcode_assets: bool):
     assert not os.path.exists(ANDROID_ASSETS_DIR)
     # ignore build/
     shutil.copytree(project, ANDROID_ASSETS_DIR, ignore=shutil.ignore_patterns(
-        '*.pyi', '*.xlsx', '*.ase', '*.aseprite', '*.DS_Store', 'pyrightconfig.json', 'build', '.gitignore',
+        '*.pyi', '*.xlsx', '*.ase', '*.aseprite', '*.DS_Store', 'pyrightconfig.json', 'build', '.gitignore', '.caches', '.documents',
     ))
     # add everything in template/
     for td in os.listdir('template'):
