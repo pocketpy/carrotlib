@@ -33,8 +33,8 @@ class ProjectView:
         self.task = None
         glyph_ranges = imgui.get_io().fonts.get_glyph_ranges_chinese()
 
-        self.default_font = self.load_font(24, glyph_ranges)
-        self.source_font = self.default_font
+        self.default_font = self.load_font(24, glyph_ranges, with_source_code_pro=False)
+        self.source_font = self.load_font(24, glyph_ranges, with_source_code_pro=True)
 
         imgui.get_io().delta_time = 1 / 30
         
@@ -53,12 +53,17 @@ class ProjectView:
         # start threading task
         self.threading_task = backend.ThreadingTask()
     
-    def load_font(self, size, glyph_ranges):
-        imgui.get_io().fonts.add_font_from_file_ttf(
-            "template/carrotlib/assets/SourceCodePro-Medium.otf",
-            size,
-            glyph_ranges=glyph_ranges
-        )
+    def load_font(self, size, glyph_ranges, with_source_code_pro=True):
+        if with_source_code_pro:
+            imgui.get_io().fonts.add_font_from_file_ttf(
+                "template/carrotlib/assets/SourceCodePro-Medium.otf",
+                size,
+                glyph_ranges=glyph_ranges
+            )
+            next_font_config = imgui.FontConfig(merge_mode=True)
+        else:
+            next_font_config = None
+
         if sys.platform == 'win32':
             SYSTEM_FONT_PATH = "C:\\Windows\\Fonts\\msyh.ttc"
         elif sys.platform == 'darwin':
@@ -69,7 +74,7 @@ class ProjectView:
         imgui.get_io().fonts.add_font_from_file_ttf(
             SYSTEM_FONT_PATH,
             size,
-            font_config=imgui.FontConfig(merge_mode=True),
+            font_config=next_font_config,
             glyph_ranges=glyph_ranges
         )
         icon_min, icon_max = Icons.ICON_MIN, Icons.ICON_MAX
@@ -245,7 +250,8 @@ class ProjectView:
         imgui.spacing()
 
         if self.root:
-            self.render_file_hierarchy(self.root)
+            with imgui.font(self.source_font):
+                self.render_file_hierarchy(self.root)
 
         imgui.end_child()
 
