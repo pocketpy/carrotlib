@@ -17,7 +17,7 @@ project_pyright_config = {
 
 def sync_project_template(project: str):
     if not os.path.exists(project):
-        print(f"{project} 不存在")
+        print("[ERROR]", f"{project} does not exist")
         return
 
     for td in ['carrotlib', 'dungeon']:
@@ -38,7 +38,7 @@ def sync_project_template(project: str):
         f.write('.caches/\n')
         f.write('.documents/\n')
                 
-    print(f"{project} 模板同步完成")
+    print("[INFO]", f"Template synced to {project}")
 
 def new_project(root: str):
     assert len(os.listdir(root)) == 0
@@ -69,7 +69,7 @@ class MyGame(cl.Game):
 
 def run_project(path: str):
     if not is_framework_compiled():
-        print("框架未编译，请先编译框架")
+        print("[ERROR]", "Framework is not compiled")
         return
     if not os.path.exists(os.path.join(path, "carrotlib")):
         sync_project_template(path)

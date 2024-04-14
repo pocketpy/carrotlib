@@ -35,7 +35,6 @@ def gen_hardcoded_assets(type: str):
                 filepath = filepath.replace('\\', '/')
                 with open(os.path.join(root, file), 'rb') as const_f:
                     content = const_f.read()
-                # print(filepath, len(content) // 1024, 'KB')
                 const_array = ','.join([str(b) for b in content])
                 f.write(f'    const static unsigned char _{index}[] = {{ {const_array} }};\n')
                 f.write(f'    Assets["{filepath}"] = {{ _{index}, {len(content)} }};\n')
@@ -54,9 +53,9 @@ def gen_hardcoded_assets(type: str):
         # print file size of the cpp file
         cpp_file_size = os.path.getsize(cpp_file)
         cpp_file_size = cpp_file_size // 1024
-        print(f'Generated {cpp_file} of {index} files of total size {cpp_file_size} KB')
+        print("[INFO]", f'Generated {cpp_file} of {index} files of total size {cpp_file_size} KB')
     else:
-        print(f'{cpp_file} is up-to-date')
+        print("[INFO]", f'{cpp_file} is up-to-date')
 
 
 def prebuild(project: str, hardcode_assets: bool):
@@ -71,7 +70,7 @@ def prebuild(project: str, hardcode_assets: bool):
         src = os.path.join('template', td)
         dst = os.path.join(ANDROID_ASSETS_DIR, td)
         shutil.copytree(src, dst)
-    print(f"{project} 预购建成功")
+    print("[INFO]", f"{project} was prebuilt successfully")
 
     if config.use_precompile:
         task = TaskCommand([
@@ -81,14 +80,14 @@ def prebuild(project: str, hardcode_assets: bool):
         ])
         list(task)
         if task.returncode != 0:
-            print('预编译没有成功，跳过此步骤...')
+            print("[WARNING]", "Precompile failed. Continue building without precompile.")
 
     if hardcode_assets:
         if not os.path.exists('src/tmp'):
             os.mkdir('src/tmp')
         gen_hardcoded_assets('assets')
         gen_hardcoded_assets('sources')
-        print(f"{project} 资源数据库构建成功")
+        print("[INFO]", f"{project} assets were hardcoded successfully")
 
 
 def prepare_build_dir(project: str, platform: str):
@@ -110,7 +109,7 @@ def build_android(project: str, open_dir=True):
             if open_dir:
                 startfile(target_dir)
     else:
-        print("功能还未实现")
+        print("[ERROR]", "Android build is only supported on Windows")
 
 
 def build_ios(project: str, open_dir=True):
@@ -195,6 +194,6 @@ def clean_build_dir(project: str):
     dirs = [os.path.join(project, 'build'), 'android/app/build']
     for d in dirs:
         shutil.rmtree(d, ignore_errors=True)
-        print(f"已删除 {d}")
+        print("[INFO]", f"{d} was deleted")
     shutil.rmtree('src/tmp', ignore_errors=True)
-    print("已删除 src/tmp")
+    print("[INFO]", "src/tmp was deleted")

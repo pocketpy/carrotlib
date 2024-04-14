@@ -17,7 +17,7 @@ class AndroidDevice(MobileDevice):
     def install_and_run(self, root: str):
         apk_path = f"{root}/build/android/app-debug.apk"
         if not os.path.exists(apk_path):
-            print(f"{apk_path} 不存在")
+            print("[ERROR]", f"{apk_path} does not exist")
             return
         task = TaskCommand(["adb", "-s", self.id, "install", "-r", apk_path])
         yield from task
@@ -36,7 +36,7 @@ class IOSDevice(MobileDevice):
         # brew install ios-deploy
         app_path = f"{root}/build/ios/DerivedData/Build/Products/Debug-iphoneos/raylib.app"
         if not os.path.exists(app_path):
-            print(f"{app_path} 不存在")
+            print("[ERROR]", f"{app_path} does not exist")
             return
         task = TaskCommand([
             "ios-deploy",

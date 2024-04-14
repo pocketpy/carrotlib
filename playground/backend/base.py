@@ -20,7 +20,7 @@ else:
     fd = None
 
     def get_logs():
-        return ["[控制台未启用]"]
+        return ["[Console is disabled]"]
 
 
 class SeqTask:
@@ -44,7 +44,7 @@ class TaskCommand:
     instance: 'TaskCommand' = None
 
     def __init__(self, args, cwd=None, shell=False):
-        print(' '.join(args))
+        print("[INFO]", ' '.join(args))
         if fd is not None:
             self.pipe = subprocess.Popen(args, cwd=cwd, shell=shell, stdout=fd, stderr=fd, encoding='utf-8')
         else:
@@ -87,4 +87,4 @@ def start_vscode(file: str, root: str):
     elif sys.platform == "darwin":
         yield from TaskCommand(["open", "-a", "Visual Studio Code", root, file])
     else:
-        print("功能还未实现")
+        print("[ERROR]", "Unimplemented platform")

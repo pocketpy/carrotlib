@@ -98,7 +98,7 @@ class ProjectView:
         if task is None:
             return
         if self.task is not None:
-            print("已经有一个任务在运行中")
+            print("[INFO]", "Another task is running, please wait...")
             return
         self.task = task
 
@@ -125,7 +125,7 @@ class ProjectView:
                     else:
                         self._selected_content = f.read()
             except Exception as e:
-                print(e)
+                print("[ERROR]", e)
                 self._selected_content = None
         glfw.set_window_title(
             glfw.get_current_context(),
@@ -134,15 +134,15 @@ class ProjectView:
 
     def open_project(self, root: str):
         if not root or not os.path.exists(root):
-            print(f"无效的项目路径: {root}")
+            print("[ERROR]", f"Invalid project path: {root}")
             return False
         main_path = os.path.join(root, "main.py")
         if not os.path.exists(main_path):
-            print(f"{root} 没有找到 main.py 文件，无法打开")
+            print("[ERROR]", f"Unable to find main.py in project: {root}")
             return False
         self.root = root
         self.selected_file = 'main.py'
-        print('打开项目:', self.root)
+        print("[INFO]", f"Open project: {root}")
         return True
 
     @property
@@ -163,9 +163,18 @@ class ProjectView:
             imgui.push_style_color(imgui.COLOR_FRAME_BACKGROUND, *input_bg_color)
 
             for line in backend.get_logs():
+                if line.startswith("[ERROR]"):
+                    color = (1.0, 0.5, 0.0, 1.0)
+                elif line.startswith("[WARNING]"):
+                    color = (1.0, 1.0, 0.0, 1.0)
+                else:
+                    color = (1.0, 1.0, 1.0, 1.0)
+
+                imgui.push_style_color(imgui.COLOR_TEXT, *color)
                 imgui.push_text_wrap_pos(0)
                 imgui.text(line)
                 imgui.pop_text_wrap_pos()
+                imgui.pop_style_color()
 
             imgui.text("")
             
@@ -195,7 +204,7 @@ class ProjectView:
         if self.selected_file:
             flags = imgui.INPUT_TEXT_READ_ONLY
             if self.selected_content is None:
-                buffer = "[不支持的文件类型]"
+                buffer = "[Unsupported File]"
             else:
                 buffer = self.selected_content
             width, height = imgui.get_window_size()
@@ -219,18 +228,18 @@ class ProjectView:
         imgui.begin_child("L", width=window_width * 0.25, height=window_height)
 
         full_width = imgui.get_window_width()
-        if imgui.button(f"{Icons.ICON_FOLDER} 新建项目", width=full_width):
+        if imgui.button(f"{Icons.ICON_FOLDER} New Project", width=full_width):
             if not os.path.exists("projects"):
                 os.mkdir("projects")
-            path = backend.open_directory("选择一个空文件夹作为新项目的存储位置", "projects")
+            path = backend.open_directory("Select an Empty Directory", "projects")
             if path:
                 if len(os.listdir(path)) != 0:
-                    print("文件夹不为空，无法创建项目")
+                    print("[ERROR]", "The directory is not empty.")
                 else:
                     backend.new_project(path)
                     self.open_project(path)
-        if imgui.button(f"{Icons.ICON_FOLDER_OPEN} 打开项目", width=full_width):
-            path = backend.open_directory("选择项目", "examples")
+        if imgui.button(f"{Icons.ICON_FOLDER_OPEN} Open Project", width=full_width):
+            path = backend.open_directory("Select a Directory", "examples")
             if path:
                 self.open_project(path)
         imgui.spacing()
@@ -247,25 +256,26 @@ class ProjectView:
 
         imgui.begin_tab_bar("TabBar")
 
-        with imgui.begin_tab_item("   控制台   ") as tab:
+        with imgui.begin_tab_item("   Control Panel   ") as tab:
             if tab.selected:
                 framework_compile_time = get_file_time(backend.FRAMEWORK_EXE_PATH)
-                imgui.text(f"框架编译时间: {framework_compile_time}")
+                imgui.text(f"Framework compiled at: {framework_compile_time}")
 
                 imgui.spacing()
 
-                changed, use_precompile = imgui.checkbox("启用预编译（加密源代码）", backend.config.use_precompile)
+                changed, use_precompile = imgui.checkbox("Enable Precompile", backend.config.use_precompile)
                 if changed:
                     backend.config.use_precompile = use_precompile
                 imgui.same_line(spacing=16)
-                changed, use_playground_console = imgui.checkbox("启用控制台（需要重启）", backend.config.use_playground_console)
+                changed, use_playground_console = imgui.checkbox("Enable Console", backend.config.use_playground_console)
                 if changed:
                     backend.config.use_playground_console = use_playground_console
+                    print("[INFO]", "Restart the playground to take effect.")
 
                 imgui.spacing()
 
                 imgui.separator()
-                imgui.text(f"已连接设备：{len(self.threading_task.devices)}")
+                imgui.text(f"Connected Devices：{len(self.threading_task.devices)}")
                 for device in self.threading_task.devices:
                     imgui.spacing()
                     if isinstance(device, backend.IOSDevice):
@@ -289,10 +299,10 @@ class ProjectView:
                 imgui.columns(4, border=False)
                 column_width = imgui.get_column_width()
                 
-                if imgui.button(f"{Icons.ICON_C} 编译框架", width=column_width):
+                if imgui.button(f"{Icons.ICON_C} Compile Framework", width=column_width):
                     project_view.start_task(backend.compile_framework())
                 imgui.next_column()
-                if imgui.button(f"{Icons.ICON_T} 同步模板", width=column_width):
+                if imgui.button(f"{Icons.ICON_T} Sync Template", width=column_width):
                     backend.sync_project_template(self.root_abspath)
                 # ------------------------- #
                 imgui.next_column()
@@ -300,42 +310,42 @@ class ProjectView:
                 current_task = backend.TaskCommand.instance
                 if current_task is None:
                     imgui.push_style_var(imgui.STYLE_ALPHA, 0.5)
-                    imgui.button(f"{Icons.ICON_CIRCLE_STOP} 停止任务", width=column_width)
+                    imgui.button(f"{Icons.ICON_CIRCLE_STOP} Stop Task", width=column_width)
                     imgui.pop_style_var()
                 else:
-                    if imgui.button(f"{Icons.ICON_CIRCLE_STOP} 停止任务", width=column_width):
+                    if imgui.button(f"{Icons.ICON_CIRCLE_STOP} Stop Task", width=column_width):
                         current_task.kill()
                 imgui.next_column()
                 ...
                 imgui.next_column()
-                if imgui.button(f"{Icons.ICON_V} 启动 VSCode", width=column_width):
+                if imgui.button(f"{Icons.ICON_V} Open in VSCode", width=column_width):
                     list(backend.start_vscode(self.selected_file_abspath, self.root_abspath))
                 imgui.next_column()
-                if imgui.button(f"{Icons.ICON_CIRCLE_PLAY} 运行项目", width=column_width):
+                if imgui.button(f"{Icons.ICON_CIRCLE_PLAY} Run Project", width=column_width):
                     project_view.start_task(backend.run_project(self.root_abspath))
                 imgui.next_column()
-                if imgui.button(f"{Icons.ICON_TRASH_CAN} 清理项目", width=column_width):
+                if imgui.button(f"{Icons.ICON_TRASH_CAN} Clean Project", width=column_width):
                     backend.clean_build_dir(self.root_abspath)
                 imgui.next_column()
-                if imgui.button(f"{Icons.ICON_FILE_EXCEL} 构建 Excel", width=column_width):
+                if imgui.button(f"{Icons.ICON_FILE_EXCEL} Build Excel", width=column_width):
                     backend.build_excel(self.root_abspath)
                 # ------------------------- #
                 imgui.next_column()
-                if imgui.button(f"{IconBrands.ICON_WINDOWS} 构建 Desktop", width=column_width):
+                if imgui.button(f"{IconBrands.ICON_WINDOWS} Build Desktop", width=column_width):
                     backend.build_win32(self.root_abspath)
                 imgui.next_column()
-                if imgui.button(f"{IconBrands.ICON_ANDROID} 构建 Android", width=column_width):
+                if imgui.button(f"{IconBrands.ICON_ANDROID} Build Android", width=column_width):
                     project_view.start_task(backend.build_android(self.root_abspath))
                 imgui.next_column()
                 if sys.platform != 'darwin':
                     imgui.push_style_var(imgui.STYLE_ALPHA, 0.5)
-                    imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width)
+                    imgui.button(f"{IconBrands.ICON_APPLE} Build iOS", width=column_width)
                     imgui.pop_style_var()
                 else:
-                    if imgui.button(f"{IconBrands.ICON_APPLE} 构建 iOS", width=column_width):
+                    if imgui.button(f"{IconBrands.ICON_APPLE} Build iOS", width=column_width):
                         project_view.start_task(backend.build_ios(self.root_abspath))
                 imgui.next_column()
-                if imgui.button(f"{IconBrands.ICON_CHROME} 构建 Web", width=column_width):
+                if imgui.button(f"{IconBrands.ICON_CHROME} Build Web", width=column_width):
                     project_view.start_task(backend.build_web(self.root_abspath))
                 imgui.next_column()
                 # ------------------------- #
@@ -349,7 +359,7 @@ class ProjectView:
                 imgui.pop_style_var()
                 imgui.end_child()
 
-        with imgui.begin_tab_item("    文件    ") as tab:
+        with imgui.begin_tab_item("    File    ") as tab:
             if tab.selected:
                 # scroll area
                 imgui.begin_child("FileContent", flags=imgui.WINDOW_NO_BACKGROUND)
@@ -383,7 +393,7 @@ if __name__ == "__main__":
     )
 
     if not window:
-        print("Failed to create window")
+        print("[ERROR]", "Failed to create window")
         glfw.terminate()
         exit(1)
 

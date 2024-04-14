@@ -15,7 +15,7 @@ FRAMEWORK_BUILD_DIR = os.path.abspath(f"build/{sys.platform}")
 
 def compile_framework():
     if not os.path.exists("3rd/pocketpy/CMakelists.txt"):
-        print("初始化子模块")
+        print("[INFO]", "Updating submodules")
         task = TaskCommand(["git", "submodule", "update", "--init", "--recursive"])
         yield from task
         if task.returncode != 0:
