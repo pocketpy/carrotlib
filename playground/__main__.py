@@ -54,6 +54,9 @@ class ProjectView:
         self.threading_task = backend.ThreadingTask()
     
     def load_font(self, size, glyph_ranges, with_source_code_pro=True):
+        if sys.platform == 'darwin':
+            size *= 1.2
+
         if with_source_code_pro:
             imgui.get_io().fonts.add_font_from_file_ttf(
                 "template/carrotlib/assets/SourceCodePro-Medium.otf",
@@ -67,7 +70,7 @@ class ProjectView:
         if sys.platform == 'win32':
             SYSTEM_FONT_PATH = "C:\\Windows\\Fonts\\msyh.ttc"
         elif sys.platform == 'darwin':
-            SYSTEM_FONT_PATH = "/System/Library/Fonts/STHeiti Light.ttc"
+            SYSTEM_FONT_PATH = "/System/Library/Fonts/SFNS.ttf"
         else:
             raise NotImplementedError
         
@@ -310,10 +313,10 @@ class ProjectView:
                 imgui.columns(4, border=False)
                 column_width = imgui.get_column_width()
                 
-                if imgui.button(f"{Icons.ICON_C} Compile Framework", width=column_width):
+                if imgui.button("Compile Framework", width=column_width):
                     project_view.start_task(backend.compile_framework())
                 imgui.next_column()
-                if imgui.button(f"{Icons.ICON_T} Sync Template", width=column_width):
+                if imgui.button("Sync Template", width=column_width):
                     backend.sync_project_template(self.root_abspath)
                 # ------------------------- #
                 imgui.next_column()

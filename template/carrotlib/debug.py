@@ -257,4 +257,4 @@ class DebugWindow:
                 imgui.EndTabItem()
 
             imgui.EndTabBar()
-            imgui.End()
+        imgui.End()
