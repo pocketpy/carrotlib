@@ -206,7 +206,7 @@ class DebugWindow:
                 draw_rect(selected.global_rect(), color, solid=False)
                 g.is_rendering_ui = False
             elif isinstance(selected, Sprite):
-                draw_rect(selected.rect(), color, solid=False)
+                draw_rect(selected.global_rect(), color, solid=False)
 
     def render(self):
         imgui.SetNextWindowSize(vec2(self.w, self.h), imgui.ImGuiCond_FirstUseEver)

@@ -18,7 +18,8 @@ class Sprite(Node):
         self.color = Colors.White.copy()
         self.material = _g.default_material
 
-    def rect(self) -> rl.Rectangle:
+    def global_rect(self) -> rl.Rectangle:
+        """Get the global bounding rectangle of the sprite."""
         if self.texture is None:
             return rl.Rectangle(0, 0, 0, 0)
 
