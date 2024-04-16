@@ -3,6 +3,15 @@ from typing import Callable, Generic, TypeVar
 T = TypeVar('T')
 
 class Event(Generic[T]):
+    """A class implementing the observer pattern.
+    
+    Example:
+    ```python
+    event = Event()     # Create an event
+    event += lambda obj: print(obj)    # Add a handler
+    event('Hello, world!')  # Trigger the event
+    """
+
     handlers: list[Callable[[T], None]]
 
     def __init__(self):

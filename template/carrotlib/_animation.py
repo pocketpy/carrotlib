@@ -17,12 +17,32 @@ class FramedAnimation:
             self.frames += self.frames[-2:0:-1]
 
 def load_framed_animation(path: str, speed: int, loop: LoopType = None):
+    """Load a framed animation from a directory of image files.
+    File names will be used to sort the frames.
+    
+    + `path`, the path to the directory containing image files
+    + `speed`, frames per second
+    + `loop`, the type of loop to use. `None` for no loop, `'forward'` for normal loop, `'ping-pong'` for back and forth loop
+
+    Example:
+    ```python
+    # assets/
+    # ├── frames/
+    # │   ├── 0.png
+    # │   ├── 1.png
+    # │   ├── 2.png
+    anim = load_framed_animation('assets/frames', 4)
+    ```
+    """
     frames = []
     for frame in sorted(list_assets(path)):
         frames.append(load_texture(frame))
     return FramedAnimation(frames, speed, loop)
 
 def load_framed_animation_atlas(path: str, tile_width: int, tile_height: int, tile_indices: Iterable[int], speed: int, loop: LoopType = None):
+    """Load a framed animation from a texture atlas.
+    The atlas should be tiled.
+    """
     main_tex = load_texture(path)
     assert main_tex.width % tile_width == 0
     assert main_tex.height % tile_height == 0
@@ -36,6 +56,7 @@ def load_framed_animation_atlas(path: str, tile_width: int, tile_height: int, ti
 
 
 class FramedAnimator:
+    """A class for playing framed animations."""
     speed: float
     _animations: dict[str, FramedAnimation]
     _current_animation: FramedAnimation
@@ -66,6 +87,10 @@ class FramedAnimator:
         self._current_animation = None
 
     def update(self) -> Texture2D | SubTexture2D | None:
+        """Update the animation and return the current frame's texture or `None` if the animation has ended.
+        
+        It is usually called at the beginning of `on_render` or `on_render_ui`.
+        """
         if self._current_animation is None:
             return
 

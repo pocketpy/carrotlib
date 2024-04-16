@@ -2,7 +2,10 @@ from math import cos, log, exp, sqrt
 from random import random
 
 def poisson(lam: float) -> int:
-    """This function has performance issue when `lam >= 10`"""
+    """Generate a random number from Poisson distribution.
+    
+    This function has performance issue when `lam >= 10`.
+    """
     if lam == 0:
         return 0
     enlam = exp(-lam)
@@ -17,6 +20,7 @@ def poisson(lam: float) -> int:
             return X
         
 def binomial(n: int, p: float) -> int:
+    """Generate a random number from binomial distribution."""
     if p >= 1:
         return n
     X = 0
@@ -26,6 +30,7 @@ def binomial(n: int, p: float) -> int:
     return X
 
 def normal(mu: float, sigma: float) -> float:
+    """Generate a random number from normal distribution."""
     u1 = random()
     u2 = random()
     z = (cos(2 * 3.141592653589793 * u2) * sqrt(-2 * log(u1)))

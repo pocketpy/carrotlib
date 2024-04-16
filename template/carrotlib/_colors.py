@@ -29,6 +29,11 @@ import raylib as rl
 #define RAYWHITE   CLITERAL(Color){ 245, 245, 245, 255 }   // My own White (raylib logo)
 
 class Colors:
+    """Predefined color constants.
+    
+    Don't modify these colors or you'll break the constants.
+    If you want to modify a color, you should use `.copy()` to create a new color.
+    """
     LightGray = rl.Color(200, 200, 200, 255)
     Gray = rl.Color(130, 130, 130, 255)
     DarkGray = rl.Color(80, 80, 80, 255)

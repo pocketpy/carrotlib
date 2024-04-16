@@ -98,6 +98,7 @@ class Material:
 
 
 class UnlitMaterial(Material):
+    """Material without lighting. It displays the texture as is."""
     @classmethod
     def vert(cls) -> str:
         return load_text_asset("carrotlib/assets/shaders/unlit.vert")
@@ -108,6 +109,7 @@ class UnlitMaterial(Material):
 
 
 class DiffuseMaterial(Material):
+    """Material with diffuse lighting."""
     def __init__(self, lightmap: 'Lightmap' = None):
         super().__init__()
         self.lightmap = lightmap or _g.default_lightmap
@@ -128,6 +130,10 @@ class DiffuseMaterial(Material):
 
 
 class PureColorMaterial(Material):
+    """Material with pure color.
+    
+    This is often used for debugging or flashing effects.
+    """
     @classmethod
     def frag(cls) -> str:
         return load_text_asset("carrotlib/assets/shaders/pure_color.frag")

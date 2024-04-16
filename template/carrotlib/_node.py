@@ -2,7 +2,7 @@ from linalg import *
 import raylib as rl
 import box2d
 import math
-from typing import Literal
+from typing import Literal, Iterable
 
 from _carrotlib import fast_apply
 from . import g as _g
@@ -24,6 +24,7 @@ class Node:
         return self._name
 
     def __init__(self, name=None, parent=None) -> None:
+        """Create a new node with the given name and parent."""
         # private fields
         self._name = name or hex(id(self))
         self._coroutines = []           # running coroutines
@@ -79,6 +80,10 @@ class Node:
     
     @property
     def path(self) -> str:
+        """Return the path of this node in the scene tree.
+
+        The path can be used to find the node by `cl.get_node(path)`.
+        """
         cpnts = []
         node = self
         while node is not _g.root:
@@ -88,6 +93,12 @@ class Node:
         return '/'.join(cpnts)
     
     def total_z_index(self) -> int | float:
+        """Return the total z-index of this node in the scene tree.
+        The total z-index is the sum of z-index of this node and all its ancestors,
+        which determines the rendering order of the node.
+
+        A larger z-index means the node will be rendered on top of others.
+        """
         res = self.z_index
         node = self
         while node.parent is not None:
@@ -96,20 +107,20 @@ class Node:
         return res
 
     def get_node(self, path: str) -> 'Node':
-        """get the child node by path"""
+        """Get a child node by its relative path."""
         node = self
         for name in path.split('/'):
             node = node.children[name]
         return node
     
     def create_body(self, with_callback=True) -> box2d.Body:
-        """create a box2d body attached to this node"""
+        """Create a box2d body attached to this node."""
         b2_body = box2d.Body(_g.b2_world, node=self, with_callback=with_callback)
         self._raii_objects.append(b2_body)
         return b2_body
     
     def transform(self) -> mat3x3:
-        """get the transform matrix from local space to global space"""
+        """Get the transform matrix from local space to global space."""
         if self.parent is None:
             return mat3x3.identity()
         t = self.parent.transform()
@@ -157,17 +168,19 @@ class Node:
             obj.destroy()
 
     def apply(self, f):
+        """Apply a function to this node and all its children recursively."""
         f(self)
         fast_apply(Node.apply, self.children.values(), f)
 
     def apply_enabled(self, f):
+        """Apply a function to this node and all its enabled children recursively."""
         if not self.enabled:
             return
         f(self)
         fast_apply(Node.apply_enabled, self.children.values(), f)
 
     def is_ancestor_of(self, node: 'Node') -> bool:
-        """check if this node is an ancestor of `node`"""
+        """Check if this node is an ancestor of `node`."""
         while node is not None:
             if node is self:
                 return True
@@ -175,6 +188,7 @@ class Node:
         return False
 
     def destroy(self):
+        """Destroy this node and all its children."""
         if self._state == 2:
             return
         if self is _g.root:
@@ -185,25 +199,33 @@ class Node:
         self.parent = None
 
     def destroy_later(self, delay: float):
+        """Destroy this node after `delay` seconds.
+        
+        This method starts a coroutine to call `destroy` after `delay` seconds.
+        """
         _g.root.start_coroutine(_DestroyLater(delay, self))
     
-    def start_coroutine(self, coroutine):
+    def start_coroutine(self, coroutine: Iterable):
+        """Start a coroutine on this node."""
         self._coroutines.append(coroutine)
         return coroutine
 
-    def stop_coroutine(self, coroutine):
+    def stop_coroutine(self, coroutine: Iterable):
+        """Stop a coroutine on this node."""
         for i in range(len(self._coroutines)):
             if self._coroutines[i] is coroutine:
                 self._coroutines[i] = None
                 break
 
     def stop_all_coroutines(self):
+        """Stop all coroutines on this node."""
         for i in range(len(self._coroutines)):
             self._coroutines[i] = None
 
 
 
 def get_node(path: str) -> Node:
+    """Get a node by its path in the scene tree."""
     return _g.root.get_node(path)
 
 
@@ -221,6 +243,7 @@ def build_scene_tree(tree: dict, locals: dict, root: Node = None):
             build_scene_tree(child, locals, node)
 
 class WaitForSeconds:
+    """A coroutine that waits for a number of seconds."""
     def __init__(self, seconds: float):
         self._seconds = seconds
         self._t = 0
@@ -235,6 +258,7 @@ class WaitForSeconds:
         return None
     
 class WaitForEndOfFrame:
+    """A coroutine that waits for the end of the current frame."""
     def __iter__(self):
         return self
     

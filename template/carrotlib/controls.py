@@ -42,6 +42,7 @@ class ButtonState:
         return self.colors[self.value]
 
     def update(self):
+        """Update the button state. Return `True` if the state has changed."""
         old_value = self.value
         if not self.control.interactable:
             self.value = 'disabled'
@@ -95,22 +96,50 @@ class Control(Node):
         self.interactable = False
 
     def create_button_state(self, on_click=None, on_long_press=None) -> ButtonState:
+        """Create a button state for this control.
+        The button state object is a state machine that manages the button's color and behavior.
+        
+        Example:
+        ```python
+        class YourButton(cl.controls.Image):
+            def on_ready(self):
+                self.button_state = self.create_button_state(
+                    on_click=self.on_click,
+                )
+
+            def on_update(self):
+                # update button state
+                if self.button_state.update():
+                    self.color = self.button_state.color
+
+            def on_click(self):
+                print("Button clicked!")
+        """
         return ButtonState(self, on_click, on_long_press)
 
     def rect(self) -> rl.Rectangle:
+        """Return the rectangle of the control in global space.
+        It will be used for UI event detection.
+        Derived classes should override this method to provide the correct rectangle.
+        
+        Use `cl.draw_rect` in `on_render_ui` to debug the rectangle.
+        """
         return rl.Rectangle(0, 0, 0, 0)
     
     def is_hovering(self) -> bool:
+        """Check if the mouse is hovering over the control."""
         return _g.hovered_control is self
     
     def is_pressed(self) -> bool:
+        """Check if the control is pressed."""
         return self.is_hovering() and rl.IsMouseButtonPressed(0)
     
     def is_released(self) -> bool:
+        """Check if the control is released."""
         return self.is_hovering() and rl.IsMouseButtonReleased(0)
     
     def set_position(self, position: vec2, pivot: vec2, new_pivot: vec2 = None):
-        """Set position based on pivot
+        """Set position based on pivot. 
         + `(0, 0)`: top left
         + `(0.5, 0.5)`: center
         + `(1, 1)`: bottom right
