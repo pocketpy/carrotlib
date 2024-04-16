@@ -164,6 +164,10 @@ class _TilemapColliderSolver:
         self.edges[t1].cell_pos = cell_pos
 
 class Tilemap(Node):
+    tex: rl.Texture2D
+    shader: rl.Shader
+    b2_bodies: list[box2d.Body]
+
     def __init__(self, layer: AutoTiledLayer, name=None, parent=None):
         self.layer = layer
         self.data = layer.intGridCsv
@@ -175,21 +179,13 @@ class Tilemap(Node):
         self.grid_size = self.layer.grid_size
         self.cell_size = self.layer.grid_size / _g.PIXEL_PER_UNIT
 
-        self.material = _g.default_material
-
         super().__init__(name, parent)
 
-    tex: rl.Texture2D
-    shader: rl.Shader
-    b2_bodies: list[box2d.Body]
-
-    def on_ready(self):
         self.tex = rl.LoadTexture("assets/" + self.layer.get_tileset_def().relPath)
-        # self.shader = rl.LoadShaderFromMemory(PIXEL_SNAP_SHADER, None)
+        self.material = _g.default_material
 
     def on_destroy(self):
         rl.UnloadTexture(self.tex)
-        # rl.UnloadShader(self.shader)    # TODO: use static shader
     
     def has_cell(self, x: int, y: int) -> bool:
         if x < 0 or x >= self.width or y < 0 or y >= self.height:
@@ -209,11 +205,8 @@ class Tilemap(Node):
         return transform.transform_point(pos)
 
     def on_render(self):
-        # rl.BeginShaderMode(self.shader)
         with self.material:
             self.draw(self.transform())
-        # rl.EndShaderMode()
-        # draw_circle(self.global_position, 0.2, Colors.Red)
 
     def draw(self, transform: mat3x3):
         w2v = _g.world_to_viewport
