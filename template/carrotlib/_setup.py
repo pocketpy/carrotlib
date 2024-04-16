@@ -123,7 +123,7 @@ class Game:
         # make the most recently rendered control on top
         interactable_controls.reverse()
         for c in interactable_controls:
-            if rl.CheckCollisionPointRec(get_mouse_position(), c.rect()):
+            if rl.CheckCollisionPointRec(get_mouse_position(), c.global_rect()):
                 g.hovered_control = c
                 break
 

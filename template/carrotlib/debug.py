@@ -203,7 +203,7 @@ class DebugWindow:
         if selected:
             if isinstance(selected, Control):
                 g.is_rendering_ui = True
-                draw_rect(selected.rect(), color, solid=False)
+                draw_rect(selected.global_rect(), color, solid=False)
                 g.is_rendering_ui = False
             elif isinstance(selected, Sprite):
                 draw_rect(selected.rect(), color, solid=False)

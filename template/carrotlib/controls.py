@@ -117,7 +117,7 @@ class Control(Node):
         """
         return ButtonState(self, on_click, on_long_press)
 
-    def rect(self) -> rl.Rectangle:
+    def global_rect(self) -> rl.Rectangle:
         """Return the rectangle of the control in global space.
         It will be used for UI event detection.
         Derived classes should override this method to provide the correct rectangle.
@@ -144,7 +144,7 @@ class Control(Node):
         + `(0.5, 0.5)`: center
         + `(1, 1)`: bottom right
         """
-        rect = self.parent.rect()
+        rect = self.parent.global_rect()
         parent_scale = self.parent.transform()._s()
         width = rect.width / parent_scale.x
         height = rect.height / parent_scale.y
@@ -164,7 +164,7 @@ class Image(Control):
         self.hfill_amount = 1.0
         self.vfill_amount = 1.0
 
-    def rect(self) -> rl.Rectangle:
+    def global_rect(self) -> rl.Rectangle:
         if self.texture is None:
             return rl.Rectangle(0, 0, 0, 0)
 
@@ -200,7 +200,7 @@ class Image(Control):
             )
         else:
             raise TypeError(f"Unsupported texture type: {type(self.texture)}")
-        rl.DrawTexturePro(main_tex, src_rect, self.rect(), vec2(0, 0), 0, self.color)
+        rl.DrawTexturePro(main_tex, src_rect, self.global_rect(), vec2(0, 0), 0, self.color)
 
 class TextBase(Control):
     font: rl.Font
@@ -245,7 +245,7 @@ class Text(TextBase):
         size = _rlDrawTextBoxed(render, limit_height, self.line_spacing, self.font, self.text, rect, self.font_size, self.spacing, True, self.color)
         return rl.Rectangle(pos.x, pos.y, size.x, size.y)
 
-    def rect(self) -> rl.Rectangle:
+    def global_rect(self) -> rl.Rectangle:
         if self.font is None:
             return rl.Rectangle(0, 0, 0, 0)
         return self.__f(False)
@@ -262,7 +262,7 @@ class Label(TextBase):
         super().__init__(name, parent)
         self.origin = vec2(0.5, 0.5)
 
-    def rect(self) -> rl.Rectangle:
+    def global_rect(self) -> rl.Rectangle:
         if self.font is None:
             return rl.Rectangle(0, 0, 0, 0)
         rl.SetTextLineSpacing(self.line_spacing + self.font_size)
@@ -319,7 +319,7 @@ class Container(Control):
         self.origin = vec2(0.5, 0.5)
         self.color = None
 
-    def rect(self) -> rl.Rectangle:
+    def global_rect(self) -> rl.Rectangle:
         trans = self.transform()
         pos = trans._t()
         scale = trans._s()
@@ -341,4 +341,4 @@ class Container(Control):
 
     def on_render_ui(self):
         if self.color is not None:
-            draw_rect(self.rect(), self.color)
+            draw_rect(self.global_rect(), self.color)
