@@ -243,7 +243,16 @@ def build_scene_tree(tree: dict, locals: dict, root: Node = None):
             build_scene_tree(child, locals, node)
 
 class WaitForSeconds:
-    """A coroutine that waits for a number of seconds."""
+    """A coroutine that waits for a number of seconds.
+    
+    Example:
+    ```python
+    def coroutine():
+        yield from WaitForSeconds(1)
+        print('1 second passed')
+
+    node.start_coroutine(coroutine())
+    """
     def __init__(self, seconds: float):
         self._seconds = seconds
         self._t = 0
