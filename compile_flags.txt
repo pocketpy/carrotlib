@@ -6,3 +6,4 @@
 -I3rd/raylib/src/
 -I3rd/rlImGui/
 -I3rd/box2d/include/
+-I3rd/naett/include
