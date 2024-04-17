@@ -3,6 +3,7 @@ import sys
 import shutil
 
 from .base import TaskCommand
+from .config import config
 
 assert sys.platform in ["win32", "linux", "darwin"]
 
@@ -23,7 +24,11 @@ def compile_framework():
 
     shutil.rmtree(FRAMEWORK_BUILD_DIR, ignore_errors=True)
     os.makedirs(FRAMEWORK_BUILD_DIR, exist_ok=True)
-    task = TaskCommand(["cmake", "../.."], cwd=FRAMEWORK_BUILD_DIR)
+    if config.use_release_build:
+        build_type = '-DCMAKE_BUILD_TYPE=Release'
+    else:
+        build_type = '-DCMAKE_BUILD_TYPE=Debug'
+    task = TaskCommand(["cmake", "../..", build_type], cwd=FRAMEWORK_BUILD_DIR)
     yield from task
     if task.returncode != 0:
         return
@@ -32,6 +37,8 @@ def compile_framework():
     if task.returncode != 0:
         return
     assert is_framework_compiled()
+    with open(os.path.join(FRAMEWORK_BUILD_DIR, "this_is_a_release_build"), "w") as f:
+        f.write("")
 
 def is_framework_compiled():
     return os.path.exists(FRAMEWORK_EXE_PATH)

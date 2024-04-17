@@ -271,6 +271,9 @@ class ProjectView:
         with imgui.begin_tab_item("   Control Panel   ") as tab:
             if tab.selected:
                 framework_compile_time = get_file_time(backend.FRAMEWORK_EXE_PATH)
+                is_release_build = os.path.exists(os.path.join(backend.FRAMEWORK_BUILD_DIR, "this_is_a_release_build"))
+                if framework_compile_time and is_release_build:
+                    framework_compile_time += " (Release)"
                 imgui.text(f"Framework compiled at: {framework_compile_time}")
                 imgui.text(f"Project: {self.root}")
                 imgui.text(f"Selected: {self.selected_file}")
@@ -285,6 +288,11 @@ class ProjectView:
                 if changed:
                     backend.config.use_playground_console = use_playground_console
                     print("[INFO]", "Restart the playground to take effect.")
+                imgui.same_line(spacing=16)
+                changed, use_release_build = imgui.checkbox("Enable Release Build", backend.config.use_release_build)
+                if changed:
+                    backend.config.use_release_build = use_release_build
+                    print("[INFO]", "Rebuild the framework to take effect.")
 
                 imgui.spacing()
 
