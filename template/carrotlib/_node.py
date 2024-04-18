@@ -222,6 +222,16 @@ class Node:
         for i in range(len(self._coroutines)):
             self._coroutines[i] = None
 
+    def request(
+            method: Literal["GET", "POST", "PUT", "DELETE", "PATCH"],
+            url: str,
+            headers=None,
+            body: str | bytes = None,
+            timeout=None):
+        """Send an HTTP request via non-blocking I/O."""
+        import naett
+        return naett.request(method, url, headers, body, timeout)
+
 
 
 def get_node(path: str) -> Node:
