@@ -2,6 +2,13 @@ from c import int_p
 import raylib as rl
 from linalg import vec2
 
+GRAPHICS_API_OPENGL_33: bool
+GRAPHICS_API_OPENGL_ES2: bool
+GRAPHICS_API_OPENGL_ES3: bool
+
+DESKTOP_SCREEN_WIDTH: int
+DESKTOP_SCREEN_HEIGHT: int
+
 def load_asset(name: str) -> bytes:
     """load an asset from the platform's asset directory as bytes."""
 
@@ -31,13 +38,6 @@ def _get_cjk_codepoints() -> tuple[int_p, int]:
 
 def _rlDrawTextBoxed(render: bool, limitHeight: bool, lineSpacing: float, font: rl.Font, text: str, rec: rl.Rectangle, fontSize: float, spacing: float, wordWrap: bool, tint: rl.Color) -> vec2:
     ...
-
-GRAPHICS_API_OPENGL_33: bool
-GRAPHICS_API_OPENGL_ES2: bool
-GRAPHICS_API_OPENGL_ES3: bool
-
-DESKTOP_SCREEN_WIDTH: int
-DESKTOP_SCREEN_HEIGHT: int
 
 def _bake_global_light(image: rl.Image_p, color: rl.Color, intensity: float) -> None:
     ...
