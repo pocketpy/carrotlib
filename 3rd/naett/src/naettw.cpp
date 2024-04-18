@@ -6,11 +6,9 @@ namespace pkpy{
 
         naettReq* req;
         naettRes* res;
-
         VM* vm;
-        PyObject* headers;
 
-        naett_response(naettReq* req, naettRes* res, VM* vm): req(req), res(res), vm(vm), headers(nullptr) {}
+        naett_response(naettReq* req, naettRes* res, VM* vm): req(req), res(res), vm(vm) {}
 
         void check_completed(){
             if(!naettComplete(res)) vm->IOError("request not completed");
@@ -64,20 +62,16 @@ namespace pkpy{
             vm->bind_property(type, "headers: dict", [](VM* vm, ArgsView args){
                 naett_response& self = PK_OBJ_GET(naett_response, args[0]);
                 self.check_completed();
-                if(self.headers == nullptr){
-                    // initialize headers
-                    self.headers = VAR(Dict(vm));
-                    if(naettGetStatus(self.res) > 0){
-                        naettHeaderLister lister = [](const char* name, const char* value, void* userData){
-                            Dict* dict = (Dict*)userData;
-                            dict->set(py_var(dict->vm, name), py_var(dict->vm, value));
-                            return 0;
-                        };
-                        Dict& dict = PK_OBJ_GET(Dict, self.headers);
-                        naettListHeaders(self.res, lister, &dict);
-                    }
+                Dict headers(vm);
+                if(naettGetStatus(self.res) > 0){
+                    naettHeaderLister lister = [](const char* name, const char* value, void* userData){
+                        Dict* dict = (Dict*)userData;
+                        dict->set(py_var(dict->vm, name), py_var(dict->vm, value));
+                        return 0;
+                    };
+                    naettListHeaders(self.res, lister, &headers);
                 }
-                return self.headers;
+                return VAR(std::move(headers));
             });
 
             vm->bind_property(type, "reason: str", [](VM* vm, ArgsView args){
@@ -151,10 +145,6 @@ namespace pkpy{
                 if(naettComplete(self.res)) return vm->StopIteration;
                 return vm->None;
             });
-        }
-
-        void _gc_mark() const{
-            if(headers) PK_OBJ_MARK(headers)
         }
 
         ~naett_response(){

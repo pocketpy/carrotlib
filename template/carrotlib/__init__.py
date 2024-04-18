@@ -21,3 +21,16 @@ from .controls import Control
 
 from raylib import Color
 
+
+# http request
+from typing import Literal
+
+def request(
+        method: Literal["GET", "POST", "PUT", "DELETE", "PATCH"],
+        url: str,
+        headers=None,
+        body: str | bytes = None,
+        timeout=None):
+    """Send an HTTP request via non-blocking I/O."""
+    import naett
+    return naett.request(method, url, headers, body, timeout)
