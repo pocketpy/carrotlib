@@ -1,12 +1,18 @@
 from typing import Literal
 
 class Response:
-    completed: bool
-    status_code: int
-    text: str
-    content: bytes
-
-    headers: dict[str, str]
+    @property
+    def completed(self) -> bool: ...
+    @property
+    def status_code(self) -> int: ...
+    @property
+    def text(self) -> str: ...
+    @property
+    def content(self) -> bytes: ...
+    @property
+    def headers(self) -> dict[str, str]: ...
+    @property
+    def reason(self) -> str: ...
 
     def json(self) -> dict: ...
 
