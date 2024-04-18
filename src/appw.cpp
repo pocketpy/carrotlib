@@ -1,4 +1,4 @@
-﻿#include "appw.hpp"
+#include "appw.hpp"
 #include "light.hpp"
 #include "imguiw.hpp"
 
