@@ -85,6 +85,16 @@ namespace pkpy{
                 int status_code = naettGetStatus(self.res);
                 return VAR(_S("<Response [", status_code, "]>"));
             });
+
+            vm->bind__iter__(PK_OBJ_GET(Type, type), [](VM* vm, PyObject* _0){
+                return VAR(_0);
+            });
+
+            vm->bind__next__(PK_OBJ_GET(Type, type), [](VM* vm, PyObject* _0){
+                naett_response& self = PK_OBJ_GET(naett_response, _0);
+                if(naettComplete(self.res)) return vm->StopIteration;
+                return vm->None;
+            });
         }
 
         void _gc_mark() const{

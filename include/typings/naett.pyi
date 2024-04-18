@@ -10,6 +10,9 @@ class Response:
 
     def json(self) -> dict: ...
 
+    def __iter__(self) -> Response: ...
+    def __next__(self) -> None: ...
+
 def request(
         method: Literal["GET", "POST", "PUT", "DELETE", "PATCH"],
         url: str,
