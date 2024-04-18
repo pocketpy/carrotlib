@@ -79,6 +79,12 @@ namespace pkpy{
                 }
                 return self.headers;
             });
+
+            vm->bind__repr__(PK_OBJ_GET(Type, type), [](VM* vm, PyObject* _0){
+                naett_response& self = PK_OBJ_GET(naett_response, _0);
+                int status_code = naettGetStatus(self.res);
+                return VAR(_S("<Response [", status_code, "]>"));
+            });
         }
 
         void _gc_mark() const{
