@@ -18,8 +18,7 @@ static AAssetManager* get_android_asset_manager(){
 
 namespace ct{
     void platform_init(){
-        void* initThing = GetAndroidApp()->activity->vm;
-        naettInit(initThing);
+        naettInit(GetAndroidApp()->activity->vm);
     }
 
     void platform_log_info(const Str& text){
