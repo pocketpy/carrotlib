@@ -29,8 +29,14 @@ namespace ct{
 
     void platform_desktop_screen_size(int& width, int& height){
 #if _WIN32
-        width = GetSystemMetrics(SM_CXSCREEN);
-        height = GetSystemMetrics(SM_CYSCREEN);
+        RECT desktop;
+        const HWND hDesktop = GetDesktopWindow();
+        GetWindowRect(hDesktop, &desktop);
+        width = desktop.right - desktop.left;
+        height = desktop.bottom - desktop.top;
+        double scale = GetDpiForWindow(hDesktop) / 96.0;
+        width = (int)(width * scale);
+        height = (int)(height * scale);
 #else
         width = 0;
         height = 0;
