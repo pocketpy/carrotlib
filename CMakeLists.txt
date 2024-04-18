@@ -77,5 +77,7 @@ else()
         if(CMAKE_BUILD_TYPE STREQUAL "Release")
             set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
         endif()
+
+        target_link_libraries(${PROJECT_NAME} winhttp)
     endif()
 endif()

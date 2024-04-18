@@ -14,7 +14,7 @@ aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/box2d/src/dynamics BOX2D_SRC_2)
 aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/box2d/src/rope BOX2D_SRC_3)
 
 if(EMSCRIPTEN)
-    # unsupported fallback
+    set(NAETT_SRC "")
 else()
     aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/naett/src NAETT_SRC)
 endif()
