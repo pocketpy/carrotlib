@@ -4,12 +4,13 @@ namespace pkpy{
     struct naett_response{
         PY_CLASS(naett_response, naett, Response)
 
+        naettReq* req;
         naettRes* res;
 
         VM* vm;
         PyObject* headers;
 
-        naett_response(naettRes* res, VM* vm): res(res), vm(vm), headers(nullptr) {}
+        naett_response(naettReq* req, naettRes* res, VM* vm): req(req), res(res), vm(vm), headers(nullptr) {}
 
         void check_completed(){
             if(!naettComplete(res)) vm->IOError("Request not completed");
@@ -86,7 +87,7 @@ namespace pkpy{
 
         ~naett_response(){
             naettClose(res);
-            naettFree(naettGetRequest(res));
+            naettFree(req);
         }
     };
 
@@ -134,7 +135,7 @@ namespace pkpy{
             );
 
             naettRes* res = naettMake(req);
-            return vm->heap.gcnew<naett_response>(naett_response::_type(vm), res, vm);
+            return vm->heap.gcnew<naett_response>(naett_response::_type(vm), req, res, vm);
         });
     }
 }   // namespace pkpy
