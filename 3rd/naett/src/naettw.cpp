@@ -42,7 +42,7 @@ namespace pkpy{
                 return VAR(naettGetStatus(self.res));
             });
 
-            vm->bind_method<0>(type, "text: str", [](VM* vm, ArgsView args){
+            vm->bind_property(type, "text: str", [](VM* vm, ArgsView args){
                 naett_response& self = PK_OBJ_GET(naett_response, args[0]);
                 self.check_completed();
                 return VAR(self.text());
