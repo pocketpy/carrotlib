@@ -46,7 +46,7 @@ namespace pkpy{
                 return VAR(self.text());
             });
 
-            vm->bind_method<0>(type, "content: bytes", [](VM* vm, ArgsView args){
+            vm->bind_property(type, "content: bytes", [](VM* vm, ArgsView args){
                 naett_response& self = PK_OBJ_GET(naett_response, args[0]);
                 self.check_completed();
                 return VAR(self.content());
