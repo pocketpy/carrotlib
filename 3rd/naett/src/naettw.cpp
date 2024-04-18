@@ -13,7 +13,7 @@ namespace pkpy{
         naett_response(naettReq* req, naettRes* res, VM* vm): req(req), res(res), vm(vm), headers(nullptr) {}
 
         void check_completed(){
-            if(!naettComplete(res)) vm->IOError("Request not completed");
+            if(!naettComplete(res)) vm->IOError("request not completed");
         }
 
         std::string_view text() const{
