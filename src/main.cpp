@@ -92,6 +92,10 @@ void ios_ready(){
     add_module_raylib(vm);
     add_module_imgui(vm);
 
+#ifndef __EMSCRIPTEN__
+    add_module_naett(vm);
+#endif
+
     vm->bind(add_module__ct(vm), "_request_hot_reload()",
         [](VM* vm, ArgsView args){
             cached.hot_reload_needed = true;

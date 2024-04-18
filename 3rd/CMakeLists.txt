@@ -13,6 +13,13 @@ aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/box2d/src/common BOX2D_SRC_1)
 aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/box2d/src/dynamics BOX2D_SRC_2)
 aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/box2d/src/rope BOX2D_SRC_3)
 
+if(EMSCRIPTEN)
+    # unsupported fallback
+else()
+    aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/naett/src NAETT_SRC)
+endif()
+
+
 option(PK_ENABLE_OS "" ON)
 option(PK_NO_EXPORT_C_API "" ON)
 add_subdirectory(pocketpy)
@@ -34,6 +41,7 @@ add_library(
     ${IMGUI_SRC}
     ${RLIMGUI_SRC}
     ${BOX2D_SRC_0} ${BOX2D_SRC_1} ${BOX2D_SRC_2} ${BOX2D_SRC_3}
+    ${NAETT_SRC}
 )
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
@@ -57,5 +65,6 @@ target_include_directories(
     rlImGui
     raylib/src
     box2d/include
+    naett/include
     pocketpy/include
 )

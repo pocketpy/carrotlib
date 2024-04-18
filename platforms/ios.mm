@@ -7,7 +7,7 @@ using namespace pkpy;
 
 namespace ct{
     void platform_init(){
-        // do nothing
+        naettInit(NULL);
     }
 
     void platform_log_info(const Str& text){

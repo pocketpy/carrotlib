@@ -15,6 +15,8 @@ namespace ct{
 #endif
         setvbuf(stdout, nullptr, _IONBF, 0);
         setvbuf(stderr, nullptr, _IONBF, 0);
+
+        naettInit(NULL);
     }
 
     void platform_log_info(const Str& text){

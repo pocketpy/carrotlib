@@ -1,6 +1,8 @@
 #pragma once
 
 #include "pocketpy.h"
+#include "naettw.hpp"
+
 #include <filesystem>
 
 using namespace pkpy;
