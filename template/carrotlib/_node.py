@@ -222,6 +222,7 @@ class Node:
         for i in range(len(self._coroutines)):
             self._coroutines[i] = None
 
+    @staticmethod
     def request(
             method: Literal["GET", "POST", "PUT", "DELETE", "PATCH"],
             url: str,
