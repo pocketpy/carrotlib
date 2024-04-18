@@ -24,6 +24,16 @@ const char* get_template_path(){
 PyObject* add_module__ct(VM *vm){
     PyObject* mod = vm->new_module("_carrotlib");
 
+#if PK_IS_DESKTOP_PLATFORM == 1
+    int desktop_screen_width, desktop_screen_height;
+    platform_desktop_screen_size(desktop_screen_width, desktop_screen_height);
+    mod->attr().set("DESKTOP_SCREEN_WIDTH", VAR(desktop_screen_width));
+    mod->attr().set("DESKTOP_SCREEN_HEIGHT", VAR(desktop_screen_height));
+#else
+    mod->attr().set("DESKTOP_SCREEN_WIDTH", VAR(0));
+    mod->attr().set("DESKTOP_SCREEN_HEIGHT", VAR(0));
+#endif
+
     vm->bind(mod, "vibrate(milliseconds, amplitude=-1)",
         [](VM* vm, ArgsView args){
             platform_vibrate(CAST(i64, args[0]), CAST(int, args[1]));

@@ -36,6 +36,9 @@ GRAPHICS_API_OPENGL_33: bool
 GRAPHICS_API_OPENGL_ES2: bool
 GRAPHICS_API_OPENGL_ES3: bool
 
+DESKTOP_SCREEN_WIDTH: int
+DESKTOP_SCREEN_HEIGHT: int
+
 def _bake_global_light(image: rl.Image_p, color: rl.Color, intensity: float) -> None:
     ...
 

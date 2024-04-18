@@ -27,6 +27,16 @@ namespace ct{
         std::cerr << text;
     }
 
+    void platform_desktop_screen_size(int& width, int& height){
+#if _WIN32
+        width = GetSystemMetrics(SM_CXSCREEN);
+        height = GetSystemMetrics(SM_CYSCREEN);
+#else
+        width = 0;
+        height = 0;
+#endif
+    }
+
     unsigned char* platform_load_asset(const char* name_p, int name_size, int* out_size){
         unsigned char* res = _default_import_handler(name_p, name_size, out_size);
         if(res != NULL) return res;

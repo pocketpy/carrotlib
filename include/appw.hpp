@@ -19,6 +19,10 @@ namespace ct{
     void platform_init();
     void platform_log_info(const Str& text);
     void platform_log_error(const Str& text);
+
+#if PK_IS_DESKTOP_PLATFORM == 1
+    void platform_desktop_screen_size(int& width, int& height);
+#endif
     
     unsigned char* platform_load_asset(const char*, int, int*);
     std::vector<std::string> platform_list_assets(std::string_view);
