@@ -37,8 +37,9 @@ def compile_framework():
     if task.returncode != 0:
         return
     assert is_framework_compiled()
-    with open(os.path.join(FRAMEWORK_BUILD_DIR, "this_is_a_release_build"), "w") as f:
-        f.write("")
+    if config.use_release_build:
+        with open(os.path.join(FRAMEWORK_BUILD_DIR, "this_is_a_release_build"), "w") as f:
+            f.write("")
 
 def is_framework_compiled():
     return os.path.exists(FRAMEWORK_EXE_PATH)
