@@ -191,9 +191,11 @@ def build_win32(project: str, open_dir=True):
 
 
 def clean_build_dir(project: str):
-    dirs = [os.path.join(project, 'build'), 'android/app/build']
+    dirs = [
+        os.path.join(project, 'build'),
+        'android/app/.cxx', 'android/app/build',
+        'src/tmp'
+        ]
     for d in dirs:
         shutil.rmtree(d, ignore_errors=True)
         print("[INFO]", f"{d} was deleted")
-    shutil.rmtree('src/tmp', ignore_errors=True)
-    print("[INFO]", "src/tmp was deleted")
