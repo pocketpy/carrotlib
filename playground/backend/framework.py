@@ -37,9 +37,13 @@ def compile_framework():
     if task.returncode != 0:
         return
     assert is_framework_compiled()
+
+    this_is_a_release_build = os.path.join(FRAMEWORK_BUILD_DIR, "this_is_a_release_build")
     if config.use_release_build:
-        with open(os.path.join(FRAMEWORK_BUILD_DIR, "this_is_a_release_build"), "w") as f:
+        with open(this_is_a_release_build, "w") as f:
             f.write("")
+    elif os.path.exists(this_is_a_release_build):
+        os.remove(this_is_a_release_build)
 
 def is_framework_compiled():
     return os.path.exists(FRAMEWORK_EXE_PATH)
