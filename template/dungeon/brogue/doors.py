@@ -14,9 +14,9 @@ class DoorTester:
     def __init__(self, grid: array2d[int]):
         self.grid = grid
 
-        self.grid_neighbors_ZERO = grid.count_neighbors(ZERO, 'von_neumann')
-        self.grid_neighbors_ONE = grid.count_neighbors(ONE, 'von_neumann')
-        self.grid_neighbors_TWO = grid.count_neighbors(TWO, 'moore')
+        self.grid_neighbors_ZERO = grid.count_neighbors(ZERO, 'von Neumann')
+        self.grid_neighbors_ONE = grid.count_neighbors(ONE, 'von Neumann')
+        self.grid_neighbors_TWO = grid.count_neighbors(TWO, 'Moore')
 
     def test(self, x: int, y: int) -> Literal[-1, 0, 1, 2, 3]:
         # 目标点必须是 ZERO
