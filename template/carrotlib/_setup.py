@@ -47,6 +47,9 @@ class Game:
             imgui.rlImGuiSetup(True)
             imgui.GetIO().IniFilename = None    # disable imgui.ini
 
+            if self.window_size == (0, 0):
+                rl.ToggleBorderlessWindowed()
+
         # determine viewport scale
         design_size = self.design_size
         g.viewport_width, g.viewport_height = design_size
