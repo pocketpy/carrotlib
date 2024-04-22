@@ -19,7 +19,7 @@ from . import logger, nodes, controls, g, random
 
 from .controls import Control
 
-from raylib import Color
+from raylib import Color, Rectangle
 
 
 # http request
