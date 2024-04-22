@@ -13,7 +13,7 @@ class FreeCamera(Node):
             delta = get_mouse_delta() / _g.PIXEL_PER_UNIT
             delta.x *= self.scale.x
             delta.y *= self.scale.y
-            self.position -= delta
+            self.position += delta
 
         # zoom via mouse wheel
         zoom = rl.GetMouseWheelMove()
