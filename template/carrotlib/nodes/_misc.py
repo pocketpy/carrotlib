@@ -18,7 +18,7 @@ class FreeCamera(Node):
         # zoom via mouse wheel
         zoom = rl.GetMouseWheelMove()
         if zoom != 0:
-            self.scale /= 1 + zoom * 5 / _g.PIXEL_PER_UNIT
+            self.scale *= 1 + zoom * 4 / _g.PIXEL_PER_UNIT
 
         _g.world_to_camera.copy_(~self.transform())
 
