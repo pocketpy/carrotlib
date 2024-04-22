@@ -25,10 +25,10 @@ def sync_project_template(project: str):
         shutil.rmtree(path, ignore_errors=True)
         
     # create pyrightconfig.json
-    with open(os.path.join(project, "pyrightconfig.json"), "wt", encoding='utf-8') as f:
+    with open(os.path.join(project, "pyrightconfig.json"), "wt", encoding='utf-8', newline='\n') as f:
         f.write(json.dumps(project_pyright_config, indent=4))
     # create .gitignore
-    with open(os.path.join(project, ".gitignore"), "wt", encoding='utf-8') as f:
+    with open(os.path.join(project, ".gitignore"), "wt", encoding='utf-8', newline='\n') as f:
         f.write('__pycache__/\n')
         f.write('build/\n')
         f.write('.vscode/\n')
