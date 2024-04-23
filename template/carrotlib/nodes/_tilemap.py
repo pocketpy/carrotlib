@@ -199,9 +199,15 @@ class Tilemap(Node):
         return round(pos.x - 0.5), round(pos.y - 0.5)
     
     def cell_to_world(self, cx: int, cy: int) -> vec2:
-        """Get world position of a cell's center"""
+        """Get world position of a cell's left-top corner"""
         transform = self.transform()
-        pos = vec2(cx + 0.5, cy + 0.5) * self.cell_size
+        pos = vec2(cx, cy) * self.cell_size
+        return transform.transform_point(pos)
+    
+    def cell_to_world_center(self, cx: int, cy: int) -> vec2:
+        """Get world position of a cell's left-top corner"""
+        transform = self.transform()
+        pos = vec2(cx+0.5, cy+0.5) * self.cell_size
         return transform.transform_point(pos)
 
     def on_render(self):
