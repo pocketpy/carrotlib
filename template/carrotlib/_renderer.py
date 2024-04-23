@@ -83,7 +83,7 @@ def draw_circle(center: vec2, radius: float, color: rl.Color, solid=True):
         rl.DrawCircleLinesV(center, radius, color)
 
 
-def draw_rect(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = None, solid=True):
+def draw_rect(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = None, solid=True, line_thick=1):
     rect = rect.copy()
     if not _g.is_rendering_ui:
         trans = _g.world_to_viewport
@@ -99,7 +99,7 @@ def draw_rect(rect: rl.Rectangle, color: rl.Color = None, origin: vec2 = None, s
     if solid:
         rl.DrawRectangleRec(rect, color or Colors.White)
     else:
-        rl.DrawRectangleLinesEx(rect, 1, color or Colors.White)
+        rl.DrawRectangleLinesEx(rect, line_thick, color or Colors.White)
 
 def draw_line(begin: vec2, end: vec2, thick: float, color: rl.Color):
     if not _g.is_rendering_ui:
