@@ -2,6 +2,7 @@ import easing
 import raylib as rl
 
 from typing import Callable
+from __builtins import next
 
 from ._node import Node
 

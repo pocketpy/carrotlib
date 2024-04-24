@@ -3,6 +3,7 @@ import raylib as rl
 import box2d
 import math
 from typing import Literal, Iterable
+from __builtins import next
 
 from _carrotlib import fast_apply
 from . import g as _g
