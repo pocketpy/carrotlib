@@ -297,7 +297,7 @@ class ProjectView:
                 imgui.spacing()
 
                 imgui.separator()
-                imgui.text(f"Connected Devices：{len(self.threading_task.devices)}")
+                imgui.text(f"Connected Devices: {len(self.threading_task.devices)}")
                 for device in self.threading_task.devices:
                     imgui.spacing()
                     if isinstance(device, backend.IOSDevice):
