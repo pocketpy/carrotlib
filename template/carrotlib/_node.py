@@ -61,8 +61,7 @@ class Node:
     @global_position.setter
     def global_position(self, value: vec2):
         t = self.parent.transform()
-        t.invert_()
-        self.position = t.transform_point(value)
+        self.position = t.inverse_transform_point(value)
 
     def __repr__(self):
         cls_name = type(self).__name__
