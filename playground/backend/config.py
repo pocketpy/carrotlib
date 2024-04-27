@@ -7,6 +7,7 @@ class Config:
     use_precompile: bool = False
     use_playground_console: bool = True
     use_release_build: bool = False
+    use_profile_build: bool = False
 
     def save(self):
         with open('playground.json', 'w', encoding='utf-8') as f:

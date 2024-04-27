@@ -280,18 +280,23 @@ class ProjectView:
 
                 imgui.spacing()
 
-                changed, use_precompile = imgui.checkbox("Enable Precompile", backend.config.use_precompile)
+                changed, use_precompile = imgui.checkbox("Precompile", backend.config.use_precompile)
                 if changed:
                     backend.config.use_precompile = use_precompile
                 imgui.same_line(spacing=16)
-                changed, use_playground_console = imgui.checkbox("Enable Console", backend.config.use_playground_console)
+                changed, use_playground_console = imgui.checkbox("Console", backend.config.use_playground_console)
                 if changed:
                     backend.config.use_playground_console = use_playground_console
                     print("[INFO]", "Restart the playground to take effect.")
                 imgui.same_line(spacing=16)
-                changed, use_release_build = imgui.checkbox("Enable Release Build", backend.config.use_release_build)
+                changed, use_release_build = imgui.checkbox("Release Build", backend.config.use_release_build)
                 if changed:
                     backend.config.use_release_build = use_release_build
+                    print("[INFO]", "Rebuild the framework to take effect.")
+                imgui.same_line(spacing=16)
+                changed, use_profile_build = imgui.checkbox("Profile Build", backend.config.use_profile_build)
+                if changed:
+                    backend.config.use_profile_build = use_profile_build
                     print("[INFO]", "Rebuild the framework to take effect.")
 
                 imgui.spacing()
