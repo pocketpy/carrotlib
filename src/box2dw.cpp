@@ -19,27 +19,27 @@ void PyBody::_register(VM* vm, PyObject* mod, PyObject* type){
             return obj;
         });
 
-    PY_PROPERTY(PyBody, "type: int", _b2Body, GetType, SetType)
-    PY_PROPERTY(PyBody, "gravity_scale: float", _b2Body, GetGravityScale, SetGravityScale)
-    PY_PROPERTY(PyBody, "fixed_rotation: bool", _b2Body, IsFixedRotation, SetFixedRotation)
-    PY_PROPERTY(PyBody, "enabled: bool", _b2Body, IsEnabled, SetEnabled)
-    PY_PROPERTY(PyBody, "bullet: bool", _b2Body, IsBullet, SetBullet)
+    PY_PROPERTY_EX(PyBody, "type: int", _b2Body, GetType, SetType)
+    PY_PROPERTY_EX(PyBody, "gravity_scale: float", _b2Body, GetGravityScale, SetGravityScale)
+    PY_PROPERTY_EX(PyBody, "fixed_rotation: bool", _b2Body, IsFixedRotation, SetFixedRotation)
+    PY_PROPERTY_EX(PyBody, "enabled: bool", _b2Body, IsEnabled, SetEnabled)
+    PY_PROPERTY_EX(PyBody, "bullet: bool", _b2Body, IsBullet, SetBullet)
     
-    PY_READONLY_PROPERTY(PyBody, "mass: float", _b2Body, GetMass)
-    PY_READONLY_PROPERTY(PyBody, "inertia: float", _b2Body, GetInertia)
+    PY_READONLY_PROPERTY_EX(PyBody, "mass: float", _b2Body, GetMass)
+    PY_READONLY_PROPERTY_EX(PyBody, "inertia: float", _b2Body, GetInertia)
 
-    PY_PROPERTY(PyBody, "position: vec2", _, get_position, set_position)
-    PY_PROPERTY(PyBody, "rotation: float", _, get_rotation, set_rotation)
-    PY_PROPERTY(PyBody, "velocity: vec2", _, get_velocity, set_velocity)
-    PY_PROPERTY(PyBody, "angular_velocity: float", _b2Body, GetAngularVelocity, SetAngularVelocity)
-    PY_PROPERTY(PyBody, "damping: float", _b2Body, GetLinearDamping, SetLinearDamping)
-    PY_PROPERTY(PyBody, "angular_damping: float", _b2Body, GetAngularDamping, SetAngularDamping)
+    PY_PROPERTY(PyBody, "position: vec2", get_position, set_position)
+    PY_PROPERTY(PyBody, "rotation: float", get_rotation, set_rotation)
+    PY_PROPERTY(PyBody, "velocity: vec2", get_velocity, set_velocity)
+    PY_PROPERTY_EX(PyBody, "angular_velocity: float", _b2Body, GetAngularVelocity, SetAngularVelocity)
+    PY_PROPERTY_EX(PyBody, "damping: float", _b2Body, GetLinearDamping, SetLinearDamping)
+    PY_PROPERTY_EX(PyBody, "angular_damping: float", _b2Body, GetAngularDamping, SetAngularDamping)
 
-    PY_PROPERTY(PyBody, "density: float", _b2Fixture, GetDensity, SetDensity)
-    PY_PROPERTY(PyBody, "friction: float", _b2Fixture, GetFriction, SetFriction)
-    PY_PROPERTY(PyBody, "restitution: float", _b2Fixture, GetRestitution, SetRestitution)
-    PY_PROPERTY(PyBody, "restitution_threshold: float", _b2Fixture, GetRestitutionThreshold, SetRestitutionThreshold)
-    PY_PROPERTY(PyBody, "is_sensor: bool", _b2Fixture, IsSensor, SetSensor)
+    PY_PROPERTY_EX(PyBody, "density: float", _b2Fixture, GetDensity, SetDensity)
+    PY_PROPERTY_EX(PyBody, "friction: float", _b2Fixture, GetFriction, SetFriction)
+    PY_PROPERTY_EX(PyBody, "restitution: float", _b2Fixture, GetRestitution, SetRestitution)
+    PY_PROPERTY_EX(PyBody, "restitution_threshold: float", _b2Fixture, GetRestitutionThreshold, SetRestitutionThreshold)
+    PY_PROPERTY_EX(PyBody, "is_sensor: bool", _b2Fixture, IsSensor, SetSensor)
 
     vm->bind(type, "set_box_shape(self, hx: float, hy: float)",
         [](VM* vm, ArgsView args){

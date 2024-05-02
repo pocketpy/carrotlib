@@ -68,7 +68,6 @@ Vector4 _py_cast<Vector4>(VM* vm, PyObject* obj){
 struct wrapped__Matrix{
 
     Matrix _value;
-    Matrix* _() { return &_value; }
     wrapped__Matrix() = default;
     wrapped__Matrix(const wrapped__Matrix& other) = default;
 
@@ -90,22 +89,22 @@ struct wrapped__Matrix{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Matrix)
-        PY_FIELD(wrapped__Matrix, "m0", _, m0)
-        PY_FIELD(wrapped__Matrix, "m4", _, m4)
-        PY_FIELD(wrapped__Matrix, "m8", _, m8)
-        PY_FIELD(wrapped__Matrix, "m12", _, m12)
-        PY_FIELD(wrapped__Matrix, "m1", _, m1)
-        PY_FIELD(wrapped__Matrix, "m5", _, m5)
-        PY_FIELD(wrapped__Matrix, "m9", _, m9)
-        PY_FIELD(wrapped__Matrix, "m13", _, m13)
-        PY_FIELD(wrapped__Matrix, "m2", _, m2)
-        PY_FIELD(wrapped__Matrix, "m6", _, m6)
-        PY_FIELD(wrapped__Matrix, "m10", _, m10)
-        PY_FIELD(wrapped__Matrix, "m14", _, m14)
-        PY_FIELD(wrapped__Matrix, "m3", _, m3)
-        PY_FIELD(wrapped__Matrix, "m7", _, m7)
-        PY_FIELD(wrapped__Matrix, "m11", _, m11)
-        PY_FIELD(wrapped__Matrix, "m15", _, m15)
+        PY_FIELD(wrapped__Matrix, "m0", _value.m0)
+        PY_FIELD(wrapped__Matrix, "m4", _value.m4)
+        PY_FIELD(wrapped__Matrix, "m8", _value.m8)
+        PY_FIELD(wrapped__Matrix, "m12", _value.m12)
+        PY_FIELD(wrapped__Matrix, "m1", _value.m1)
+        PY_FIELD(wrapped__Matrix, "m5", _value.m5)
+        PY_FIELD(wrapped__Matrix, "m9", _value.m9)
+        PY_FIELD(wrapped__Matrix, "m13", _value.m13)
+        PY_FIELD(wrapped__Matrix, "m2", _value.m2)
+        PY_FIELD(wrapped__Matrix, "m6", _value.m6)
+        PY_FIELD(wrapped__Matrix, "m10", _value.m10)
+        PY_FIELD(wrapped__Matrix, "m14", _value.m14)
+        PY_FIELD(wrapped__Matrix, "m3", _value.m3)
+        PY_FIELD(wrapped__Matrix, "m7", _value.m7)
+        PY_FIELD(wrapped__Matrix, "m11", _value.m11)
+        PY_FIELD(wrapped__Matrix, "m15", _value.m15)
     }
 };
 
@@ -114,17 +113,16 @@ PyObject* py_var(VM* vm, Matrix v){
 }
 template<>
 Matrix py_cast<Matrix>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Matrix&>(vm, obj)._();
+    return py_cast<wrapped__Matrix&>(vm, obj)._value;
 }
 template<>
 Matrix _py_cast<Matrix>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Matrix&>(vm, obj)._();
+    return _py_cast<wrapped__Matrix&>(vm, obj)._value;
 }
 /*************** Color ***************/
 struct wrapped__Color{
 
     Color _value;
-    Color* _() { return &_value; }
     wrapped__Color() = default;
     wrapped__Color(const wrapped__Color& other) = default;
 
@@ -146,10 +144,10 @@ struct wrapped__Color{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Color)
-        PY_FIELD(wrapped__Color, "r", _, r)
-        PY_FIELD(wrapped__Color, "g", _, g)
-        PY_FIELD(wrapped__Color, "b", _, b)
-        PY_FIELD(wrapped__Color, "a", _, a)
+        PY_FIELD(wrapped__Color, "r", _value.r)
+        PY_FIELD(wrapped__Color, "g", _value.g)
+        PY_FIELD(wrapped__Color, "b", _value.b)
+        PY_FIELD(wrapped__Color, "a", _value.a)
     }
 };
 
@@ -158,17 +156,16 @@ PyObject* py_var(VM* vm, Color v){
 }
 template<>
 Color py_cast<Color>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Color&>(vm, obj)._();
+    return py_cast<wrapped__Color&>(vm, obj)._value;
 }
 template<>
 Color _py_cast<Color>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Color&>(vm, obj)._();
+    return _py_cast<wrapped__Color&>(vm, obj)._value;
 }
 /*************** Rectangle ***************/
 struct wrapped__Rectangle{
 
     Rectangle _value;
-    Rectangle* _() { return &_value; }
     wrapped__Rectangle() = default;
     wrapped__Rectangle(const wrapped__Rectangle& other) = default;
 
@@ -190,10 +187,10 @@ struct wrapped__Rectangle{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Rectangle)
-        PY_FIELD(wrapped__Rectangle, "x", _, x)
-        PY_FIELD(wrapped__Rectangle, "y", _, y)
-        PY_FIELD(wrapped__Rectangle, "width", _, width)
-        PY_FIELD(wrapped__Rectangle, "height", _, height)
+        PY_FIELD(wrapped__Rectangle, "x", _value.x)
+        PY_FIELD(wrapped__Rectangle, "y", _value.y)
+        PY_FIELD(wrapped__Rectangle, "width", _value.width)
+        PY_FIELD(wrapped__Rectangle, "height", _value.height)
     }
 };
 
@@ -202,17 +199,16 @@ PyObject* py_var(VM* vm, Rectangle v){
 }
 template<>
 Rectangle py_cast<Rectangle>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Rectangle&>(vm, obj)._();
+    return py_cast<wrapped__Rectangle&>(vm, obj)._value;
 }
 template<>
 Rectangle _py_cast<Rectangle>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Rectangle&>(vm, obj)._();
+    return _py_cast<wrapped__Rectangle&>(vm, obj)._value;
 }
 /*************** Image ***************/
 struct wrapped__Image{
 
     Image _value;
-    Image* _() { return &_value; }
     wrapped__Image() = default;
     wrapped__Image(const wrapped__Image& other) = default;
 
@@ -234,11 +230,11 @@ struct wrapped__Image{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Image)
-        PY_FIELD(wrapped__Image, "data", _, data)
-        PY_FIELD(wrapped__Image, "width", _, width)
-        PY_FIELD(wrapped__Image, "height", _, height)
-        PY_FIELD(wrapped__Image, "mipmaps", _, mipmaps)
-        PY_FIELD(wrapped__Image, "format", _, format)
+        PY_FIELD(wrapped__Image, "data", _value.data)
+        PY_FIELD(wrapped__Image, "width", _value.width)
+        PY_FIELD(wrapped__Image, "height", _value.height)
+        PY_FIELD(wrapped__Image, "mipmaps", _value.mipmaps)
+        PY_FIELD(wrapped__Image, "format", _value.format)
     }
 };
 
@@ -247,17 +243,16 @@ PyObject* py_var(VM* vm, Image v){
 }
 template<>
 Image py_cast<Image>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Image&>(vm, obj)._();
+    return py_cast<wrapped__Image&>(vm, obj)._value;
 }
 template<>
 Image _py_cast<Image>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Image&>(vm, obj)._();
+    return _py_cast<wrapped__Image&>(vm, obj)._value;
 }
 /*************** Texture ***************/
 struct wrapped__Texture{
 
     Texture _value;
-    Texture* _() { return &_value; }
     wrapped__Texture() = default;
     wrapped__Texture(const wrapped__Texture& other) = default;
 
@@ -279,11 +274,11 @@ struct wrapped__Texture{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Texture)
-        PY_FIELD(wrapped__Texture, "id", _, id)
-        PY_FIELD(wrapped__Texture, "width", _, width)
-        PY_FIELD(wrapped__Texture, "height", _, height)
-        PY_FIELD(wrapped__Texture, "mipmaps", _, mipmaps)
-        PY_FIELD(wrapped__Texture, "format", _, format)
+        PY_FIELD(wrapped__Texture, "id", _value.id)
+        PY_FIELD(wrapped__Texture, "width", _value.width)
+        PY_FIELD(wrapped__Texture, "height", _value.height)
+        PY_FIELD(wrapped__Texture, "mipmaps", _value.mipmaps)
+        PY_FIELD(wrapped__Texture, "format", _value.format)
     }
 };
 
@@ -292,17 +287,16 @@ PyObject* py_var(VM* vm, Texture v){
 }
 template<>
 Texture py_cast<Texture>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Texture&>(vm, obj)._();
+    return py_cast<wrapped__Texture&>(vm, obj)._value;
 }
 template<>
 Texture _py_cast<Texture>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Texture&>(vm, obj)._();
+    return _py_cast<wrapped__Texture&>(vm, obj)._value;
 }
 /*************** RenderTexture ***************/
 struct wrapped__RenderTexture{
 
     RenderTexture _value;
-    RenderTexture* _() { return &_value; }
     wrapped__RenderTexture() = default;
     wrapped__RenderTexture(const wrapped__RenderTexture& other) = default;
 
@@ -324,9 +318,9 @@ struct wrapped__RenderTexture{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__RenderTexture)
-        PY_FIELD(wrapped__RenderTexture, "id", _, id)
-        PY_FIELD(wrapped__RenderTexture, "texture", _, texture)
-        PY_FIELD(wrapped__RenderTexture, "depth", _, depth)
+        PY_FIELD(wrapped__RenderTexture, "id", _value.id)
+        PY_FIELD(wrapped__RenderTexture, "texture", _value.texture)
+        PY_FIELD(wrapped__RenderTexture, "depth", _value.depth)
     }
 };
 
@@ -335,17 +329,16 @@ PyObject* py_var(VM* vm, RenderTexture v){
 }
 template<>
 RenderTexture py_cast<RenderTexture>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__RenderTexture&>(vm, obj)._();
+    return py_cast<wrapped__RenderTexture&>(vm, obj)._value;
 }
 template<>
 RenderTexture _py_cast<RenderTexture>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__RenderTexture&>(vm, obj)._();
+    return _py_cast<wrapped__RenderTexture&>(vm, obj)._value;
 }
 /*************** NPatchInfo ***************/
 struct wrapped__NPatchInfo{
 
     NPatchInfo _value;
-    NPatchInfo* _() { return &_value; }
     wrapped__NPatchInfo() = default;
     wrapped__NPatchInfo(const wrapped__NPatchInfo& other) = default;
 
@@ -367,12 +360,12 @@ struct wrapped__NPatchInfo{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__NPatchInfo)
-        PY_FIELD(wrapped__NPatchInfo, "source", _, source)
-        PY_FIELD(wrapped__NPatchInfo, "left", _, left)
-        PY_FIELD(wrapped__NPatchInfo, "top", _, top)
-        PY_FIELD(wrapped__NPatchInfo, "right", _, right)
-        PY_FIELD(wrapped__NPatchInfo, "bottom", _, bottom)
-        PY_FIELD(wrapped__NPatchInfo, "layout", _, layout)
+        PY_FIELD(wrapped__NPatchInfo, "source", _value.source)
+        PY_FIELD(wrapped__NPatchInfo, "left", _value.left)
+        PY_FIELD(wrapped__NPatchInfo, "top", _value.top)
+        PY_FIELD(wrapped__NPatchInfo, "right", _value.right)
+        PY_FIELD(wrapped__NPatchInfo, "bottom", _value.bottom)
+        PY_FIELD(wrapped__NPatchInfo, "layout", _value.layout)
     }
 };
 
@@ -381,17 +374,16 @@ PyObject* py_var(VM* vm, NPatchInfo v){
 }
 template<>
 NPatchInfo py_cast<NPatchInfo>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__NPatchInfo&>(vm, obj)._();
+    return py_cast<wrapped__NPatchInfo&>(vm, obj)._value;
 }
 template<>
 NPatchInfo _py_cast<NPatchInfo>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__NPatchInfo&>(vm, obj)._();
+    return _py_cast<wrapped__NPatchInfo&>(vm, obj)._value;
 }
 /*************** GlyphInfo ***************/
 struct wrapped__GlyphInfo{
 
     GlyphInfo _value;
-    GlyphInfo* _() { return &_value; }
     wrapped__GlyphInfo() = default;
     wrapped__GlyphInfo(const wrapped__GlyphInfo& other) = default;
 
@@ -413,11 +405,11 @@ struct wrapped__GlyphInfo{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__GlyphInfo)
-        PY_FIELD(wrapped__GlyphInfo, "value", _, value)
-        PY_FIELD(wrapped__GlyphInfo, "offsetX", _, offsetX)
-        PY_FIELD(wrapped__GlyphInfo, "offsetY", _, offsetY)
-        PY_FIELD(wrapped__GlyphInfo, "advanceX", _, advanceX)
-        PY_FIELD(wrapped__GlyphInfo, "image", _, image)
+        PY_FIELD(wrapped__GlyphInfo, "value", _value.value)
+        PY_FIELD(wrapped__GlyphInfo, "offsetX", _value.offsetX)
+        PY_FIELD(wrapped__GlyphInfo, "offsetY", _value.offsetY)
+        PY_FIELD(wrapped__GlyphInfo, "advanceX", _value.advanceX)
+        PY_FIELD(wrapped__GlyphInfo, "image", _value.image)
     }
 };
 
@@ -426,17 +418,16 @@ PyObject* py_var(VM* vm, GlyphInfo v){
 }
 template<>
 GlyphInfo py_cast<GlyphInfo>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__GlyphInfo&>(vm, obj)._();
+    return py_cast<wrapped__GlyphInfo&>(vm, obj)._value;
 }
 template<>
 GlyphInfo _py_cast<GlyphInfo>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__GlyphInfo&>(vm, obj)._();
+    return _py_cast<wrapped__GlyphInfo&>(vm, obj)._value;
 }
 /*************** Font ***************/
 struct wrapped__Font{
 
     Font _value;
-    Font* _() { return &_value; }
     wrapped__Font() = default;
     wrapped__Font(const wrapped__Font& other) = default;
 
@@ -458,12 +449,12 @@ struct wrapped__Font{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Font)
-        PY_FIELD(wrapped__Font, "baseSize", _, baseSize)
-        PY_FIELD(wrapped__Font, "glyphCount", _, glyphCount)
-        PY_FIELD(wrapped__Font, "glyphPadding", _, glyphPadding)
-        PY_FIELD(wrapped__Font, "texture", _, texture)
-        PY_FIELD(wrapped__Font, "recs", _, recs)
-        PY_FIELD(wrapped__Font, "glyphs", _, glyphs)
+        PY_FIELD(wrapped__Font, "baseSize", _value.baseSize)
+        PY_FIELD(wrapped__Font, "glyphCount", _value.glyphCount)
+        PY_FIELD(wrapped__Font, "glyphPadding", _value.glyphPadding)
+        PY_FIELD(wrapped__Font, "texture", _value.texture)
+        PY_FIELD(wrapped__Font, "recs", _value.recs)
+        PY_FIELD(wrapped__Font, "glyphs", _value.glyphs)
     }
 };
 
@@ -472,17 +463,16 @@ PyObject* py_var(VM* vm, Font v){
 }
 template<>
 Font py_cast<Font>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Font&>(vm, obj)._();
+    return py_cast<wrapped__Font&>(vm, obj)._value;
 }
 template<>
 Font _py_cast<Font>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Font&>(vm, obj)._();
+    return _py_cast<wrapped__Font&>(vm, obj)._value;
 }
 /*************** Camera3D ***************/
 struct wrapped__Camera3D{
 
     Camera3D _value;
-    Camera3D* _() { return &_value; }
     wrapped__Camera3D() = default;
     wrapped__Camera3D(const wrapped__Camera3D& other) = default;
 
@@ -504,11 +494,11 @@ struct wrapped__Camera3D{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Camera3D)
-        PY_FIELD(wrapped__Camera3D, "position", _, position)
-        PY_FIELD(wrapped__Camera3D, "target", _, target)
-        PY_FIELD(wrapped__Camera3D, "up", _, up)
-        PY_FIELD(wrapped__Camera3D, "fovy", _, fovy)
-        PY_FIELD(wrapped__Camera3D, "projection", _, projection)
+        PY_FIELD(wrapped__Camera3D, "position", _value.position)
+        PY_FIELD(wrapped__Camera3D, "target", _value.target)
+        PY_FIELD(wrapped__Camera3D, "up", _value.up)
+        PY_FIELD(wrapped__Camera3D, "fovy", _value.fovy)
+        PY_FIELD(wrapped__Camera3D, "projection", _value.projection)
     }
 };
 
@@ -517,17 +507,16 @@ PyObject* py_var(VM* vm, Camera3D v){
 }
 template<>
 Camera3D py_cast<Camera3D>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Camera3D&>(vm, obj)._();
+    return py_cast<wrapped__Camera3D&>(vm, obj)._value;
 }
 template<>
 Camera3D _py_cast<Camera3D>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Camera3D&>(vm, obj)._();
+    return _py_cast<wrapped__Camera3D&>(vm, obj)._value;
 }
 /*************** Camera2D ***************/
 struct wrapped__Camera2D{
 
     Camera2D _value;
-    Camera2D* _() { return &_value; }
     wrapped__Camera2D() = default;
     wrapped__Camera2D(const wrapped__Camera2D& other) = default;
 
@@ -549,10 +538,10 @@ struct wrapped__Camera2D{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Camera2D)
-        PY_FIELD(wrapped__Camera2D, "offset", _, offset)
-        PY_FIELD(wrapped__Camera2D, "target", _, target)
-        PY_FIELD(wrapped__Camera2D, "rotation", _, rotation)
-        PY_FIELD(wrapped__Camera2D, "zoom", _, zoom)
+        PY_FIELD(wrapped__Camera2D, "offset", _value.offset)
+        PY_FIELD(wrapped__Camera2D, "target", _value.target)
+        PY_FIELD(wrapped__Camera2D, "rotation", _value.rotation)
+        PY_FIELD(wrapped__Camera2D, "zoom", _value.zoom)
     }
 };
 
@@ -561,17 +550,16 @@ PyObject* py_var(VM* vm, Camera2D v){
 }
 template<>
 Camera2D py_cast<Camera2D>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Camera2D&>(vm, obj)._();
+    return py_cast<wrapped__Camera2D&>(vm, obj)._value;
 }
 template<>
 Camera2D _py_cast<Camera2D>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Camera2D&>(vm, obj)._();
+    return _py_cast<wrapped__Camera2D&>(vm, obj)._value;
 }
 /*************** Mesh ***************/
 struct wrapped__Mesh{
 
     Mesh _value;
-    Mesh* _() { return &_value; }
     wrapped__Mesh() = default;
     wrapped__Mesh(const wrapped__Mesh& other) = default;
 
@@ -593,21 +581,21 @@ struct wrapped__Mesh{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Mesh)
-        PY_FIELD(wrapped__Mesh, "vertexCount", _, vertexCount)
-        PY_FIELD(wrapped__Mesh, "triangleCount", _, triangleCount)
-        PY_FIELD(wrapped__Mesh, "vertices", _, vertices)
-        PY_FIELD(wrapped__Mesh, "texcoords", _, texcoords)
-        PY_FIELD(wrapped__Mesh, "texcoords2", _, texcoords2)
-        PY_FIELD(wrapped__Mesh, "normals", _, normals)
-        PY_FIELD(wrapped__Mesh, "tangents", _, tangents)
-        PY_FIELD(wrapped__Mesh, "colors", _, colors)
-        PY_FIELD(wrapped__Mesh, "indices", _, indices)
-        PY_FIELD(wrapped__Mesh, "animVertices", _, animVertices)
-        PY_FIELD(wrapped__Mesh, "animNormals", _, animNormals)
-        PY_FIELD(wrapped__Mesh, "boneIds", _, boneIds)
-        PY_FIELD(wrapped__Mesh, "boneWeights", _, boneWeights)
-        PY_FIELD(wrapped__Mesh, "vaoId", _, vaoId)
-        PY_FIELD(wrapped__Mesh, "vboId", _, vboId)
+        PY_FIELD(wrapped__Mesh, "vertexCount", _value.vertexCount)
+        PY_FIELD(wrapped__Mesh, "triangleCount", _value.triangleCount)
+        PY_FIELD(wrapped__Mesh, "vertices", _value.vertices)
+        PY_FIELD(wrapped__Mesh, "texcoords", _value.texcoords)
+        PY_FIELD(wrapped__Mesh, "texcoords2", _value.texcoords2)
+        PY_FIELD(wrapped__Mesh, "normals", _value.normals)
+        PY_FIELD(wrapped__Mesh, "tangents", _value.tangents)
+        PY_FIELD(wrapped__Mesh, "colors", _value.colors)
+        PY_FIELD(wrapped__Mesh, "indices", _value.indices)
+        PY_FIELD(wrapped__Mesh, "animVertices", _value.animVertices)
+        PY_FIELD(wrapped__Mesh, "animNormals", _value.animNormals)
+        PY_FIELD(wrapped__Mesh, "boneIds", _value.boneIds)
+        PY_FIELD(wrapped__Mesh, "boneWeights", _value.boneWeights)
+        PY_FIELD(wrapped__Mesh, "vaoId", _value.vaoId)
+        PY_FIELD(wrapped__Mesh, "vboId", _value.vboId)
     }
 };
 
@@ -616,17 +604,16 @@ PyObject* py_var(VM* vm, Mesh v){
 }
 template<>
 Mesh py_cast<Mesh>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Mesh&>(vm, obj)._();
+    return py_cast<wrapped__Mesh&>(vm, obj)._value;
 }
 template<>
 Mesh _py_cast<Mesh>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Mesh&>(vm, obj)._();
+    return _py_cast<wrapped__Mesh&>(vm, obj)._value;
 }
 /*************** Shader ***************/
 struct wrapped__Shader{
 
     Shader _value;
-    Shader* _() { return &_value; }
     wrapped__Shader() = default;
     wrapped__Shader(const wrapped__Shader& other) = default;
 
@@ -648,8 +635,8 @@ struct wrapped__Shader{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Shader)
-        PY_FIELD(wrapped__Shader, "id", _, id)
-        PY_FIELD(wrapped__Shader, "locs", _, locs)
+        PY_FIELD(wrapped__Shader, "id", _value.id)
+        PY_FIELD(wrapped__Shader, "locs", _value.locs)
     }
 };
 
@@ -658,17 +645,16 @@ PyObject* py_var(VM* vm, Shader v){
 }
 template<>
 Shader py_cast<Shader>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Shader&>(vm, obj)._();
+    return py_cast<wrapped__Shader&>(vm, obj)._value;
 }
 template<>
 Shader _py_cast<Shader>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Shader&>(vm, obj)._();
+    return _py_cast<wrapped__Shader&>(vm, obj)._value;
 }
 /*************** MaterialMap ***************/
 struct wrapped__MaterialMap{
 
     MaterialMap _value;
-    MaterialMap* _() { return &_value; }
     wrapped__MaterialMap() = default;
     wrapped__MaterialMap(const wrapped__MaterialMap& other) = default;
 
@@ -690,9 +676,9 @@ struct wrapped__MaterialMap{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__MaterialMap)
-        PY_FIELD(wrapped__MaterialMap, "texture", _, texture)
-        PY_FIELD(wrapped__MaterialMap, "color", _, color)
-        PY_FIELD(wrapped__MaterialMap, "value", _, value)
+        PY_FIELD(wrapped__MaterialMap, "texture", _value.texture)
+        PY_FIELD(wrapped__MaterialMap, "color", _value.color)
+        PY_FIELD(wrapped__MaterialMap, "value", _value.value)
     }
 };
 
@@ -701,17 +687,16 @@ PyObject* py_var(VM* vm, MaterialMap v){
 }
 template<>
 MaterialMap py_cast<MaterialMap>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__MaterialMap&>(vm, obj)._();
+    return py_cast<wrapped__MaterialMap&>(vm, obj)._value;
 }
 template<>
 MaterialMap _py_cast<MaterialMap>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__MaterialMap&>(vm, obj)._();
+    return _py_cast<wrapped__MaterialMap&>(vm, obj)._value;
 }
 /*************** Material ***************/
 struct wrapped__Material{
 
     Material _value;
-    Material* _() { return &_value; }
     wrapped__Material() = default;
     wrapped__Material(const wrapped__Material& other) = default;
 
@@ -733,9 +718,9 @@ struct wrapped__Material{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Material)
-        PY_FIELD(wrapped__Material, "shader", _, shader)
-        PY_FIELD(wrapped__Material, "maps", _, maps)
-        PY_READONLY_FIELD(wrapped__Material, "params", _, params)
+        PY_FIELD(wrapped__Material, "shader", _value.shader)
+        PY_FIELD(wrapped__Material, "maps", _value.maps)
+        PY_READONLY_FIELD(wrapped__Material, "params", params)
     }
 };
 
@@ -744,17 +729,16 @@ PyObject* py_var(VM* vm, Material v){
 }
 template<>
 Material py_cast<Material>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Material&>(vm, obj)._();
+    return py_cast<wrapped__Material&>(vm, obj)._value;
 }
 template<>
 Material _py_cast<Material>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Material&>(vm, obj)._();
+    return _py_cast<wrapped__Material&>(vm, obj)._value;
 }
 /*************** Transform ***************/
 struct wrapped__Transform{
 
     Transform _value;
-    Transform* _() { return &_value; }
     wrapped__Transform() = default;
     wrapped__Transform(const wrapped__Transform& other) = default;
 
@@ -776,9 +760,9 @@ struct wrapped__Transform{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Transform)
-        PY_FIELD(wrapped__Transform, "translation", _, translation)
-        PY_FIELD(wrapped__Transform, "rotation", _, rotation)
-        PY_FIELD(wrapped__Transform, "scale", _, scale)
+        PY_FIELD(wrapped__Transform, "translation", _value.translation)
+        PY_FIELD(wrapped__Transform, "rotation", _value.rotation)
+        PY_FIELD(wrapped__Transform, "scale", _value.scale)
     }
 };
 
@@ -787,17 +771,16 @@ PyObject* py_var(VM* vm, Transform v){
 }
 template<>
 Transform py_cast<Transform>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Transform&>(vm, obj)._();
+    return py_cast<wrapped__Transform&>(vm, obj)._value;
 }
 template<>
 Transform _py_cast<Transform>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Transform&>(vm, obj)._();
+    return _py_cast<wrapped__Transform&>(vm, obj)._value;
 }
 /*************** BoneInfo ***************/
 struct wrapped__BoneInfo{
 
     BoneInfo _value;
-    BoneInfo* _() { return &_value; }
     wrapped__BoneInfo() = default;
     wrapped__BoneInfo(const wrapped__BoneInfo& other) = default;
 
@@ -819,8 +802,8 @@ struct wrapped__BoneInfo{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__BoneInfo)
-        PY_READONLY_FIELD(wrapped__BoneInfo, "name", _, name)
-        PY_FIELD(wrapped__BoneInfo, "parent", _, parent)
+        PY_READONLY_FIELD(wrapped__BoneInfo, "name", name)
+        PY_FIELD(wrapped__BoneInfo, "parent", _value.parent)
     }
 };
 
@@ -829,17 +812,16 @@ PyObject* py_var(VM* vm, BoneInfo v){
 }
 template<>
 BoneInfo py_cast<BoneInfo>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__BoneInfo&>(vm, obj)._();
+    return py_cast<wrapped__BoneInfo&>(vm, obj)._value;
 }
 template<>
 BoneInfo _py_cast<BoneInfo>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__BoneInfo&>(vm, obj)._();
+    return _py_cast<wrapped__BoneInfo&>(vm, obj)._value;
 }
 /*************** Model ***************/
 struct wrapped__Model{
 
     Model _value;
-    Model* _() { return &_value; }
     wrapped__Model() = default;
     wrapped__Model(const wrapped__Model& other) = default;
 
@@ -861,15 +843,15 @@ struct wrapped__Model{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Model)
-        PY_FIELD(wrapped__Model, "transform", _, transform)
-        PY_FIELD(wrapped__Model, "meshCount", _, meshCount)
-        PY_FIELD(wrapped__Model, "materialCount", _, materialCount)
-        PY_FIELD(wrapped__Model, "meshes", _, meshes)
-        PY_FIELD(wrapped__Model, "materials", _, materials)
-        PY_FIELD(wrapped__Model, "meshMaterial", _, meshMaterial)
-        PY_FIELD(wrapped__Model, "boneCount", _, boneCount)
-        PY_FIELD(wrapped__Model, "bones", _, bones)
-        PY_FIELD(wrapped__Model, "bindPose", _, bindPose)
+        PY_FIELD(wrapped__Model, "transform", _value.transform)
+        PY_FIELD(wrapped__Model, "meshCount", _value.meshCount)
+        PY_FIELD(wrapped__Model, "materialCount", _value.materialCount)
+        PY_FIELD(wrapped__Model, "meshes", _value.meshes)
+        PY_FIELD(wrapped__Model, "materials", _value.materials)
+        PY_FIELD(wrapped__Model, "meshMaterial", _value.meshMaterial)
+        PY_FIELD(wrapped__Model, "boneCount", _value.boneCount)
+        PY_FIELD(wrapped__Model, "bones", _value.bones)
+        PY_FIELD(wrapped__Model, "bindPose", _value.bindPose)
     }
 };
 
@@ -878,17 +860,16 @@ PyObject* py_var(VM* vm, Model v){
 }
 template<>
 Model py_cast<Model>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Model&>(vm, obj)._();
+    return py_cast<wrapped__Model&>(vm, obj)._value;
 }
 template<>
 Model _py_cast<Model>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Model&>(vm, obj)._();
+    return _py_cast<wrapped__Model&>(vm, obj)._value;
 }
 /*************** ModelAnimation ***************/
 struct wrapped__ModelAnimation{
 
     ModelAnimation _value;
-    ModelAnimation* _() { return &_value; }
     wrapped__ModelAnimation() = default;
     wrapped__ModelAnimation(const wrapped__ModelAnimation& other) = default;
 
@@ -910,11 +891,11 @@ struct wrapped__ModelAnimation{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__ModelAnimation)
-        PY_FIELD(wrapped__ModelAnimation, "boneCount", _, boneCount)
-        PY_FIELD(wrapped__ModelAnimation, "frameCount", _, frameCount)
-        PY_FIELD(wrapped__ModelAnimation, "bones", _, bones)
-        PY_FIELD(wrapped__ModelAnimation, "framePoses", _, framePoses)
-        PY_READONLY_FIELD(wrapped__ModelAnimation, "name", _, name)
+        PY_FIELD(wrapped__ModelAnimation, "boneCount", _value.boneCount)
+        PY_FIELD(wrapped__ModelAnimation, "frameCount", _value.frameCount)
+        PY_FIELD(wrapped__ModelAnimation, "bones", _value.bones)
+        PY_FIELD(wrapped__ModelAnimation, "framePoses", _value.framePoses)
+        PY_READONLY_FIELD(wrapped__ModelAnimation, "name", name)
     }
 };
 
@@ -923,17 +904,16 @@ PyObject* py_var(VM* vm, ModelAnimation v){
 }
 template<>
 ModelAnimation py_cast<ModelAnimation>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__ModelAnimation&>(vm, obj)._();
+    return py_cast<wrapped__ModelAnimation&>(vm, obj)._value;
 }
 template<>
 ModelAnimation _py_cast<ModelAnimation>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__ModelAnimation&>(vm, obj)._();
+    return _py_cast<wrapped__ModelAnimation&>(vm, obj)._value;
 }
 /*************** Ray ***************/
 struct wrapped__Ray{
 
     Ray _value;
-    Ray* _() { return &_value; }
     wrapped__Ray() = default;
     wrapped__Ray(const wrapped__Ray& other) = default;
 
@@ -955,8 +935,8 @@ struct wrapped__Ray{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Ray)
-        PY_FIELD(wrapped__Ray, "position", _, position)
-        PY_FIELD(wrapped__Ray, "direction", _, direction)
+        PY_FIELD(wrapped__Ray, "position", _value.position)
+        PY_FIELD(wrapped__Ray, "direction", _value.direction)
     }
 };
 
@@ -965,17 +945,16 @@ PyObject* py_var(VM* vm, Ray v){
 }
 template<>
 Ray py_cast<Ray>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Ray&>(vm, obj)._();
+    return py_cast<wrapped__Ray&>(vm, obj)._value;
 }
 template<>
 Ray _py_cast<Ray>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Ray&>(vm, obj)._();
+    return _py_cast<wrapped__Ray&>(vm, obj)._value;
 }
 /*************** RayCollision ***************/
 struct wrapped__RayCollision{
 
     RayCollision _value;
-    RayCollision* _() { return &_value; }
     wrapped__RayCollision() = default;
     wrapped__RayCollision(const wrapped__RayCollision& other) = default;
 
@@ -997,10 +976,10 @@ struct wrapped__RayCollision{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__RayCollision)
-        PY_FIELD(wrapped__RayCollision, "hit", _, hit)
-        PY_FIELD(wrapped__RayCollision, "distance", _, distance)
-        PY_FIELD(wrapped__RayCollision, "point", _, point)
-        PY_FIELD(wrapped__RayCollision, "normal", _, normal)
+        PY_FIELD(wrapped__RayCollision, "hit", _value.hit)
+        PY_FIELD(wrapped__RayCollision, "distance", _value.distance)
+        PY_FIELD(wrapped__RayCollision, "point", _value.point)
+        PY_FIELD(wrapped__RayCollision, "normal", _value.normal)
     }
 };
 
@@ -1009,17 +988,16 @@ PyObject* py_var(VM* vm, RayCollision v){
 }
 template<>
 RayCollision py_cast<RayCollision>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__RayCollision&>(vm, obj)._();
+    return py_cast<wrapped__RayCollision&>(vm, obj)._value;
 }
 template<>
 RayCollision _py_cast<RayCollision>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__RayCollision&>(vm, obj)._();
+    return _py_cast<wrapped__RayCollision&>(vm, obj)._value;
 }
 /*************** BoundingBox ***************/
 struct wrapped__BoundingBox{
 
     BoundingBox _value;
-    BoundingBox* _() { return &_value; }
     wrapped__BoundingBox() = default;
     wrapped__BoundingBox(const wrapped__BoundingBox& other) = default;
 
@@ -1041,8 +1019,8 @@ struct wrapped__BoundingBox{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__BoundingBox)
-        PY_FIELD(wrapped__BoundingBox, "min", _, min)
-        PY_FIELD(wrapped__BoundingBox, "max", _, max)
+        PY_FIELD(wrapped__BoundingBox, "min", _value.min)
+        PY_FIELD(wrapped__BoundingBox, "max", _value.max)
     }
 };
 
@@ -1051,17 +1029,16 @@ PyObject* py_var(VM* vm, BoundingBox v){
 }
 template<>
 BoundingBox py_cast<BoundingBox>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__BoundingBox&>(vm, obj)._();
+    return py_cast<wrapped__BoundingBox&>(vm, obj)._value;
 }
 template<>
 BoundingBox _py_cast<BoundingBox>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__BoundingBox&>(vm, obj)._();
+    return _py_cast<wrapped__BoundingBox&>(vm, obj)._value;
 }
 /*************** Wave ***************/
 struct wrapped__Wave{
 
     Wave _value;
-    Wave* _() { return &_value; }
     wrapped__Wave() = default;
     wrapped__Wave(const wrapped__Wave& other) = default;
 
@@ -1083,11 +1060,11 @@ struct wrapped__Wave{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Wave)
-        PY_FIELD(wrapped__Wave, "frameCount", _, frameCount)
-        PY_FIELD(wrapped__Wave, "sampleRate", _, sampleRate)
-        PY_FIELD(wrapped__Wave, "sampleSize", _, sampleSize)
-        PY_FIELD(wrapped__Wave, "channels", _, channels)
-        PY_FIELD(wrapped__Wave, "data", _, data)
+        PY_FIELD(wrapped__Wave, "frameCount", _value.frameCount)
+        PY_FIELD(wrapped__Wave, "sampleRate", _value.sampleRate)
+        PY_FIELD(wrapped__Wave, "sampleSize", _value.sampleSize)
+        PY_FIELD(wrapped__Wave, "channels", _value.channels)
+        PY_FIELD(wrapped__Wave, "data", _value.data)
     }
 };
 
@@ -1096,17 +1073,16 @@ PyObject* py_var(VM* vm, Wave v){
 }
 template<>
 Wave py_cast<Wave>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Wave&>(vm, obj)._();
+    return py_cast<wrapped__Wave&>(vm, obj)._value;
 }
 template<>
 Wave _py_cast<Wave>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Wave&>(vm, obj)._();
+    return _py_cast<wrapped__Wave&>(vm, obj)._value;
 }
 /*************** AudioStream ***************/
 struct wrapped__AudioStream{
 
     AudioStream _value;
-    AudioStream* _() { return &_value; }
     wrapped__AudioStream() = default;
     wrapped__AudioStream(const wrapped__AudioStream& other) = default;
 
@@ -1128,11 +1104,11 @@ struct wrapped__AudioStream{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__AudioStream)
-        PY_FIELD(wrapped__AudioStream, "buffer", _, buffer)
-        PY_FIELD(wrapped__AudioStream, "processor", _, processor)
-        PY_FIELD(wrapped__AudioStream, "sampleRate", _, sampleRate)
-        PY_FIELD(wrapped__AudioStream, "sampleSize", _, sampleSize)
-        PY_FIELD(wrapped__AudioStream, "channels", _, channels)
+        PY_FIELD(wrapped__AudioStream, "buffer", _value.buffer)
+        PY_FIELD(wrapped__AudioStream, "processor", _value.processor)
+        PY_FIELD(wrapped__AudioStream, "sampleRate", _value.sampleRate)
+        PY_FIELD(wrapped__AudioStream, "sampleSize", _value.sampleSize)
+        PY_FIELD(wrapped__AudioStream, "channels", _value.channels)
     }
 };
 
@@ -1141,17 +1117,16 @@ PyObject* py_var(VM* vm, AudioStream v){
 }
 template<>
 AudioStream py_cast<AudioStream>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__AudioStream&>(vm, obj)._();
+    return py_cast<wrapped__AudioStream&>(vm, obj)._value;
 }
 template<>
 AudioStream _py_cast<AudioStream>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__AudioStream&>(vm, obj)._();
+    return _py_cast<wrapped__AudioStream&>(vm, obj)._value;
 }
 /*************** Sound ***************/
 struct wrapped__Sound{
 
     Sound _value;
-    Sound* _() { return &_value; }
     wrapped__Sound() = default;
     wrapped__Sound(const wrapped__Sound& other) = default;
 
@@ -1173,8 +1148,8 @@ struct wrapped__Sound{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Sound)
-        PY_FIELD(wrapped__Sound, "stream", _, stream)
-        PY_FIELD(wrapped__Sound, "frameCount", _, frameCount)
+        PY_FIELD(wrapped__Sound, "stream", _value.stream)
+        PY_FIELD(wrapped__Sound, "frameCount", _value.frameCount)
     }
 };
 
@@ -1183,17 +1158,16 @@ PyObject* py_var(VM* vm, Sound v){
 }
 template<>
 Sound py_cast<Sound>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Sound&>(vm, obj)._();
+    return py_cast<wrapped__Sound&>(vm, obj)._value;
 }
 template<>
 Sound _py_cast<Sound>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Sound&>(vm, obj)._();
+    return _py_cast<wrapped__Sound&>(vm, obj)._value;
 }
 /*************** Music ***************/
 struct wrapped__Music{
 
     Music _value;
-    Music* _() { return &_value; }
     wrapped__Music() = default;
     wrapped__Music(const wrapped__Music& other) = default;
 
@@ -1215,11 +1189,11 @@ struct wrapped__Music{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__Music)
-        PY_FIELD(wrapped__Music, "stream", _, stream)
-        PY_FIELD(wrapped__Music, "frameCount", _, frameCount)
-        PY_FIELD(wrapped__Music, "looping", _, looping)
-        PY_FIELD(wrapped__Music, "ctxType", _, ctxType)
-        PY_FIELD(wrapped__Music, "ctxData", _, ctxData)
+        PY_FIELD(wrapped__Music, "stream", _value.stream)
+        PY_FIELD(wrapped__Music, "frameCount", _value.frameCount)
+        PY_FIELD(wrapped__Music, "looping", _value.looping)
+        PY_FIELD(wrapped__Music, "ctxType", _value.ctxType)
+        PY_FIELD(wrapped__Music, "ctxData", _value.ctxData)
     }
 };
 
@@ -1228,17 +1202,16 @@ PyObject* py_var(VM* vm, Music v){
 }
 template<>
 Music py_cast<Music>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__Music&>(vm, obj)._();
+    return py_cast<wrapped__Music&>(vm, obj)._value;
 }
 template<>
 Music _py_cast<Music>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__Music&>(vm, obj)._();
+    return _py_cast<wrapped__Music&>(vm, obj)._value;
 }
 /*************** VrDeviceInfo ***************/
 struct wrapped__VrDeviceInfo{
 
     VrDeviceInfo _value;
-    VrDeviceInfo* _() { return &_value; }
     wrapped__VrDeviceInfo() = default;
     wrapped__VrDeviceInfo(const wrapped__VrDeviceInfo& other) = default;
 
@@ -1260,15 +1233,15 @@ struct wrapped__VrDeviceInfo{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__VrDeviceInfo)
-        PY_FIELD(wrapped__VrDeviceInfo, "hResolution", _, hResolution)
-        PY_FIELD(wrapped__VrDeviceInfo, "vResolution", _, vResolution)
-        PY_FIELD(wrapped__VrDeviceInfo, "hScreenSize", _, hScreenSize)
-        PY_FIELD(wrapped__VrDeviceInfo, "vScreenSize", _, vScreenSize)
-        PY_FIELD(wrapped__VrDeviceInfo, "eyeToScreenDistance", _, eyeToScreenDistance)
-        PY_FIELD(wrapped__VrDeviceInfo, "lensSeparationDistance", _, lensSeparationDistance)
-        PY_FIELD(wrapped__VrDeviceInfo, "interpupillaryDistance", _, interpupillaryDistance)
-        PY_READONLY_FIELD(wrapped__VrDeviceInfo, "lensDistortionValues", _, lensDistortionValues)
-        PY_READONLY_FIELD(wrapped__VrDeviceInfo, "chromaAbCorrection", _, chromaAbCorrection)
+        PY_FIELD(wrapped__VrDeviceInfo, "hResolution", _value.hResolution)
+        PY_FIELD(wrapped__VrDeviceInfo, "vResolution", _value.vResolution)
+        PY_FIELD(wrapped__VrDeviceInfo, "hScreenSize", _value.hScreenSize)
+        PY_FIELD(wrapped__VrDeviceInfo, "vScreenSize", _value.vScreenSize)
+        PY_FIELD(wrapped__VrDeviceInfo, "eyeToScreenDistance", _value.eyeToScreenDistance)
+        PY_FIELD(wrapped__VrDeviceInfo, "lensSeparationDistance", _value.lensSeparationDistance)
+        PY_FIELD(wrapped__VrDeviceInfo, "interpupillaryDistance", _value.interpupillaryDistance)
+        PY_READONLY_FIELD(wrapped__VrDeviceInfo, "lensDistortionValues", lensDistortionValues)
+        PY_READONLY_FIELD(wrapped__VrDeviceInfo, "chromaAbCorrection", chromaAbCorrection)
     }
 };
 
@@ -1277,17 +1250,16 @@ PyObject* py_var(VM* vm, VrDeviceInfo v){
 }
 template<>
 VrDeviceInfo py_cast<VrDeviceInfo>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__VrDeviceInfo&>(vm, obj)._();
+    return py_cast<wrapped__VrDeviceInfo&>(vm, obj)._value;
 }
 template<>
 VrDeviceInfo _py_cast<VrDeviceInfo>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__VrDeviceInfo&>(vm, obj)._();
+    return _py_cast<wrapped__VrDeviceInfo&>(vm, obj)._value;
 }
 /*************** VrStereoConfig ***************/
 struct wrapped__VrStereoConfig{
 
     VrStereoConfig _value;
-    VrStereoConfig* _() { return &_value; }
     wrapped__VrStereoConfig() = default;
     wrapped__VrStereoConfig(const wrapped__VrStereoConfig& other) = default;
 
@@ -1309,14 +1281,14 @@ struct wrapped__VrStereoConfig{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__VrStereoConfig)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "projection", _, projection)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "viewOffset", _, viewOffset)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "leftLensCenter", _, leftLensCenter)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "rightLensCenter", _, rightLensCenter)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "leftScreenCenter", _, leftScreenCenter)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "rightScreenCenter", _, rightScreenCenter)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "scale", _, scale)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "scaleIn", _, scaleIn)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "projection", projection)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "viewOffset", viewOffset)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "leftLensCenter", leftLensCenter)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "rightLensCenter", rightLensCenter)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "leftScreenCenter", leftScreenCenter)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "rightScreenCenter", rightScreenCenter)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "scale", scale)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "scaleIn", scaleIn)
     }
 };
 
@@ -1325,17 +1297,16 @@ PyObject* py_var(VM* vm, VrStereoConfig v){
 }
 template<>
 VrStereoConfig py_cast<VrStereoConfig>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__VrStereoConfig&>(vm, obj)._();
+    return py_cast<wrapped__VrStereoConfig&>(vm, obj)._value;
 }
 template<>
 VrStereoConfig _py_cast<VrStereoConfig>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__VrStereoConfig&>(vm, obj)._();
+    return _py_cast<wrapped__VrStereoConfig&>(vm, obj)._value;
 }
 /*************** FilePathList ***************/
 struct wrapped__FilePathList{
 
     FilePathList _value;
-    FilePathList* _() { return &_value; }
     wrapped__FilePathList() = default;
     wrapped__FilePathList(const wrapped__FilePathList& other) = default;
 
@@ -1357,9 +1328,9 @@ struct wrapped__FilePathList{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__FilePathList)
-        PY_FIELD(wrapped__FilePathList, "capacity", _, capacity)
-        PY_FIELD(wrapped__FilePathList, "count", _, count)
-        PY_FIELD(wrapped__FilePathList, "paths", _, paths)
+        PY_FIELD(wrapped__FilePathList, "capacity", _value.capacity)
+        PY_FIELD(wrapped__FilePathList, "count", _value.count)
+        PY_FIELD(wrapped__FilePathList, "paths", _value.paths)
     }
 };
 
@@ -1368,17 +1339,16 @@ PyObject* py_var(VM* vm, FilePathList v){
 }
 template<>
 FilePathList py_cast<FilePathList>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__FilePathList&>(vm, obj)._();
+    return py_cast<wrapped__FilePathList&>(vm, obj)._value;
 }
 template<>
 FilePathList _py_cast<FilePathList>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__FilePathList&>(vm, obj)._();
+    return _py_cast<wrapped__FilePathList&>(vm, obj)._value;
 }
 /*************** AutomationEvent ***************/
 struct wrapped__AutomationEvent{
 
     AutomationEvent _value;
-    AutomationEvent* _() { return &_value; }
     wrapped__AutomationEvent() = default;
     wrapped__AutomationEvent(const wrapped__AutomationEvent& other) = default;
 
@@ -1400,9 +1370,9 @@ struct wrapped__AutomationEvent{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__AutomationEvent)
-        PY_FIELD(wrapped__AutomationEvent, "frame", _, frame)
-        PY_FIELD(wrapped__AutomationEvent, "type", _, type)
-        PY_READONLY_FIELD(wrapped__AutomationEvent, "params", _, params)
+        PY_FIELD(wrapped__AutomationEvent, "frame", _value.frame)
+        PY_FIELD(wrapped__AutomationEvent, "type", _value.type)
+        PY_READONLY_FIELD(wrapped__AutomationEvent, "params", params)
     }
 };
 
@@ -1411,17 +1381,16 @@ PyObject* py_var(VM* vm, AutomationEvent v){
 }
 template<>
 AutomationEvent py_cast<AutomationEvent>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__AutomationEvent&>(vm, obj)._();
+    return py_cast<wrapped__AutomationEvent&>(vm, obj)._value;
 }
 template<>
 AutomationEvent _py_cast<AutomationEvent>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__AutomationEvent&>(vm, obj)._();
+    return _py_cast<wrapped__AutomationEvent&>(vm, obj)._value;
 }
 /*************** AutomationEventList ***************/
 struct wrapped__AutomationEventList{
 
     AutomationEventList _value;
-    AutomationEventList* _() { return &_value; }
     wrapped__AutomationEventList() = default;
     wrapped__AutomationEventList(const wrapped__AutomationEventList& other) = default;
 
@@ -1443,9 +1412,9 @@ struct wrapped__AutomationEventList{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__AutomationEventList)
-        PY_FIELD(wrapped__AutomationEventList, "capacity", _, capacity)
-        PY_FIELD(wrapped__AutomationEventList, "count", _, count)
-        PY_FIELD(wrapped__AutomationEventList, "events", _, events)
+        PY_FIELD(wrapped__AutomationEventList, "capacity", _value.capacity)
+        PY_FIELD(wrapped__AutomationEventList, "count", _value.count)
+        PY_FIELD(wrapped__AutomationEventList, "events", _value.events)
     }
 };
 
@@ -1454,11 +1423,11 @@ PyObject* py_var(VM* vm, AutomationEventList v){
 }
 template<>
 AutomationEventList py_cast<AutomationEventList>(VM* vm, PyObject* obj){
-    return *py_cast<wrapped__AutomationEventList&>(vm, obj)._();
+    return py_cast<wrapped__AutomationEventList&>(vm, obj)._value;
 }
 template<>
 AutomationEventList _py_cast<AutomationEventList>(VM* vm, PyObject* obj){
-    return *_py_cast<wrapped__AutomationEventList&>(vm, obj)._();
+    return _py_cast<wrapped__AutomationEventList&>(vm, obj)._value;
 }
 ////////////////////////////////////////
 void add_module_raylib(VM* vm){

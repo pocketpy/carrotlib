@@ -990,9 +990,8 @@ static void register_imgui_enums(VM* vm, PyObject* mod){
 
 template<typename T>
 struct OpaquePointer{
-    T* ptr;
-    OpaquePointer(T* ptr): ptr(ptr){}
-    T* _(){ return ptr; }
+    T* p;
+    OpaquePointer(T* p): p(p){}
 };
 
 struct PyImGuiIO: OpaquePointer<ImGuiIO>{
@@ -1003,77 +1002,77 @@ struct PyImGuiIO: OpaquePointer<ImGuiIO>{
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_notimplemented_constructor<PyImGuiIO>(type);
                            
-        PY_FIELD(PyImGuiIO, "ConfigFlags", _, ConfigFlags)           // int
-        PY_FIELD(PyImGuiIO, "BackendFlags", _, BackendFlags)         // int
-        PY_FIELD(PyImGuiIO, "DisplaySize", _, DisplaySize)           // struct ImVec2
-        PY_FIELD(PyImGuiIO, "DeltaTime", _, DeltaTime)               // float
-        PY_FIELD(PyImGuiIO, "IniSavingRate", _, IniSavingRate)       // float
-        PY_FIELD(PyImGuiIO, "IniFilename", _, IniFilename)  // const char*
-        PY_FIELD(PyImGuiIO, "LogFilename", _, LogFilename)  // const char*
-        PY_READONLY_FIELD(PyImGuiIO, "UserData", _, UserData)        // void*
-        PY_READONLY_FIELD(PyImGuiIO, "Fonts", _, Fonts)              // ImFontAtlas*
-        PY_FIELD(PyImGuiIO, "FontGlobalScale", _, FontGlobalScale)   // float
-        PY_FIELD(PyImGuiIO, "FontAllowUserScaling", _, FontAllowUserScaling)// bool
-        PY_READONLY_FIELD(PyImGuiIO, "FontDefault", _, FontDefault)  // ImFont*
-        PY_FIELD(PyImGuiIO, "DisplayFramebufferScale", _, DisplayFramebufferScale)// struct ImVec2
-        PY_FIELD(PyImGuiIO, "MouseDrawCursor", _, MouseDrawCursor)   // bool
-        PY_FIELD(PyImGuiIO, "ConfigMacOSXBehaviors", _, ConfigMacOSXBehaviors)// bool
-        PY_FIELD(PyImGuiIO, "ConfigInputTrickleEventQueue", _, ConfigInputTrickleEventQueue)// bool
-        PY_FIELD(PyImGuiIO, "ConfigInputTextCursorBlink", _, ConfigInputTextCursorBlink)// bool
-        PY_FIELD(PyImGuiIO, "ConfigInputTextEnterKeepActive", _, ConfigInputTextEnterKeepActive)// bool
-        PY_FIELD(PyImGuiIO, "ConfigDragClickToInputText", _, ConfigDragClickToInputText)// bool
-        PY_FIELD(PyImGuiIO, "ConfigWindowsResizeFromEdges", _, ConfigWindowsResizeFromEdges)// bool
-        PY_FIELD(PyImGuiIO, "ConfigWindowsMoveFromTitleBarOnly", _, ConfigWindowsMoveFromTitleBarOnly)// bool
-        PY_FIELD(PyImGuiIO, "ConfigMemoryCompactTimer", _, ConfigMemoryCompactTimer)// float
-        PY_FIELD(PyImGuiIO, "MouseDoubleClickTime", _, MouseDoubleClickTime)// float
-        PY_FIELD(PyImGuiIO, "MouseDoubleClickMaxDist", _, MouseDoubleClickMaxDist)// float
-        PY_FIELD(PyImGuiIO, "MouseDragThreshold", _, MouseDragThreshold)// float
-        PY_FIELD(PyImGuiIO, "KeyRepeatDelay", _, KeyRepeatDelay)     // float
-        PY_FIELD(PyImGuiIO, "KeyRepeatRate", _, KeyRepeatRate)       // float
-        PY_FIELD(PyImGuiIO, "ConfigDebugBeginReturnValueOnce", _, ConfigDebugBeginReturnValueOnce)// bool
-        PY_FIELD(PyImGuiIO, "ConfigDebugBeginReturnValueLoop", _, ConfigDebugBeginReturnValueLoop)// bool
-        PY_FIELD(PyImGuiIO, "ConfigDebugIgnoreFocusLoss", _, ConfigDebugIgnoreFocusLoss)// bool
-        PY_FIELD(PyImGuiIO, "ConfigDebugIniSettings", _, ConfigDebugIniSettings)// bool
-        PY_READONLY_FIELD(PyImGuiIO, "BackendPlatformName", _, BackendPlatformName)// const char*
-        PY_READONLY_FIELD(PyImGuiIO, "BackendRendererName", _, BackendRendererName)// const char*
-        PY_READONLY_FIELD(PyImGuiIO, "BackendPlatformUserData", _, BackendPlatformUserData)// void*
-        PY_READONLY_FIELD(PyImGuiIO, "BackendRendererUserData", _, BackendRendererUserData)// void*
-        PY_READONLY_FIELD(PyImGuiIO, "BackendLanguageUserData", _, BackendLanguageUserData)// void*
-        PY_READONLY_FIELD(PyImGuiIO, "ClipboardUserData", _, ClipboardUserData)// void*
-        PY_FIELD(PyImGuiIO, "PlatformLocaleDecimalPoint", _, PlatformLocaleDecimalPoint)// ImWchar16
-        PY_FIELD(PyImGuiIO, "WantCaptureMouse", _, WantCaptureMouse) // bool
-        PY_FIELD(PyImGuiIO, "WantCaptureKeyboard", _, WantCaptureKeyboard)// bool
-        PY_FIELD(PyImGuiIO, "WantTextInput", _, WantTextInput)       // bool
-        PY_FIELD(PyImGuiIO, "WantSetMousePos", _, WantSetMousePos)   // bool
-        PY_FIELD(PyImGuiIO, "WantSaveIniSettings", _, WantSaveIniSettings)// bool
-        PY_FIELD(PyImGuiIO, "NavActive", _, NavActive)               // bool
-        PY_FIELD(PyImGuiIO, "NavVisible", _, NavVisible)             // bool
-        PY_FIELD(PyImGuiIO, "Framerate", _, Framerate)               // float
-        PY_FIELD(PyImGuiIO, "MetricsRenderVertices", _, MetricsRenderVertices)// int
-        PY_FIELD(PyImGuiIO, "MetricsRenderIndices", _, MetricsRenderIndices)// int
-        PY_FIELD(PyImGuiIO, "MetricsRenderWindows", _, MetricsRenderWindows)// int
-        PY_FIELD(PyImGuiIO, "MetricsActiveWindows", _, MetricsActiveWindows)// int
-        PY_FIELD(PyImGuiIO, "MetricsActiveAllocations", _, MetricsActiveAllocations)// int
-        PY_FIELD(PyImGuiIO, "MouseDelta", _, MouseDelta)             // struct ImVec2
-        PY_READONLY_FIELD(PyImGuiIO, "Ctx", _, Ctx)                  // ImGuiContext*
-        PY_FIELD(PyImGuiIO, "MousePos", _, MousePos)                 // struct ImVec2
-        PY_FIELD(PyImGuiIO, "MouseWheel", _, MouseWheel)             // float
-        PY_FIELD(PyImGuiIO, "MouseWheelH", _, MouseWheelH)           // float
-        PY_FIELD(PyImGuiIO, "MouseSource", _, MouseSource)           // ImGuiMouseSource
-        PY_FIELD(PyImGuiIO, "KeyCtrl", _, KeyCtrl)                   // bool
-        PY_FIELD(PyImGuiIO, "KeyShift", _, KeyShift)                 // bool
-        PY_FIELD(PyImGuiIO, "KeyAlt", _, KeyAlt)                     // bool
-        PY_FIELD(PyImGuiIO, "KeySuper", _, KeySuper)                 // bool
-        PY_FIELD(PyImGuiIO, "KeyMods", _, KeyMods)                   // int
-        PY_FIELD(PyImGuiIO, "WantCaptureMouseUnlessPopupClose", _, WantCaptureMouseUnlessPopupClose)// bool
-        PY_FIELD(PyImGuiIO, "MousePosPrev", _, MousePosPrev)         // struct ImVec2
-        PY_FIELD(PyImGuiIO, "MouseWheelRequestAxisSwap", _, MouseWheelRequestAxisSwap)// bool
-        PY_FIELD(PyImGuiIO, "PenPressure", _, PenPressure)           // float
-        PY_FIELD(PyImGuiIO, "AppFocusLost", _, AppFocusLost)         // bool
-        PY_FIELD(PyImGuiIO, "AppAcceptingEvents", _, AppAcceptingEvents)// bool
-        PY_FIELD(PyImGuiIO, "BackendUsingLegacyKeyArrays", _, BackendUsingLegacyKeyArrays)// signed char
-        PY_FIELD(PyImGuiIO, "BackendUsingLegacyNavInputArray", _, BackendUsingLegacyNavInputArray)// bool
-        PY_FIELD(PyImGuiIO, "InputQueueSurrogate", _, InputQueueSurrogate)// unsigned short
+        PY_FIELD(PyImGuiIO, "ConfigFlags", p->ConfigFlags)           // int
+        PY_FIELD(PyImGuiIO, "BackendFlags", p->BackendFlags)         // int
+        PY_FIELD(PyImGuiIO, "DisplaySize", p->DisplaySize)           // struct ImVec2
+        PY_FIELD(PyImGuiIO, "DeltaTime", p->DeltaTime)               // float
+        PY_FIELD(PyImGuiIO, "IniSavingRate", p->IniSavingRate)       // float
+        PY_FIELD(PyImGuiIO, "IniFilename", p->IniFilename)  // const char*
+        PY_FIELD(PyImGuiIO, "LogFilename", p->LogFilename)  // const char*
+        PY_READONLY_FIELD(PyImGuiIO, "UserData", p->UserData)        // void*
+        PY_READONLY_FIELD(PyImGuiIO, "Fonts", p->Fonts)              // ImFontAtlas*
+        PY_FIELD(PyImGuiIO, "FontGlobalScale", p->FontGlobalScale)   // float
+        PY_FIELD(PyImGuiIO, "FontAllowUserScaling", p->FontAllowUserScaling)// bool
+        PY_READONLY_FIELD(PyImGuiIO, "FontDefault", p->FontDefault)  // ImFont*
+        PY_FIELD(PyImGuiIO, "DisplayFramebufferScale", p->DisplayFramebufferScale)// struct ImVec2
+        PY_FIELD(PyImGuiIO, "MouseDrawCursor", p->MouseDrawCursor)   // bool
+        PY_FIELD(PyImGuiIO, "ConfigMacOSXBehaviors", p->ConfigMacOSXBehaviors)// bool
+        PY_FIELD(PyImGuiIO, "ConfigInputTrickleEventQueue", p->ConfigInputTrickleEventQueue)// bool
+        PY_FIELD(PyImGuiIO, "ConfigInputTextCursorBlink", p->ConfigInputTextCursorBlink)// bool
+        PY_FIELD(PyImGuiIO, "ConfigInputTextEnterKeepActive", p->ConfigInputTextEnterKeepActive)// bool
+        PY_FIELD(PyImGuiIO, "ConfigDragClickToInputText", p->ConfigDragClickToInputText)// bool
+        PY_FIELD(PyImGuiIO, "ConfigWindowsResizeFromEdges", p->ConfigWindowsResizeFromEdges)// bool
+        PY_FIELD(PyImGuiIO, "ConfigWindowsMoveFromTitleBarOnly", p->ConfigWindowsMoveFromTitleBarOnly)// bool
+        PY_FIELD(PyImGuiIO, "ConfigMemoryCompactTimer", p->ConfigMemoryCompactTimer)// float
+        PY_FIELD(PyImGuiIO, "MouseDoubleClickTime", p->MouseDoubleClickTime)// float
+        PY_FIELD(PyImGuiIO, "MouseDoubleClickMaxDist", p->MouseDoubleClickMaxDist)// float
+        PY_FIELD(PyImGuiIO, "MouseDragThreshold", p->MouseDragThreshold)// float
+        PY_FIELD(PyImGuiIO, "KeyRepeatDelay", p->KeyRepeatDelay)     // float
+        PY_FIELD(PyImGuiIO, "KeyRepeatRate", p->KeyRepeatRate)       // float
+        PY_FIELD(PyImGuiIO, "ConfigDebugBeginReturnValueOnce", p->ConfigDebugBeginReturnValueOnce)// bool
+        PY_FIELD(PyImGuiIO, "ConfigDebugBeginReturnValueLoop", p->ConfigDebugBeginReturnValueLoop)// bool
+        PY_FIELD(PyImGuiIO, "ConfigDebugIgnoreFocusLoss", p->ConfigDebugIgnoreFocusLoss)// bool
+        PY_FIELD(PyImGuiIO, "ConfigDebugIniSettings", p->ConfigDebugIniSettings)// bool
+        PY_READONLY_FIELD(PyImGuiIO, "BackendPlatformName", p->BackendPlatformName)// const char*
+        PY_READONLY_FIELD(PyImGuiIO, "BackendRendererName", p->BackendRendererName)// const char*
+        PY_READONLY_FIELD(PyImGuiIO, "BackendPlatformUserData", p->BackendPlatformUserData)// void*
+        PY_READONLY_FIELD(PyImGuiIO, "BackendRendererUserData", p->BackendRendererUserData)// void*
+        PY_READONLY_FIELD(PyImGuiIO, "BackendLanguageUserData", p->BackendLanguageUserData)// void*
+        PY_READONLY_FIELD(PyImGuiIO, "ClipboardUserData", p->ClipboardUserData)// void*
+        PY_FIELD(PyImGuiIO, "PlatformLocaleDecimalPoint", p->PlatformLocaleDecimalPoint)// ImWchar16
+        PY_FIELD(PyImGuiIO, "WantCaptureMouse", p->WantCaptureMouse) // bool
+        PY_FIELD(PyImGuiIO, "WantCaptureKeyboard", p->WantCaptureKeyboard)// bool
+        PY_FIELD(PyImGuiIO, "WantTextInput", p->WantTextInput)       // bool
+        PY_FIELD(PyImGuiIO, "WantSetMousePos", p->WantSetMousePos)   // bool
+        PY_FIELD(PyImGuiIO, "WantSaveIniSettings", p->WantSaveIniSettings)// bool
+        PY_FIELD(PyImGuiIO, "NavActive", p->NavActive)               // bool
+        PY_FIELD(PyImGuiIO, "NavVisible", p->NavVisible)             // bool
+        PY_FIELD(PyImGuiIO, "Framerate", p->Framerate)               // float
+        PY_FIELD(PyImGuiIO, "MetricsRenderVertices", p->MetricsRenderVertices)// int
+        PY_FIELD(PyImGuiIO, "MetricsRenderIndices", p->MetricsRenderIndices)// int
+        PY_FIELD(PyImGuiIO, "MetricsRenderWindows", p->MetricsRenderWindows)// int
+        PY_FIELD(PyImGuiIO, "MetricsActiveWindows", p->MetricsActiveWindows)// int
+        PY_FIELD(PyImGuiIO, "MetricsActiveAllocations", p->MetricsActiveAllocations)// int
+        PY_FIELD(PyImGuiIO, "MouseDelta", p->MouseDelta)             // struct ImVec2
+        PY_READONLY_FIELD(PyImGuiIO, "Ctx", p->Ctx)                  // ImGuiContext*
+        PY_FIELD(PyImGuiIO, "MousePos", p->MousePos)                 // struct ImVec2
+        PY_FIELD(PyImGuiIO, "MouseWheel", p->MouseWheel)             // float
+        PY_FIELD(PyImGuiIO, "MouseWheelH", p->MouseWheelH)           // float
+        PY_FIELD(PyImGuiIO, "MouseSource", p->MouseSource)           // ImGuiMouseSource
+        PY_FIELD(PyImGuiIO, "KeyCtrl", p->KeyCtrl)                   // bool
+        PY_FIELD(PyImGuiIO, "KeyShift", p->KeyShift)                 // bool
+        PY_FIELD(PyImGuiIO, "KeyAlt", p->KeyAlt)                     // bool
+        PY_FIELD(PyImGuiIO, "KeySuper", p->KeySuper)                 // bool
+        PY_FIELD(PyImGuiIO, "KeyMods", p->KeyMods)                   // int
+        PY_FIELD(PyImGuiIO, "WantCaptureMouseUnlessPopupClose", p->WantCaptureMouseUnlessPopupClose)// bool
+        PY_FIELD(PyImGuiIO, "MousePosPrev", p->MousePosPrev)         // struct ImVec2
+        PY_FIELD(PyImGuiIO, "MouseWheelRequestAxisSwap", p->MouseWheelRequestAxisSwap)// bool
+        PY_FIELD(PyImGuiIO, "PenPressure", p->PenPressure)           // float
+        PY_FIELD(PyImGuiIO, "AppFocusLost", p->AppFocusLost)         // bool
+        PY_FIELD(PyImGuiIO, "AppAcceptingEvents", p->AppAcceptingEvents)// bool
+        PY_FIELD(PyImGuiIO, "BackendUsingLegacyKeyArrays", p->BackendUsingLegacyKeyArrays)// signed char
+        PY_FIELD(PyImGuiIO, "BackendUsingLegacyNavInputArray", p->BackendUsingLegacyNavInputArray)// bool
+        PY_FIELD(PyImGuiIO, "InputQueueSurrogate", p->InputQueueSurrogate)// unsigned short
     }
 };
 
@@ -1086,54 +1085,54 @@ struct PyImGuiStyle: OpaquePointer<ImGuiStyle>{
     static void _register(VM* vm, PyObject* mod, PyObject* type){
         vm->bind_notimplemented_constructor<PyImGuiStyle>(type);
                            
-        PY_FIELD(PyImGuiStyle, "Alpha", _, Alpha)                    // float
-        PY_FIELD(PyImGuiStyle, "DisabledAlpha", _, DisabledAlpha)    // float
-        PY_FIELD(PyImGuiStyle, "WindowPadding", _, WindowPadding)    // struct ImVec2
-        PY_FIELD(PyImGuiStyle, "WindowRounding", _, WindowRounding)  // float
-        PY_FIELD(PyImGuiStyle, "WindowBorderSize", _, WindowBorderSize)// float
-        PY_FIELD(PyImGuiStyle, "WindowMinSize", _, WindowMinSize)    // struct ImVec2
-        PY_FIELD(PyImGuiStyle, "WindowTitleAlign", _, WindowTitleAlign)// struct ImVec2
-        PY_FIELD(PyImGuiStyle, "WindowMenuButtonPosition", _, WindowMenuButtonPosition)// int
-        PY_FIELD(PyImGuiStyle, "ChildRounding", _, ChildRounding)    // float
-        PY_FIELD(PyImGuiStyle, "ChildBorderSize", _, ChildBorderSize)// float
-        PY_FIELD(PyImGuiStyle, "PopupRounding", _, PopupRounding)    // float
-        PY_FIELD(PyImGuiStyle, "PopupBorderSize", _, PopupBorderSize)// float
-        PY_FIELD(PyImGuiStyle, "FramePadding", _, FramePadding)      // struct ImVec2
-        PY_FIELD(PyImGuiStyle, "FrameRounding", _, FrameRounding)    // float
-        PY_FIELD(PyImGuiStyle, "FrameBorderSize", _, FrameBorderSize)// float
-        PY_FIELD(PyImGuiStyle, "ItemSpacing", _, ItemSpacing)        // struct ImVec2
-        PY_FIELD(PyImGuiStyle, "ItemInnerSpacing", _, ItemInnerSpacing)// struct ImVec2
-        PY_FIELD(PyImGuiStyle, "CellPadding", _, CellPadding)        // struct ImVec2
-        PY_FIELD(PyImGuiStyle, "TouchExtraPadding", _, TouchExtraPadding)// struct ImVec2
-        PY_FIELD(PyImGuiStyle, "IndentSpacing", _, IndentSpacing)    // float
-        PY_FIELD(PyImGuiStyle, "ColumnsMinSpacing", _, ColumnsMinSpacing)// float
-        PY_FIELD(PyImGuiStyle, "ScrollbarSize", _, ScrollbarSize)    // float
-        PY_FIELD(PyImGuiStyle, "ScrollbarRounding", _, ScrollbarRounding)// float
-        PY_FIELD(PyImGuiStyle, "GrabMinSize", _, GrabMinSize)        // float
-        PY_FIELD(PyImGuiStyle, "GrabRounding", _, GrabRounding)      // float
-        PY_FIELD(PyImGuiStyle, "LogSliderDeadzone", _, LogSliderDeadzone)// float
-        PY_FIELD(PyImGuiStyle, "TabRounding", _, TabRounding)        // float
-        PY_FIELD(PyImGuiStyle, "TabBorderSize", _, TabBorderSize)    // float
-        PY_FIELD(PyImGuiStyle, "TabMinWidthForCloseButton", _, TabMinWidthForCloseButton)// float
-        PY_FIELD(PyImGuiStyle, "ColorButtonPosition", _, ColorButtonPosition)// int
-        PY_FIELD(PyImGuiStyle, "ButtonTextAlign", _, ButtonTextAlign)// struct ImVec2
-        PY_FIELD(PyImGuiStyle, "SelectableTextAlign", _, SelectableTextAlign)// struct ImVec2
-        PY_FIELD(PyImGuiStyle, "SeparatorTextBorderSize", _, SeparatorTextBorderSize)// float
-        PY_FIELD(PyImGuiStyle, "SeparatorTextAlign", _, SeparatorTextAlign)// struct ImVec2
-        PY_FIELD(PyImGuiStyle, "SeparatorTextPadding", _, SeparatorTextPadding)// struct ImVec2
-        PY_FIELD(PyImGuiStyle, "DisplayWindowPadding", _, DisplayWindowPadding)// struct ImVec2
-        PY_FIELD(PyImGuiStyle, "DisplaySafeAreaPadding", _, DisplaySafeAreaPadding)// struct ImVec2
-        PY_FIELD(PyImGuiStyle, "MouseCursorScale", _, MouseCursorScale)// float
-        PY_FIELD(PyImGuiStyle, "AntiAliasedLines", _, AntiAliasedLines)// bool
-        PY_FIELD(PyImGuiStyle, "AntiAliasedLinesUseTex", _, AntiAliasedLinesUseTex)// bool
-        PY_FIELD(PyImGuiStyle, "AntiAliasedFill", _, AntiAliasedFill)// bool
-        PY_FIELD(PyImGuiStyle, "CurveTessellationTol", _, CurveTessellationTol)// float
-        PY_FIELD(PyImGuiStyle, "CircleTessellationMaxError", _, CircleTessellationMaxError)// float
-        PY_FIELD(PyImGuiStyle, "HoverStationaryDelay", _, HoverStationaryDelay)// float
-        PY_FIELD(PyImGuiStyle, "HoverDelayShort", _, HoverDelayShort)// float
-        PY_FIELD(PyImGuiStyle, "HoverDelayNormal", _, HoverDelayNormal)// float
-        PY_FIELD(PyImGuiStyle, "HoverFlagsForTooltipMouse", _, HoverFlagsForTooltipMouse)// int
-        PY_FIELD(PyImGuiStyle, "HoverFlagsForTooltipNav", _, HoverFlagsForTooltipNav)// int
+        PY_FIELD(PyImGuiStyle, "Alpha", p->Alpha)                    // float
+        PY_FIELD(PyImGuiStyle, "DisabledAlpha", p->DisabledAlpha)    // float
+        PY_FIELD(PyImGuiStyle, "WindowPadding", p->WindowPadding)    // struct ImVec2
+        PY_FIELD(PyImGuiStyle, "WindowRounding", p->WindowRounding)  // float
+        PY_FIELD(PyImGuiStyle, "WindowBorderSize", p->WindowBorderSize)// float
+        PY_FIELD(PyImGuiStyle, "WindowMinSize", p->WindowMinSize)    // struct ImVec2
+        PY_FIELD(PyImGuiStyle, "WindowTitleAlign", p->WindowTitleAlign)// struct ImVec2
+        PY_FIELD(PyImGuiStyle, "WindowMenuButtonPosition", p->WindowMenuButtonPosition)// int
+        PY_FIELD(PyImGuiStyle, "ChildRounding", p->ChildRounding)    // float
+        PY_FIELD(PyImGuiStyle, "ChildBorderSize", p->ChildBorderSize)// float
+        PY_FIELD(PyImGuiStyle, "PopupRounding", p->PopupRounding)    // float
+        PY_FIELD(PyImGuiStyle, "PopupBorderSize", p->PopupBorderSize)// float
+        PY_FIELD(PyImGuiStyle, "FramePadding", p->FramePadding)      // struct ImVec2
+        PY_FIELD(PyImGuiStyle, "FrameRounding", p->FrameRounding)    // float
+        PY_FIELD(PyImGuiStyle, "FrameBorderSize", p->FrameBorderSize)// float
+        PY_FIELD(PyImGuiStyle, "ItemSpacing", p->ItemSpacing)        // struct ImVec2
+        PY_FIELD(PyImGuiStyle, "ItemInnerSpacing", p->ItemInnerSpacing)// struct ImVec2
+        PY_FIELD(PyImGuiStyle, "CellPadding", p->CellPadding)        // struct ImVec2
+        PY_FIELD(PyImGuiStyle, "TouchExtraPadding", p->TouchExtraPadding)// struct ImVec2
+        PY_FIELD(PyImGuiStyle, "IndentSpacing", p->IndentSpacing)    // float
+        PY_FIELD(PyImGuiStyle, "ColumnsMinSpacing", p->ColumnsMinSpacing)// float
+        PY_FIELD(PyImGuiStyle, "ScrollbarSize", p->ScrollbarSize)    // float
+        PY_FIELD(PyImGuiStyle, "ScrollbarRounding", p->ScrollbarRounding)// float
+        PY_FIELD(PyImGuiStyle, "GrabMinSize", p->GrabMinSize)        // float
+        PY_FIELD(PyImGuiStyle, "GrabRounding", p->GrabRounding)      // float
+        PY_FIELD(PyImGuiStyle, "LogSliderDeadzone", p->LogSliderDeadzone)// float
+        PY_FIELD(PyImGuiStyle, "TabRounding", p->TabRounding)        // float
+        PY_FIELD(PyImGuiStyle, "TabBorderSize", p->TabBorderSize)    // float
+        PY_FIELD(PyImGuiStyle, "TabMinWidthForCloseButton", p->TabMinWidthForCloseButton)// float
+        PY_FIELD(PyImGuiStyle, "ColorButtonPosition", p->ColorButtonPosition)// int
+        PY_FIELD(PyImGuiStyle, "ButtonTextAlign", p->ButtonTextAlign)// struct ImVec2
+        PY_FIELD(PyImGuiStyle, "SelectableTextAlign", p->SelectableTextAlign)// struct ImVec2
+        PY_FIELD(PyImGuiStyle, "SeparatorTextBorderSize", p->SeparatorTextBorderSize)// float
+        PY_FIELD(PyImGuiStyle, "SeparatorTextAlign", p->SeparatorTextAlign)// struct ImVec2
+        PY_FIELD(PyImGuiStyle, "SeparatorTextPadding", p->SeparatorTextPadding)// struct ImVec2
+        PY_FIELD(PyImGuiStyle, "DisplayWindowPadding", p->DisplayWindowPadding)// struct ImVec2
+        PY_FIELD(PyImGuiStyle, "DisplaySafeAreaPadding", p->DisplaySafeAreaPadding)// struct ImVec2
+        PY_FIELD(PyImGuiStyle, "MouseCursorScale", p->MouseCursorScale)// float
+        PY_FIELD(PyImGuiStyle, "AntiAliasedLines", p->AntiAliasedLines)// bool
+        PY_FIELD(PyImGuiStyle, "AntiAliasedLinesUseTex", p->AntiAliasedLinesUseTex)// bool
+        PY_FIELD(PyImGuiStyle, "AntiAliasedFill", p->AntiAliasedFill)// bool
+        PY_FIELD(PyImGuiStyle, "CurveTessellationTol", p->CurveTessellationTol)// float
+        PY_FIELD(PyImGuiStyle, "CircleTessellationMaxError", p->CircleTessellationMaxError)// float
+        PY_FIELD(PyImGuiStyle, "HoverStationaryDelay", p->HoverStationaryDelay)// float
+        PY_FIELD(PyImGuiStyle, "HoverDelayShort", p->HoverDelayShort)// float
+        PY_FIELD(PyImGuiStyle, "HoverDelayNormal", p->HoverDelayNormal)// float
+        PY_FIELD(PyImGuiStyle, "HoverFlagsForTooltipMouse", p->HoverFlagsForTooltipMouse)// int
+        PY_FIELD(PyImGuiStyle, "HoverFlagsForTooltipNav", p->HoverFlagsForTooltipNav)// int
     }
 };
 

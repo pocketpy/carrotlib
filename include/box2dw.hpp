@@ -80,7 +80,6 @@ struct PyBody{
         }
     }
 
-    PyBody* _() { return this; }
     b2Body* _b2Body() { return body; }
 
     b2Fixture* _b2Fixture() {
