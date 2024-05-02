@@ -2,7 +2,7 @@ from _carrotlib import *
 from ._colors import Colors
 from ._node import Node, get_node, build_scene_tree, WaitForEndOfFrame, WaitForSeconds
 from ._animation import FramedAnimation, FramedAnimator, load_framed_animation, load_framed_animation_atlas
-from ._tween import Tweener, TweenList
+from ._tween import Tweener, TweenList, Tween
 from ._sound import play_sound
 # from ._font import SpriteFont
 from ._viewport import get_mouse_position, get_mouse_delta, set_camera_transform

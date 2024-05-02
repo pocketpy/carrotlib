@@ -13,8 +13,7 @@ class Tween:
 
     completed: Callable = None
 
-    def __init__(self, obj):
-        self.obj = obj
+    def __init__(self):
         self._state = Tween.Ready
 
     @property
@@ -39,9 +38,33 @@ class Tween:
         self._setup()
         node.start_coroutine(self)
 
+    @staticmethod
+    def delay(duration: float):
+        return _Delayer(duration)
+
+
+class _Delayer(Tween):
+    def __init__(self, duration: float):
+        super(_Delayer, self).__init__()
+        self.duration = duration
+
+    def _setup(self):
+        super(_Delayer, self)._setup()
+        self._start_time = rl.GetTime()
+
+    def __next__(self):
+        t = rl.GetTime() - self._start_time
+        if t >= self.duration:
+            self._state = Tween.Completed
+            if self.completed is not None:
+                self.completed()
+            return StopIteration
+
+
 class Tweener(Tween):
     def __init__(self, obj, name, target, duration, ease=None):
-        super(Tweener, self).__init__(obj)
+        super(Tweener, self).__init__()
+        self.obj = obj                  # target object
         self.name = name                # target attribute name
         self.target = target            # target value
         self.duration = duration        # duration in seconds
@@ -66,21 +89,31 @@ class Tweener(Tween):
         setattr(self.obj, self.name, curr)
         return curr
 
+
 class TweenList(Tween):
     items: list[Tween]
 
-    def __init__(self, obj):
-        super().__init__(obj)
+    def __init__(self):
+        super(TweenList, self).__init__()
         self.items = []
 
     def append(self, tween):
         self.items.append(tween)
 
+    def extend(self, tweens):
+        self.items.extend(tweens)
+
     def _setup(self):
-        super()._setup()
+        super(TweenList, self)._setup()
         self._i = 0
         assert len(self.items) > 0
         self.items[0]._setup()
+
+    def __len__(self):
+        return len(self.items)
+    
+    def __getitem__(self, i) -> Tween:
+        return self.items[i]
 
     def __next__(self):
         tween = self.items[self._i]
