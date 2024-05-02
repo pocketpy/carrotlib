@@ -66,7 +66,6 @@ Vector4 _py_cast<Vector4>(VM* vm, PyObject* obj){
 
 /*************** Matrix ***************/
 struct wrapped__Matrix{
-    PY_CLASS(wrapped__Matrix, raylib, Matrix)
 
     Matrix _value;
     Matrix* _() { return &_value; }
@@ -111,7 +110,7 @@ struct wrapped__Matrix{
 };
 
 PyObject* py_var(VM* vm, Matrix v){
-    return VAR_T(wrapped__Matrix, v);
+    return vm->new_user_object<wrapped__Matrix>(v);
 }
 template<>
 Matrix py_cast<Matrix>(VM* vm, PyObject* obj){
@@ -123,7 +122,6 @@ Matrix _py_cast<Matrix>(VM* vm, PyObject* obj){
 }
 /*************** Color ***************/
 struct wrapped__Color{
-    PY_CLASS(wrapped__Color, raylib, Color)
 
     Color _value;
     Color* _() { return &_value; }
@@ -156,7 +154,7 @@ struct wrapped__Color{
 };
 
 PyObject* py_var(VM* vm, Color v){
-    return VAR_T(wrapped__Color, v);
+    return vm->new_user_object<wrapped__Color>(v);
 }
 template<>
 Color py_cast<Color>(VM* vm, PyObject* obj){
@@ -168,7 +166,6 @@ Color _py_cast<Color>(VM* vm, PyObject* obj){
 }
 /*************** Rectangle ***************/
 struct wrapped__Rectangle{
-    PY_CLASS(wrapped__Rectangle, raylib, Rectangle)
 
     Rectangle _value;
     Rectangle* _() { return &_value; }
@@ -201,7 +198,7 @@ struct wrapped__Rectangle{
 };
 
 PyObject* py_var(VM* vm, Rectangle v){
-    return VAR_T(wrapped__Rectangle, v);
+    return vm->new_user_object<wrapped__Rectangle>(v);
 }
 template<>
 Rectangle py_cast<Rectangle>(VM* vm, PyObject* obj){
@@ -213,7 +210,6 @@ Rectangle _py_cast<Rectangle>(VM* vm, PyObject* obj){
 }
 /*************** Image ***************/
 struct wrapped__Image{
-    PY_CLASS(wrapped__Image, raylib, Image)
 
     Image _value;
     Image* _() { return &_value; }
@@ -247,7 +243,7 @@ struct wrapped__Image{
 };
 
 PyObject* py_var(VM* vm, Image v){
-    return VAR_T(wrapped__Image, v);
+    return vm->new_user_object<wrapped__Image>(v);
 }
 template<>
 Image py_cast<Image>(VM* vm, PyObject* obj){
@@ -259,7 +255,6 @@ Image _py_cast<Image>(VM* vm, PyObject* obj){
 }
 /*************** Texture ***************/
 struct wrapped__Texture{
-    PY_CLASS(wrapped__Texture, raylib, Texture)
 
     Texture _value;
     Texture* _() { return &_value; }
@@ -293,7 +288,7 @@ struct wrapped__Texture{
 };
 
 PyObject* py_var(VM* vm, Texture v){
-    return VAR_T(wrapped__Texture, v);
+    return vm->new_user_object<wrapped__Texture>(v);
 }
 template<>
 Texture py_cast<Texture>(VM* vm, PyObject* obj){
@@ -305,7 +300,6 @@ Texture _py_cast<Texture>(VM* vm, PyObject* obj){
 }
 /*************** RenderTexture ***************/
 struct wrapped__RenderTexture{
-    PY_CLASS(wrapped__RenderTexture, raylib, RenderTexture)
 
     RenderTexture _value;
     RenderTexture* _() { return &_value; }
@@ -337,7 +331,7 @@ struct wrapped__RenderTexture{
 };
 
 PyObject* py_var(VM* vm, RenderTexture v){
-    return VAR_T(wrapped__RenderTexture, v);
+    return vm->new_user_object<wrapped__RenderTexture>(v);
 }
 template<>
 RenderTexture py_cast<RenderTexture>(VM* vm, PyObject* obj){
@@ -349,7 +343,6 @@ RenderTexture _py_cast<RenderTexture>(VM* vm, PyObject* obj){
 }
 /*************** NPatchInfo ***************/
 struct wrapped__NPatchInfo{
-    PY_CLASS(wrapped__NPatchInfo, raylib, NPatchInfo)
 
     NPatchInfo _value;
     NPatchInfo* _() { return &_value; }
@@ -384,7 +377,7 @@ struct wrapped__NPatchInfo{
 };
 
 PyObject* py_var(VM* vm, NPatchInfo v){
-    return VAR_T(wrapped__NPatchInfo, v);
+    return vm->new_user_object<wrapped__NPatchInfo>(v);
 }
 template<>
 NPatchInfo py_cast<NPatchInfo>(VM* vm, PyObject* obj){
@@ -396,7 +389,6 @@ NPatchInfo _py_cast<NPatchInfo>(VM* vm, PyObject* obj){
 }
 /*************** GlyphInfo ***************/
 struct wrapped__GlyphInfo{
-    PY_CLASS(wrapped__GlyphInfo, raylib, GlyphInfo)
 
     GlyphInfo _value;
     GlyphInfo* _() { return &_value; }
@@ -430,7 +422,7 @@ struct wrapped__GlyphInfo{
 };
 
 PyObject* py_var(VM* vm, GlyphInfo v){
-    return VAR_T(wrapped__GlyphInfo, v);
+    return vm->new_user_object<wrapped__GlyphInfo>(v);
 }
 template<>
 GlyphInfo py_cast<GlyphInfo>(VM* vm, PyObject* obj){
@@ -442,7 +434,6 @@ GlyphInfo _py_cast<GlyphInfo>(VM* vm, PyObject* obj){
 }
 /*************** Font ***************/
 struct wrapped__Font{
-    PY_CLASS(wrapped__Font, raylib, Font)
 
     Font _value;
     Font* _() { return &_value; }
@@ -477,7 +468,7 @@ struct wrapped__Font{
 };
 
 PyObject* py_var(VM* vm, Font v){
-    return VAR_T(wrapped__Font, v);
+    return vm->new_user_object<wrapped__Font>(v);
 }
 template<>
 Font py_cast<Font>(VM* vm, PyObject* obj){
@@ -489,7 +480,6 @@ Font _py_cast<Font>(VM* vm, PyObject* obj){
 }
 /*************** Camera3D ***************/
 struct wrapped__Camera3D{
-    PY_CLASS(wrapped__Camera3D, raylib, Camera3D)
 
     Camera3D _value;
     Camera3D* _() { return &_value; }
@@ -523,7 +513,7 @@ struct wrapped__Camera3D{
 };
 
 PyObject* py_var(VM* vm, Camera3D v){
-    return VAR_T(wrapped__Camera3D, v);
+    return vm->new_user_object<wrapped__Camera3D>(v);
 }
 template<>
 Camera3D py_cast<Camera3D>(VM* vm, PyObject* obj){
@@ -535,7 +525,6 @@ Camera3D _py_cast<Camera3D>(VM* vm, PyObject* obj){
 }
 /*************** Camera2D ***************/
 struct wrapped__Camera2D{
-    PY_CLASS(wrapped__Camera2D, raylib, Camera2D)
 
     Camera2D _value;
     Camera2D* _() { return &_value; }
@@ -568,7 +557,7 @@ struct wrapped__Camera2D{
 };
 
 PyObject* py_var(VM* vm, Camera2D v){
-    return VAR_T(wrapped__Camera2D, v);
+    return vm->new_user_object<wrapped__Camera2D>(v);
 }
 template<>
 Camera2D py_cast<Camera2D>(VM* vm, PyObject* obj){
@@ -580,7 +569,6 @@ Camera2D _py_cast<Camera2D>(VM* vm, PyObject* obj){
 }
 /*************** Mesh ***************/
 struct wrapped__Mesh{
-    PY_CLASS(wrapped__Mesh, raylib, Mesh)
 
     Mesh _value;
     Mesh* _() { return &_value; }
@@ -624,7 +612,7 @@ struct wrapped__Mesh{
 };
 
 PyObject* py_var(VM* vm, Mesh v){
-    return VAR_T(wrapped__Mesh, v);
+    return vm->new_user_object<wrapped__Mesh>(v);
 }
 template<>
 Mesh py_cast<Mesh>(VM* vm, PyObject* obj){
@@ -636,7 +624,6 @@ Mesh _py_cast<Mesh>(VM* vm, PyObject* obj){
 }
 /*************** Shader ***************/
 struct wrapped__Shader{
-    PY_CLASS(wrapped__Shader, raylib, Shader)
 
     Shader _value;
     Shader* _() { return &_value; }
@@ -667,7 +654,7 @@ struct wrapped__Shader{
 };
 
 PyObject* py_var(VM* vm, Shader v){
-    return VAR_T(wrapped__Shader, v);
+    return vm->new_user_object<wrapped__Shader>(v);
 }
 template<>
 Shader py_cast<Shader>(VM* vm, PyObject* obj){
@@ -679,7 +666,6 @@ Shader _py_cast<Shader>(VM* vm, PyObject* obj){
 }
 /*************** MaterialMap ***************/
 struct wrapped__MaterialMap{
-    PY_CLASS(wrapped__MaterialMap, raylib, MaterialMap)
 
     MaterialMap _value;
     MaterialMap* _() { return &_value; }
@@ -711,7 +697,7 @@ struct wrapped__MaterialMap{
 };
 
 PyObject* py_var(VM* vm, MaterialMap v){
-    return VAR_T(wrapped__MaterialMap, v);
+    return vm->new_user_object<wrapped__MaterialMap>(v);
 }
 template<>
 MaterialMap py_cast<MaterialMap>(VM* vm, PyObject* obj){
@@ -723,7 +709,6 @@ MaterialMap _py_cast<MaterialMap>(VM* vm, PyObject* obj){
 }
 /*************** Material ***************/
 struct wrapped__Material{
-    PY_CLASS(wrapped__Material, raylib, Material)
 
     Material _value;
     Material* _() { return &_value; }
@@ -755,7 +740,7 @@ struct wrapped__Material{
 };
 
 PyObject* py_var(VM* vm, Material v){
-    return VAR_T(wrapped__Material, v);
+    return vm->new_user_object<wrapped__Material>(v);
 }
 template<>
 Material py_cast<Material>(VM* vm, PyObject* obj){
@@ -767,7 +752,6 @@ Material _py_cast<Material>(VM* vm, PyObject* obj){
 }
 /*************** Transform ***************/
 struct wrapped__Transform{
-    PY_CLASS(wrapped__Transform, raylib, Transform)
 
     Transform _value;
     Transform* _() { return &_value; }
@@ -799,7 +783,7 @@ struct wrapped__Transform{
 };
 
 PyObject* py_var(VM* vm, Transform v){
-    return VAR_T(wrapped__Transform, v);
+    return vm->new_user_object<wrapped__Transform>(v);
 }
 template<>
 Transform py_cast<Transform>(VM* vm, PyObject* obj){
@@ -811,7 +795,6 @@ Transform _py_cast<Transform>(VM* vm, PyObject* obj){
 }
 /*************** BoneInfo ***************/
 struct wrapped__BoneInfo{
-    PY_CLASS(wrapped__BoneInfo, raylib, BoneInfo)
 
     BoneInfo _value;
     BoneInfo* _() { return &_value; }
@@ -842,7 +825,7 @@ struct wrapped__BoneInfo{
 };
 
 PyObject* py_var(VM* vm, BoneInfo v){
-    return VAR_T(wrapped__BoneInfo, v);
+    return vm->new_user_object<wrapped__BoneInfo>(v);
 }
 template<>
 BoneInfo py_cast<BoneInfo>(VM* vm, PyObject* obj){
@@ -854,7 +837,6 @@ BoneInfo _py_cast<BoneInfo>(VM* vm, PyObject* obj){
 }
 /*************** Model ***************/
 struct wrapped__Model{
-    PY_CLASS(wrapped__Model, raylib, Model)
 
     Model _value;
     Model* _() { return &_value; }
@@ -892,7 +874,7 @@ struct wrapped__Model{
 };
 
 PyObject* py_var(VM* vm, Model v){
-    return VAR_T(wrapped__Model, v);
+    return vm->new_user_object<wrapped__Model>(v);
 }
 template<>
 Model py_cast<Model>(VM* vm, PyObject* obj){
@@ -904,7 +886,6 @@ Model _py_cast<Model>(VM* vm, PyObject* obj){
 }
 /*************** ModelAnimation ***************/
 struct wrapped__ModelAnimation{
-    PY_CLASS(wrapped__ModelAnimation, raylib, ModelAnimation)
 
     ModelAnimation _value;
     ModelAnimation* _() { return &_value; }
@@ -938,7 +919,7 @@ struct wrapped__ModelAnimation{
 };
 
 PyObject* py_var(VM* vm, ModelAnimation v){
-    return VAR_T(wrapped__ModelAnimation, v);
+    return vm->new_user_object<wrapped__ModelAnimation>(v);
 }
 template<>
 ModelAnimation py_cast<ModelAnimation>(VM* vm, PyObject* obj){
@@ -950,7 +931,6 @@ ModelAnimation _py_cast<ModelAnimation>(VM* vm, PyObject* obj){
 }
 /*************** Ray ***************/
 struct wrapped__Ray{
-    PY_CLASS(wrapped__Ray, raylib, Ray)
 
     Ray _value;
     Ray* _() { return &_value; }
@@ -981,7 +961,7 @@ struct wrapped__Ray{
 };
 
 PyObject* py_var(VM* vm, Ray v){
-    return VAR_T(wrapped__Ray, v);
+    return vm->new_user_object<wrapped__Ray>(v);
 }
 template<>
 Ray py_cast<Ray>(VM* vm, PyObject* obj){
@@ -993,7 +973,6 @@ Ray _py_cast<Ray>(VM* vm, PyObject* obj){
 }
 /*************** RayCollision ***************/
 struct wrapped__RayCollision{
-    PY_CLASS(wrapped__RayCollision, raylib, RayCollision)
 
     RayCollision _value;
     RayCollision* _() { return &_value; }
@@ -1026,7 +1005,7 @@ struct wrapped__RayCollision{
 };
 
 PyObject* py_var(VM* vm, RayCollision v){
-    return VAR_T(wrapped__RayCollision, v);
+    return vm->new_user_object<wrapped__RayCollision>(v);
 }
 template<>
 RayCollision py_cast<RayCollision>(VM* vm, PyObject* obj){
@@ -1038,7 +1017,6 @@ RayCollision _py_cast<RayCollision>(VM* vm, PyObject* obj){
 }
 /*************** BoundingBox ***************/
 struct wrapped__BoundingBox{
-    PY_CLASS(wrapped__BoundingBox, raylib, BoundingBox)
 
     BoundingBox _value;
     BoundingBox* _() { return &_value; }
@@ -1069,7 +1047,7 @@ struct wrapped__BoundingBox{
 };
 
 PyObject* py_var(VM* vm, BoundingBox v){
-    return VAR_T(wrapped__BoundingBox, v);
+    return vm->new_user_object<wrapped__BoundingBox>(v);
 }
 template<>
 BoundingBox py_cast<BoundingBox>(VM* vm, PyObject* obj){
@@ -1081,7 +1059,6 @@ BoundingBox _py_cast<BoundingBox>(VM* vm, PyObject* obj){
 }
 /*************** Wave ***************/
 struct wrapped__Wave{
-    PY_CLASS(wrapped__Wave, raylib, Wave)
 
     Wave _value;
     Wave* _() { return &_value; }
@@ -1115,7 +1092,7 @@ struct wrapped__Wave{
 };
 
 PyObject* py_var(VM* vm, Wave v){
-    return VAR_T(wrapped__Wave, v);
+    return vm->new_user_object<wrapped__Wave>(v);
 }
 template<>
 Wave py_cast<Wave>(VM* vm, PyObject* obj){
@@ -1127,7 +1104,6 @@ Wave _py_cast<Wave>(VM* vm, PyObject* obj){
 }
 /*************** AudioStream ***************/
 struct wrapped__AudioStream{
-    PY_CLASS(wrapped__AudioStream, raylib, AudioStream)
 
     AudioStream _value;
     AudioStream* _() { return &_value; }
@@ -1161,7 +1137,7 @@ struct wrapped__AudioStream{
 };
 
 PyObject* py_var(VM* vm, AudioStream v){
-    return VAR_T(wrapped__AudioStream, v);
+    return vm->new_user_object<wrapped__AudioStream>(v);
 }
 template<>
 AudioStream py_cast<AudioStream>(VM* vm, PyObject* obj){
@@ -1173,7 +1149,6 @@ AudioStream _py_cast<AudioStream>(VM* vm, PyObject* obj){
 }
 /*************** Sound ***************/
 struct wrapped__Sound{
-    PY_CLASS(wrapped__Sound, raylib, Sound)
 
     Sound _value;
     Sound* _() { return &_value; }
@@ -1204,7 +1179,7 @@ struct wrapped__Sound{
 };
 
 PyObject* py_var(VM* vm, Sound v){
-    return VAR_T(wrapped__Sound, v);
+    return vm->new_user_object<wrapped__Sound>(v);
 }
 template<>
 Sound py_cast<Sound>(VM* vm, PyObject* obj){
@@ -1216,7 +1191,6 @@ Sound _py_cast<Sound>(VM* vm, PyObject* obj){
 }
 /*************** Music ***************/
 struct wrapped__Music{
-    PY_CLASS(wrapped__Music, raylib, Music)
 
     Music _value;
     Music* _() { return &_value; }
@@ -1250,7 +1224,7 @@ struct wrapped__Music{
 };
 
 PyObject* py_var(VM* vm, Music v){
-    return VAR_T(wrapped__Music, v);
+    return vm->new_user_object<wrapped__Music>(v);
 }
 template<>
 Music py_cast<Music>(VM* vm, PyObject* obj){
@@ -1262,7 +1236,6 @@ Music _py_cast<Music>(VM* vm, PyObject* obj){
 }
 /*************** VrDeviceInfo ***************/
 struct wrapped__VrDeviceInfo{
-    PY_CLASS(wrapped__VrDeviceInfo, raylib, VrDeviceInfo)
 
     VrDeviceInfo _value;
     VrDeviceInfo* _() { return &_value; }
@@ -1300,7 +1273,7 @@ struct wrapped__VrDeviceInfo{
 };
 
 PyObject* py_var(VM* vm, VrDeviceInfo v){
-    return VAR_T(wrapped__VrDeviceInfo, v);
+    return vm->new_user_object<wrapped__VrDeviceInfo>(v);
 }
 template<>
 VrDeviceInfo py_cast<VrDeviceInfo>(VM* vm, PyObject* obj){
@@ -1312,7 +1285,6 @@ VrDeviceInfo _py_cast<VrDeviceInfo>(VM* vm, PyObject* obj){
 }
 /*************** VrStereoConfig ***************/
 struct wrapped__VrStereoConfig{
-    PY_CLASS(wrapped__VrStereoConfig, raylib, VrStereoConfig)
 
     VrStereoConfig _value;
     VrStereoConfig* _() { return &_value; }
@@ -1349,7 +1321,7 @@ struct wrapped__VrStereoConfig{
 };
 
 PyObject* py_var(VM* vm, VrStereoConfig v){
-    return VAR_T(wrapped__VrStereoConfig, v);
+    return vm->new_user_object<wrapped__VrStereoConfig>(v);
 }
 template<>
 VrStereoConfig py_cast<VrStereoConfig>(VM* vm, PyObject* obj){
@@ -1361,7 +1333,6 @@ VrStereoConfig _py_cast<VrStereoConfig>(VM* vm, PyObject* obj){
 }
 /*************** FilePathList ***************/
 struct wrapped__FilePathList{
-    PY_CLASS(wrapped__FilePathList, raylib, FilePathList)
 
     FilePathList _value;
     FilePathList* _() { return &_value; }
@@ -1393,7 +1364,7 @@ struct wrapped__FilePathList{
 };
 
 PyObject* py_var(VM* vm, FilePathList v){
-    return VAR_T(wrapped__FilePathList, v);
+    return vm->new_user_object<wrapped__FilePathList>(v);
 }
 template<>
 FilePathList py_cast<FilePathList>(VM* vm, PyObject* obj){
@@ -1405,7 +1376,6 @@ FilePathList _py_cast<FilePathList>(VM* vm, PyObject* obj){
 }
 /*************** AutomationEvent ***************/
 struct wrapped__AutomationEvent{
-    PY_CLASS(wrapped__AutomationEvent, raylib, AutomationEvent)
 
     AutomationEvent _value;
     AutomationEvent* _() { return &_value; }
@@ -1437,7 +1407,7 @@ struct wrapped__AutomationEvent{
 };
 
 PyObject* py_var(VM* vm, AutomationEvent v){
-    return VAR_T(wrapped__AutomationEvent, v);
+    return vm->new_user_object<wrapped__AutomationEvent>(v);
 }
 template<>
 AutomationEvent py_cast<AutomationEvent>(VM* vm, PyObject* obj){
@@ -1449,7 +1419,6 @@ AutomationEvent _py_cast<AutomationEvent>(VM* vm, PyObject* obj){
 }
 /*************** AutomationEventList ***************/
 struct wrapped__AutomationEventList{
-    PY_CLASS(wrapped__AutomationEventList, raylib, AutomationEventList)
 
     AutomationEventList _value;
     AutomationEventList* _() { return &_value; }
@@ -1481,7 +1450,7 @@ struct wrapped__AutomationEventList{
 };
 
 PyObject* py_var(VM* vm, AutomationEventList v){
-    return VAR_T(wrapped__AutomationEventList, v);
+    return vm->new_user_object<wrapped__AutomationEventList>(v);
 }
 template<>
 AutomationEventList py_cast<AutomationEventList>(VM* vm, PyObject* obj){
@@ -1544,37 +1513,37 @@ void add_module_raylib(VM* vm){
     // NPatchLayout
     _bind_enums(vm, mod, "NPatchLayout", {{"NPATCH_NINE_PATCH", 0}, {"NPATCH_THREE_PATCH_VERTICAL", 1}, {"NPATCH_THREE_PATCH_HORIZONTAL", 2}});
 
-    wrapped__Matrix::register_class(vm, mod);
-    wrapped__Color::register_class(vm, mod);
-    wrapped__Rectangle::register_class(vm, mod);
-    wrapped__Image::register_class(vm, mod);
-    wrapped__Texture::register_class(vm, mod);
-    wrapped__RenderTexture::register_class(vm, mod);
-    wrapped__NPatchInfo::register_class(vm, mod);
-    wrapped__GlyphInfo::register_class(vm, mod);
-    wrapped__Font::register_class(vm, mod);
-    wrapped__Camera3D::register_class(vm, mod);
-    wrapped__Camera2D::register_class(vm, mod);
-    wrapped__Mesh::register_class(vm, mod);
-    wrapped__Shader::register_class(vm, mod);
-    wrapped__MaterialMap::register_class(vm, mod);
-    wrapped__Material::register_class(vm, mod);
-    wrapped__Transform::register_class(vm, mod);
-    wrapped__BoneInfo::register_class(vm, mod);
-    wrapped__Model::register_class(vm, mod);
-    wrapped__ModelAnimation::register_class(vm, mod);
-    wrapped__Ray::register_class(vm, mod);
-    wrapped__RayCollision::register_class(vm, mod);
-    wrapped__BoundingBox::register_class(vm, mod);
-    wrapped__Wave::register_class(vm, mod);
-    wrapped__AudioStream::register_class(vm, mod);
-    wrapped__Sound::register_class(vm, mod);
-    wrapped__Music::register_class(vm, mod);
-    wrapped__VrDeviceInfo::register_class(vm, mod);
-    wrapped__VrStereoConfig::register_class(vm, mod);
-    wrapped__FilePathList::register_class(vm, mod);
-    wrapped__AutomationEvent::register_class(vm, mod);
-    wrapped__AutomationEventList::register_class(vm, mod);
+    vm->register_user_class<wrapped__Matrix>(mod, "Matrix");
+    vm->register_user_class<wrapped__Color>(mod, "Color");
+    vm->register_user_class<wrapped__Rectangle>(mod, "Rectangle");
+    vm->register_user_class<wrapped__Image>(mod, "Image");
+    vm->register_user_class<wrapped__Texture>(mod, "Texture");
+    vm->register_user_class<wrapped__RenderTexture>(mod, "RenderTexture");
+    vm->register_user_class<wrapped__NPatchInfo>(mod, "NPatchInfo");
+    vm->register_user_class<wrapped__GlyphInfo>(mod, "GlyphInfo");
+    vm->register_user_class<wrapped__Font>(mod, "Font");
+    vm->register_user_class<wrapped__Camera3D>(mod, "Camera3D");
+    vm->register_user_class<wrapped__Camera2D>(mod, "Camera2D");
+    vm->register_user_class<wrapped__Mesh>(mod, "Mesh");
+    vm->register_user_class<wrapped__Shader>(mod, "Shader");
+    vm->register_user_class<wrapped__MaterialMap>(mod, "MaterialMap");
+    vm->register_user_class<wrapped__Material>(mod, "Material");
+    vm->register_user_class<wrapped__Transform>(mod, "Transform");
+    vm->register_user_class<wrapped__BoneInfo>(mod, "BoneInfo");
+    vm->register_user_class<wrapped__Model>(mod, "Model");
+    vm->register_user_class<wrapped__ModelAnimation>(mod, "ModelAnimation");
+    vm->register_user_class<wrapped__Ray>(mod, "Ray");
+    vm->register_user_class<wrapped__RayCollision>(mod, "RayCollision");
+    vm->register_user_class<wrapped__BoundingBox>(mod, "BoundingBox");
+    vm->register_user_class<wrapped__Wave>(mod, "Wave");
+    vm->register_user_class<wrapped__AudioStream>(mod, "AudioStream");
+    vm->register_user_class<wrapped__Sound>(mod, "Sound");
+    vm->register_user_class<wrapped__Music>(mod, "Music");
+    vm->register_user_class<wrapped__VrDeviceInfo>(mod, "VrDeviceInfo");
+    vm->register_user_class<wrapped__VrStereoConfig>(mod, "VrStereoConfig");
+    vm->register_user_class<wrapped__FilePathList>(mod, "FilePathList");
+    vm->register_user_class<wrapped__AutomationEvent>(mod, "AutomationEvent");
+    vm->register_user_class<wrapped__AutomationEventList>(mod, "AutomationEventList");
 
     _bind(vm, mod, "InitWindow(width: int, height: int, title: str) -> None", &InitWindow);
     _bind(vm, mod, "CloseWindow() -> None", &CloseWindow);

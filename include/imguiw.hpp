@@ -1261,11 +1261,11 @@ void add_module_imgui(VM* vm){
     
     // Main
     vm->bind(imgui, "GetIO() -> _IO",
-        PK_LAMBDA(VAR_T(PyImGuiIO, &ImGui::GetIO()))
+        PK_LAMBDA(vm->new_user_object<PyImGuiIO>(&ImGui::GetIO()))
         );
 
     vm->bind(imgui, "GetStyle() -> _Style",
-        PK_LAMBDA(VAR_T(PyImGuiStyle, &ImGui::GetStyle()))
+        PK_LAMBDA(vm->new_user_object<PyImGuiStyle>(&ImGui::GetStyle()))
         );
 
     vm->bind(imgui, "NewFrame()",
@@ -1797,7 +1797,7 @@ void add_module_imgui(VM* vm){
             }else if(is_int(args[0])){
                 int int_id = _CAST(int, args[0]);
                 ImGui::PushID(int_id);
-            }else if(is_type(args[0], VoidP::_type(vm))){
+            }else if(vm->is_user_type<VoidP>(args[0])){
                 void* ptr_id = _CAST(VoidP&, args[0]).ptr;
                 ImGui::PushID(ptr_id);
             }else{
