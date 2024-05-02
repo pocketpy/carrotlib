@@ -720,7 +720,7 @@ struct wrapped__Material{
         PY_STRUCT_LIKE(wrapped__Material)
         PY_FIELD(wrapped__Material, "shader", _value.shader)
         PY_FIELD(wrapped__Material, "maps", _value.maps)
-        PY_READONLY_FIELD(wrapped__Material, "params", params)
+        PY_READONLY_FIELD(wrapped__Material, "params", _value.params)
     }
 };
 
@@ -802,7 +802,7 @@ struct wrapped__BoneInfo{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__BoneInfo)
-        PY_READONLY_FIELD(wrapped__BoneInfo, "name", name)
+        PY_READONLY_FIELD(wrapped__BoneInfo, "name", _value.name)
         PY_FIELD(wrapped__BoneInfo, "parent", _value.parent)
     }
 };
@@ -895,7 +895,7 @@ struct wrapped__ModelAnimation{
         PY_FIELD(wrapped__ModelAnimation, "frameCount", _value.frameCount)
         PY_FIELD(wrapped__ModelAnimation, "bones", _value.bones)
         PY_FIELD(wrapped__ModelAnimation, "framePoses", _value.framePoses)
-        PY_READONLY_FIELD(wrapped__ModelAnimation, "name", name)
+        PY_READONLY_FIELD(wrapped__ModelAnimation, "name", _value.name)
     }
 };
 
@@ -1240,8 +1240,8 @@ struct wrapped__VrDeviceInfo{
         PY_FIELD(wrapped__VrDeviceInfo, "eyeToScreenDistance", _value.eyeToScreenDistance)
         PY_FIELD(wrapped__VrDeviceInfo, "lensSeparationDistance", _value.lensSeparationDistance)
         PY_FIELD(wrapped__VrDeviceInfo, "interpupillaryDistance", _value.interpupillaryDistance)
-        PY_READONLY_FIELD(wrapped__VrDeviceInfo, "lensDistortionValues", lensDistortionValues)
-        PY_READONLY_FIELD(wrapped__VrDeviceInfo, "chromaAbCorrection", chromaAbCorrection)
+        PY_READONLY_FIELD(wrapped__VrDeviceInfo, "lensDistortionValues", _value.lensDistortionValues)
+        PY_READONLY_FIELD(wrapped__VrDeviceInfo, "chromaAbCorrection", _value.chromaAbCorrection)
     }
 };
 
@@ -1281,14 +1281,14 @@ struct wrapped__VrStereoConfig{
             return vm->None;
         });
         PY_STRUCT_LIKE(wrapped__VrStereoConfig)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "projection", projection)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "viewOffset", viewOffset)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "leftLensCenter", leftLensCenter)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "rightLensCenter", rightLensCenter)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "leftScreenCenter", leftScreenCenter)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "rightScreenCenter", rightScreenCenter)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "scale", scale)
-        PY_READONLY_FIELD(wrapped__VrStereoConfig, "scaleIn", scaleIn)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "projection", _value.projection)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "viewOffset", _value.viewOffset)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "leftLensCenter", _value.leftLensCenter)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "rightLensCenter", _value.rightLensCenter)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "leftScreenCenter", _value.leftScreenCenter)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "rightScreenCenter", _value.rightScreenCenter)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "scale", _value.scale)
+        PY_READONLY_FIELD(wrapped__VrStereoConfig, "scaleIn", _value.scaleIn)
     }
 };
 
@@ -1372,7 +1372,7 @@ struct wrapped__AutomationEvent{
         PY_STRUCT_LIKE(wrapped__AutomationEvent)
         PY_FIELD(wrapped__AutomationEvent, "frame", _value.frame)
         PY_FIELD(wrapped__AutomationEvent, "type", _value.type)
-        PY_READONLY_FIELD(wrapped__AutomationEvent, "params", params)
+        PY_READONLY_FIELD(wrapped__AutomationEvent, "params", _value.params)
     }
 };
 
