@@ -995,13 +995,9 @@ struct OpaquePointer{
 };
 
 struct PyImGuiIO: OpaquePointer<ImGuiIO>{
-    PY_CLASS(PyImGuiIO, imgui, _IO)
-
     using OpaquePointer<ImGuiIO>::OpaquePointer;
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_notimplemented_constructor<PyImGuiIO>(type);
-                           
+    static void _register(VM* vm, PyObject* mod, PyObject* type){                
         PY_FIELD(PyImGuiIO, "ConfigFlags", p->ConfigFlags)           // int
         PY_FIELD(PyImGuiIO, "BackendFlags", p->BackendFlags)         // int
         PY_FIELD(PyImGuiIO, "DisplaySize", p->DisplaySize)           // struct ImVec2
@@ -1078,13 +1074,9 @@ struct PyImGuiIO: OpaquePointer<ImGuiIO>{
 
 
 struct PyImGuiStyle: OpaquePointer<ImGuiStyle>{
-    PY_CLASS(PyImGuiStyle, imgui, _Style)
-
     using OpaquePointer<ImGuiStyle>::OpaquePointer;
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_notimplemented_constructor<PyImGuiStyle>(type);
-                           
+    static void _register(VM* vm, PyObject* mod, PyObject* type){                  
         PY_FIELD(PyImGuiStyle, "Alpha", p->Alpha)                    // float
         PY_FIELD(PyImGuiStyle, "DisabledAlpha", p->DisabledAlpha)    // float
         PY_FIELD(PyImGuiStyle, "WindowPadding", p->WindowPadding)    // struct ImVec2
@@ -1141,8 +1133,8 @@ void add_module_imgui(VM* vm){
     PyObject* imgui = vm->new_module("imgui");
     register_imgui_enums(vm, imgui);
 
-    PyImGuiIO::register_class(vm, imgui);
-    PyImGuiStyle::register_class(vm, imgui);
+    vm->register_user_class<PyImGuiIO>(imgui, "_IO");
+    vm->register_user_class<PyImGuiStyle>(imgui, "_Style");
 
     //////////////// raylib ////////////////
     vm->bind(imgui, "rlImGuiSetup(darkTheme: bool)",
@@ -1805,7 +1797,7 @@ void add_module_imgui(VM* vm){
             return vm->None;
         });
 
-    vm->bind_func<0>(imgui, "PopID", PK_ACTION(ImGui::PopID()));
+    vm->bind_func(imgui, "PopID", 0, PK_ACTION(ImGui::PopID()));
     
     // Widgets: Text
     vm->bind(imgui, "Text(s: str)",

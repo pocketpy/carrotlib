@@ -62,7 +62,7 @@ PyObject* add_module__ct(VM *vm){
             return vm->None;
         });
 
-    vm->bind_func<-1>(mod, "fast_apply", [](VM* vm, ArgsView args){
+    vm->bind_func(mod, "fast_apply", -1, [](VM* vm, ArgsView args){
         if(args.size() < 2) vm->TypeError("expected at least 2 arguments");
         PyObject** begin;
         PyObject** end;
@@ -185,7 +185,7 @@ PyObject* add_module__ct(VM *vm){
     mod->attr().set("GRAPHICS_API_OPENGL_ES3", vm->False);
 #endif
 
-    _bind(vm, mod, "_rlDrawTextBoxed(render: bool, limitHeight: bool, lineSpacing: float, font: rl.Font, text: str, rec: rl.Rectangle, fontSize: float, spacing: float, wordWrap: bool, tint: rl.Color) -> vec2", &DrawTextBoxed);
+    vm->bind(mod, "_rlDrawTextBoxed(render: bool, limitHeight: bool, lineSpacing: float, font: rl.Font, text: str, rec: rl.Rectangle, fontSize: float, spacing: float, wordWrap: bool, tint: rl.Color) -> vec2", &DrawTextBoxed);
 
     return mod;
 }
