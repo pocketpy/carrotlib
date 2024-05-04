@@ -29,9 +29,8 @@ namespace ct{
         __android_log_print(ANDROID_LOG_ERROR, "CarrotLib", "%s", text.c_str());
     }
 
-    unsigned char* platform_load_asset(const char* name_p, int name_size, int* out_size){
-        std::string name(name_p, name_size);
-        AAsset* asset = AAssetManager_open(get_android_asset_manager(), name.c_str(), AASSET_MODE_BUFFER);
+    unsigned char* platform_load_asset(const char* name, int* out_size){
+        AAsset* asset = AAssetManager_open(get_android_asset_manager(), name, AASSET_MODE_BUFFER);
         if(!asset) return nullptr;
         int size = AAsset_getLength(asset);
         char* buffer = new char[size];

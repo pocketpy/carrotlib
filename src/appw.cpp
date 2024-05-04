@@ -89,7 +89,7 @@ PyObject* add_module__ct(VM *vm){
         [](VM* vm, ArgsView args){
             const Str& name = CAST(Str&, args[0]);
             int out_size;
-            unsigned char* out = platform_load_asset(name.data, name.size, &out_size);
+            unsigned char* out = platform_load_asset(name.c_str(), &out_size);
             if(out == nullptr) vm->IOError(_S("failed to load: ", name));
             return VAR(Bytes(out, out_size));
         });
@@ -98,7 +98,7 @@ PyObject* add_module__ct(VM *vm){
         [](VM* vm, ArgsView args){
             const Str& name = CAST(Str&, args[0]);
             int out_size;
-            const char* out = (const char*)platform_load_asset(name.data, name.size, &out_size);
+            const char* out = (const char*)platform_load_asset(name.c_str(), &out_size);
             if(out == nullptr) vm->IOError(_S("failed to load: ", name));
             return VAR(std::string_view(out, out_size));
         });
@@ -354,9 +354,8 @@ void setup_imgui_font(){
     if(once) return;
     once = true;
 
-    std::string_view font_path(SourceCodePro_Medium);
     int data_size;
-    void* data = platform_load_asset(font_path.data(), font_path.size(), &data_size);
+    void* data = platform_load_asset(SourceCodePro_Medium, &data_size);
     int width = (GetScreenWidth() + GetRenderWidth()) / 2;
     float font_size = width / 80.0f + 0.5f;
     if(font_size < 18.0f) font_size = 18.0f;

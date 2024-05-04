@@ -43,15 +43,15 @@ namespace ct{
 #endif
     }
 
-    unsigned char* platform_load_asset(const char* name_p, int name_size, int* out_size){
-        unsigned char* res = _default_import_handler(name_p, name_size, out_size);
+    unsigned char* platform_load_asset(const char* name, int* out_size){
+        unsigned char* res = _default_import_handler(name, out_size);
         if(res != NULL) return res;
         const char* template_path = get_template_path();
         if(template_path == NULL) return NULL;
         std::filesystem::path path(template_path);
-        path /= std::string(name_p, name_size);
+        path /= std::string(name);
         std::string path_string = path.string();
-        return _default_import_handler(path_string.c_str(), path_string.size(), out_size);
+        return _default_import_handler(path_string.c_str(), out_size);
     }
 
     std::vector<std::string> platform_list_assets(std::string_view root){

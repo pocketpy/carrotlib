@@ -24,7 +24,7 @@ namespace ct{
     void platform_desktop_screen_size(int& width, int& height);
 #endif
     
-    unsigned char* platform_load_asset(const char*, int, int*);
+    unsigned char* platform_load_asset(const char*, int*);
     std::vector<std::string> platform_list_assets(std::string_view);
 
     Str platform_system_info();

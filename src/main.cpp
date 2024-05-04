@@ -69,7 +69,7 @@ void ios_ready(){
 
     SetLoadFileDataCallback([](const char* filename, int* dataSize) -> unsigned char*{
         int out_size;
-        unsigned char* out = platform_load_asset(filename, strlen(filename), &out_size);
+        unsigned char* out = platform_load_asset(filename, &out_size);
         if(out == nullptr){
             vm->IOError(_S("failed to load ", filename, "\n"));
             return nullptr;
@@ -80,7 +80,7 @@ void ios_ready(){
 
     SetLoadFileTextCallback([](const char* filename) -> char*{
         int out_size;
-        unsigned char* out = platform_load_asset(filename, strlen(filename), &out_size);
+        unsigned char* out = platform_load_asset(filename, &out_size);
         if(out == nullptr){
             vm->IOError(_S("failed to load ", filename, "\n"));
             return nullptr;
@@ -123,7 +123,7 @@ void ios_ready(){
 
     std::string entry_file = "main.py";
     int out_size;
-    unsigned char* out = platform_load_asset(entry_file.data(), entry_file.size(), &out_size);
+    unsigned char* out = platform_load_asset(entry_file.c_str(), &out_size);
     if(out == nullptr) fatal_error(_S("Error: failed to load ", entry_file));
 
     Str entry_file_string((char*)out, out_size);

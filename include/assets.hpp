@@ -13,12 +13,12 @@ static std::map<
 extern void init_hardcoded_assets(decltype(_Assets)& assets);
 extern void init_hardcoded_sources(decltype(_Assets)& assets);
 
-inline unsigned char* _platform_load_asset(const char* name_p, int name_size, int* out_size){
+inline unsigned char* _platform_load_asset(const char* name, int* out_size){
     if(_Assets.empty()){
         init_hardcoded_assets(_Assets);
         init_hardcoded_sources(_Assets);
     }
-    auto it = _Assets.find(std::string_view(name_p, name_size));
+    auto it = _Assets.find(std::string_view(name));
     if(it == _Assets.end()) return nullptr;
     *out_size = it->second.second;
     unsigned char* out = new unsigned char[*out_size];

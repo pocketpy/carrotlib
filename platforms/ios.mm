@@ -18,8 +18,8 @@ namespace ct{
         std::cerr << text;
     }
 
-    unsigned char* platform_load_asset(const char* name_p, int name_size, int* out_size){
-        return _platform_load_asset(name_p, name_size, out_size);
+    unsigned char* platform_load_asset(const char* name, int* out_size){
+        return _platform_load_asset(name, out_size);
     }
 
     std::vector<std::string> platform_list_assets(std::string_view root){
