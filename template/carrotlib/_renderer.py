@@ -2,6 +2,7 @@ from linalg import *
 import raylib as rl
 
 from ._colors import Colors
+from ._constants import PIVOT_CENTER
 from . import g as _g
 
 Texture2D = rl.Texture2D
@@ -64,11 +65,10 @@ def draw_text(font: rl.Font, pos: vec2, text: str, font_size: int, color: rl.Col
     if not _g.is_rendering_ui:
         trans = _g.world_to_viewport
         pos = trans.transform_point(pos)
-    origin = origin or vec2(0.5, 0.5)
+    origin = origin or PIVOT_CENTER
     rl.SetTextLineSpacing(line_spacing + font_size)
     size = rl.MeasureTextEx(font, text, font_size, spacing)
-    pos.x -= size.x * origin.x
-    pos.y -= size.y * origin.y
+    pos -= size * origin
     rl.DrawTextEx(font, text, pos, font_size, spacing, color)
 
 

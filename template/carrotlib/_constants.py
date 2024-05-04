@@ -1,0 +1,11 @@
+from linalg import vec2
+
+PIVOT_LEFT_TOP = vec2(0, 0)
+PIVOT_LEFT_CENTER = vec2(0, 0.5)
+PIVOT_LEFT_BOTTOM = vec2(0, 1)
+PIVOT_CENTER_TOP = vec2(0.5, 0)
+PIVOT_CENTER = vec2(0.5, 0.5)
+PIVOT_CENTER_BOTTOM = vec2(0.5, 1)
+PIVOT_RIGHT_TOP = vec2(1, 0)
+PIVOT_RIGHT_CENTER = vec2(1, 0.5)
+PIVOT_RIGHT_BOTTOM = vec2(1, 1)
