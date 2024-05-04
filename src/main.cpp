@@ -193,7 +193,7 @@ int main(int argc, char** argv){
             vm = new VM();
             vm->set_main_argv(argc, argv);
             int size;
-            const char* data = (const char*)_default_import_handler(argv_1.data(), argv_1.size(), &size);
+            const char* data = (const char*)_default_import_handler(argv[1], &size);
             if(data == nullptr){
                 vm->stderr_write(_S("Error: failed to load ", argv_1, '\n'));
                 return 1;
