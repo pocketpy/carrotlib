@@ -2,8 +2,6 @@
 
 namespace pkpy{
     struct naett_response{
-        PY_CLASS(naett_response, naett, Response)
-
         naettReq* req;
         naettRes* res;
         VM* vm;
@@ -27,8 +25,6 @@ namespace pkpy{
         }
 
         static void _register(VM* vm, PyObject* mod, PyObject* type){
-            vm->bind_notimplemented_constructor<naett_response>(type);
-
             vm->bind_property(type, "completed: bool", [](VM* vm, ArgsView args){
                 naett_response& self = PK_OBJ_GET(naett_response, args[0]);
                 return VAR(naettComplete(self.res) != 0);
@@ -52,11 +48,11 @@ namespace pkpy{
                 return VAR(self.content());
             });
 
-            vm->bind_method<0>(type, "json", [](VM* vm, ArgsView args){
+            vm->bind_func(type, "json", 1, [](VM* vm, ArgsView args){
                 naett_response& self = PK_OBJ_GET(naett_response, args[0]);
                 self.check_completed();
                 CodeObject_ code = vm->compile(self.text(), "<json>", JSON_MODE);
-                return vm->_exec(code, vm->top_frame()->_module);
+                return vm->_exec(code, vm->callstack.top()._module);
             });
 
             vm->bind_property(type, "headers: dict", [](VM* vm, ArgsView args){
@@ -140,10 +136,11 @@ namespace pkpy{
                 return _0;
             });
 
-            vm->bind__next__(PK_OBJ_GET(Type, type), [](VM* vm, PyObject* _0){
+            vm->bind__next__(PK_OBJ_GET(Type, type), [](VM* vm, PyObject* _0) -> unsigned{
                 naett_response& self = PK_OBJ_GET(naett_response, _0);
-                if(naettComplete(self.res)) return vm->StopIteration;
-                return vm->None;
+                if(naettComplete(self.res)) return 0;
+                vm->s_data.push(vm->None);
+                return 1;
             });
         }
 
@@ -155,7 +152,7 @@ namespace pkpy{
 
     void add_module_naett(VM* vm){
         PyObject* mod = vm->new_module("naett");
-        naett_response::register_class(vm, mod);
+        vm->register_user_class<naett_response>(mod, "Response");
 
         vm->bind(mod, "request(method, url, headers=None, body: str | bytes = None, timeout=None)", [](VM* vm, ArgsView args){
             const Str& method = CAST(Str&, args[0]);
@@ -197,7 +194,7 @@ namespace pkpy{
             );
 
             naettRes* res = naettMake(req);
-            return vm->heap.gcnew<naett_response>(naett_response::_type(vm), req, res, vm);
+            return vm->new_user_object<naett_response>(req, res, vm);
         });
     }
 }   // namespace pkpy
