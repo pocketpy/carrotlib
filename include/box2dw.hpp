@@ -63,7 +63,6 @@ struct PyContactListener: b2ContactListener{
 };
 
 struct PyBody{
-    PY_CLASS(PyBody, box2d, Body)
     PK_ALWAYS_PASS_BY_POINTER(PyBody)
 
     b2Body* body;
@@ -119,7 +118,6 @@ struct PyBody{
 };
 
 struct PyWorld {
-    PY_CLASS(PyWorld, box2d, World)
     PK_ALWAYS_PASS_BY_POINTER(PyWorld)
 
     b2World world;

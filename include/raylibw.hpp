@@ -79,7 +79,7 @@ struct wrapped__Matrix{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"m0", "m4", "m8", "m12", "m1", "m5", "m9", "m13", "m2", "m6", "m10", "m14", "m3", "m7", "m11", "m15"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 16) vm->TypeError(_S("expected 16 arguments, got ", args.size()-1));
@@ -134,7 +134,7 @@ struct wrapped__Color{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"r", "g", "b", "a"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
@@ -177,7 +177,7 @@ struct wrapped__Rectangle{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"x", "y", "width", "height"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
@@ -220,7 +220,7 @@ struct wrapped__Image{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"data", "width", "height", "mipmaps", "format"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
@@ -264,7 +264,7 @@ struct wrapped__Texture{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"id", "width", "height", "mipmaps", "format"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
@@ -308,7 +308,7 @@ struct wrapped__RenderTexture{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"id", "texture", "depth"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
@@ -350,7 +350,7 @@ struct wrapped__NPatchInfo{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"source", "left", "top", "right", "bottom", "layout"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 6) vm->TypeError(_S("expected 6 arguments, got ", args.size()-1));
@@ -395,7 +395,7 @@ struct wrapped__GlyphInfo{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"value", "offsetX", "offsetY", "advanceX", "image"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
@@ -439,7 +439,7 @@ struct wrapped__Font{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"baseSize", "glyphCount", "glyphPadding", "texture", "recs", "glyphs"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 6) vm->TypeError(_S("expected 6 arguments, got ", args.size()-1));
@@ -484,7 +484,7 @@ struct wrapped__Camera3D{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"position", "target", "up", "fovy", "projection"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
@@ -528,7 +528,7 @@ struct wrapped__Camera2D{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"offset", "target", "rotation", "zoom"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
@@ -571,7 +571,7 @@ struct wrapped__Mesh{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"vertexCount", "triangleCount", "vertices", "texcoords", "texcoords2", "normals", "tangents", "colors", "indices", "animVertices", "animNormals", "boneIds", "boneWeights", "vaoId", "vboId"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 15) vm->TypeError(_S("expected 15 arguments, got ", args.size()-1));
@@ -625,7 +625,7 @@ struct wrapped__Shader{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"id", "locs"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
@@ -666,7 +666,7 @@ struct wrapped__MaterialMap{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"texture", "color", "value"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
@@ -708,7 +708,7 @@ struct wrapped__Material{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"shader", "maps", "params"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
@@ -750,7 +750,7 @@ struct wrapped__Transform{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"translation", "rotation", "scale"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
@@ -792,7 +792,7 @@ struct wrapped__BoneInfo{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"name", "parent"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
@@ -833,7 +833,7 @@ struct wrapped__Model{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"transform", "meshCount", "materialCount", "meshes", "materials", "meshMaterial", "boneCount", "bones", "bindPose"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 9) vm->TypeError(_S("expected 9 arguments, got ", args.size()-1));
@@ -881,7 +881,7 @@ struct wrapped__ModelAnimation{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"boneCount", "frameCount", "bones", "framePoses", "name"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
@@ -925,7 +925,7 @@ struct wrapped__Ray{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"position", "direction"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
@@ -966,7 +966,7 @@ struct wrapped__RayCollision{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"hit", "distance", "point", "normal"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 4) vm->TypeError(_S("expected 4 arguments, got ", args.size()-1));
@@ -1009,7 +1009,7 @@ struct wrapped__BoundingBox{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"min", "max"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
@@ -1050,7 +1050,7 @@ struct wrapped__Wave{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"frameCount", "sampleRate", "sampleSize", "channels", "data"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
@@ -1094,7 +1094,7 @@ struct wrapped__AudioStream{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"buffer", "processor", "sampleRate", "sampleSize", "channels"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
@@ -1138,7 +1138,7 @@ struct wrapped__Sound{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"stream", "frameCount"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 2) vm->TypeError(_S("expected 2 arguments, got ", args.size()-1));
@@ -1179,7 +1179,7 @@ struct wrapped__Music{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"stream", "frameCount", "looping", "ctxType", "ctxData"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 5) vm->TypeError(_S("expected 5 arguments, got ", args.size()-1));
@@ -1223,7 +1223,7 @@ struct wrapped__VrDeviceInfo{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"hResolution", "vResolution", "hScreenSize", "vScreenSize", "eyeToScreenDistance", "lensSeparationDistance", "interpupillaryDistance", "lensDistortionValues", "chromaAbCorrection"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 9) vm->TypeError(_S("expected 9 arguments, got ", args.size()-1));
@@ -1271,7 +1271,7 @@ struct wrapped__VrStereoConfig{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"projection", "viewOffset", "leftLensCenter", "rightLensCenter", "leftScreenCenter", "rightScreenCenter", "scale", "scaleIn"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 8) vm->TypeError(_S("expected 8 arguments, got ", args.size()-1));
@@ -1318,7 +1318,7 @@ struct wrapped__FilePathList{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"capacity", "count", "paths"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
@@ -1360,7 +1360,7 @@ struct wrapped__AutomationEvent{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"frame", "type", "params"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
@@ -1402,7 +1402,7 @@ struct wrapped__AutomationEventList{
     }
 
     static void _register(VM* vm, PyObject* mod, PyObject* type){
-        vm->bind_method<-1>(type, "__init__", [](VM* vm, ArgsView args){
+        vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"capacity", "count", "events"};
             if(args.size() == 1) return vm->None;
             if(args.size()-1 != 3) vm->TypeError(_S("expected 3 arguments, got ", args.size()-1));
@@ -1514,482 +1514,482 @@ void add_module_raylib(VM* vm){
     vm->register_user_class<wrapped__AutomationEvent>(mod, "AutomationEvent");
     vm->register_user_class<wrapped__AutomationEventList>(mod, "AutomationEventList");
 
-    _bind(vm, mod, "InitWindow(width: int, height: int, title: str) -> None", &InitWindow);
-    _bind(vm, mod, "CloseWindow() -> None", &CloseWindow);
-    _bind(vm, mod, "WindowShouldClose() -> bool", &WindowShouldClose);
-    _bind(vm, mod, "IsWindowReady() -> bool", &IsWindowReady);
-    _bind(vm, mod, "IsWindowFullscreen() -> bool", &IsWindowFullscreen);
-    _bind(vm, mod, "IsWindowHidden() -> bool", &IsWindowHidden);
-    _bind(vm, mod, "IsWindowMinimized() -> bool", &IsWindowMinimized);
-    _bind(vm, mod, "IsWindowMaximized() -> bool", &IsWindowMaximized);
-    _bind(vm, mod, "IsWindowFocused() -> bool", &IsWindowFocused);
-    _bind(vm, mod, "IsWindowResized() -> bool", &IsWindowResized);
-    _bind(vm, mod, "IsWindowState(flag: int) -> bool", &IsWindowState);
-    _bind(vm, mod, "SetWindowState(flags: int) -> None", &SetWindowState);
-    _bind(vm, mod, "ClearWindowState(flags: int) -> None", &ClearWindowState);
-    _bind(vm, mod, "ToggleFullscreen() -> None", &ToggleFullscreen);
-    _bind(vm, mod, "ToggleBorderlessWindowed() -> None", &ToggleBorderlessWindowed);
-    _bind(vm, mod, "MaximizeWindow() -> None", &MaximizeWindow);
-    _bind(vm, mod, "MinimizeWindow() -> None", &MinimizeWindow);
-    _bind(vm, mod, "RestoreWindow() -> None", &RestoreWindow);
-    _bind(vm, mod, "SetWindowIcon(image: Image) -> None", &SetWindowIcon);
-    _bind(vm, mod, "SetWindowIcons(images: 'Image_p', count: int) -> None", &SetWindowIcons);
-    _bind(vm, mod, "SetWindowTitle(title: str) -> None", &SetWindowTitle);
-    _bind(vm, mod, "SetWindowPosition(x: int, y: int) -> None", &SetWindowPosition);
-    _bind(vm, mod, "SetWindowMonitor(monitor: int) -> None", &SetWindowMonitor);
-    _bind(vm, mod, "SetWindowMinSize(width: int, height: int) -> None", &SetWindowMinSize);
-    _bind(vm, mod, "SetWindowMaxSize(width: int, height: int) -> None", &SetWindowMaxSize);
-    _bind(vm, mod, "SetWindowSize(width: int, height: int) -> None", &SetWindowSize);
-    _bind(vm, mod, "SetWindowOpacity(opacity: float) -> None", &SetWindowOpacity);
-    _bind(vm, mod, "SetWindowFocused() -> None", &SetWindowFocused);
-    _bind(vm, mod, "GetWindowHandle() -> void_p", &GetWindowHandle);
-    _bind(vm, mod, "GetScreenWidth() -> int", &GetScreenWidth);
-    _bind(vm, mod, "GetScreenHeight() -> int", &GetScreenHeight);
-    _bind(vm, mod, "GetRenderWidth() -> int", &GetRenderWidth);
-    _bind(vm, mod, "GetRenderHeight() -> int", &GetRenderHeight);
-    _bind(vm, mod, "GetMonitorCount() -> int", &GetMonitorCount);
-    _bind(vm, mod, "GetCurrentMonitor() -> int", &GetCurrentMonitor);
-    _bind(vm, mod, "GetMonitorPosition(monitor: int) -> vec2", &GetMonitorPosition);
-    _bind(vm, mod, "GetMonitorWidth(monitor: int) -> int", &GetMonitorWidth);
-    _bind(vm, mod, "GetMonitorHeight(monitor: int) -> int", &GetMonitorHeight);
-    _bind(vm, mod, "GetMonitorPhysicalWidth(monitor: int) -> int", &GetMonitorPhysicalWidth);
-    _bind(vm, mod, "GetMonitorPhysicalHeight(monitor: int) -> int", &GetMonitorPhysicalHeight);
-    _bind(vm, mod, "GetMonitorRefreshRate(monitor: int) -> int", &GetMonitorRefreshRate);
-    _bind(vm, mod, "GetWindowPosition() -> vec2", &GetWindowPosition);
-    _bind(vm, mod, "GetWindowScaleDPI() -> vec2", &GetWindowScaleDPI);
-    _bind(vm, mod, "GetMonitorName(monitor: int) -> str", &GetMonitorName);
-    _bind(vm, mod, "SetClipboardText(text: str) -> None", &SetClipboardText);
-    _bind(vm, mod, "GetClipboardText() -> str", &GetClipboardText);
-    _bind(vm, mod, "EnableEventWaiting() -> None", &EnableEventWaiting);
-    _bind(vm, mod, "DisableEventWaiting() -> None", &DisableEventWaiting);
-    _bind(vm, mod, "ShowCursor() -> None", &ShowCursor);
-    _bind(vm, mod, "HideCursor() -> None", &HideCursor);
-    _bind(vm, mod, "IsCursorHidden() -> bool", &IsCursorHidden);
-    _bind(vm, mod, "EnableCursor() -> None", &EnableCursor);
-    _bind(vm, mod, "DisableCursor() -> None", &DisableCursor);
-    _bind(vm, mod, "IsCursorOnScreen() -> bool", &IsCursorOnScreen);
-    _bind(vm, mod, "ClearBackground(color: Color) -> None", &ClearBackground);
-    _bind(vm, mod, "BeginDrawing() -> None", &BeginDrawing);
-    _bind(vm, mod, "EndDrawing() -> None", &EndDrawing);
-    _bind(vm, mod, "BeginMode2D(camera: Camera2D) -> None", &BeginMode2D);
-    _bind(vm, mod, "EndMode2D() -> None", &EndMode2D);
-    _bind(vm, mod, "BeginMode3D(camera: Camera3D) -> None", &BeginMode3D);
-    _bind(vm, mod, "EndMode3D() -> None", &EndMode3D);
-    _bind(vm, mod, "BeginTextureMode(target: RenderTexture2D) -> None", &BeginTextureMode);
-    _bind(vm, mod, "EndTextureMode() -> None", &EndTextureMode);
-    _bind(vm, mod, "BeginShaderMode(shader: Shader) -> None", &BeginShaderMode);
-    _bind(vm, mod, "EndShaderMode() -> None", &EndShaderMode);
-    _bind(vm, mod, "BeginBlendMode(mode: int) -> None", &BeginBlendMode);
-    _bind(vm, mod, "EndBlendMode() -> None", &EndBlendMode);
-    _bind(vm, mod, "BeginScissorMode(x: int, y: int, width: int, height: int) -> None", &BeginScissorMode);
-    _bind(vm, mod, "EndScissorMode() -> None", &EndScissorMode);
-    _bind(vm, mod, "BeginVrStereoMode(config: VrStereoConfig) -> None", &BeginVrStereoMode);
-    _bind(vm, mod, "EndVrStereoMode() -> None", &EndVrStereoMode);
-    _bind(vm, mod, "LoadVrStereoConfig(device: VrDeviceInfo) -> VrStereoConfig", &LoadVrStereoConfig);
-    _bind(vm, mod, "UnloadVrStereoConfig(config: VrStereoConfig) -> None", &UnloadVrStereoConfig);
-    _bind(vm, mod, "LoadShader(vsFileName: str, fsFileName: str) -> Shader", &LoadShader);
-    _bind(vm, mod, "LoadShaderFromMemory(vsCode: str, fsCode: str) -> Shader", &LoadShaderFromMemory);
-    _bind(vm, mod, "IsShaderReady(shader: Shader) -> bool", &IsShaderReady);
-    _bind(vm, mod, "GetShaderLocation(shader: Shader, uniformName: str) -> int", &GetShaderLocation);
-    _bind(vm, mod, "GetShaderLocationAttrib(shader: Shader, attribName: str) -> int", &GetShaderLocationAttrib);
-    _bind(vm, mod, "SetShaderValue(shader: Shader, locIndex: int, value: void_p, uniformType: int) -> None", &SetShaderValue);
-    _bind(vm, mod, "SetShaderValueV(shader: Shader, locIndex: int, value: void_p, uniformType: int, count: int) -> None", &SetShaderValueV);
-    _bind(vm, mod, "SetShaderValueMatrix(shader: Shader, locIndex: int, mat: Matrix) -> None", &SetShaderValueMatrix);
-    _bind(vm, mod, "SetShaderValueTexture(shader: Shader, locIndex: int, texture: Texture2D) -> None", &SetShaderValueTexture);
-    _bind(vm, mod, "UnloadShader(shader: Shader) -> None", &UnloadShader);
-    _bind(vm, mod, "GetScreenToWorldRay(position: vec2, camera: Camera) -> Ray", &GetScreenToWorldRay);
-    _bind(vm, mod, "GetScreenToWorldRayEx(position: vec2, camera: Camera, width: float, height: float) -> Ray", &GetScreenToWorldRayEx);
-    _bind(vm, mod, "GetWorldToScreen(position: vec3, camera: Camera) -> vec2", &GetWorldToScreen);
-    _bind(vm, mod, "GetWorldToScreenEx(position: vec3, camera: Camera, width: int, height: int) -> vec2", &GetWorldToScreenEx);
-    _bind(vm, mod, "GetWorldToScreen2D(position: vec2, camera: Camera2D) -> vec2", &GetWorldToScreen2D);
-    _bind(vm, mod, "GetScreenToWorld2D(position: vec2, camera: Camera2D) -> vec2", &GetScreenToWorld2D);
-    _bind(vm, mod, "GetCameraMatrix(camera: Camera) -> Matrix", &GetCameraMatrix);
-    _bind(vm, mod, "GetCameraMatrix2D(camera: Camera2D) -> Matrix", &GetCameraMatrix2D);
-    _bind(vm, mod, "SetTargetFPS(fps: int) -> None", &SetTargetFPS);
-    _bind(vm, mod, "GetFrameTime() -> float", &GetFrameTime);
-    _bind(vm, mod, "GetTime() -> float", &GetTime);
-    _bind(vm, mod, "GetFPS() -> int", &GetFPS);
-    _bind(vm, mod, "SwapScreenBuffer() -> None", &SwapScreenBuffer);
-    _bind(vm, mod, "PollInputEvents() -> None", &PollInputEvents);
-    _bind(vm, mod, "WaitTime(seconds: float) -> None", &WaitTime);
-    _bind(vm, mod, "SetRandomSeed(seed: int) -> None", &SetRandomSeed);
-    _bind(vm, mod, "GetRandomValue(min: int, max: int) -> int", &GetRandomValue);
-    _bind(vm, mod, "LoadRandomSequence(count: int, min: int, max: int) -> int_p", &LoadRandomSequence);
-    _bind(vm, mod, "UnloadRandomSequence(sequence: int_p) -> None", &UnloadRandomSequence);
-    _bind(vm, mod, "TakeScreenshot(fileName: str) -> None", &TakeScreenshot);
-    _bind(vm, mod, "SetConfigFlags(flags: int) -> None", &SetConfigFlags);
-    _bind(vm, mod, "OpenURL(url: str) -> None", &OpenURL);
-    _bind(vm, mod, "SetTraceLogLevel(logLevel: int) -> None", &SetTraceLogLevel);
-    _bind(vm, mod, "MemAlloc(size: int) -> void_p", &MemAlloc);
-    _bind(vm, mod, "MemRealloc(ptr: void_p, size: int) -> void_p", &MemRealloc);
-    _bind(vm, mod, "MemFree(ptr: void_p) -> None", &MemFree);
-    _bind(vm, mod, "LoadFileData(fileName: str, dataSize: int_p) -> uchar_p", &LoadFileData);
-    _bind(vm, mod, "UnloadFileData(data: uchar_p) -> None", &UnloadFileData);
-    _bind(vm, mod, "SaveFileData(fileName: str, data: void_p, dataSize: int) -> bool", &SaveFileData);
-    _bind(vm, mod, "ExportDataAsCode(data: uchar_p, dataSize: int, fileName: str) -> bool", &ExportDataAsCode);
-    _bind(vm, mod, "LoadFileText(fileName: str) -> char_p", &LoadFileText);
-    _bind(vm, mod, "UnloadFileText(text: char_p) -> None", &UnloadFileText);
-    _bind(vm, mod, "SaveFileText(fileName: str, text: char_p) -> bool", &SaveFileText);
-    _bind(vm, mod, "FileExists(fileName: str) -> bool", &FileExists);
-    _bind(vm, mod, "DirectoryExists(dirPath: str) -> bool", &DirectoryExists);
-    _bind(vm, mod, "IsFileExtension(fileName: str, ext: str) -> bool", &IsFileExtension);
-    _bind(vm, mod, "GetFileLength(fileName: str) -> int", &GetFileLength);
-    _bind(vm, mod, "GetFileExtension(fileName: str) -> str", &GetFileExtension);
-    _bind(vm, mod, "GetFileName(filePath: str) -> str", &GetFileName);
-    _bind(vm, mod, "GetFileNameWithoutExt(filePath: str) -> str", &GetFileNameWithoutExt);
-    _bind(vm, mod, "GetDirectoryPath(filePath: str) -> str", &GetDirectoryPath);
-    _bind(vm, mod, "GetPrevDirectoryPath(dirPath: str) -> str", &GetPrevDirectoryPath);
-    _bind(vm, mod, "GetWorkingDirectory() -> str", &GetWorkingDirectory);
-    _bind(vm, mod, "GetApplicationDirectory() -> str", &GetApplicationDirectory);
-    _bind(vm, mod, "ChangeDirectory(dir: str) -> bool", &ChangeDirectory);
-    _bind(vm, mod, "IsPathFile(path: str) -> bool", &IsPathFile);
-    _bind(vm, mod, "LoadDirectoryFiles(dirPath: str) -> FilePathList", &LoadDirectoryFiles);
-    _bind(vm, mod, "LoadDirectoryFilesEx(basePath: str, filter: str, scanSubdirs: bool) -> FilePathList", &LoadDirectoryFilesEx);
-    _bind(vm, mod, "UnloadDirectoryFiles(files: FilePathList) -> None", &UnloadDirectoryFiles);
-    _bind(vm, mod, "IsFileDropped() -> bool", &IsFileDropped);
-    _bind(vm, mod, "LoadDroppedFiles() -> FilePathList", &LoadDroppedFiles);
-    _bind(vm, mod, "UnloadDroppedFiles(files: FilePathList) -> None", &UnloadDroppedFiles);
-    _bind(vm, mod, "GetFileModTime(fileName: str) -> int", &GetFileModTime);
-    _bind(vm, mod, "CompressData(data: uchar_p, dataSize: int, compDataSize: int_p) -> uchar_p", &CompressData);
-    _bind(vm, mod, "DecompressData(compData: uchar_p, compDataSize: int, dataSize: int_p) -> uchar_p", &DecompressData);
-    _bind(vm, mod, "EncodeDataBase64(data: uchar_p, dataSize: int, outputSize: int_p) -> char_p", &EncodeDataBase64);
-    _bind(vm, mod, "DecodeDataBase64(data: uchar_p, outputSize: int_p) -> uchar_p", &DecodeDataBase64);
-    _bind(vm, mod, "LoadAutomationEventList(fileName: str) -> AutomationEventList", &LoadAutomationEventList);
-    _bind(vm, mod, "UnloadAutomationEventList(list: AutomationEventList) -> None", &UnloadAutomationEventList);
-    _bind(vm, mod, "ExportAutomationEventList(list: AutomationEventList, fileName: str) -> bool", &ExportAutomationEventList);
-    _bind(vm, mod, "SetAutomationEventList(list: 'AutomationEventList_p') -> None", &SetAutomationEventList);
-    _bind(vm, mod, "SetAutomationEventBaseFrame(frame: int) -> None", &SetAutomationEventBaseFrame);
-    _bind(vm, mod, "StartAutomationEventRecording() -> None", &StartAutomationEventRecording);
-    _bind(vm, mod, "StopAutomationEventRecording() -> None", &StopAutomationEventRecording);
-    _bind(vm, mod, "PlayAutomationEvent(event: AutomationEvent) -> None", &PlayAutomationEvent);
-    _bind(vm, mod, "IsKeyPressed(key: int) -> bool", &IsKeyPressed);
-    _bind(vm, mod, "IsKeyPressedRepeat(key: int) -> bool", &IsKeyPressedRepeat);
-    _bind(vm, mod, "IsKeyDown(key: int) -> bool", &IsKeyDown);
-    _bind(vm, mod, "IsKeyReleased(key: int) -> bool", &IsKeyReleased);
-    _bind(vm, mod, "IsKeyUp(key: int) -> bool", &IsKeyUp);
-    _bind(vm, mod, "GetKeyPressed() -> int", &GetKeyPressed);
-    _bind(vm, mod, "GetCharPressed() -> int", &GetCharPressed);
-    _bind(vm, mod, "SetExitKey(key: int) -> None", &SetExitKey);
-    _bind(vm, mod, "IsGamepadAvailable(gamepad: int) -> bool", &IsGamepadAvailable);
-    _bind(vm, mod, "GetGamepadName(gamepad: int) -> str", &GetGamepadName);
-    _bind(vm, mod, "IsGamepadButtonPressed(gamepad: int, button: int) -> bool", &IsGamepadButtonPressed);
-    _bind(vm, mod, "IsGamepadButtonDown(gamepad: int, button: int) -> bool", &IsGamepadButtonDown);
-    _bind(vm, mod, "IsGamepadButtonReleased(gamepad: int, button: int) -> bool", &IsGamepadButtonReleased);
-    _bind(vm, mod, "IsGamepadButtonUp(gamepad: int, button: int) -> bool", &IsGamepadButtonUp);
-    _bind(vm, mod, "GetGamepadButtonPressed() -> int", &GetGamepadButtonPressed);
-    _bind(vm, mod, "GetGamepadAxisCount(gamepad: int) -> int", &GetGamepadAxisCount);
-    _bind(vm, mod, "GetGamepadAxisMovement(gamepad: int, axis: int) -> float", &GetGamepadAxisMovement);
-    _bind(vm, mod, "SetGamepadMappings(mappings: str) -> int", &SetGamepadMappings);
-    _bind(vm, mod, "SetGamepadVibration(gamepad: int, leftMotor: float, rightMotor: float) -> None", &SetGamepadVibration);
-    _bind(vm, mod, "IsMouseButtonPressed(button: int) -> bool", &IsMouseButtonPressed);
-    _bind(vm, mod, "IsMouseButtonDown(button: int) -> bool", &IsMouseButtonDown);
-    _bind(vm, mod, "IsMouseButtonReleased(button: int) -> bool", &IsMouseButtonReleased);
-    _bind(vm, mod, "IsMouseButtonUp(button: int) -> bool", &IsMouseButtonUp);
-    _bind(vm, mod, "GetMouseX() -> int", &GetMouseX);
-    _bind(vm, mod, "GetMouseY() -> int", &GetMouseY);
-    _bind(vm, mod, "GetMousePosition() -> vec2", &GetMousePosition);
-    _bind(vm, mod, "GetMouseDelta() -> vec2", &GetMouseDelta);
-    _bind(vm, mod, "SetMousePosition(x: int, y: int) -> None", &SetMousePosition);
-    _bind(vm, mod, "SetMouseOffset(offsetX: int, offsetY: int) -> None", &SetMouseOffset);
-    _bind(vm, mod, "SetMouseScale(scaleX: float, scaleY: float) -> None", &SetMouseScale);
-    _bind(vm, mod, "GetMouseWheelMove() -> float", &GetMouseWheelMove);
-    _bind(vm, mod, "GetMouseWheelMoveV() -> vec2", &GetMouseWheelMoveV);
-    _bind(vm, mod, "SetMouseCursor(cursor: int) -> None", &SetMouseCursor);
-    _bind(vm, mod, "GetTouchX() -> int", &GetTouchX);
-    _bind(vm, mod, "GetTouchY() -> int", &GetTouchY);
-    _bind(vm, mod, "GetTouchPosition(index: int) -> vec2", &GetTouchPosition);
-    _bind(vm, mod, "GetTouchPointId(index: int) -> int", &GetTouchPointId);
-    _bind(vm, mod, "GetTouchPointCount() -> int", &GetTouchPointCount);
-    _bind(vm, mod, "SetGesturesEnabled(flags: int) -> None", &SetGesturesEnabled);
-    _bind(vm, mod, "IsGestureDetected(gesture: int) -> bool", &IsGestureDetected);
-    _bind(vm, mod, "GetGestureDetected() -> int", &GetGestureDetected);
-    _bind(vm, mod, "GetGestureHoldDuration() -> float", &GetGestureHoldDuration);
-    _bind(vm, mod, "GetGestureDragVector() -> vec2", &GetGestureDragVector);
-    _bind(vm, mod, "GetGestureDragAngle() -> float", &GetGestureDragAngle);
-    _bind(vm, mod, "GetGesturePinchVector() -> vec2", &GetGesturePinchVector);
-    _bind(vm, mod, "GetGesturePinchAngle() -> float", &GetGesturePinchAngle);
-    _bind(vm, mod, "UpdateCamera(camera: 'Camera_p', mode: int) -> None", &UpdateCamera);
-    _bind(vm, mod, "UpdateCameraPro(camera: 'Camera_p', movement: vec3, rotation: vec3, zoom: float) -> None", &UpdateCameraPro);
-    _bind(vm, mod, "SetShapesTexture(texture: Texture2D, source: Rectangle) -> None", &SetShapesTexture);
-    _bind(vm, mod, "GetShapesTexture() -> Texture2D", &GetShapesTexture);
-    _bind(vm, mod, "GetShapesTextureRectangle() -> Rectangle", &GetShapesTextureRectangle);
-    _bind(vm, mod, "DrawPixel(posX: int, posY: int, color: Color) -> None", &DrawPixel);
-    _bind(vm, mod, "DrawPixelV(position: vec2, color: Color) -> None", &DrawPixelV);
-    _bind(vm, mod, "DrawLine(startPosX: int, startPosY: int, endPosX: int, endPosY: int, color: Color) -> None", &DrawLine);
-    _bind(vm, mod, "DrawLineV(startPos: vec2, endPos: vec2, color: Color) -> None", &DrawLineV);
-    _bind(vm, mod, "DrawLineEx(startPos: vec2, endPos: vec2, thick: float, color: Color) -> None", &DrawLineEx);
-    _bind(vm, mod, "DrawLineStrip(points: 'vec2_p', pointCount: int, color: Color) -> None", &DrawLineStrip);
-    _bind(vm, mod, "DrawLineBezier(startPos: vec2, endPos: vec2, thick: float, color: Color) -> None", &DrawLineBezier);
-    _bind(vm, mod, "DrawCircle(centerX: int, centerY: int, radius: float, color: Color) -> None", &DrawCircle);
-    _bind(vm, mod, "DrawCircleSector(center: vec2, radius: float, startAngle: float, endAngle: float, segments: int, color: Color) -> None", &DrawCircleSector);
-    _bind(vm, mod, "DrawCircleSectorLines(center: vec2, radius: float, startAngle: float, endAngle: float, segments: int, color: Color) -> None", &DrawCircleSectorLines);
-    _bind(vm, mod, "DrawCircleGradient(centerX: int, centerY: int, radius: float, color1: Color, color2: Color) -> None", &DrawCircleGradient);
-    _bind(vm, mod, "DrawCircleV(center: vec2, radius: float, color: Color) -> None", &DrawCircleV);
-    _bind(vm, mod, "DrawCircleLines(centerX: int, centerY: int, radius: float, color: Color) -> None", &DrawCircleLines);
-    _bind(vm, mod, "DrawCircleLinesV(center: vec2, radius: float, color: Color) -> None", &DrawCircleLinesV);
-    _bind(vm, mod, "DrawEllipse(centerX: int, centerY: int, radiusH: float, radiusV: float, color: Color) -> None", &DrawEllipse);
-    _bind(vm, mod, "DrawEllipseLines(centerX: int, centerY: int, radiusH: float, radiusV: float, color: Color) -> None", &DrawEllipseLines);
-    _bind(vm, mod, "DrawRing(center: vec2, innerRadius: float, outerRadius: float, startAngle: float, endAngle: float, segments: int, color: Color) -> None", &DrawRing);
-    _bind(vm, mod, "DrawRingLines(center: vec2, innerRadius: float, outerRadius: float, startAngle: float, endAngle: float, segments: int, color: Color) -> None", &DrawRingLines);
-    _bind(vm, mod, "DrawRectangle(posX: int, posY: int, width: int, height: int, color: Color) -> None", &DrawRectangle);
-    _bind(vm, mod, "DrawRectangleV(position: vec2, size: vec2, color: Color) -> None", &DrawRectangleV);
-    _bind(vm, mod, "DrawRectangleRec(rec: Rectangle, color: Color) -> None", &DrawRectangleRec);
-    _bind(vm, mod, "DrawRectanglePro(rec: Rectangle, origin: vec2, rotation: float, color: Color) -> None", &DrawRectanglePro);
-    _bind(vm, mod, "DrawRectangleGradientV(posX: int, posY: int, width: int, height: int, color1: Color, color2: Color) -> None", &DrawRectangleGradientV);
-    _bind(vm, mod, "DrawRectangleGradientH(posX: int, posY: int, width: int, height: int, color1: Color, color2: Color) -> None", &DrawRectangleGradientH);
-    _bind(vm, mod, "DrawRectangleGradientEx(rec: Rectangle, col1: Color, col2: Color, col3: Color, col4: Color) -> None", &DrawRectangleGradientEx);
-    _bind(vm, mod, "DrawRectangleLines(posX: int, posY: int, width: int, height: int, color: Color) -> None", &DrawRectangleLines);
-    _bind(vm, mod, "DrawRectangleLinesEx(rec: Rectangle, lineThick: float, color: Color) -> None", &DrawRectangleLinesEx);
-    _bind(vm, mod, "DrawRectangleRounded(rec: Rectangle, roundness: float, segments: int, color: Color) -> None", &DrawRectangleRounded);
-    _bind(vm, mod, "DrawRectangleRoundedLines(rec: Rectangle, roundness: float, segments: int, lineThick: float, color: Color) -> None", &DrawRectangleRoundedLines);
-    _bind(vm, mod, "DrawTriangle(v1: vec2, v2: vec2, v3: vec2, color: Color) -> None", &DrawTriangle);
-    _bind(vm, mod, "DrawTriangleLines(v1: vec2, v2: vec2, v3: vec2, color: Color) -> None", &DrawTriangleLines);
-    _bind(vm, mod, "DrawTriangleFan(points: 'vec2_p', pointCount: int, color: Color) -> None", &DrawTriangleFan);
-    _bind(vm, mod, "DrawTriangleStrip(points: 'vec2_p', pointCount: int, color: Color) -> None", &DrawTriangleStrip);
-    _bind(vm, mod, "DrawPoly(center: vec2, sides: int, radius: float, rotation: float, color: Color) -> None", &DrawPoly);
-    _bind(vm, mod, "DrawPolyLines(center: vec2, sides: int, radius: float, rotation: float, color: Color) -> None", &DrawPolyLines);
-    _bind(vm, mod, "DrawPolyLinesEx(center: vec2, sides: int, radius: float, rotation: float, lineThick: float, color: Color) -> None", &DrawPolyLinesEx);
-    _bind(vm, mod, "DrawSplineLinear(points: 'vec2_p', pointCount: int, thick: float, color: Color) -> None", &DrawSplineLinear);
-    _bind(vm, mod, "DrawSplineBasis(points: 'vec2_p', pointCount: int, thick: float, color: Color) -> None", &DrawSplineBasis);
-    _bind(vm, mod, "DrawSplineCatmullRom(points: 'vec2_p', pointCount: int, thick: float, color: Color) -> None", &DrawSplineCatmullRom);
-    _bind(vm, mod, "DrawSplineBezierQuadratic(points: 'vec2_p', pointCount: int, thick: float, color: Color) -> None", &DrawSplineBezierQuadratic);
-    _bind(vm, mod, "DrawSplineBezierCubic(points: 'vec2_p', pointCount: int, thick: float, color: Color) -> None", &DrawSplineBezierCubic);
-    _bind(vm, mod, "DrawSplineSegmentLinear(p1: vec2, p2: vec2, thick: float, color: Color) -> None", &DrawSplineSegmentLinear);
-    _bind(vm, mod, "DrawSplineSegmentBasis(p1: vec2, p2: vec2, p3: vec2, p4: vec2, thick: float, color: Color) -> None", &DrawSplineSegmentBasis);
-    _bind(vm, mod, "DrawSplineSegmentCatmullRom(p1: vec2, p2: vec2, p3: vec2, p4: vec2, thick: float, color: Color) -> None", &DrawSplineSegmentCatmullRom);
-    _bind(vm, mod, "DrawSplineSegmentBezierQuadratic(p1: vec2, c2: vec2, p3: vec2, thick: float, color: Color) -> None", &DrawSplineSegmentBezierQuadratic);
-    _bind(vm, mod, "DrawSplineSegmentBezierCubic(p1: vec2, c2: vec2, c3: vec2, p4: vec2, thick: float, color: Color) -> None", &DrawSplineSegmentBezierCubic);
-    _bind(vm, mod, "GetSplinePointLinear(startPos: vec2, endPos: vec2, t: float) -> vec2", &GetSplinePointLinear);
-    _bind(vm, mod, "GetSplinePointBasis(p1: vec2, p2: vec2, p3: vec2, p4: vec2, t: float) -> vec2", &GetSplinePointBasis);
-    _bind(vm, mod, "GetSplinePointCatmullRom(p1: vec2, p2: vec2, p3: vec2, p4: vec2, t: float) -> vec2", &GetSplinePointCatmullRom);
-    _bind(vm, mod, "GetSplinePointBezierQuad(p1: vec2, c2: vec2, p3: vec2, t: float) -> vec2", &GetSplinePointBezierQuad);
-    _bind(vm, mod, "GetSplinePointBezierCubic(p1: vec2, c2: vec2, c3: vec2, p4: vec2, t: float) -> vec2", &GetSplinePointBezierCubic);
-    _bind(vm, mod, "CheckCollisionRecs(rec1: Rectangle, rec2: Rectangle) -> bool", &CheckCollisionRecs);
-    _bind(vm, mod, "CheckCollisionCircles(center1: vec2, radius1: float, center2: vec2, radius2: float) -> bool", &CheckCollisionCircles);
-    _bind(vm, mod, "CheckCollisionCircleRec(center: vec2, radius: float, rec: Rectangle) -> bool", &CheckCollisionCircleRec);
-    _bind(vm, mod, "CheckCollisionPointRec(point: vec2, rec: Rectangle) -> bool", &CheckCollisionPointRec);
-    _bind(vm, mod, "CheckCollisionPointCircle(point: vec2, center: vec2, radius: float) -> bool", &CheckCollisionPointCircle);
-    _bind(vm, mod, "CheckCollisionPointTriangle(point: vec2, p1: vec2, p2: vec2, p3: vec2) -> bool", &CheckCollisionPointTriangle);
-    _bind(vm, mod, "CheckCollisionPointPoly(point: vec2, points: 'vec2_p', pointCount: int) -> bool", &CheckCollisionPointPoly);
-    _bind(vm, mod, "CheckCollisionLines(startPos1: vec2, endPos1: vec2, startPos2: vec2, endPos2: vec2, collisionPoint: 'vec2_p') -> bool", &CheckCollisionLines);
-    _bind(vm, mod, "CheckCollisionPointLine(point: vec2, p1: vec2, p2: vec2, threshold: int) -> bool", &CheckCollisionPointLine);
-    _bind(vm, mod, "GetCollisionRec(rec1: Rectangle, rec2: Rectangle) -> Rectangle", &GetCollisionRec);
-    _bind(vm, mod, "LoadImage(fileName: str) -> Image", &LoadImage);
-    _bind(vm, mod, "LoadImageRaw(fileName: str, width: int, height: int, format: int, headerSize: int) -> Image", &LoadImageRaw);
-    _bind(vm, mod, "LoadImageSvg(fileNameOrString: str, width: int, height: int) -> Image", &LoadImageSvg);
-    _bind(vm, mod, "LoadImageAnim(fileName: str, frames: int_p) -> Image", &LoadImageAnim);
-    _bind(vm, mod, "LoadImageAnimFromMemory(fileType: str, fileData: uchar_p, dataSize: int, frames: int_p) -> Image", &LoadImageAnimFromMemory);
-    _bind(vm, mod, "LoadImageFromMemory(fileType: str, fileData: uchar_p, dataSize: int) -> Image", &LoadImageFromMemory);
-    _bind(vm, mod, "LoadImageFromTexture(texture: Texture2D) -> Image", &LoadImageFromTexture);
-    _bind(vm, mod, "LoadImageFromScreen() -> Image", &LoadImageFromScreen);
-    _bind(vm, mod, "IsImageReady(image: Image) -> bool", &IsImageReady);
-    _bind(vm, mod, "UnloadImage(image: Image) -> None", &UnloadImage);
-    _bind(vm, mod, "ExportImage(image: Image, fileName: str) -> bool", &ExportImage);
-    _bind(vm, mod, "ExportImageToMemory(image: Image, fileType: str, fileSize: int_p) -> uchar_p", &ExportImageToMemory);
-    _bind(vm, mod, "ExportImageAsCode(image: Image, fileName: str) -> bool", &ExportImageAsCode);
-    _bind(vm, mod, "GenImageColor(width: int, height: int, color: Color) -> Image", &GenImageColor);
-    _bind(vm, mod, "GenImageGradientLinear(width: int, height: int, direction: int, start: Color, end: Color) -> Image", &GenImageGradientLinear);
-    _bind(vm, mod, "GenImageGradientRadial(width: int, height: int, density: float, inner: Color, outer: Color) -> Image", &GenImageGradientRadial);
-    _bind(vm, mod, "GenImageGradientSquare(width: int, height: int, density: float, inner: Color, outer: Color) -> Image", &GenImageGradientSquare);
-    _bind(vm, mod, "GenImageChecked(width: int, height: int, checksX: int, checksY: int, col1: Color, col2: Color) -> Image", &GenImageChecked);
-    _bind(vm, mod, "GenImageWhiteNoise(width: int, height: int, factor: float) -> Image", &GenImageWhiteNoise);
-    _bind(vm, mod, "GenImagePerlinNoise(width: int, height: int, offsetX: int, offsetY: int, scale: float) -> Image", &GenImagePerlinNoise);
-    _bind(vm, mod, "GenImageCellular(width: int, height: int, tileSize: int) -> Image", &GenImageCellular);
-    _bind(vm, mod, "GenImageText(width: int, height: int, text: str) -> Image", &GenImageText);
-    _bind(vm, mod, "ImageCopy(image: Image) -> Image", &ImageCopy);
-    _bind(vm, mod, "ImageFromImage(image: Image, rec: Rectangle) -> Image", &ImageFromImage);
-    _bind(vm, mod, "ImageText(text: str, fontSize: int, color: Color) -> Image", &ImageText);
-    _bind(vm, mod, "ImageTextEx(font: Font, text: str, fontSize: float, spacing: float, tint: Color) -> Image", &ImageTextEx);
-    _bind(vm, mod, "ImageFormat(image: 'Image_p', newFormat: int) -> None", &ImageFormat);
-    _bind(vm, mod, "ImageToPOT(image: 'Image_p', fill: Color) -> None", &ImageToPOT);
-    _bind(vm, mod, "ImageCrop(image: 'Image_p', crop: Rectangle) -> None", &ImageCrop);
-    _bind(vm, mod, "ImageAlphaCrop(image: 'Image_p', threshold: float) -> None", &ImageAlphaCrop);
-    _bind(vm, mod, "ImageAlphaClear(image: 'Image_p', color: Color, threshold: float) -> None", &ImageAlphaClear);
-    _bind(vm, mod, "ImageAlphaMask(image: 'Image_p', alphaMask: Image) -> None", &ImageAlphaMask);
-    _bind(vm, mod, "ImageAlphaPremultiply(image: 'Image_p') -> None", &ImageAlphaPremultiply);
-    _bind(vm, mod, "ImageBlurGaussian(image: 'Image_p', blurSize: int) -> None", &ImageBlurGaussian);
-    _bind(vm, mod, "ImageKernelConvolution(image: 'Image_p', kernel: float_p, kernelSize: int) -> None", &ImageKernelConvolution);
-    _bind(vm, mod, "ImageResize(image: 'Image_p', newWidth: int, newHeight: int) -> None", &ImageResize);
-    _bind(vm, mod, "ImageResizeNN(image: 'Image_p', newWidth: int, newHeight: int) -> None", &ImageResizeNN);
-    _bind(vm, mod, "ImageResizeCanvas(image: 'Image_p', newWidth: int, newHeight: int, offsetX: int, offsetY: int, fill: Color) -> None", &ImageResizeCanvas);
-    _bind(vm, mod, "ImageMipmaps(image: 'Image_p') -> None", &ImageMipmaps);
-    _bind(vm, mod, "ImageDither(image: 'Image_p', rBpp: int, gBpp: int, bBpp: int, aBpp: int) -> None", &ImageDither);
-    _bind(vm, mod, "ImageFlipVertical(image: 'Image_p') -> None", &ImageFlipVertical);
-    _bind(vm, mod, "ImageFlipHorizontal(image: 'Image_p') -> None", &ImageFlipHorizontal);
-    _bind(vm, mod, "ImageRotate(image: 'Image_p', degrees: int) -> None", &ImageRotate);
-    _bind(vm, mod, "ImageRotateCW(image: 'Image_p') -> None", &ImageRotateCW);
-    _bind(vm, mod, "ImageRotateCCW(image: 'Image_p') -> None", &ImageRotateCCW);
-    _bind(vm, mod, "ImageColorTint(image: 'Image_p', color: Color) -> None", &ImageColorTint);
-    _bind(vm, mod, "ImageColorInvert(image: 'Image_p') -> None", &ImageColorInvert);
-    _bind(vm, mod, "ImageColorGrayscale(image: 'Image_p') -> None", &ImageColorGrayscale);
-    _bind(vm, mod, "ImageColorContrast(image: 'Image_p', contrast: float) -> None", &ImageColorContrast);
-    _bind(vm, mod, "ImageColorBrightness(image: 'Image_p', brightness: int) -> None", &ImageColorBrightness);
-    _bind(vm, mod, "ImageColorReplace(image: 'Image_p', color: Color, replace: Color) -> None", &ImageColorReplace);
-    _bind(vm, mod, "LoadImageColors(image: Image) -> 'Color_p'", &LoadImageColors);
-    _bind(vm, mod, "LoadImagePalette(image: Image, maxPaletteSize: int, colorCount: int_p) -> 'Color_p'", &LoadImagePalette);
-    _bind(vm, mod, "UnloadImageColors(colors: 'Color_p') -> None", &UnloadImageColors);
-    _bind(vm, mod, "UnloadImagePalette(colors: 'Color_p') -> None", &UnloadImagePalette);
-    _bind(vm, mod, "GetImageAlphaBorder(image: Image, threshold: float) -> Rectangle", &GetImageAlphaBorder);
-    _bind(vm, mod, "GetImageColor(image: Image, x: int, y: int) -> Color", &GetImageColor);
-    _bind(vm, mod, "ImageClearBackground(dst: 'Image_p', color: Color) -> None", &ImageClearBackground);
-    _bind(vm, mod, "ImageDrawPixel(dst: 'Image_p', posX: int, posY: int, color: Color) -> None", &ImageDrawPixel);
-    _bind(vm, mod, "ImageDrawPixelV(dst: 'Image_p', position: vec2, color: Color) -> None", &ImageDrawPixelV);
-    _bind(vm, mod, "ImageDrawLine(dst: 'Image_p', startPosX: int, startPosY: int, endPosX: int, endPosY: int, color: Color) -> None", &ImageDrawLine);
-    _bind(vm, mod, "ImageDrawLineV(dst: 'Image_p', start: vec2, end: vec2, color: Color) -> None", &ImageDrawLineV);
-    _bind(vm, mod, "ImageDrawCircle(dst: 'Image_p', centerX: int, centerY: int, radius: int, color: Color) -> None", &ImageDrawCircle);
-    _bind(vm, mod, "ImageDrawCircleV(dst: 'Image_p', center: vec2, radius: int, color: Color) -> None", &ImageDrawCircleV);
-    _bind(vm, mod, "ImageDrawCircleLines(dst: 'Image_p', centerX: int, centerY: int, radius: int, color: Color) -> None", &ImageDrawCircleLines);
-    _bind(vm, mod, "ImageDrawCircleLinesV(dst: 'Image_p', center: vec2, radius: int, color: Color) -> None", &ImageDrawCircleLinesV);
-    _bind(vm, mod, "ImageDrawRectangle(dst: 'Image_p', posX: int, posY: int, width: int, height: int, color: Color) -> None", &ImageDrawRectangle);
-    _bind(vm, mod, "ImageDrawRectangleV(dst: 'Image_p', position: vec2, size: vec2, color: Color) -> None", &ImageDrawRectangleV);
-    _bind(vm, mod, "ImageDrawRectangleRec(dst: 'Image_p', rec: Rectangle, color: Color) -> None", &ImageDrawRectangleRec);
-    _bind(vm, mod, "ImageDrawRectangleLines(dst: 'Image_p', rec: Rectangle, thick: int, color: Color) -> None", &ImageDrawRectangleLines);
-    _bind(vm, mod, "ImageDraw(dst: 'Image_p', src: Image, srcRec: Rectangle, dstRec: Rectangle, tint: Color) -> None", &ImageDraw);
-    _bind(vm, mod, "ImageDrawText(dst: 'Image_p', text: str, posX: int, posY: int, fontSize: int, color: Color) -> None", &ImageDrawText);
-    _bind(vm, mod, "ImageDrawTextEx(dst: 'Image_p', font: Font, text: str, position: vec2, fontSize: float, spacing: float, tint: Color) -> None", &ImageDrawTextEx);
-    _bind(vm, mod, "LoadTexture(fileName: str) -> Texture2D", &LoadTexture);
-    _bind(vm, mod, "LoadTextureFromImage(image: Image) -> Texture2D", &LoadTextureFromImage);
-    _bind(vm, mod, "LoadTextureCubemap(image: Image, layout: int) -> TextureCubemap", &LoadTextureCubemap);
-    _bind(vm, mod, "LoadRenderTexture(width: int, height: int) -> RenderTexture2D", &LoadRenderTexture);
-    _bind(vm, mod, "IsTextureReady(texture: Texture2D) -> bool", &IsTextureReady);
-    _bind(vm, mod, "UnloadTexture(texture: Texture2D) -> None", &UnloadTexture);
-    _bind(vm, mod, "IsRenderTextureReady(target: RenderTexture2D) -> bool", &IsRenderTextureReady);
-    _bind(vm, mod, "UnloadRenderTexture(target: RenderTexture2D) -> None", &UnloadRenderTexture);
-    _bind(vm, mod, "UpdateTexture(texture: Texture2D, pixels: void_p) -> None", &UpdateTexture);
-    _bind(vm, mod, "UpdateTextureRec(texture: Texture2D, rec: Rectangle, pixels: void_p) -> None", &UpdateTextureRec);
-    _bind(vm, mod, "GenTextureMipmaps(texture: 'Texture2D_p') -> None", &GenTextureMipmaps);
-    _bind(vm, mod, "SetTextureFilter(texture: Texture2D, filter: int) -> None", &SetTextureFilter);
-    _bind(vm, mod, "SetTextureWrap(texture: Texture2D, wrap: int) -> None", &SetTextureWrap);
-    _bind(vm, mod, "DrawTexture(texture: Texture2D, posX: int, posY: int, tint: Color) -> None", &DrawTexture);
-    _bind(vm, mod, "DrawTextureV(texture: Texture2D, position: vec2, tint: Color) -> None", &DrawTextureV);
-    _bind(vm, mod, "DrawTextureEx(texture: Texture2D, position: vec2, rotation: float, scale: float, tint: Color) -> None", &DrawTextureEx);
-    _bind(vm, mod, "DrawTextureRec(texture: Texture2D, source: Rectangle, position: vec2, tint: Color) -> None", &DrawTextureRec);
-    _bind(vm, mod, "DrawTexturePro(texture: Texture2D, source: Rectangle, dest: Rectangle, origin: vec2, rotation: float, tint: Color) -> None", &DrawTexturePro);
-    _bind(vm, mod, "DrawTextureNPatch(texture: Texture2D, nPatchInfo: NPatchInfo, dest: Rectangle, origin: vec2, rotation: float, tint: Color) -> None", &DrawTextureNPatch);
-    _bind(vm, mod, "ColorIsEqual(col1: Color, col2: Color) -> bool", &ColorIsEqual);
-    _bind(vm, mod, "Fade(color: Color, alpha: float) -> Color", &Fade);
-    _bind(vm, mod, "ColorToInt(color: Color) -> int", &ColorToInt);
-    _bind(vm, mod, "ColorNormalize(color: Color) -> vec4", &ColorNormalize);
-    _bind(vm, mod, "ColorFromNormalized(normalized: vec4) -> Color", &ColorFromNormalized);
-    _bind(vm, mod, "ColorToHSV(color: Color) -> vec3", &ColorToHSV);
-    _bind(vm, mod, "ColorFromHSV(hue: float, saturation: float, value: float) -> Color", &ColorFromHSV);
-    _bind(vm, mod, "ColorTint(color: Color, tint: Color) -> Color", &ColorTint);
-    _bind(vm, mod, "ColorBrightness(color: Color, factor: float) -> Color", &ColorBrightness);
-    _bind(vm, mod, "ColorContrast(color: Color, contrast: float) -> Color", &ColorContrast);
-    _bind(vm, mod, "ColorAlpha(color: Color, alpha: float) -> Color", &ColorAlpha);
-    _bind(vm, mod, "ColorAlphaBlend(dst: Color, src: Color, tint: Color) -> Color", &ColorAlphaBlend);
-    _bind(vm, mod, "GetColor(hexValue: int) -> Color", &GetColor);
-    _bind(vm, mod, "GetPixelColor(srcPtr: void_p, format: int) -> Color", &GetPixelColor);
-    _bind(vm, mod, "SetPixelColor(dstPtr: void_p, color: Color, format: int) -> None", &SetPixelColor);
-    _bind(vm, mod, "GetPixelDataSize(width: int, height: int, format: int) -> int", &GetPixelDataSize);
-    _bind(vm, mod, "GetFontDefault() -> Font", &GetFontDefault);
-    _bind(vm, mod, "LoadFont(fileName: str) -> Font", &LoadFont);
-    _bind(vm, mod, "LoadFontEx(fileName: str, fontSize: int, codepoints: int_p, codepointCount: int) -> Font", &LoadFontEx);
-    _bind(vm, mod, "LoadFontFromImage(image: Image, key: Color, firstChar: int) -> Font", &LoadFontFromImage);
-    _bind(vm, mod, "LoadFontFromMemory(fileType: str, fileData: uchar_p, dataSize: int, fontSize: int, codepoints: int_p, codepointCount: int) -> Font", &LoadFontFromMemory);
-    _bind(vm, mod, "IsFontReady(font: Font) -> bool", &IsFontReady);
-    _bind(vm, mod, "LoadFontData(fileData: uchar_p, dataSize: int, fontSize: int, codepoints: int_p, codepointCount: int, type: int) -> 'GlyphInfo_p'", &LoadFontData);
-    _bind(vm, mod, "GenImageFontAtlas(glyphs: 'GlyphInfo_p', glyphRecs: void_p, glyphCount: int, fontSize: int, padding: int, packMethod: int) -> Image", &GenImageFontAtlas);
-    _bind(vm, mod, "UnloadFontData(glyphs: 'GlyphInfo_p', glyphCount: int) -> None", &UnloadFontData);
-    _bind(vm, mod, "UnloadFont(font: Font) -> None", &UnloadFont);
-    _bind(vm, mod, "ExportFontAsCode(font: Font, fileName: str) -> bool", &ExportFontAsCode);
-    _bind(vm, mod, "DrawFPS(posX: int, posY: int) -> None", &DrawFPS);
-    _bind(vm, mod, "DrawText(text: str, posX: int, posY: int, fontSize: int, color: Color) -> None", &DrawText);
-    _bind(vm, mod, "DrawTextEx(font: Font, text: str, position: vec2, fontSize: float, spacing: float, tint: Color) -> None", &DrawTextEx);
-    _bind(vm, mod, "DrawTextPro(font: Font, text: str, position: vec2, origin: vec2, rotation: float, fontSize: float, spacing: float, tint: Color) -> None", &DrawTextPro);
-    _bind(vm, mod, "DrawTextCodepoint(font: Font, codepoint: int, position: vec2, fontSize: float, tint: Color) -> None", &DrawTextCodepoint);
-    _bind(vm, mod, "DrawTextCodepoints(font: Font, codepoints: int_p, codepointCount: int, position: vec2, fontSize: float, spacing: float, tint: Color) -> None", &DrawTextCodepoints);
-    _bind(vm, mod, "SetTextLineSpacing(spacing: int) -> None", &SetTextLineSpacing);
-    _bind(vm, mod, "MeasureText(text: str, fontSize: int) -> int", &MeasureText);
-    _bind(vm, mod, "MeasureTextEx(font: Font, text: str, fontSize: float, spacing: float) -> vec2", &MeasureTextEx);
-    _bind(vm, mod, "GetGlyphIndex(font: Font, codepoint: int) -> int", &GetGlyphIndex);
-    _bind(vm, mod, "GetGlyphInfo(font: Font, codepoint: int) -> GlyphInfo", &GetGlyphInfo);
-    _bind(vm, mod, "GetGlyphAtlasRec(font: Font, codepoint: int) -> Rectangle", &GetGlyphAtlasRec);
-    _bind(vm, mod, "LoadUTF8(codepoints: int_p, length: int) -> char_p", &LoadUTF8);
-    _bind(vm, mod, "UnloadUTF8(text: char_p) -> None", &UnloadUTF8);
-    _bind(vm, mod, "LoadCodepoints(text: str, count: int_p) -> int_p", &LoadCodepoints);
-    _bind(vm, mod, "UnloadCodepoints(codepoints: int_p) -> None", &UnloadCodepoints);
-    _bind(vm, mod, "GetCodepointCount(text: str) -> int", &GetCodepointCount);
-    _bind(vm, mod, "GetCodepoint(text: str, codepointSize: int_p) -> int", &GetCodepoint);
-    _bind(vm, mod, "GetCodepointNext(text: str, codepointSize: int_p) -> int", &GetCodepointNext);
-    _bind(vm, mod, "GetCodepointPrevious(text: str, codepointSize: int_p) -> int", &GetCodepointPrevious);
-    _bind(vm, mod, "CodepointToUTF8(codepoint: int, utf8Size: int_p) -> str", &CodepointToUTF8);
-    _bind(vm, mod, "TextCopy(dst: char_p, src: str) -> int", &TextCopy);
-    _bind(vm, mod, "TextIsEqual(text1: str, text2: str) -> bool", &TextIsEqual);
-    _bind(vm, mod, "TextLength(text: str) -> int", &TextLength);
-    _bind(vm, mod, "TextSubtext(text: str, position: int, length: int) -> str", &TextSubtext);
-    _bind(vm, mod, "TextReplace(text: str, replace: str, by: str) -> char_p", &TextReplace);
-    _bind(vm, mod, "TextInsert(text: str, insert: str, position: int) -> char_p", &TextInsert);
-    _bind(vm, mod, "TextJoin(textList: void_p, count: int, delimiter: str) -> str", &TextJoin);
-    _bind(vm, mod, "TextSplit(text: str, delimiter: int, count: int_p) -> void_p", &TextSplit);
-    _bind(vm, mod, "TextAppend(text: char_p, append: str, position: int_p) -> None", &TextAppend);
-    _bind(vm, mod, "TextFindIndex(text: str, find: str) -> int", &TextFindIndex);
-    _bind(vm, mod, "TextToUpper(text: str) -> str", &TextToUpper);
-    _bind(vm, mod, "TextToLower(text: str) -> str", &TextToLower);
-    _bind(vm, mod, "TextToPascal(text: str) -> str", &TextToPascal);
-    _bind(vm, mod, "TextToInteger(text: str) -> int", &TextToInteger);
-    _bind(vm, mod, "TextToFloat(text: str) -> float", &TextToFloat);
-    _bind(vm, mod, "InitAudioDevice() -> None", &InitAudioDevice);
-    _bind(vm, mod, "CloseAudioDevice() -> None", &CloseAudioDevice);
-    _bind(vm, mod, "IsAudioDeviceReady() -> bool", &IsAudioDeviceReady);
-    _bind(vm, mod, "SetMasterVolume(volume: float) -> None", &SetMasterVolume);
-    _bind(vm, mod, "GetMasterVolume() -> float", &GetMasterVolume);
-    _bind(vm, mod, "LoadWave(fileName: str) -> Wave", &LoadWave);
-    _bind(vm, mod, "LoadWaveFromMemory(fileType: str, fileData: uchar_p, dataSize: int) -> Wave", &LoadWaveFromMemory);
-    _bind(vm, mod, "IsWaveReady(wave: Wave) -> bool", &IsWaveReady);
-    _bind(vm, mod, "LoadSound(fileName: str) -> Sound", &LoadSound);
-    _bind(vm, mod, "LoadSoundFromWave(wave: Wave) -> Sound", &LoadSoundFromWave);
-    _bind(vm, mod, "LoadSoundAlias(source: Sound) -> Sound", &LoadSoundAlias);
-    _bind(vm, mod, "IsSoundReady(sound: Sound) -> bool", &IsSoundReady);
-    _bind(vm, mod, "UpdateSound(sound: Sound, data: void_p, sampleCount: int) -> None", &UpdateSound);
-    _bind(vm, mod, "UnloadWave(wave: Wave) -> None", &UnloadWave);
-    _bind(vm, mod, "UnloadSound(sound: Sound) -> None", &UnloadSound);
-    _bind(vm, mod, "UnloadSoundAlias(alias: Sound) -> None", &UnloadSoundAlias);
-    _bind(vm, mod, "ExportWave(wave: Wave, fileName: str) -> bool", &ExportWave);
-    _bind(vm, mod, "ExportWaveAsCode(wave: Wave, fileName: str) -> bool", &ExportWaveAsCode);
-    _bind(vm, mod, "PlaySound(sound: Sound) -> None", &PlaySound);
-    _bind(vm, mod, "StopSound(sound: Sound) -> None", &StopSound);
-    _bind(vm, mod, "PauseSound(sound: Sound) -> None", &PauseSound);
-    _bind(vm, mod, "ResumeSound(sound: Sound) -> None", &ResumeSound);
-    _bind(vm, mod, "IsSoundPlaying(sound: Sound) -> bool", &IsSoundPlaying);
-    _bind(vm, mod, "SetSoundVolume(sound: Sound, volume: float) -> None", &SetSoundVolume);
-    _bind(vm, mod, "SetSoundPitch(sound: Sound, pitch: float) -> None", &SetSoundPitch);
-    _bind(vm, mod, "SetSoundPan(sound: Sound, pan: float) -> None", &SetSoundPan);
-    _bind(vm, mod, "WaveCopy(wave: Wave) -> Wave", &WaveCopy);
-    _bind(vm, mod, "WaveCrop(wave: 'Wave_p', initSample: int, finalSample: int) -> None", &WaveCrop);
-    _bind(vm, mod, "WaveFormat(wave: 'Wave_p', sampleRate: int, sampleSize: int, channels: int) -> None", &WaveFormat);
-    _bind(vm, mod, "LoadWaveSamples(wave: Wave) -> float_p", &LoadWaveSamples);
-    _bind(vm, mod, "UnloadWaveSamples(samples: float_p) -> None", &UnloadWaveSamples);
-    _bind(vm, mod, "LoadMusicStream(fileName: str) -> Music", &LoadMusicStream);
-    _bind(vm, mod, "LoadMusicStreamFromMemory(fileType: str, data: uchar_p, dataSize: int) -> Music", &LoadMusicStreamFromMemory);
-    _bind(vm, mod, "IsMusicReady(music: Music) -> bool", &IsMusicReady);
-    _bind(vm, mod, "UnloadMusicStream(music: Music) -> None", &UnloadMusicStream);
-    _bind(vm, mod, "PlayMusicStream(music: Music) -> None", &PlayMusicStream);
-    _bind(vm, mod, "IsMusicStreamPlaying(music: Music) -> bool", &IsMusicStreamPlaying);
-    _bind(vm, mod, "UpdateMusicStream(music: Music) -> None", &UpdateMusicStream);
-    _bind(vm, mod, "StopMusicStream(music: Music) -> None", &StopMusicStream);
-    _bind(vm, mod, "PauseMusicStream(music: Music) -> None", &PauseMusicStream);
-    _bind(vm, mod, "ResumeMusicStream(music: Music) -> None", &ResumeMusicStream);
-    _bind(vm, mod, "SeekMusicStream(music: Music, position: float) -> None", &SeekMusicStream);
-    _bind(vm, mod, "SetMusicVolume(music: Music, volume: float) -> None", &SetMusicVolume);
-    _bind(vm, mod, "SetMusicPitch(music: Music, pitch: float) -> None", &SetMusicPitch);
-    _bind(vm, mod, "SetMusicPan(music: Music, pan: float) -> None", &SetMusicPan);
-    _bind(vm, mod, "GetMusicTimeLength(music: Music) -> float", &GetMusicTimeLength);
-    _bind(vm, mod, "GetMusicTimePlayed(music: Music) -> float", &GetMusicTimePlayed);
-    _bind(vm, mod, "LoadAudioStream(sampleRate: int, sampleSize: int, channels: int) -> AudioStream", &LoadAudioStream);
-    _bind(vm, mod, "IsAudioStreamReady(stream: AudioStream) -> bool", &IsAudioStreamReady);
-    _bind(vm, mod, "UnloadAudioStream(stream: AudioStream) -> None", &UnloadAudioStream);
-    _bind(vm, mod, "UpdateAudioStream(stream: AudioStream, data: void_p, frameCount: int) -> None", &UpdateAudioStream);
-    _bind(vm, mod, "IsAudioStreamProcessed(stream: AudioStream) -> bool", &IsAudioStreamProcessed);
-    _bind(vm, mod, "PlayAudioStream(stream: AudioStream) -> None", &PlayAudioStream);
-    _bind(vm, mod, "PauseAudioStream(stream: AudioStream) -> None", &PauseAudioStream);
-    _bind(vm, mod, "ResumeAudioStream(stream: AudioStream) -> None", &ResumeAudioStream);
-    _bind(vm, mod, "IsAudioStreamPlaying(stream: AudioStream) -> bool", &IsAudioStreamPlaying);
-    _bind(vm, mod, "StopAudioStream(stream: AudioStream) -> None", &StopAudioStream);
-    _bind(vm, mod, "SetAudioStreamVolume(stream: AudioStream, volume: float) -> None", &SetAudioStreamVolume);
-    _bind(vm, mod, "SetAudioStreamPitch(stream: AudioStream, pitch: float) -> None", &SetAudioStreamPitch);
-    _bind(vm, mod, "SetAudioStreamPan(stream: AudioStream, pan: float) -> None", &SetAudioStreamPan);
-    _bind(vm, mod, "SetAudioStreamBufferSizeDefault(size: int) -> None", &SetAudioStreamBufferSizeDefault);
+    vm->bind(mod, "InitWindow(width: int, height: int, title: str) -> None", &InitWindow);
+    vm->bind(mod, "CloseWindow() -> None", &CloseWindow);
+    vm->bind(mod, "WindowShouldClose() -> bool", &WindowShouldClose);
+    vm->bind(mod, "IsWindowReady() -> bool", &IsWindowReady);
+    vm->bind(mod, "IsWindowFullscreen() -> bool", &IsWindowFullscreen);
+    vm->bind(mod, "IsWindowHidden() -> bool", &IsWindowHidden);
+    vm->bind(mod, "IsWindowMinimized() -> bool", &IsWindowMinimized);
+    vm->bind(mod, "IsWindowMaximized() -> bool", &IsWindowMaximized);
+    vm->bind(mod, "IsWindowFocused() -> bool", &IsWindowFocused);
+    vm->bind(mod, "IsWindowResized() -> bool", &IsWindowResized);
+    vm->bind(mod, "IsWindowState(flag: int) -> bool", &IsWindowState);
+    vm->bind(mod, "SetWindowState(flags: int) -> None", &SetWindowState);
+    vm->bind(mod, "ClearWindowState(flags: int) -> None", &ClearWindowState);
+    vm->bind(mod, "ToggleFullscreen() -> None", &ToggleFullscreen);
+    vm->bind(mod, "ToggleBorderlessWindowed() -> None", &ToggleBorderlessWindowed);
+    vm->bind(mod, "MaximizeWindow() -> None", &MaximizeWindow);
+    vm->bind(mod, "MinimizeWindow() -> None", &MinimizeWindow);
+    vm->bind(mod, "RestoreWindow() -> None", &RestoreWindow);
+    vm->bind(mod, "SetWindowIcon(image: Image) -> None", &SetWindowIcon);
+    vm->bind(mod, "SetWindowIcons(images: 'Image_p', count: int) -> None", &SetWindowIcons);
+    vm->bind(mod, "SetWindowTitle(title: str) -> None", &SetWindowTitle);
+    vm->bind(mod, "SetWindowPosition(x: int, y: int) -> None", &SetWindowPosition);
+    vm->bind(mod, "SetWindowMonitor(monitor: int) -> None", &SetWindowMonitor);
+    vm->bind(mod, "SetWindowMinSize(width: int, height: int) -> None", &SetWindowMinSize);
+    vm->bind(mod, "SetWindowMaxSize(width: int, height: int) -> None", &SetWindowMaxSize);
+    vm->bind(mod, "SetWindowSize(width: int, height: int) -> None", &SetWindowSize);
+    vm->bind(mod, "SetWindowOpacity(opacity: float) -> None", &SetWindowOpacity);
+    vm->bind(mod, "SetWindowFocused() -> None", &SetWindowFocused);
+    vm->bind(mod, "GetWindowHandle() -> void_p", &GetWindowHandle);
+    vm->bind(mod, "GetScreenWidth() -> int", &GetScreenWidth);
+    vm->bind(mod, "GetScreenHeight() -> int", &GetScreenHeight);
+    vm->bind(mod, "GetRenderWidth() -> int", &GetRenderWidth);
+    vm->bind(mod, "GetRenderHeight() -> int", &GetRenderHeight);
+    vm->bind(mod, "GetMonitorCount() -> int", &GetMonitorCount);
+    vm->bind(mod, "GetCurrentMonitor() -> int", &GetCurrentMonitor);
+    vm->bind(mod, "GetMonitorPosition(monitor: int) -> vec2", &GetMonitorPosition);
+    vm->bind(mod, "GetMonitorWidth(monitor: int) -> int", &GetMonitorWidth);
+    vm->bind(mod, "GetMonitorHeight(monitor: int) -> int", &GetMonitorHeight);
+    vm->bind(mod, "GetMonitorPhysicalWidth(monitor: int) -> int", &GetMonitorPhysicalWidth);
+    vm->bind(mod, "GetMonitorPhysicalHeight(monitor: int) -> int", &GetMonitorPhysicalHeight);
+    vm->bind(mod, "GetMonitorRefreshRate(monitor: int) -> int", &GetMonitorRefreshRate);
+    vm->bind(mod, "GetWindowPosition() -> vec2", &GetWindowPosition);
+    vm->bind(mod, "GetWindowScaleDPI() -> vec2", &GetWindowScaleDPI);
+    vm->bind(mod, "GetMonitorName(monitor: int) -> str", &GetMonitorName);
+    vm->bind(mod, "SetClipboardText(text: str) -> None", &SetClipboardText);
+    vm->bind(mod, "GetClipboardText() -> str", &GetClipboardText);
+    vm->bind(mod, "EnableEventWaiting() -> None", &EnableEventWaiting);
+    vm->bind(mod, "DisableEventWaiting() -> None", &DisableEventWaiting);
+    vm->bind(mod, "ShowCursor() -> None", &ShowCursor);
+    vm->bind(mod, "HideCursor() -> None", &HideCursor);
+    vm->bind(mod, "IsCursorHidden() -> bool", &IsCursorHidden);
+    vm->bind(mod, "EnableCursor() -> None", &EnableCursor);
+    vm->bind(mod, "DisableCursor() -> None", &DisableCursor);
+    vm->bind(mod, "IsCursorOnScreen() -> bool", &IsCursorOnScreen);
+    vm->bind(mod, "ClearBackground(color: Color) -> None", &ClearBackground);
+    vm->bind(mod, "BeginDrawing() -> None", &BeginDrawing);
+    vm->bind(mod, "EndDrawing() -> None", &EndDrawing);
+    vm->bind(mod, "BeginMode2D(camera: Camera2D) -> None", &BeginMode2D);
+    vm->bind(mod, "EndMode2D() -> None", &EndMode2D);
+    vm->bind(mod, "BeginMode3D(camera: Camera3D) -> None", &BeginMode3D);
+    vm->bind(mod, "EndMode3D() -> None", &EndMode3D);
+    vm->bind(mod, "BeginTextureMode(target: RenderTexture2D) -> None", &BeginTextureMode);
+    vm->bind(mod, "EndTextureMode() -> None", &EndTextureMode);
+    vm->bind(mod, "BeginShaderMode(shader: Shader) -> None", &BeginShaderMode);
+    vm->bind(mod, "EndShaderMode() -> None", &EndShaderMode);
+    vm->bind(mod, "BeginBlendMode(mode: int) -> None", &BeginBlendMode);
+    vm->bind(mod, "EndBlendMode() -> None", &EndBlendMode);
+    vm->bind(mod, "BeginScissorMode(x: int, y: int, width: int, height: int) -> None", &BeginScissorMode);
+    vm->bind(mod, "EndScissorMode() -> None", &EndScissorMode);
+    vm->bind(mod, "BeginVrStereoMode(config: VrStereoConfig) -> None", &BeginVrStereoMode);
+    vm->bind(mod, "EndVrStereoMode() -> None", &EndVrStereoMode);
+    vm->bind(mod, "LoadVrStereoConfig(device: VrDeviceInfo) -> VrStereoConfig", &LoadVrStereoConfig);
+    vm->bind(mod, "UnloadVrStereoConfig(config: VrStereoConfig) -> None", &UnloadVrStereoConfig);
+    vm->bind(mod, "LoadShader(vsFileName: str, fsFileName: str) -> Shader", &LoadShader);
+    vm->bind(mod, "LoadShaderFromMemory(vsCode: str, fsCode: str) -> Shader", &LoadShaderFromMemory);
+    vm->bind(mod, "IsShaderReady(shader: Shader) -> bool", &IsShaderReady);
+    vm->bind(mod, "GetShaderLocation(shader: Shader, uniformName: str) -> int", &GetShaderLocation);
+    vm->bind(mod, "GetShaderLocationAttrib(shader: Shader, attribName: str) -> int", &GetShaderLocationAttrib);
+    vm->bind(mod, "SetShaderValue(shader: Shader, locIndex: int, value: void_p, uniformType: int) -> None", &SetShaderValue);
+    vm->bind(mod, "SetShaderValueV(shader: Shader, locIndex: int, value: void_p, uniformType: int, count: int) -> None", &SetShaderValueV);
+    vm->bind(mod, "SetShaderValueMatrix(shader: Shader, locIndex: int, mat: Matrix) -> None", &SetShaderValueMatrix);
+    vm->bind(mod, "SetShaderValueTexture(shader: Shader, locIndex: int, texture: Texture2D) -> None", &SetShaderValueTexture);
+    vm->bind(mod, "UnloadShader(shader: Shader) -> None", &UnloadShader);
+    vm->bind(mod, "GetScreenToWorldRay(position: vec2, camera: Camera) -> Ray", &GetScreenToWorldRay);
+    vm->bind(mod, "GetScreenToWorldRayEx(position: vec2, camera: Camera, width: float, height: float) -> Ray", &GetScreenToWorldRayEx);
+    vm->bind(mod, "GetWorldToScreen(position: vec3, camera: Camera) -> vec2", &GetWorldToScreen);
+    vm->bind(mod, "GetWorldToScreenEx(position: vec3, camera: Camera, width: int, height: int) -> vec2", &GetWorldToScreenEx);
+    vm->bind(mod, "GetWorldToScreen2D(position: vec2, camera: Camera2D) -> vec2", &GetWorldToScreen2D);
+    vm->bind(mod, "GetScreenToWorld2D(position: vec2, camera: Camera2D) -> vec2", &GetScreenToWorld2D);
+    vm->bind(mod, "GetCameraMatrix(camera: Camera) -> Matrix", &GetCameraMatrix);
+    vm->bind(mod, "GetCameraMatrix2D(camera: Camera2D) -> Matrix", &GetCameraMatrix2D);
+    vm->bind(mod, "SetTargetFPS(fps: int) -> None", &SetTargetFPS);
+    vm->bind(mod, "GetFrameTime() -> float", &GetFrameTime);
+    vm->bind(mod, "GetTime() -> float", &GetTime);
+    vm->bind(mod, "GetFPS() -> int", &GetFPS);
+    vm->bind(mod, "SwapScreenBuffer() -> None", &SwapScreenBuffer);
+    vm->bind(mod, "PollInputEvents() -> None", &PollInputEvents);
+    vm->bind(mod, "WaitTime(seconds: float) -> None", &WaitTime);
+    vm->bind(mod, "SetRandomSeed(seed: int) -> None", &SetRandomSeed);
+    vm->bind(mod, "GetRandomValue(min: int, max: int) -> int", &GetRandomValue);
+    vm->bind(mod, "LoadRandomSequence(count: int, min: int, max: int) -> int_p", &LoadRandomSequence);
+    vm->bind(mod, "UnloadRandomSequence(sequence: int_p) -> None", &UnloadRandomSequence);
+    vm->bind(mod, "TakeScreenshot(fileName: str) -> None", &TakeScreenshot);
+    vm->bind(mod, "SetConfigFlags(flags: int) -> None", &SetConfigFlags);
+    vm->bind(mod, "OpenURL(url: str) -> None", &OpenURL);
+    vm->bind(mod, "SetTraceLogLevel(logLevel: int) -> None", &SetTraceLogLevel);
+    vm->bind(mod, "MemAlloc(size: int) -> void_p", &MemAlloc);
+    vm->bind(mod, "MemRealloc(ptr: void_p, size: int) -> void_p", &MemRealloc);
+    vm->bind(mod, "MemFree(ptr: void_p) -> None", &MemFree);
+    vm->bind(mod, "LoadFileData(fileName: str, dataSize: int_p) -> uchar_p", &LoadFileData);
+    vm->bind(mod, "UnloadFileData(data: uchar_p) -> None", &UnloadFileData);
+    vm->bind(mod, "SaveFileData(fileName: str, data: void_p, dataSize: int) -> bool", &SaveFileData);
+    vm->bind(mod, "ExportDataAsCode(data: uchar_p, dataSize: int, fileName: str) -> bool", &ExportDataAsCode);
+    vm->bind(mod, "LoadFileText(fileName: str) -> char_p", &LoadFileText);
+    vm->bind(mod, "UnloadFileText(text: char_p) -> None", &UnloadFileText);
+    vm->bind(mod, "SaveFileText(fileName: str, text: char_p) -> bool", &SaveFileText);
+    vm->bind(mod, "FileExists(fileName: str) -> bool", &FileExists);
+    vm->bind(mod, "DirectoryExists(dirPath: str) -> bool", &DirectoryExists);
+    vm->bind(mod, "IsFileExtension(fileName: str, ext: str) -> bool", &IsFileExtension);
+    vm->bind(mod, "GetFileLength(fileName: str) -> int", &GetFileLength);
+    vm->bind(mod, "GetFileExtension(fileName: str) -> str", &GetFileExtension);
+    vm->bind(mod, "GetFileName(filePath: str) -> str", &GetFileName);
+    vm->bind(mod, "GetFileNameWithoutExt(filePath: str) -> str", &GetFileNameWithoutExt);
+    vm->bind(mod, "GetDirectoryPath(filePath: str) -> str", &GetDirectoryPath);
+    vm->bind(mod, "GetPrevDirectoryPath(dirPath: str) -> str", &GetPrevDirectoryPath);
+    vm->bind(mod, "GetWorkingDirectory() -> str", &GetWorkingDirectory);
+    vm->bind(mod, "GetApplicationDirectory() -> str", &GetApplicationDirectory);
+    vm->bind(mod, "ChangeDirectory(dir: str) -> bool", &ChangeDirectory);
+    vm->bind(mod, "IsPathFile(path: str) -> bool", &IsPathFile);
+    vm->bind(mod, "LoadDirectoryFiles(dirPath: str) -> FilePathList", &LoadDirectoryFiles);
+    vm->bind(mod, "LoadDirectoryFilesEx(basePath: str, filter: str, scanSubdirs: bool) -> FilePathList", &LoadDirectoryFilesEx);
+    vm->bind(mod, "UnloadDirectoryFiles(files: FilePathList) -> None", &UnloadDirectoryFiles);
+    vm->bind(mod, "IsFileDropped() -> bool", &IsFileDropped);
+    vm->bind(mod, "LoadDroppedFiles() -> FilePathList", &LoadDroppedFiles);
+    vm->bind(mod, "UnloadDroppedFiles(files: FilePathList) -> None", &UnloadDroppedFiles);
+    vm->bind(mod, "GetFileModTime(fileName: str) -> int", &GetFileModTime);
+    vm->bind(mod, "CompressData(data: uchar_p, dataSize: int, compDataSize: int_p) -> uchar_p", &CompressData);
+    vm->bind(mod, "DecompressData(compData: uchar_p, compDataSize: int, dataSize: int_p) -> uchar_p", &DecompressData);
+    vm->bind(mod, "EncodeDataBase64(data: uchar_p, dataSize: int, outputSize: int_p) -> char_p", &EncodeDataBase64);
+    vm->bind(mod, "DecodeDataBase64(data: uchar_p, outputSize: int_p) -> uchar_p", &DecodeDataBase64);
+    vm->bind(mod, "LoadAutomationEventList(fileName: str) -> AutomationEventList", &LoadAutomationEventList);
+    vm->bind(mod, "UnloadAutomationEventList(list: AutomationEventList) -> None", &UnloadAutomationEventList);
+    vm->bind(mod, "ExportAutomationEventList(list: AutomationEventList, fileName: str) -> bool", &ExportAutomationEventList);
+    vm->bind(mod, "SetAutomationEventList(list: 'AutomationEventList_p') -> None", &SetAutomationEventList);
+    vm->bind(mod, "SetAutomationEventBaseFrame(frame: int) -> None", &SetAutomationEventBaseFrame);
+    vm->bind(mod, "StartAutomationEventRecording() -> None", &StartAutomationEventRecording);
+    vm->bind(mod, "StopAutomationEventRecording() -> None", &StopAutomationEventRecording);
+    vm->bind(mod, "PlayAutomationEvent(event: AutomationEvent) -> None", &PlayAutomationEvent);
+    vm->bind(mod, "IsKeyPressed(key: int) -> bool", &IsKeyPressed);
+    vm->bind(mod, "IsKeyPressedRepeat(key: int) -> bool", &IsKeyPressedRepeat);
+    vm->bind(mod, "IsKeyDown(key: int) -> bool", &IsKeyDown);
+    vm->bind(mod, "IsKeyReleased(key: int) -> bool", &IsKeyReleased);
+    vm->bind(mod, "IsKeyUp(key: int) -> bool", &IsKeyUp);
+    vm->bind(mod, "GetKeyPressed() -> int", &GetKeyPressed);
+    vm->bind(mod, "GetCharPressed() -> int", &GetCharPressed);
+    vm->bind(mod, "SetExitKey(key: int) -> None", &SetExitKey);
+    vm->bind(mod, "IsGamepadAvailable(gamepad: int) -> bool", &IsGamepadAvailable);
+    vm->bind(mod, "GetGamepadName(gamepad: int) -> str", &GetGamepadName);
+    vm->bind(mod, "IsGamepadButtonPressed(gamepad: int, button: int) -> bool", &IsGamepadButtonPressed);
+    vm->bind(mod, "IsGamepadButtonDown(gamepad: int, button: int) -> bool", &IsGamepadButtonDown);
+    vm->bind(mod, "IsGamepadButtonReleased(gamepad: int, button: int) -> bool", &IsGamepadButtonReleased);
+    vm->bind(mod, "IsGamepadButtonUp(gamepad: int, button: int) -> bool", &IsGamepadButtonUp);
+    vm->bind(mod, "GetGamepadButtonPressed() -> int", &GetGamepadButtonPressed);
+    vm->bind(mod, "GetGamepadAxisCount(gamepad: int) -> int", &GetGamepadAxisCount);
+    vm->bind(mod, "GetGamepadAxisMovement(gamepad: int, axis: int) -> float", &GetGamepadAxisMovement);
+    vm->bind(mod, "SetGamepadMappings(mappings: str) -> int", &SetGamepadMappings);
+    vm->bind(mod, "SetGamepadVibration(gamepad: int, leftMotor: float, rightMotor: float) -> None", &SetGamepadVibration);
+    vm->bind(mod, "IsMouseButtonPressed(button: int) -> bool", &IsMouseButtonPressed);
+    vm->bind(mod, "IsMouseButtonDown(button: int) -> bool", &IsMouseButtonDown);
+    vm->bind(mod, "IsMouseButtonReleased(button: int) -> bool", &IsMouseButtonReleased);
+    vm->bind(mod, "IsMouseButtonUp(button: int) -> bool", &IsMouseButtonUp);
+    vm->bind(mod, "GetMouseX() -> int", &GetMouseX);
+    vm->bind(mod, "GetMouseY() -> int", &GetMouseY);
+    vm->bind(mod, "GetMousePosition() -> vec2", &GetMousePosition);
+    vm->bind(mod, "GetMouseDelta() -> vec2", &GetMouseDelta);
+    vm->bind(mod, "SetMousePosition(x: int, y: int) -> None", &SetMousePosition);
+    vm->bind(mod, "SetMouseOffset(offsetX: int, offsetY: int) -> None", &SetMouseOffset);
+    vm->bind(mod, "SetMouseScale(scaleX: float, scaleY: float) -> None", &SetMouseScale);
+    vm->bind(mod, "GetMouseWheelMove() -> float", &GetMouseWheelMove);
+    vm->bind(mod, "GetMouseWheelMoveV() -> vec2", &GetMouseWheelMoveV);
+    vm->bind(mod, "SetMouseCursor(cursor: int) -> None", &SetMouseCursor);
+    vm->bind(mod, "GetTouchX() -> int", &GetTouchX);
+    vm->bind(mod, "GetTouchY() -> int", &GetTouchY);
+    vm->bind(mod, "GetTouchPosition(index: int) -> vec2", &GetTouchPosition);
+    vm->bind(mod, "GetTouchPointId(index: int) -> int", &GetTouchPointId);
+    vm->bind(mod, "GetTouchPointCount() -> int", &GetTouchPointCount);
+    vm->bind(mod, "SetGesturesEnabled(flags: int) -> None", &SetGesturesEnabled);
+    vm->bind(mod, "IsGestureDetected(gesture: int) -> bool", &IsGestureDetected);
+    vm->bind(mod, "GetGestureDetected() -> int", &GetGestureDetected);
+    vm->bind(mod, "GetGestureHoldDuration() -> float", &GetGestureHoldDuration);
+    vm->bind(mod, "GetGestureDragVector() -> vec2", &GetGestureDragVector);
+    vm->bind(mod, "GetGestureDragAngle() -> float", &GetGestureDragAngle);
+    vm->bind(mod, "GetGesturePinchVector() -> vec2", &GetGesturePinchVector);
+    vm->bind(mod, "GetGesturePinchAngle() -> float", &GetGesturePinchAngle);
+    vm->bind(mod, "UpdateCamera(camera: 'Camera_p', mode: int) -> None", &UpdateCamera);
+    vm->bind(mod, "UpdateCameraPro(camera: 'Camera_p', movement: vec3, rotation: vec3, zoom: float) -> None", &UpdateCameraPro);
+    vm->bind(mod, "SetShapesTexture(texture: Texture2D, source: Rectangle) -> None", &SetShapesTexture);
+    vm->bind(mod, "GetShapesTexture() -> Texture2D", &GetShapesTexture);
+    vm->bind(mod, "GetShapesTextureRectangle() -> Rectangle", &GetShapesTextureRectangle);
+    vm->bind(mod, "DrawPixel(posX: int, posY: int, color: Color) -> None", &DrawPixel);
+    vm->bind(mod, "DrawPixelV(position: vec2, color: Color) -> None", &DrawPixelV);
+    vm->bind(mod, "DrawLine(startPosX: int, startPosY: int, endPosX: int, endPosY: int, color: Color) -> None", &DrawLine);
+    vm->bind(mod, "DrawLineV(startPos: vec2, endPos: vec2, color: Color) -> None", &DrawLineV);
+    vm->bind(mod, "DrawLineEx(startPos: vec2, endPos: vec2, thick: float, color: Color) -> None", &DrawLineEx);
+    vm->bind(mod, "DrawLineStrip(points: 'vec2_p', pointCount: int, color: Color) -> None", &DrawLineStrip);
+    vm->bind(mod, "DrawLineBezier(startPos: vec2, endPos: vec2, thick: float, color: Color) -> None", &DrawLineBezier);
+    vm->bind(mod, "DrawCircle(centerX: int, centerY: int, radius: float, color: Color) -> None", &DrawCircle);
+    vm->bind(mod, "DrawCircleSector(center: vec2, radius: float, startAngle: float, endAngle: float, segments: int, color: Color) -> None", &DrawCircleSector);
+    vm->bind(mod, "DrawCircleSectorLines(center: vec2, radius: float, startAngle: float, endAngle: float, segments: int, color: Color) -> None", &DrawCircleSectorLines);
+    vm->bind(mod, "DrawCircleGradient(centerX: int, centerY: int, radius: float, color1: Color, color2: Color) -> None", &DrawCircleGradient);
+    vm->bind(mod, "DrawCircleV(center: vec2, radius: float, color: Color) -> None", &DrawCircleV);
+    vm->bind(mod, "DrawCircleLines(centerX: int, centerY: int, radius: float, color: Color) -> None", &DrawCircleLines);
+    vm->bind(mod, "DrawCircleLinesV(center: vec2, radius: float, color: Color) -> None", &DrawCircleLinesV);
+    vm->bind(mod, "DrawEllipse(centerX: int, centerY: int, radiusH: float, radiusV: float, color: Color) -> None", &DrawEllipse);
+    vm->bind(mod, "DrawEllipseLines(centerX: int, centerY: int, radiusH: float, radiusV: float, color: Color) -> None", &DrawEllipseLines);
+    vm->bind(mod, "DrawRing(center: vec2, innerRadius: float, outerRadius: float, startAngle: float, endAngle: float, segments: int, color: Color) -> None", &DrawRing);
+    vm->bind(mod, "DrawRingLines(center: vec2, innerRadius: float, outerRadius: float, startAngle: float, endAngle: float, segments: int, color: Color) -> None", &DrawRingLines);
+    vm->bind(mod, "DrawRectangle(posX: int, posY: int, width: int, height: int, color: Color) -> None", &DrawRectangle);
+    vm->bind(mod, "DrawRectangleV(position: vec2, size: vec2, color: Color) -> None", &DrawRectangleV);
+    vm->bind(mod, "DrawRectangleRec(rec: Rectangle, color: Color) -> None", &DrawRectangleRec);
+    vm->bind(mod, "DrawRectanglePro(rec: Rectangle, origin: vec2, rotation: float, color: Color) -> None", &DrawRectanglePro);
+    vm->bind(mod, "DrawRectangleGradientV(posX: int, posY: int, width: int, height: int, color1: Color, color2: Color) -> None", &DrawRectangleGradientV);
+    vm->bind(mod, "DrawRectangleGradientH(posX: int, posY: int, width: int, height: int, color1: Color, color2: Color) -> None", &DrawRectangleGradientH);
+    vm->bind(mod, "DrawRectangleGradientEx(rec: Rectangle, col1: Color, col2: Color, col3: Color, col4: Color) -> None", &DrawRectangleGradientEx);
+    vm->bind(mod, "DrawRectangleLines(posX: int, posY: int, width: int, height: int, color: Color) -> None", &DrawRectangleLines);
+    vm->bind(mod, "DrawRectangleLinesEx(rec: Rectangle, lineThick: float, color: Color) -> None", &DrawRectangleLinesEx);
+    vm->bind(mod, "DrawRectangleRounded(rec: Rectangle, roundness: float, segments: int, color: Color) -> None", &DrawRectangleRounded);
+    vm->bind(mod, "DrawRectangleRoundedLines(rec: Rectangle, roundness: float, segments: int, lineThick: float, color: Color) -> None", &DrawRectangleRoundedLines);
+    vm->bind(mod, "DrawTriangle(v1: vec2, v2: vec2, v3: vec2, color: Color) -> None", &DrawTriangle);
+    vm->bind(mod, "DrawTriangleLines(v1: vec2, v2: vec2, v3: vec2, color: Color) -> None", &DrawTriangleLines);
+    vm->bind(mod, "DrawTriangleFan(points: 'vec2_p', pointCount: int, color: Color) -> None", &DrawTriangleFan);
+    vm->bind(mod, "DrawTriangleStrip(points: 'vec2_p', pointCount: int, color: Color) -> None", &DrawTriangleStrip);
+    vm->bind(mod, "DrawPoly(center: vec2, sides: int, radius: float, rotation: float, color: Color) -> None", &DrawPoly);
+    vm->bind(mod, "DrawPolyLines(center: vec2, sides: int, radius: float, rotation: float, color: Color) -> None", &DrawPolyLines);
+    vm->bind(mod, "DrawPolyLinesEx(center: vec2, sides: int, radius: float, rotation: float, lineThick: float, color: Color) -> None", &DrawPolyLinesEx);
+    vm->bind(mod, "DrawSplineLinear(points: 'vec2_p', pointCount: int, thick: float, color: Color) -> None", &DrawSplineLinear);
+    vm->bind(mod, "DrawSplineBasis(points: 'vec2_p', pointCount: int, thick: float, color: Color) -> None", &DrawSplineBasis);
+    vm->bind(mod, "DrawSplineCatmullRom(points: 'vec2_p', pointCount: int, thick: float, color: Color) -> None", &DrawSplineCatmullRom);
+    vm->bind(mod, "DrawSplineBezierQuadratic(points: 'vec2_p', pointCount: int, thick: float, color: Color) -> None", &DrawSplineBezierQuadratic);
+    vm->bind(mod, "DrawSplineBezierCubic(points: 'vec2_p', pointCount: int, thick: float, color: Color) -> None", &DrawSplineBezierCubic);
+    vm->bind(mod, "DrawSplineSegmentLinear(p1: vec2, p2: vec2, thick: float, color: Color) -> None", &DrawSplineSegmentLinear);
+    vm->bind(mod, "DrawSplineSegmentBasis(p1: vec2, p2: vec2, p3: vec2, p4: vec2, thick: float, color: Color) -> None", &DrawSplineSegmentBasis);
+    vm->bind(mod, "DrawSplineSegmentCatmullRom(p1: vec2, p2: vec2, p3: vec2, p4: vec2, thick: float, color: Color) -> None", &DrawSplineSegmentCatmullRom);
+    vm->bind(mod, "DrawSplineSegmentBezierQuadratic(p1: vec2, c2: vec2, p3: vec2, thick: float, color: Color) -> None", &DrawSplineSegmentBezierQuadratic);
+    vm->bind(mod, "DrawSplineSegmentBezierCubic(p1: vec2, c2: vec2, c3: vec2, p4: vec2, thick: float, color: Color) -> None", &DrawSplineSegmentBezierCubic);
+    vm->bind(mod, "GetSplinePointLinear(startPos: vec2, endPos: vec2, t: float) -> vec2", &GetSplinePointLinear);
+    vm->bind(mod, "GetSplinePointBasis(p1: vec2, p2: vec2, p3: vec2, p4: vec2, t: float) -> vec2", &GetSplinePointBasis);
+    vm->bind(mod, "GetSplinePointCatmullRom(p1: vec2, p2: vec2, p3: vec2, p4: vec2, t: float) -> vec2", &GetSplinePointCatmullRom);
+    vm->bind(mod, "GetSplinePointBezierQuad(p1: vec2, c2: vec2, p3: vec2, t: float) -> vec2", &GetSplinePointBezierQuad);
+    vm->bind(mod, "GetSplinePointBezierCubic(p1: vec2, c2: vec2, c3: vec2, p4: vec2, t: float) -> vec2", &GetSplinePointBezierCubic);
+    vm->bind(mod, "CheckCollisionRecs(rec1: Rectangle, rec2: Rectangle) -> bool", &CheckCollisionRecs);
+    vm->bind(mod, "CheckCollisionCircles(center1: vec2, radius1: float, center2: vec2, radius2: float) -> bool", &CheckCollisionCircles);
+    vm->bind(mod, "CheckCollisionCircleRec(center: vec2, radius: float, rec: Rectangle) -> bool", &CheckCollisionCircleRec);
+    vm->bind(mod, "CheckCollisionPointRec(point: vec2, rec: Rectangle) -> bool", &CheckCollisionPointRec);
+    vm->bind(mod, "CheckCollisionPointCircle(point: vec2, center: vec2, radius: float) -> bool", &CheckCollisionPointCircle);
+    vm->bind(mod, "CheckCollisionPointTriangle(point: vec2, p1: vec2, p2: vec2, p3: vec2) -> bool", &CheckCollisionPointTriangle);
+    vm->bind(mod, "CheckCollisionPointPoly(point: vec2, points: 'vec2_p', pointCount: int) -> bool", &CheckCollisionPointPoly);
+    vm->bind(mod, "CheckCollisionLines(startPos1: vec2, endPos1: vec2, startPos2: vec2, endPos2: vec2, collisionPoint: 'vec2_p') -> bool", &CheckCollisionLines);
+    vm->bind(mod, "CheckCollisionPointLine(point: vec2, p1: vec2, p2: vec2, threshold: int) -> bool", &CheckCollisionPointLine);
+    vm->bind(mod, "GetCollisionRec(rec1: Rectangle, rec2: Rectangle) -> Rectangle", &GetCollisionRec);
+    vm->bind(mod, "LoadImage(fileName: str) -> Image", &LoadImage);
+    vm->bind(mod, "LoadImageRaw(fileName: str, width: int, height: int, format: int, headerSize: int) -> Image", &LoadImageRaw);
+    vm->bind(mod, "LoadImageSvg(fileNameOrString: str, width: int, height: int) -> Image", &LoadImageSvg);
+    vm->bind(mod, "LoadImageAnim(fileName: str, frames: int_p) -> Image", &LoadImageAnim);
+    vm->bind(mod, "LoadImageAnimFromMemory(fileType: str, fileData: uchar_p, dataSize: int, frames: int_p) -> Image", &LoadImageAnimFromMemory);
+    vm->bind(mod, "LoadImageFromMemory(fileType: str, fileData: uchar_p, dataSize: int) -> Image", &LoadImageFromMemory);
+    vm->bind(mod, "LoadImageFromTexture(texture: Texture2D) -> Image", &LoadImageFromTexture);
+    vm->bind(mod, "LoadImageFromScreen() -> Image", &LoadImageFromScreen);
+    vm->bind(mod, "IsImageReady(image: Image) -> bool", &IsImageReady);
+    vm->bind(mod, "UnloadImage(image: Image) -> None", &UnloadImage);
+    vm->bind(mod, "ExportImage(image: Image, fileName: str) -> bool", &ExportImage);
+    vm->bind(mod, "ExportImageToMemory(image: Image, fileType: str, fileSize: int_p) -> uchar_p", &ExportImageToMemory);
+    vm->bind(mod, "ExportImageAsCode(image: Image, fileName: str) -> bool", &ExportImageAsCode);
+    vm->bind(mod, "GenImageColor(width: int, height: int, color: Color) -> Image", &GenImageColor);
+    vm->bind(mod, "GenImageGradientLinear(width: int, height: int, direction: int, start: Color, end: Color) -> Image", &GenImageGradientLinear);
+    vm->bind(mod, "GenImageGradientRadial(width: int, height: int, density: float, inner: Color, outer: Color) -> Image", &GenImageGradientRadial);
+    vm->bind(mod, "GenImageGradientSquare(width: int, height: int, density: float, inner: Color, outer: Color) -> Image", &GenImageGradientSquare);
+    vm->bind(mod, "GenImageChecked(width: int, height: int, checksX: int, checksY: int, col1: Color, col2: Color) -> Image", &GenImageChecked);
+    vm->bind(mod, "GenImageWhiteNoise(width: int, height: int, factor: float) -> Image", &GenImageWhiteNoise);
+    vm->bind(mod, "GenImagePerlinNoise(width: int, height: int, offsetX: int, offsetY: int, scale: float) -> Image", &GenImagePerlinNoise);
+    vm->bind(mod, "GenImageCellular(width: int, height: int, tileSize: int) -> Image", &GenImageCellular);
+    vm->bind(mod, "GenImageText(width: int, height: int, text: str) -> Image", &GenImageText);
+    vm->bind(mod, "ImageCopy(image: Image) -> Image", &ImageCopy);
+    vm->bind(mod, "ImageFromImage(image: Image, rec: Rectangle) -> Image", &ImageFromImage);
+    vm->bind(mod, "ImageText(text: str, fontSize: int, color: Color) -> Image", &ImageText);
+    vm->bind(mod, "ImageTextEx(font: Font, text: str, fontSize: float, spacing: float, tint: Color) -> Image", &ImageTextEx);
+    vm->bind(mod, "ImageFormat(image: 'Image_p', newFormat: int) -> None", &ImageFormat);
+    vm->bind(mod, "ImageToPOT(image: 'Image_p', fill: Color) -> None", &ImageToPOT);
+    vm->bind(mod, "ImageCrop(image: 'Image_p', crop: Rectangle) -> None", &ImageCrop);
+    vm->bind(mod, "ImageAlphaCrop(image: 'Image_p', threshold: float) -> None", &ImageAlphaCrop);
+    vm->bind(mod, "ImageAlphaClear(image: 'Image_p', color: Color, threshold: float) -> None", &ImageAlphaClear);
+    vm->bind(mod, "ImageAlphaMask(image: 'Image_p', alphaMask: Image) -> None", &ImageAlphaMask);
+    vm->bind(mod, "ImageAlphaPremultiply(image: 'Image_p') -> None", &ImageAlphaPremultiply);
+    vm->bind(mod, "ImageBlurGaussian(image: 'Image_p', blurSize: int) -> None", &ImageBlurGaussian);
+    vm->bind(mod, "ImageKernelConvolution(image: 'Image_p', kernel: float_p, kernelSize: int) -> None", &ImageKernelConvolution);
+    vm->bind(mod, "ImageResize(image: 'Image_p', newWidth: int, newHeight: int) -> None", &ImageResize);
+    vm->bind(mod, "ImageResizeNN(image: 'Image_p', newWidth: int, newHeight: int) -> None", &ImageResizeNN);
+    vm->bind(mod, "ImageResizeCanvas(image: 'Image_p', newWidth: int, newHeight: int, offsetX: int, offsetY: int, fill: Color) -> None", &ImageResizeCanvas);
+    vm->bind(mod, "ImageMipmaps(image: 'Image_p') -> None", &ImageMipmaps);
+    vm->bind(mod, "ImageDither(image: 'Image_p', rBpp: int, gBpp: int, bBpp: int, aBpp: int) -> None", &ImageDither);
+    vm->bind(mod, "ImageFlipVertical(image: 'Image_p') -> None", &ImageFlipVertical);
+    vm->bind(mod, "ImageFlipHorizontal(image: 'Image_p') -> None", &ImageFlipHorizontal);
+    vm->bind(mod, "ImageRotate(image: 'Image_p', degrees: int) -> None", &ImageRotate);
+    vm->bind(mod, "ImageRotateCW(image: 'Image_p') -> None", &ImageRotateCW);
+    vm->bind(mod, "ImageRotateCCW(image: 'Image_p') -> None", &ImageRotateCCW);
+    vm->bind(mod, "ImageColorTint(image: 'Image_p', color: Color) -> None", &ImageColorTint);
+    vm->bind(mod, "ImageColorInvert(image: 'Image_p') -> None", &ImageColorInvert);
+    vm->bind(mod, "ImageColorGrayscale(image: 'Image_p') -> None", &ImageColorGrayscale);
+    vm->bind(mod, "ImageColorContrast(image: 'Image_p', contrast: float) -> None", &ImageColorContrast);
+    vm->bind(mod, "ImageColorBrightness(image: 'Image_p', brightness: int) -> None", &ImageColorBrightness);
+    vm->bind(mod, "ImageColorReplace(image: 'Image_p', color: Color, replace: Color) -> None", &ImageColorReplace);
+    vm->bind(mod, "LoadImageColors(image: Image) -> 'Color_p'", &LoadImageColors);
+    vm->bind(mod, "LoadImagePalette(image: Image, maxPaletteSize: int, colorCount: int_p) -> 'Color_p'", &LoadImagePalette);
+    vm->bind(mod, "UnloadImageColors(colors: 'Color_p') -> None", &UnloadImageColors);
+    vm->bind(mod, "UnloadImagePalette(colors: 'Color_p') -> None", &UnloadImagePalette);
+    vm->bind(mod, "GetImageAlphaBorder(image: Image, threshold: float) -> Rectangle", &GetImageAlphaBorder);
+    vm->bind(mod, "GetImageColor(image: Image, x: int, y: int) -> Color", &GetImageColor);
+    vm->bind(mod, "ImageClearBackground(dst: 'Image_p', color: Color) -> None", &ImageClearBackground);
+    vm->bind(mod, "ImageDrawPixel(dst: 'Image_p', posX: int, posY: int, color: Color) -> None", &ImageDrawPixel);
+    vm->bind(mod, "ImageDrawPixelV(dst: 'Image_p', position: vec2, color: Color) -> None", &ImageDrawPixelV);
+    vm->bind(mod, "ImageDrawLine(dst: 'Image_p', startPosX: int, startPosY: int, endPosX: int, endPosY: int, color: Color) -> None", &ImageDrawLine);
+    vm->bind(mod, "ImageDrawLineV(dst: 'Image_p', start: vec2, end: vec2, color: Color) -> None", &ImageDrawLineV);
+    vm->bind(mod, "ImageDrawCircle(dst: 'Image_p', centerX: int, centerY: int, radius: int, color: Color) -> None", &ImageDrawCircle);
+    vm->bind(mod, "ImageDrawCircleV(dst: 'Image_p', center: vec2, radius: int, color: Color) -> None", &ImageDrawCircleV);
+    vm->bind(mod, "ImageDrawCircleLines(dst: 'Image_p', centerX: int, centerY: int, radius: int, color: Color) -> None", &ImageDrawCircleLines);
+    vm->bind(mod, "ImageDrawCircleLinesV(dst: 'Image_p', center: vec2, radius: int, color: Color) -> None", &ImageDrawCircleLinesV);
+    vm->bind(mod, "ImageDrawRectangle(dst: 'Image_p', posX: int, posY: int, width: int, height: int, color: Color) -> None", &ImageDrawRectangle);
+    vm->bind(mod, "ImageDrawRectangleV(dst: 'Image_p', position: vec2, size: vec2, color: Color) -> None", &ImageDrawRectangleV);
+    vm->bind(mod, "ImageDrawRectangleRec(dst: 'Image_p', rec: Rectangle, color: Color) -> None", &ImageDrawRectangleRec);
+    vm->bind(mod, "ImageDrawRectangleLines(dst: 'Image_p', rec: Rectangle, thick: int, color: Color) -> None", &ImageDrawRectangleLines);
+    vm->bind(mod, "ImageDraw(dst: 'Image_p', src: Image, srcRec: Rectangle, dstRec: Rectangle, tint: Color) -> None", &ImageDraw);
+    vm->bind(mod, "ImageDrawText(dst: 'Image_p', text: str, posX: int, posY: int, fontSize: int, color: Color) -> None", &ImageDrawText);
+    vm->bind(mod, "ImageDrawTextEx(dst: 'Image_p', font: Font, text: str, position: vec2, fontSize: float, spacing: float, tint: Color) -> None", &ImageDrawTextEx);
+    vm->bind(mod, "LoadTexture(fileName: str) -> Texture2D", &LoadTexture);
+    vm->bind(mod, "LoadTextureFromImage(image: Image) -> Texture2D", &LoadTextureFromImage);
+    vm->bind(mod, "LoadTextureCubemap(image: Image, layout: int) -> TextureCubemap", &LoadTextureCubemap);
+    vm->bind(mod, "LoadRenderTexture(width: int, height: int) -> RenderTexture2D", &LoadRenderTexture);
+    vm->bind(mod, "IsTextureReady(texture: Texture2D) -> bool", &IsTextureReady);
+    vm->bind(mod, "UnloadTexture(texture: Texture2D) -> None", &UnloadTexture);
+    vm->bind(mod, "IsRenderTextureReady(target: RenderTexture2D) -> bool", &IsRenderTextureReady);
+    vm->bind(mod, "UnloadRenderTexture(target: RenderTexture2D) -> None", &UnloadRenderTexture);
+    vm->bind(mod, "UpdateTexture(texture: Texture2D, pixels: void_p) -> None", &UpdateTexture);
+    vm->bind(mod, "UpdateTextureRec(texture: Texture2D, rec: Rectangle, pixels: void_p) -> None", &UpdateTextureRec);
+    vm->bind(mod, "GenTextureMipmaps(texture: 'Texture2D_p') -> None", &GenTextureMipmaps);
+    vm->bind(mod, "SetTextureFilter(texture: Texture2D, filter: int) -> None", &SetTextureFilter);
+    vm->bind(mod, "SetTextureWrap(texture: Texture2D, wrap: int) -> None", &SetTextureWrap);
+    vm->bind(mod, "DrawTexture(texture: Texture2D, posX: int, posY: int, tint: Color) -> None", &DrawTexture);
+    vm->bind(mod, "DrawTextureV(texture: Texture2D, position: vec2, tint: Color) -> None", &DrawTextureV);
+    vm->bind(mod, "DrawTextureEx(texture: Texture2D, position: vec2, rotation: float, scale: float, tint: Color) -> None", &DrawTextureEx);
+    vm->bind(mod, "DrawTextureRec(texture: Texture2D, source: Rectangle, position: vec2, tint: Color) -> None", &DrawTextureRec);
+    vm->bind(mod, "DrawTexturePro(texture: Texture2D, source: Rectangle, dest: Rectangle, origin: vec2, rotation: float, tint: Color) -> None", &DrawTexturePro);
+    vm->bind(mod, "DrawTextureNPatch(texture: Texture2D, nPatchInfo: NPatchInfo, dest: Rectangle, origin: vec2, rotation: float, tint: Color) -> None", &DrawTextureNPatch);
+    vm->bind(mod, "ColorIsEqual(col1: Color, col2: Color) -> bool", &ColorIsEqual);
+    vm->bind(mod, "Fade(color: Color, alpha: float) -> Color", &Fade);
+    vm->bind(mod, "ColorToInt(color: Color) -> int", &ColorToInt);
+    vm->bind(mod, "ColorNormalize(color: Color) -> vec4", &ColorNormalize);
+    vm->bind(mod, "ColorFromNormalized(normalized: vec4) -> Color", &ColorFromNormalized);
+    vm->bind(mod, "ColorToHSV(color: Color) -> vec3", &ColorToHSV);
+    vm->bind(mod, "ColorFromHSV(hue: float, saturation: float, value: float) -> Color", &ColorFromHSV);
+    vm->bind(mod, "ColorTint(color: Color, tint: Color) -> Color", &ColorTint);
+    vm->bind(mod, "ColorBrightness(color: Color, factor: float) -> Color", &ColorBrightness);
+    vm->bind(mod, "ColorContrast(color: Color, contrast: float) -> Color", &ColorContrast);
+    vm->bind(mod, "ColorAlpha(color: Color, alpha: float) -> Color", &ColorAlpha);
+    vm->bind(mod, "ColorAlphaBlend(dst: Color, src: Color, tint: Color) -> Color", &ColorAlphaBlend);
+    vm->bind(mod, "GetColor(hexValue: int) -> Color", &GetColor);
+    vm->bind(mod, "GetPixelColor(srcPtr: void_p, format: int) -> Color", &GetPixelColor);
+    vm->bind(mod, "SetPixelColor(dstPtr: void_p, color: Color, format: int) -> None", &SetPixelColor);
+    vm->bind(mod, "GetPixelDataSize(width: int, height: int, format: int) -> int", &GetPixelDataSize);
+    vm->bind(mod, "GetFontDefault() -> Font", &GetFontDefault);
+    vm->bind(mod, "LoadFont(fileName: str) -> Font", &LoadFont);
+    vm->bind(mod, "LoadFontEx(fileName: str, fontSize: int, codepoints: int_p, codepointCount: int) -> Font", &LoadFontEx);
+    vm->bind(mod, "LoadFontFromImage(image: Image, key: Color, firstChar: int) -> Font", &LoadFontFromImage);
+    vm->bind(mod, "LoadFontFromMemory(fileType: str, fileData: uchar_p, dataSize: int, fontSize: int, codepoints: int_p, codepointCount: int) -> Font", &LoadFontFromMemory);
+    vm->bind(mod, "IsFontReady(font: Font) -> bool", &IsFontReady);
+    vm->bind(mod, "LoadFontData(fileData: uchar_p, dataSize: int, fontSize: int, codepoints: int_p, codepointCount: int, type: int) -> 'GlyphInfo_p'", &LoadFontData);
+    vm->bind(mod, "GenImageFontAtlas(glyphs: 'GlyphInfo_p', glyphRecs: void_p, glyphCount: int, fontSize: int, padding: int, packMethod: int) -> Image", &GenImageFontAtlas);
+    vm->bind(mod, "UnloadFontData(glyphs: 'GlyphInfo_p', glyphCount: int) -> None", &UnloadFontData);
+    vm->bind(mod, "UnloadFont(font: Font) -> None", &UnloadFont);
+    vm->bind(mod, "ExportFontAsCode(font: Font, fileName: str) -> bool", &ExportFontAsCode);
+    vm->bind(mod, "DrawFPS(posX: int, posY: int) -> None", &DrawFPS);
+    vm->bind(mod, "DrawText(text: str, posX: int, posY: int, fontSize: int, color: Color) -> None", &DrawText);
+    vm->bind(mod, "DrawTextEx(font: Font, text: str, position: vec2, fontSize: float, spacing: float, tint: Color) -> None", &DrawTextEx);
+    vm->bind(mod, "DrawTextPro(font: Font, text: str, position: vec2, origin: vec2, rotation: float, fontSize: float, spacing: float, tint: Color) -> None", &DrawTextPro);
+    vm->bind(mod, "DrawTextCodepoint(font: Font, codepoint: int, position: vec2, fontSize: float, tint: Color) -> None", &DrawTextCodepoint);
+    vm->bind(mod, "DrawTextCodepoints(font: Font, codepoints: int_p, codepointCount: int, position: vec2, fontSize: float, spacing: float, tint: Color) -> None", &DrawTextCodepoints);
+    vm->bind(mod, "SetTextLineSpacing(spacing: int) -> None", &SetTextLineSpacing);
+    vm->bind(mod, "MeasureText(text: str, fontSize: int) -> int", &MeasureText);
+    vm->bind(mod, "MeasureTextEx(font: Font, text: str, fontSize: float, spacing: float) -> vec2", &MeasureTextEx);
+    vm->bind(mod, "GetGlyphIndex(font: Font, codepoint: int) -> int", &GetGlyphIndex);
+    vm->bind(mod, "GetGlyphInfo(font: Font, codepoint: int) -> GlyphInfo", &GetGlyphInfo);
+    vm->bind(mod, "GetGlyphAtlasRec(font: Font, codepoint: int) -> Rectangle", &GetGlyphAtlasRec);
+    vm->bind(mod, "LoadUTF8(codepoints: int_p, length: int) -> char_p", &LoadUTF8);
+    vm->bind(mod, "UnloadUTF8(text: char_p) -> None", &UnloadUTF8);
+    vm->bind(mod, "LoadCodepoints(text: str, count: int_p) -> int_p", &LoadCodepoints);
+    vm->bind(mod, "UnloadCodepoints(codepoints: int_p) -> None", &UnloadCodepoints);
+    vm->bind(mod, "GetCodepointCount(text: str) -> int", &GetCodepointCount);
+    vm->bind(mod, "GetCodepoint(text: str, codepointSize: int_p) -> int", &GetCodepoint);
+    vm->bind(mod, "GetCodepointNext(text: str, codepointSize: int_p) -> int", &GetCodepointNext);
+    vm->bind(mod, "GetCodepointPrevious(text: str, codepointSize: int_p) -> int", &GetCodepointPrevious);
+    vm->bind(mod, "CodepointToUTF8(codepoint: int, utf8Size: int_p) -> str", &CodepointToUTF8);
+    vm->bind(mod, "TextCopy(dst: char_p, src: str) -> int", &TextCopy);
+    vm->bind(mod, "TextIsEqual(text1: str, text2: str) -> bool", &TextIsEqual);
+    vm->bind(mod, "TextLength(text: str) -> int", &TextLength);
+    vm->bind(mod, "TextSubtext(text: str, position: int, length: int) -> str", &TextSubtext);
+    vm->bind(mod, "TextReplace(text: str, replace: str, by: str) -> char_p", &TextReplace);
+    vm->bind(mod, "TextInsert(text: str, insert: str, position: int) -> char_p", &TextInsert);
+    vm->bind(mod, "TextJoin(textList: void_p, count: int, delimiter: str) -> str", &TextJoin);
+    vm->bind(mod, "TextSplit(text: str, delimiter: int, count: int_p) -> void_p", &TextSplit);
+    vm->bind(mod, "TextAppend(text: char_p, append: str, position: int_p) -> None", &TextAppend);
+    vm->bind(mod, "TextFindIndex(text: str, find: str) -> int", &TextFindIndex);
+    vm->bind(mod, "TextToUpper(text: str) -> str", &TextToUpper);
+    vm->bind(mod, "TextToLower(text: str) -> str", &TextToLower);
+    vm->bind(mod, "TextToPascal(text: str) -> str", &TextToPascal);
+    vm->bind(mod, "TextToInteger(text: str) -> int", &TextToInteger);
+    vm->bind(mod, "TextToFloat(text: str) -> float", &TextToFloat);
+    vm->bind(mod, "InitAudioDevice() -> None", &InitAudioDevice);
+    vm->bind(mod, "CloseAudioDevice() -> None", &CloseAudioDevice);
+    vm->bind(mod, "IsAudioDeviceReady() -> bool", &IsAudioDeviceReady);
+    vm->bind(mod, "SetMasterVolume(volume: float) -> None", &SetMasterVolume);
+    vm->bind(mod, "GetMasterVolume() -> float", &GetMasterVolume);
+    vm->bind(mod, "LoadWave(fileName: str) -> Wave", &LoadWave);
+    vm->bind(mod, "LoadWaveFromMemory(fileType: str, fileData: uchar_p, dataSize: int) -> Wave", &LoadWaveFromMemory);
+    vm->bind(mod, "IsWaveReady(wave: Wave) -> bool", &IsWaveReady);
+    vm->bind(mod, "LoadSound(fileName: str) -> Sound", &LoadSound);
+    vm->bind(mod, "LoadSoundFromWave(wave: Wave) -> Sound", &LoadSoundFromWave);
+    vm->bind(mod, "LoadSoundAlias(source: Sound) -> Sound", &LoadSoundAlias);
+    vm->bind(mod, "IsSoundReady(sound: Sound) -> bool", &IsSoundReady);
+    vm->bind(mod, "UpdateSound(sound: Sound, data: void_p, sampleCount: int) -> None", &UpdateSound);
+    vm->bind(mod, "UnloadWave(wave: Wave) -> None", &UnloadWave);
+    vm->bind(mod, "UnloadSound(sound: Sound) -> None", &UnloadSound);
+    vm->bind(mod, "UnloadSoundAlias(alias: Sound) -> None", &UnloadSoundAlias);
+    vm->bind(mod, "ExportWave(wave: Wave, fileName: str) -> bool", &ExportWave);
+    vm->bind(mod, "ExportWaveAsCode(wave: Wave, fileName: str) -> bool", &ExportWaveAsCode);
+    vm->bind(mod, "PlaySound(sound: Sound) -> None", &PlaySound);
+    vm->bind(mod, "StopSound(sound: Sound) -> None", &StopSound);
+    vm->bind(mod, "PauseSound(sound: Sound) -> None", &PauseSound);
+    vm->bind(mod, "ResumeSound(sound: Sound) -> None", &ResumeSound);
+    vm->bind(mod, "IsSoundPlaying(sound: Sound) -> bool", &IsSoundPlaying);
+    vm->bind(mod, "SetSoundVolume(sound: Sound, volume: float) -> None", &SetSoundVolume);
+    vm->bind(mod, "SetSoundPitch(sound: Sound, pitch: float) -> None", &SetSoundPitch);
+    vm->bind(mod, "SetSoundPan(sound: Sound, pan: float) -> None", &SetSoundPan);
+    vm->bind(mod, "WaveCopy(wave: Wave) -> Wave", &WaveCopy);
+    vm->bind(mod, "WaveCrop(wave: 'Wave_p', initSample: int, finalSample: int) -> None", &WaveCrop);
+    vm->bind(mod, "WaveFormat(wave: 'Wave_p', sampleRate: int, sampleSize: int, channels: int) -> None", &WaveFormat);
+    vm->bind(mod, "LoadWaveSamples(wave: Wave) -> float_p", &LoadWaveSamples);
+    vm->bind(mod, "UnloadWaveSamples(samples: float_p) -> None", &UnloadWaveSamples);
+    vm->bind(mod, "LoadMusicStream(fileName: str) -> Music", &LoadMusicStream);
+    vm->bind(mod, "LoadMusicStreamFromMemory(fileType: str, data: uchar_p, dataSize: int) -> Music", &LoadMusicStreamFromMemory);
+    vm->bind(mod, "IsMusicReady(music: Music) -> bool", &IsMusicReady);
+    vm->bind(mod, "UnloadMusicStream(music: Music) -> None", &UnloadMusicStream);
+    vm->bind(mod, "PlayMusicStream(music: Music) -> None", &PlayMusicStream);
+    vm->bind(mod, "IsMusicStreamPlaying(music: Music) -> bool", &IsMusicStreamPlaying);
+    vm->bind(mod, "UpdateMusicStream(music: Music) -> None", &UpdateMusicStream);
+    vm->bind(mod, "StopMusicStream(music: Music) -> None", &StopMusicStream);
+    vm->bind(mod, "PauseMusicStream(music: Music) -> None", &PauseMusicStream);
+    vm->bind(mod, "ResumeMusicStream(music: Music) -> None", &ResumeMusicStream);
+    vm->bind(mod, "SeekMusicStream(music: Music, position: float) -> None", &SeekMusicStream);
+    vm->bind(mod, "SetMusicVolume(music: Music, volume: float) -> None", &SetMusicVolume);
+    vm->bind(mod, "SetMusicPitch(music: Music, pitch: float) -> None", &SetMusicPitch);
+    vm->bind(mod, "SetMusicPan(music: Music, pan: float) -> None", &SetMusicPan);
+    vm->bind(mod, "GetMusicTimeLength(music: Music) -> float", &GetMusicTimeLength);
+    vm->bind(mod, "GetMusicTimePlayed(music: Music) -> float", &GetMusicTimePlayed);
+    vm->bind(mod, "LoadAudioStream(sampleRate: int, sampleSize: int, channels: int) -> AudioStream", &LoadAudioStream);
+    vm->bind(mod, "IsAudioStreamReady(stream: AudioStream) -> bool", &IsAudioStreamReady);
+    vm->bind(mod, "UnloadAudioStream(stream: AudioStream) -> None", &UnloadAudioStream);
+    vm->bind(mod, "UpdateAudioStream(stream: AudioStream, data: void_p, frameCount: int) -> None", &UpdateAudioStream);
+    vm->bind(mod, "IsAudioStreamProcessed(stream: AudioStream) -> bool", &IsAudioStreamProcessed);
+    vm->bind(mod, "PlayAudioStream(stream: AudioStream) -> None", &PlayAudioStream);
+    vm->bind(mod, "PauseAudioStream(stream: AudioStream) -> None", &PauseAudioStream);
+    vm->bind(mod, "ResumeAudioStream(stream: AudioStream) -> None", &ResumeAudioStream);
+    vm->bind(mod, "IsAudioStreamPlaying(stream: AudioStream) -> bool", &IsAudioStreamPlaying);
+    vm->bind(mod, "StopAudioStream(stream: AudioStream) -> None", &StopAudioStream);
+    vm->bind(mod, "SetAudioStreamVolume(stream: AudioStream, volume: float) -> None", &SetAudioStreamVolume);
+    vm->bind(mod, "SetAudioStreamPitch(stream: AudioStream, pitch: float) -> None", &SetAudioStreamPitch);
+    vm->bind(mod, "SetAudioStreamPan(stream: AudioStream, pan: float) -> None", &SetAudioStreamPan);
+    vm->bind(mod, "SetAudioStreamBufferSizeDefault(size: int) -> None", &SetAudioStreamBufferSizeDefault);
 
     CodeObject_ co = vm->compile("from linalg import *", "raylib.py", EXEC_MODE);
     vm->_exec(co, mod);

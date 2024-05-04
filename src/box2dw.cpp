@@ -7,7 +7,7 @@ void PyBody::_register(VM* vm, PyObject* mod, PyObject* type){
         [](VM* vm, ArgsView args){
             PyWorld& world = CAST(PyWorld&, args[1]);
             PyObject* node = args[2];
-            PyObject* obj = vm->heap.gcnew<PyBody>(PyBody::_type(vm));
+            PyObject* obj = vm->new_user_object<PyBody>();
             PyBody& body = _CAST(PyBody&, obj);
             b2BodyDef def;
             def.type = b2_dynamicBody;
@@ -19,27 +19,27 @@ void PyBody::_register(VM* vm, PyObject* mod, PyObject* type){
             return obj;
         });
 
-    PY_PROPERTY_EX(PyBody, "type: int", _b2Body, GetType, SetType)
-    PY_PROPERTY_EX(PyBody, "gravity_scale: float", _b2Body, GetGravityScale, SetGravityScale)
-    PY_PROPERTY_EX(PyBody, "fixed_rotation: bool", _b2Body, IsFixedRotation, SetFixedRotation)
-    PY_PROPERTY_EX(PyBody, "enabled: bool", _b2Body, IsEnabled, SetEnabled)
-    PY_PROPERTY_EX(PyBody, "bullet: bool", _b2Body, IsBullet, SetBullet)
+    PY_PROPERTY(PyBody, "type: int", _b2Body()->GetType, _b2Body()->SetType)
+    PY_PROPERTY(PyBody, "gravity_scale: float", _b2Body()->GetGravityScale, _b2Body()->SetGravityScale)
+    PY_PROPERTY(PyBody, "fixed_rotation: bool", _b2Body()->IsFixedRotation, _b2Body()->SetFixedRotation)
+    PY_PROPERTY(PyBody, "enabled: bool", _b2Body()->IsEnabled, _b2Body()->SetEnabled)
+    PY_PROPERTY(PyBody, "bullet: bool", _b2Body()->IsBullet, _b2Body()->SetBullet)
     
-    PY_READONLY_PROPERTY_EX(PyBody, "mass: float", _b2Body, GetMass)
-    PY_READONLY_PROPERTY_EX(PyBody, "inertia: float", _b2Body, GetInertia)
+    PY_READONLY_PROPERTY(PyBody, "mass: float", _b2Body()->GetMass)
+    PY_READONLY_PROPERTY(PyBody, "inertia: float", _b2Body()->GetInertia)
 
     PY_PROPERTY(PyBody, "position: vec2", get_position, set_position)
     PY_PROPERTY(PyBody, "rotation: float", get_rotation, set_rotation)
     PY_PROPERTY(PyBody, "velocity: vec2", get_velocity, set_velocity)
-    PY_PROPERTY_EX(PyBody, "angular_velocity: float", _b2Body, GetAngularVelocity, SetAngularVelocity)
-    PY_PROPERTY_EX(PyBody, "damping: float", _b2Body, GetLinearDamping, SetLinearDamping)
-    PY_PROPERTY_EX(PyBody, "angular_damping: float", _b2Body, GetAngularDamping, SetAngularDamping)
+    PY_PROPERTY(PyBody, "angular_velocity: float", _b2Body()->GetAngularVelocity, _b2Body()->SetAngularVelocity)
+    PY_PROPERTY(PyBody, "damping: float", _b2Body()->GetLinearDamping, _b2Body()->SetLinearDamping)
+    PY_PROPERTY(PyBody, "angular_damping: float", _b2Body()->GetAngularDamping, _b2Body()->SetAngularDamping)
 
-    PY_PROPERTY_EX(PyBody, "density: float", _b2Fixture, GetDensity, SetDensity)
-    PY_PROPERTY_EX(PyBody, "friction: float", _b2Fixture, GetFriction, SetFriction)
-    PY_PROPERTY_EX(PyBody, "restitution: float", _b2Fixture, GetRestitution, SetRestitution)
-    PY_PROPERTY_EX(PyBody, "restitution_threshold: float", _b2Fixture, GetRestitutionThreshold, SetRestitutionThreshold)
-    PY_PROPERTY_EX(PyBody, "is_sensor: bool", _b2Fixture, IsSensor, SetSensor)
+    PY_PROPERTY(PyBody, "density: float", _b2Fixture()->GetDensity, _b2Fixture()->SetDensity)
+    PY_PROPERTY(PyBody, "friction: float", _b2Fixture()->GetFriction, _b2Fixture()->SetFriction)
+    PY_PROPERTY(PyBody, "restitution: float", _b2Fixture()->GetRestitution, _b2Fixture()->SetRestitution)
+    PY_PROPERTY(PyBody, "restitution_threshold: float", _b2Fixture()->GetRestitutionThreshold, _b2Fixture()->SetRestitutionThreshold)
+    PY_PROPERTY(PyBody, "is_sensor: bool", _b2Fixture()->IsSensor, _b2Fixture()->SetSensor)
 
     vm->bind(type, "set_box_shape(self, hx: float, hy: float)",
         [](VM* vm, ArgsView args){
@@ -99,12 +99,12 @@ void PyBody::_register(VM* vm, PyObject* mod, PyObject* type){
         });
 
     // methods
-    _bind(vm, type, "apply_force(self, force: vec2, point: vec2)", &PyBody::apply_force);
-    _bind(vm, type, "apply_force_to_center(self, force: vec2)", &PyBody::apply_force_to_center);
-    _bind(vm, type, "apply_torque(self, torque: float)", &PyBody::apply_torque);
-    _bind(vm, type, "apply_impulse(self, impulse: vec2, point: vec2)", &PyBody::apply_impulse);
-    _bind(vm, type, "apply_impulse_to_center(self, impulse: vec2)", &PyBody::apply_impulse_to_center);
-    _bind(vm, type, "apply_angular_impulse(self, impulse: float)", &PyBody::apply_angular_impulse);
+    vm->bind(type, "apply_force(self, force: vec2, point: vec2)", &PyBody::apply_force);
+    vm->bind(type, "apply_force_to_center(self, force: vec2)", &PyBody::apply_force_to_center);
+    vm->bind(type, "apply_torque(self, torque: float)", &PyBody::apply_torque);
+    vm->bind(type, "apply_impulse(self, impulse: vec2, point: vec2)", &PyBody::apply_impulse);
+    vm->bind(type, "apply_impulse_to_center(self, impulse: vec2)", &PyBody::apply_impulse_to_center);
+    vm->bind(type, "apply_angular_impulse(self, impulse: float)", &PyBody::apply_angular_impulse);
 
     // node
     vm->bind_property(type, "node", [](VM* vm, ArgsView args){
@@ -193,8 +193,8 @@ void PyDebugDraw::DrawPoint(const b2Vec2& p, float size, const b2Color& color){
 
 void add_module_box2d(VM* vm){
     PyObject* mod = vm->new_module("box2d");
-    PyBody::register_class(vm, mod);
-    PyWorld::register_class(vm, mod);
+    vm->register_user_class<PyBody>(mod, "Body");
+    vm->register_user_class<PyWorld>(mod, "World");
 }
 
 struct MyRayCastCallback: b2RayCastCallback{
@@ -247,8 +247,8 @@ PyWorld::PyWorld(VM* vm): world(b2Vec2(0, 0)), _contact_listener(vm), _debug_dra
 }
 
 void PyWorld::_register(VM* vm, PyObject* mod, PyObject* type){
-    vm->bind(type, "__new__(cls)", [](VM* vm, ArgsView args){
-        return vm->heap.gcnew<PyWorld>(PyWorld::_type(vm), vm);
+    vm->bind_func(type, __new__, 1, [](VM* vm, ArgsView args){
+        return vm->new_user_object<PyWorld>(vm);
     });
 
     // gravity
