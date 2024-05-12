@@ -22,10 +22,10 @@ static char** main_argv;
 
 // cached objects
 struct _Cached{
-    PyObject* game = nullptr;
-    PyObject* on_ready = nullptr;
-    PyObject* on_update = nullptr;
-    PyObject* on_destroy = nullptr;
+    PyVar game = nullptr;
+    PyVar on_ready = nullptr;
+    PyVar on_update = nullptr;
+    PyVar on_destroy = nullptr;
     bool hot_reload_needed = false;
 }cached;
 
@@ -198,7 +198,7 @@ int main(int argc, char** argv){
                 vm->stderr_write(_S("Error: failed to load ", argv_1, '\n'));
                 return 1;
             }
-            PyObject* res = vm->exec(std::string_view(data, size), argv_1, EXEC_MODE);
+            PyVar res = vm->exec(std::string_view(data, size), argv_1, EXEC_MODE);
             delete vm;
             return res != nullptr ? 0 : 1;
         }

@@ -6,24 +6,24 @@
 namespace pkpy{
 
 template<>
-inline b2Vec2 py_cast<b2Vec2>(VM* vm, PyObject* obj){
+inline b2Vec2 py_cast<b2Vec2>(VM* vm, PyVar obj){
     Vec2 v = py_cast<Vec2>(vm, obj);
     return b2Vec2(v.x, v.y);
 }
 
 template<>
-inline b2Vec2 _py_cast<b2Vec2>(VM* vm, PyObject* obj){
+inline b2Vec2 _py_cast<b2Vec2>(VM* vm, PyVar obj){
     Vec2 v = _py_cast<Vec2>(vm, obj);
     return b2Vec2(v.x, v.y);
 }
 
-inline PyObject* py_var(VM* vm, b2Vec2 v){
+inline PyVar py_var(VM* vm, b2Vec2 v){
     return py_var(vm, Vec2(v.x, v.y));
 }
 
-inline PyObject* get_body_object(b2Body* p){
+inline PyVar get_body_object(b2Body* p){
     auto userdata = p->GetUserData().pointer;
-    return reinterpret_cast<PyObject*>(userdata);
+    return reinterpret_cast<PyVar>(userdata);
 }
 
 // maybe we will use this class later
@@ -31,7 +31,7 @@ struct PyDebugDraw: b2Draw{
     PK_ALWAYS_PASS_BY_POINTER(PyDebugDraw)
 
     VM* vm;
-    PyObject* draw_like;    // world will mark this
+    PyVar draw_like;    // world will mark this
 
     PyDebugDraw(VM* vm): vm(vm){}
 
@@ -67,7 +67,7 @@ struct PyBody{
 
     b2Body* body;
     b2Fixture* _fixture;
-    PyObject* node_like;
+    PyVar node_like;
     bool with_callback;
 
     bool _is_destroyed;
@@ -93,7 +93,7 @@ struct PyBody{
         _fixture = fixture;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type);
+    static void _register(VM* vm, PyVar mod, PyVar type);
 
     // methods
     b2Vec2 get_position() const { return body->GetPosition(); }
@@ -130,7 +130,7 @@ struct PyWorld {
         PK_OBJ_MARK(_debug_draw.draw_like);
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type);
+    static void _register(VM* vm, PyVar mod, PyVar type);
 };
 
 void add_module_box2d(VM* vm);

@@ -13,7 +13,7 @@ namespace ct{
     void set_template_path(const char*);
     const char* get_template_path();
 
-    void patch_module_ct(VM* vm, PyObject* mod);
+    void patch_module_ct(VM* vm, PyVar mod);
 
     // platform interfaces
     void platform_init();
@@ -33,6 +33,6 @@ namespace ct{
     Str platform_caches_directory();
     Str platform_documents_directory();
 
-    PyObject* add_module__ct(VM* vm);
+    PyVar add_module__ct(VM* vm);
     void setup_imgui_font();
 }

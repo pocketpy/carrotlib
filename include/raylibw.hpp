@@ -12,54 +12,54 @@ T1 _struct_cast(T0& v){
 }
 
 template<size_t N>
-void _bind_enums(VM* vm, PyObject* mod, Str name, const std::pair<const char*, i64> (&enums)[N]){
+void _bind_enums(VM* vm, PyVar mod, Str name, const std::pair<const char*, i64> (&enums)[N]){
     Dict d(vm);
     for(auto [k, v]: enums){
-        PyObject* int_obj = py_var(vm, v);
+        PyVar int_obj = py_var(vm, v);
         mod->attr().set(k, int_obj);
         d.set(int_obj, py_var(vm, k));
     }
     mod->attr().set(name + "_NAMES", py_var(vm, std::move(d)));
 }
 
-PyObject* py_var(VM* vm, Vector2 v){
+PyVar py_var(VM* vm, Vector2 v){
     return py_var(vm, _struct_cast<Vector2, Vec2>(v));
 }
 template<>
-Vector2 py_cast<Vector2>(VM* vm, PyObject* obj){
+Vector2 py_cast<Vector2>(VM* vm, PyVar obj){
     Vec2 v = py_cast<Vec2>(vm, obj);
     return _struct_cast<Vec2, Vector2>(v);
 }
 template<>
-Vector2 _py_cast<Vector2>(VM* vm, PyObject* obj){
+Vector2 _py_cast<Vector2>(VM* vm, PyVar obj){
     Vec2 v = _py_cast<Vec2>(vm, obj);
     return _struct_cast<Vec2, Vector2>(v);
 }
 
-PyObject* py_var(VM* vm, Vector3 v){
+PyVar py_var(VM* vm, Vector3 v){
     return py_var(vm, _struct_cast<Vector3, Vec3>(v));
 }
 template<>
-Vector3 py_cast<Vector3>(VM* vm, PyObject* obj){
+Vector3 py_cast<Vector3>(VM* vm, PyVar obj){
     Vec3 v = py_cast<Vec3>(vm, obj);
     return _struct_cast<Vec3, Vector3>(v);
 }
 template<>
-Vector3 _py_cast<Vector3>(VM* vm, PyObject* obj){
+Vector3 _py_cast<Vector3>(VM* vm, PyVar obj){
     Vec3 v = _py_cast<Vec3>(vm, obj);
     return _struct_cast<Vec3, Vector3>(v);
 }
 
-PyObject* py_var(VM* vm, Vector4 v){
+PyVar py_var(VM* vm, Vector4 v){
     return py_var(vm, _struct_cast<Vector4, Vec4>(v));
 }
 template<>
-Vector4 py_cast<Vector4>(VM* vm, PyObject* obj){
+Vector4 py_cast<Vector4>(VM* vm, PyVar obj){
     Vec4 v = py_cast<Vec4>(vm, obj);
     return _struct_cast<Vec4, Vector4>(v);
 }
 template<>
-Vector4 _py_cast<Vector4>(VM* vm, PyObject* obj){
+Vector4 _py_cast<Vector4>(VM* vm, PyVar obj){
     Vec4 v = _py_cast<Vec4>(vm, obj);
     return _struct_cast<Vec4, Vector4>(v);
 }
@@ -78,7 +78,7 @@ struct wrapped__Matrix{
         return memcmp(&_value, &other._value, sizeof(Matrix)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"m0", "m4", "m8", "m12", "m1", "m5", "m9", "m13", "m2", "m6", "m10", "m14", "m3", "m7", "m11", "m15"};
             if(args.size() == 1) return vm->None;
@@ -108,15 +108,15 @@ struct wrapped__Matrix{
     }
 };
 
-PyObject* py_var(VM* vm, Matrix v){
+PyVar py_var(VM* vm, Matrix v){
     return vm->new_user_object<wrapped__Matrix>(v);
 }
 template<>
-Matrix py_cast<Matrix>(VM* vm, PyObject* obj){
+Matrix py_cast<Matrix>(VM* vm, PyVar obj){
     return py_cast<wrapped__Matrix&>(vm, obj)._value;
 }
 template<>
-Matrix _py_cast<Matrix>(VM* vm, PyObject* obj){
+Matrix _py_cast<Matrix>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Matrix&>(vm, obj)._value;
 }
 /*************** Color ***************/
@@ -133,7 +133,7 @@ struct wrapped__Color{
         return memcmp(&_value, &other._value, sizeof(Color)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"r", "g", "b", "a"};
             if(args.size() == 1) return vm->None;
@@ -151,15 +151,15 @@ struct wrapped__Color{
     }
 };
 
-PyObject* py_var(VM* vm, Color v){
+PyVar py_var(VM* vm, Color v){
     return vm->new_user_object<wrapped__Color>(v);
 }
 template<>
-Color py_cast<Color>(VM* vm, PyObject* obj){
+Color py_cast<Color>(VM* vm, PyVar obj){
     return py_cast<wrapped__Color&>(vm, obj)._value;
 }
 template<>
-Color _py_cast<Color>(VM* vm, PyObject* obj){
+Color _py_cast<Color>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Color&>(vm, obj)._value;
 }
 /*************** Rectangle ***************/
@@ -176,7 +176,7 @@ struct wrapped__Rectangle{
         return memcmp(&_value, &other._value, sizeof(Rectangle)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"x", "y", "width", "height"};
             if(args.size() == 1) return vm->None;
@@ -194,15 +194,15 @@ struct wrapped__Rectangle{
     }
 };
 
-PyObject* py_var(VM* vm, Rectangle v){
+PyVar py_var(VM* vm, Rectangle v){
     return vm->new_user_object<wrapped__Rectangle>(v);
 }
 template<>
-Rectangle py_cast<Rectangle>(VM* vm, PyObject* obj){
+Rectangle py_cast<Rectangle>(VM* vm, PyVar obj){
     return py_cast<wrapped__Rectangle&>(vm, obj)._value;
 }
 template<>
-Rectangle _py_cast<Rectangle>(VM* vm, PyObject* obj){
+Rectangle _py_cast<Rectangle>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Rectangle&>(vm, obj)._value;
 }
 /*************** Image ***************/
@@ -219,7 +219,7 @@ struct wrapped__Image{
         return memcmp(&_value, &other._value, sizeof(Image)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"data", "width", "height", "mipmaps", "format"};
             if(args.size() == 1) return vm->None;
@@ -238,15 +238,15 @@ struct wrapped__Image{
     }
 };
 
-PyObject* py_var(VM* vm, Image v){
+PyVar py_var(VM* vm, Image v){
     return vm->new_user_object<wrapped__Image>(v);
 }
 template<>
-Image py_cast<Image>(VM* vm, PyObject* obj){
+Image py_cast<Image>(VM* vm, PyVar obj){
     return py_cast<wrapped__Image&>(vm, obj)._value;
 }
 template<>
-Image _py_cast<Image>(VM* vm, PyObject* obj){
+Image _py_cast<Image>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Image&>(vm, obj)._value;
 }
 /*************** Texture ***************/
@@ -263,7 +263,7 @@ struct wrapped__Texture{
         return memcmp(&_value, &other._value, sizeof(Texture)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"id", "width", "height", "mipmaps", "format"};
             if(args.size() == 1) return vm->None;
@@ -282,15 +282,15 @@ struct wrapped__Texture{
     }
 };
 
-PyObject* py_var(VM* vm, Texture v){
+PyVar py_var(VM* vm, Texture v){
     return vm->new_user_object<wrapped__Texture>(v);
 }
 template<>
-Texture py_cast<Texture>(VM* vm, PyObject* obj){
+Texture py_cast<Texture>(VM* vm, PyVar obj){
     return py_cast<wrapped__Texture&>(vm, obj)._value;
 }
 template<>
-Texture _py_cast<Texture>(VM* vm, PyObject* obj){
+Texture _py_cast<Texture>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Texture&>(vm, obj)._value;
 }
 /*************** RenderTexture ***************/
@@ -307,7 +307,7 @@ struct wrapped__RenderTexture{
         return memcmp(&_value, &other._value, sizeof(RenderTexture)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"id", "texture", "depth"};
             if(args.size() == 1) return vm->None;
@@ -324,15 +324,15 @@ struct wrapped__RenderTexture{
     }
 };
 
-PyObject* py_var(VM* vm, RenderTexture v){
+PyVar py_var(VM* vm, RenderTexture v){
     return vm->new_user_object<wrapped__RenderTexture>(v);
 }
 template<>
-RenderTexture py_cast<RenderTexture>(VM* vm, PyObject* obj){
+RenderTexture py_cast<RenderTexture>(VM* vm, PyVar obj){
     return py_cast<wrapped__RenderTexture&>(vm, obj)._value;
 }
 template<>
-RenderTexture _py_cast<RenderTexture>(VM* vm, PyObject* obj){
+RenderTexture _py_cast<RenderTexture>(VM* vm, PyVar obj){
     return _py_cast<wrapped__RenderTexture&>(vm, obj)._value;
 }
 /*************** NPatchInfo ***************/
@@ -349,7 +349,7 @@ struct wrapped__NPatchInfo{
         return memcmp(&_value, &other._value, sizeof(NPatchInfo)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"source", "left", "top", "right", "bottom", "layout"};
             if(args.size() == 1) return vm->None;
@@ -369,15 +369,15 @@ struct wrapped__NPatchInfo{
     }
 };
 
-PyObject* py_var(VM* vm, NPatchInfo v){
+PyVar py_var(VM* vm, NPatchInfo v){
     return vm->new_user_object<wrapped__NPatchInfo>(v);
 }
 template<>
-NPatchInfo py_cast<NPatchInfo>(VM* vm, PyObject* obj){
+NPatchInfo py_cast<NPatchInfo>(VM* vm, PyVar obj){
     return py_cast<wrapped__NPatchInfo&>(vm, obj)._value;
 }
 template<>
-NPatchInfo _py_cast<NPatchInfo>(VM* vm, PyObject* obj){
+NPatchInfo _py_cast<NPatchInfo>(VM* vm, PyVar obj){
     return _py_cast<wrapped__NPatchInfo&>(vm, obj)._value;
 }
 /*************** GlyphInfo ***************/
@@ -394,7 +394,7 @@ struct wrapped__GlyphInfo{
         return memcmp(&_value, &other._value, sizeof(GlyphInfo)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"value", "offsetX", "offsetY", "advanceX", "image"};
             if(args.size() == 1) return vm->None;
@@ -413,15 +413,15 @@ struct wrapped__GlyphInfo{
     }
 };
 
-PyObject* py_var(VM* vm, GlyphInfo v){
+PyVar py_var(VM* vm, GlyphInfo v){
     return vm->new_user_object<wrapped__GlyphInfo>(v);
 }
 template<>
-GlyphInfo py_cast<GlyphInfo>(VM* vm, PyObject* obj){
+GlyphInfo py_cast<GlyphInfo>(VM* vm, PyVar obj){
     return py_cast<wrapped__GlyphInfo&>(vm, obj)._value;
 }
 template<>
-GlyphInfo _py_cast<GlyphInfo>(VM* vm, PyObject* obj){
+GlyphInfo _py_cast<GlyphInfo>(VM* vm, PyVar obj){
     return _py_cast<wrapped__GlyphInfo&>(vm, obj)._value;
 }
 /*************** Font ***************/
@@ -438,7 +438,7 @@ struct wrapped__Font{
         return memcmp(&_value, &other._value, sizeof(Font)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"baseSize", "glyphCount", "glyphPadding", "texture", "recs", "glyphs"};
             if(args.size() == 1) return vm->None;
@@ -458,15 +458,15 @@ struct wrapped__Font{
     }
 };
 
-PyObject* py_var(VM* vm, Font v){
+PyVar py_var(VM* vm, Font v){
     return vm->new_user_object<wrapped__Font>(v);
 }
 template<>
-Font py_cast<Font>(VM* vm, PyObject* obj){
+Font py_cast<Font>(VM* vm, PyVar obj){
     return py_cast<wrapped__Font&>(vm, obj)._value;
 }
 template<>
-Font _py_cast<Font>(VM* vm, PyObject* obj){
+Font _py_cast<Font>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Font&>(vm, obj)._value;
 }
 /*************** Camera3D ***************/
@@ -483,7 +483,7 @@ struct wrapped__Camera3D{
         return memcmp(&_value, &other._value, sizeof(Camera3D)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"position", "target", "up", "fovy", "projection"};
             if(args.size() == 1) return vm->None;
@@ -502,15 +502,15 @@ struct wrapped__Camera3D{
     }
 };
 
-PyObject* py_var(VM* vm, Camera3D v){
+PyVar py_var(VM* vm, Camera3D v){
     return vm->new_user_object<wrapped__Camera3D>(v);
 }
 template<>
-Camera3D py_cast<Camera3D>(VM* vm, PyObject* obj){
+Camera3D py_cast<Camera3D>(VM* vm, PyVar obj){
     return py_cast<wrapped__Camera3D&>(vm, obj)._value;
 }
 template<>
-Camera3D _py_cast<Camera3D>(VM* vm, PyObject* obj){
+Camera3D _py_cast<Camera3D>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Camera3D&>(vm, obj)._value;
 }
 /*************** Camera2D ***************/
@@ -527,7 +527,7 @@ struct wrapped__Camera2D{
         return memcmp(&_value, &other._value, sizeof(Camera2D)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"offset", "target", "rotation", "zoom"};
             if(args.size() == 1) return vm->None;
@@ -545,15 +545,15 @@ struct wrapped__Camera2D{
     }
 };
 
-PyObject* py_var(VM* vm, Camera2D v){
+PyVar py_var(VM* vm, Camera2D v){
     return vm->new_user_object<wrapped__Camera2D>(v);
 }
 template<>
-Camera2D py_cast<Camera2D>(VM* vm, PyObject* obj){
+Camera2D py_cast<Camera2D>(VM* vm, PyVar obj){
     return py_cast<wrapped__Camera2D&>(vm, obj)._value;
 }
 template<>
-Camera2D _py_cast<Camera2D>(VM* vm, PyObject* obj){
+Camera2D _py_cast<Camera2D>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Camera2D&>(vm, obj)._value;
 }
 /*************** Mesh ***************/
@@ -570,7 +570,7 @@ struct wrapped__Mesh{
         return memcmp(&_value, &other._value, sizeof(Mesh)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"vertexCount", "triangleCount", "vertices", "texcoords", "texcoords2", "normals", "tangents", "colors", "indices", "animVertices", "animNormals", "boneIds", "boneWeights", "vaoId", "vboId"};
             if(args.size() == 1) return vm->None;
@@ -599,15 +599,15 @@ struct wrapped__Mesh{
     }
 };
 
-PyObject* py_var(VM* vm, Mesh v){
+PyVar py_var(VM* vm, Mesh v){
     return vm->new_user_object<wrapped__Mesh>(v);
 }
 template<>
-Mesh py_cast<Mesh>(VM* vm, PyObject* obj){
+Mesh py_cast<Mesh>(VM* vm, PyVar obj){
     return py_cast<wrapped__Mesh&>(vm, obj)._value;
 }
 template<>
-Mesh _py_cast<Mesh>(VM* vm, PyObject* obj){
+Mesh _py_cast<Mesh>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Mesh&>(vm, obj)._value;
 }
 /*************** Shader ***************/
@@ -624,7 +624,7 @@ struct wrapped__Shader{
         return memcmp(&_value, &other._value, sizeof(Shader)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"id", "locs"};
             if(args.size() == 1) return vm->None;
@@ -640,15 +640,15 @@ struct wrapped__Shader{
     }
 };
 
-PyObject* py_var(VM* vm, Shader v){
+PyVar py_var(VM* vm, Shader v){
     return vm->new_user_object<wrapped__Shader>(v);
 }
 template<>
-Shader py_cast<Shader>(VM* vm, PyObject* obj){
+Shader py_cast<Shader>(VM* vm, PyVar obj){
     return py_cast<wrapped__Shader&>(vm, obj)._value;
 }
 template<>
-Shader _py_cast<Shader>(VM* vm, PyObject* obj){
+Shader _py_cast<Shader>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Shader&>(vm, obj)._value;
 }
 /*************** MaterialMap ***************/
@@ -665,7 +665,7 @@ struct wrapped__MaterialMap{
         return memcmp(&_value, &other._value, sizeof(MaterialMap)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"texture", "color", "value"};
             if(args.size() == 1) return vm->None;
@@ -682,15 +682,15 @@ struct wrapped__MaterialMap{
     }
 };
 
-PyObject* py_var(VM* vm, MaterialMap v){
+PyVar py_var(VM* vm, MaterialMap v){
     return vm->new_user_object<wrapped__MaterialMap>(v);
 }
 template<>
-MaterialMap py_cast<MaterialMap>(VM* vm, PyObject* obj){
+MaterialMap py_cast<MaterialMap>(VM* vm, PyVar obj){
     return py_cast<wrapped__MaterialMap&>(vm, obj)._value;
 }
 template<>
-MaterialMap _py_cast<MaterialMap>(VM* vm, PyObject* obj){
+MaterialMap _py_cast<MaterialMap>(VM* vm, PyVar obj){
     return _py_cast<wrapped__MaterialMap&>(vm, obj)._value;
 }
 /*************** Material ***************/
@@ -707,7 +707,7 @@ struct wrapped__Material{
         return memcmp(&_value, &other._value, sizeof(Material)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"shader", "maps", "params"};
             if(args.size() == 1) return vm->None;
@@ -724,15 +724,15 @@ struct wrapped__Material{
     }
 };
 
-PyObject* py_var(VM* vm, Material v){
+PyVar py_var(VM* vm, Material v){
     return vm->new_user_object<wrapped__Material>(v);
 }
 template<>
-Material py_cast<Material>(VM* vm, PyObject* obj){
+Material py_cast<Material>(VM* vm, PyVar obj){
     return py_cast<wrapped__Material&>(vm, obj)._value;
 }
 template<>
-Material _py_cast<Material>(VM* vm, PyObject* obj){
+Material _py_cast<Material>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Material&>(vm, obj)._value;
 }
 /*************** Transform ***************/
@@ -749,7 +749,7 @@ struct wrapped__Transform{
         return memcmp(&_value, &other._value, sizeof(Transform)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"translation", "rotation", "scale"};
             if(args.size() == 1) return vm->None;
@@ -766,15 +766,15 @@ struct wrapped__Transform{
     }
 };
 
-PyObject* py_var(VM* vm, Transform v){
+PyVar py_var(VM* vm, Transform v){
     return vm->new_user_object<wrapped__Transform>(v);
 }
 template<>
-Transform py_cast<Transform>(VM* vm, PyObject* obj){
+Transform py_cast<Transform>(VM* vm, PyVar obj){
     return py_cast<wrapped__Transform&>(vm, obj)._value;
 }
 template<>
-Transform _py_cast<Transform>(VM* vm, PyObject* obj){
+Transform _py_cast<Transform>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Transform&>(vm, obj)._value;
 }
 /*************** BoneInfo ***************/
@@ -791,7 +791,7 @@ struct wrapped__BoneInfo{
         return memcmp(&_value, &other._value, sizeof(BoneInfo)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"name", "parent"};
             if(args.size() == 1) return vm->None;
@@ -807,15 +807,15 @@ struct wrapped__BoneInfo{
     }
 };
 
-PyObject* py_var(VM* vm, BoneInfo v){
+PyVar py_var(VM* vm, BoneInfo v){
     return vm->new_user_object<wrapped__BoneInfo>(v);
 }
 template<>
-BoneInfo py_cast<BoneInfo>(VM* vm, PyObject* obj){
+BoneInfo py_cast<BoneInfo>(VM* vm, PyVar obj){
     return py_cast<wrapped__BoneInfo&>(vm, obj)._value;
 }
 template<>
-BoneInfo _py_cast<BoneInfo>(VM* vm, PyObject* obj){
+BoneInfo _py_cast<BoneInfo>(VM* vm, PyVar obj){
     return _py_cast<wrapped__BoneInfo&>(vm, obj)._value;
 }
 /*************** Model ***************/
@@ -832,7 +832,7 @@ struct wrapped__Model{
         return memcmp(&_value, &other._value, sizeof(Model)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"transform", "meshCount", "materialCount", "meshes", "materials", "meshMaterial", "boneCount", "bones", "bindPose"};
             if(args.size() == 1) return vm->None;
@@ -855,15 +855,15 @@ struct wrapped__Model{
     }
 };
 
-PyObject* py_var(VM* vm, Model v){
+PyVar py_var(VM* vm, Model v){
     return vm->new_user_object<wrapped__Model>(v);
 }
 template<>
-Model py_cast<Model>(VM* vm, PyObject* obj){
+Model py_cast<Model>(VM* vm, PyVar obj){
     return py_cast<wrapped__Model&>(vm, obj)._value;
 }
 template<>
-Model _py_cast<Model>(VM* vm, PyObject* obj){
+Model _py_cast<Model>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Model&>(vm, obj)._value;
 }
 /*************** ModelAnimation ***************/
@@ -880,7 +880,7 @@ struct wrapped__ModelAnimation{
         return memcmp(&_value, &other._value, sizeof(ModelAnimation)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"boneCount", "frameCount", "bones", "framePoses", "name"};
             if(args.size() == 1) return vm->None;
@@ -899,15 +899,15 @@ struct wrapped__ModelAnimation{
     }
 };
 
-PyObject* py_var(VM* vm, ModelAnimation v){
+PyVar py_var(VM* vm, ModelAnimation v){
     return vm->new_user_object<wrapped__ModelAnimation>(v);
 }
 template<>
-ModelAnimation py_cast<ModelAnimation>(VM* vm, PyObject* obj){
+ModelAnimation py_cast<ModelAnimation>(VM* vm, PyVar obj){
     return py_cast<wrapped__ModelAnimation&>(vm, obj)._value;
 }
 template<>
-ModelAnimation _py_cast<ModelAnimation>(VM* vm, PyObject* obj){
+ModelAnimation _py_cast<ModelAnimation>(VM* vm, PyVar obj){
     return _py_cast<wrapped__ModelAnimation&>(vm, obj)._value;
 }
 /*************** Ray ***************/
@@ -924,7 +924,7 @@ struct wrapped__Ray{
         return memcmp(&_value, &other._value, sizeof(Ray)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"position", "direction"};
             if(args.size() == 1) return vm->None;
@@ -940,15 +940,15 @@ struct wrapped__Ray{
     }
 };
 
-PyObject* py_var(VM* vm, Ray v){
+PyVar py_var(VM* vm, Ray v){
     return vm->new_user_object<wrapped__Ray>(v);
 }
 template<>
-Ray py_cast<Ray>(VM* vm, PyObject* obj){
+Ray py_cast<Ray>(VM* vm, PyVar obj){
     return py_cast<wrapped__Ray&>(vm, obj)._value;
 }
 template<>
-Ray _py_cast<Ray>(VM* vm, PyObject* obj){
+Ray _py_cast<Ray>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Ray&>(vm, obj)._value;
 }
 /*************** RayCollision ***************/
@@ -965,7 +965,7 @@ struct wrapped__RayCollision{
         return memcmp(&_value, &other._value, sizeof(RayCollision)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"hit", "distance", "point", "normal"};
             if(args.size() == 1) return vm->None;
@@ -983,15 +983,15 @@ struct wrapped__RayCollision{
     }
 };
 
-PyObject* py_var(VM* vm, RayCollision v){
+PyVar py_var(VM* vm, RayCollision v){
     return vm->new_user_object<wrapped__RayCollision>(v);
 }
 template<>
-RayCollision py_cast<RayCollision>(VM* vm, PyObject* obj){
+RayCollision py_cast<RayCollision>(VM* vm, PyVar obj){
     return py_cast<wrapped__RayCollision&>(vm, obj)._value;
 }
 template<>
-RayCollision _py_cast<RayCollision>(VM* vm, PyObject* obj){
+RayCollision _py_cast<RayCollision>(VM* vm, PyVar obj){
     return _py_cast<wrapped__RayCollision&>(vm, obj)._value;
 }
 /*************** BoundingBox ***************/
@@ -1008,7 +1008,7 @@ struct wrapped__BoundingBox{
         return memcmp(&_value, &other._value, sizeof(BoundingBox)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"min", "max"};
             if(args.size() == 1) return vm->None;
@@ -1024,15 +1024,15 @@ struct wrapped__BoundingBox{
     }
 };
 
-PyObject* py_var(VM* vm, BoundingBox v){
+PyVar py_var(VM* vm, BoundingBox v){
     return vm->new_user_object<wrapped__BoundingBox>(v);
 }
 template<>
-BoundingBox py_cast<BoundingBox>(VM* vm, PyObject* obj){
+BoundingBox py_cast<BoundingBox>(VM* vm, PyVar obj){
     return py_cast<wrapped__BoundingBox&>(vm, obj)._value;
 }
 template<>
-BoundingBox _py_cast<BoundingBox>(VM* vm, PyObject* obj){
+BoundingBox _py_cast<BoundingBox>(VM* vm, PyVar obj){
     return _py_cast<wrapped__BoundingBox&>(vm, obj)._value;
 }
 /*************** Wave ***************/
@@ -1049,7 +1049,7 @@ struct wrapped__Wave{
         return memcmp(&_value, &other._value, sizeof(Wave)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"frameCount", "sampleRate", "sampleSize", "channels", "data"};
             if(args.size() == 1) return vm->None;
@@ -1068,15 +1068,15 @@ struct wrapped__Wave{
     }
 };
 
-PyObject* py_var(VM* vm, Wave v){
+PyVar py_var(VM* vm, Wave v){
     return vm->new_user_object<wrapped__Wave>(v);
 }
 template<>
-Wave py_cast<Wave>(VM* vm, PyObject* obj){
+Wave py_cast<Wave>(VM* vm, PyVar obj){
     return py_cast<wrapped__Wave&>(vm, obj)._value;
 }
 template<>
-Wave _py_cast<Wave>(VM* vm, PyObject* obj){
+Wave _py_cast<Wave>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Wave&>(vm, obj)._value;
 }
 /*************** AudioStream ***************/
@@ -1093,7 +1093,7 @@ struct wrapped__AudioStream{
         return memcmp(&_value, &other._value, sizeof(AudioStream)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"buffer", "processor", "sampleRate", "sampleSize", "channels"};
             if(args.size() == 1) return vm->None;
@@ -1112,15 +1112,15 @@ struct wrapped__AudioStream{
     }
 };
 
-PyObject* py_var(VM* vm, AudioStream v){
+PyVar py_var(VM* vm, AudioStream v){
     return vm->new_user_object<wrapped__AudioStream>(v);
 }
 template<>
-AudioStream py_cast<AudioStream>(VM* vm, PyObject* obj){
+AudioStream py_cast<AudioStream>(VM* vm, PyVar obj){
     return py_cast<wrapped__AudioStream&>(vm, obj)._value;
 }
 template<>
-AudioStream _py_cast<AudioStream>(VM* vm, PyObject* obj){
+AudioStream _py_cast<AudioStream>(VM* vm, PyVar obj){
     return _py_cast<wrapped__AudioStream&>(vm, obj)._value;
 }
 /*************** Sound ***************/
@@ -1137,7 +1137,7 @@ struct wrapped__Sound{
         return memcmp(&_value, &other._value, sizeof(Sound)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"stream", "frameCount"};
             if(args.size() == 1) return vm->None;
@@ -1153,15 +1153,15 @@ struct wrapped__Sound{
     }
 };
 
-PyObject* py_var(VM* vm, Sound v){
+PyVar py_var(VM* vm, Sound v){
     return vm->new_user_object<wrapped__Sound>(v);
 }
 template<>
-Sound py_cast<Sound>(VM* vm, PyObject* obj){
+Sound py_cast<Sound>(VM* vm, PyVar obj){
     return py_cast<wrapped__Sound&>(vm, obj)._value;
 }
 template<>
-Sound _py_cast<Sound>(VM* vm, PyObject* obj){
+Sound _py_cast<Sound>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Sound&>(vm, obj)._value;
 }
 /*************** Music ***************/
@@ -1178,7 +1178,7 @@ struct wrapped__Music{
         return memcmp(&_value, &other._value, sizeof(Music)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"stream", "frameCount", "looping", "ctxType", "ctxData"};
             if(args.size() == 1) return vm->None;
@@ -1197,15 +1197,15 @@ struct wrapped__Music{
     }
 };
 
-PyObject* py_var(VM* vm, Music v){
+PyVar py_var(VM* vm, Music v){
     return vm->new_user_object<wrapped__Music>(v);
 }
 template<>
-Music py_cast<Music>(VM* vm, PyObject* obj){
+Music py_cast<Music>(VM* vm, PyVar obj){
     return py_cast<wrapped__Music&>(vm, obj)._value;
 }
 template<>
-Music _py_cast<Music>(VM* vm, PyObject* obj){
+Music _py_cast<Music>(VM* vm, PyVar obj){
     return _py_cast<wrapped__Music&>(vm, obj)._value;
 }
 /*************** VrDeviceInfo ***************/
@@ -1222,7 +1222,7 @@ struct wrapped__VrDeviceInfo{
         return memcmp(&_value, &other._value, sizeof(VrDeviceInfo)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"hResolution", "vResolution", "hScreenSize", "vScreenSize", "eyeToScreenDistance", "lensSeparationDistance", "interpupillaryDistance", "lensDistortionValues", "chromaAbCorrection"};
             if(args.size() == 1) return vm->None;
@@ -1245,15 +1245,15 @@ struct wrapped__VrDeviceInfo{
     }
 };
 
-PyObject* py_var(VM* vm, VrDeviceInfo v){
+PyVar py_var(VM* vm, VrDeviceInfo v){
     return vm->new_user_object<wrapped__VrDeviceInfo>(v);
 }
 template<>
-VrDeviceInfo py_cast<VrDeviceInfo>(VM* vm, PyObject* obj){
+VrDeviceInfo py_cast<VrDeviceInfo>(VM* vm, PyVar obj){
     return py_cast<wrapped__VrDeviceInfo&>(vm, obj)._value;
 }
 template<>
-VrDeviceInfo _py_cast<VrDeviceInfo>(VM* vm, PyObject* obj){
+VrDeviceInfo _py_cast<VrDeviceInfo>(VM* vm, PyVar obj){
     return _py_cast<wrapped__VrDeviceInfo&>(vm, obj)._value;
 }
 /*************** VrStereoConfig ***************/
@@ -1270,7 +1270,7 @@ struct wrapped__VrStereoConfig{
         return memcmp(&_value, &other._value, sizeof(VrStereoConfig)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"projection", "viewOffset", "leftLensCenter", "rightLensCenter", "leftScreenCenter", "rightScreenCenter", "scale", "scaleIn"};
             if(args.size() == 1) return vm->None;
@@ -1292,15 +1292,15 @@ struct wrapped__VrStereoConfig{
     }
 };
 
-PyObject* py_var(VM* vm, VrStereoConfig v){
+PyVar py_var(VM* vm, VrStereoConfig v){
     return vm->new_user_object<wrapped__VrStereoConfig>(v);
 }
 template<>
-VrStereoConfig py_cast<VrStereoConfig>(VM* vm, PyObject* obj){
+VrStereoConfig py_cast<VrStereoConfig>(VM* vm, PyVar obj){
     return py_cast<wrapped__VrStereoConfig&>(vm, obj)._value;
 }
 template<>
-VrStereoConfig _py_cast<VrStereoConfig>(VM* vm, PyObject* obj){
+VrStereoConfig _py_cast<VrStereoConfig>(VM* vm, PyVar obj){
     return _py_cast<wrapped__VrStereoConfig&>(vm, obj)._value;
 }
 /*************** FilePathList ***************/
@@ -1317,7 +1317,7 @@ struct wrapped__FilePathList{
         return memcmp(&_value, &other._value, sizeof(FilePathList)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"capacity", "count", "paths"};
             if(args.size() == 1) return vm->None;
@@ -1334,15 +1334,15 @@ struct wrapped__FilePathList{
     }
 };
 
-PyObject* py_var(VM* vm, FilePathList v){
+PyVar py_var(VM* vm, FilePathList v){
     return vm->new_user_object<wrapped__FilePathList>(v);
 }
 template<>
-FilePathList py_cast<FilePathList>(VM* vm, PyObject* obj){
+FilePathList py_cast<FilePathList>(VM* vm, PyVar obj){
     return py_cast<wrapped__FilePathList&>(vm, obj)._value;
 }
 template<>
-FilePathList _py_cast<FilePathList>(VM* vm, PyObject* obj){
+FilePathList _py_cast<FilePathList>(VM* vm, PyVar obj){
     return _py_cast<wrapped__FilePathList&>(vm, obj)._value;
 }
 /*************** AutomationEvent ***************/
@@ -1359,7 +1359,7 @@ struct wrapped__AutomationEvent{
         return memcmp(&_value, &other._value, sizeof(AutomationEvent)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"frame", "type", "params"};
             if(args.size() == 1) return vm->None;
@@ -1376,15 +1376,15 @@ struct wrapped__AutomationEvent{
     }
 };
 
-PyObject* py_var(VM* vm, AutomationEvent v){
+PyVar py_var(VM* vm, AutomationEvent v){
     return vm->new_user_object<wrapped__AutomationEvent>(v);
 }
 template<>
-AutomationEvent py_cast<AutomationEvent>(VM* vm, PyObject* obj){
+AutomationEvent py_cast<AutomationEvent>(VM* vm, PyVar obj){
     return py_cast<wrapped__AutomationEvent&>(vm, obj)._value;
 }
 template<>
-AutomationEvent _py_cast<AutomationEvent>(VM* vm, PyObject* obj){
+AutomationEvent _py_cast<AutomationEvent>(VM* vm, PyVar obj){
     return _py_cast<wrapped__AutomationEvent&>(vm, obj)._value;
 }
 /*************** AutomationEventList ***************/
@@ -1401,7 +1401,7 @@ struct wrapped__AutomationEventList{
         return memcmp(&_value, &other._value, sizeof(AutomationEventList)) == 0;
     }
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){
+    static void _register(VM* vm, PyVar mod, PyVar type){
         vm->bind_func(type, __init__, -1, [](VM* vm, ArgsView args){
             const StrName _fields_[] = {"capacity", "count", "events"};
             if(args.size() == 1) return vm->None;
@@ -1418,20 +1418,20 @@ struct wrapped__AutomationEventList{
     }
 };
 
-PyObject* py_var(VM* vm, AutomationEventList v){
+PyVar py_var(VM* vm, AutomationEventList v){
     return vm->new_user_object<wrapped__AutomationEventList>(v);
 }
 template<>
-AutomationEventList py_cast<AutomationEventList>(VM* vm, PyObject* obj){
+AutomationEventList py_cast<AutomationEventList>(VM* vm, PyVar obj){
     return py_cast<wrapped__AutomationEventList&>(vm, obj)._value;
 }
 template<>
-AutomationEventList _py_cast<AutomationEventList>(VM* vm, PyObject* obj){
+AutomationEventList _py_cast<AutomationEventList>(VM* vm, PyVar obj){
     return _py_cast<wrapped__AutomationEventList&>(vm, obj)._value;
 }
 ////////////////////////////////////////
 void add_module_raylib(VM* vm){
-    PyObject* mod = vm->new_module("raylib");
+    PyVar mod = vm->new_module("raylib");
 
     // defines
     mod->attr().set("RAYLIB_VERSION_MAJOR", py_var(vm, 5));

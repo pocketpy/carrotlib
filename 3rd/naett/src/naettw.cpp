@@ -24,7 +24,7 @@ namespace pkpy{
             return Bytes(body, body_size);
         }
 
-        static void _register(VM* vm, PyObject* mod, PyObject* type){
+        static void _register(VM* vm, PyVar mod, PyVar type){
             vm->bind_property(type, "completed: bool", [](VM* vm, ArgsView args){
                 naett_response& self = PK_OBJ_GET(naett_response, args[0]);
                 return VAR(naettComplete(self.res) != 0);
@@ -126,17 +126,17 @@ namespace pkpy{
                 return VAR(reason);
             });
 
-            vm->bind__repr__(PK_OBJ_GET(Type, type), [](VM* vm, PyObject* _0){
+            vm->bind__repr__(PK_OBJ_GET(Type, type), [](VM* vm, PyVar _0){
                 naett_response& self = PK_OBJ_GET(naett_response, _0);
                 int status_code = naettGetStatus(self.res);
                 return _S("<Response [", status_code, "]>");
             });
 
-            vm->bind__iter__(PK_OBJ_GET(Type, type), [](VM* vm, PyObject* _0){
+            vm->bind__iter__(PK_OBJ_GET(Type, type), [](VM* vm, PyVar _0){
                 return _0;
             });
 
-            vm->bind__next__(PK_OBJ_GET(Type, type), [](VM* vm, PyObject* _0) -> unsigned{
+            vm->bind__next__(PK_OBJ_GET(Type, type), [](VM* vm, PyVar _0) -> unsigned{
                 naett_response& self = PK_OBJ_GET(naett_response, _0);
                 if(naettComplete(self.res)) return 0;
                 vm->s_data.push(vm->None);
@@ -151,7 +151,7 @@ namespace pkpy{
     };
 
     void add_module_naett(VM* vm){
-        PyObject* mod = vm->new_module("naett");
+        PyVar mod = vm->new_module("naett");
         vm->register_user_class<naett_response>(mod, "Response");
 
         vm->bind(mod, "request(method, url, headers=None, body: str | bytes = None, timeout=None)", [](VM* vm, ArgsView args){
@@ -162,7 +162,7 @@ namespace pkpy{
             options.push_back(naettMethod(method.c_str()));
             if(args[2] != vm->None){
                 Dict& headers = CAST(Dict&, args[2]);
-                headers.apply([&](PyObject* key, PyObject* value){
+                headers.apply([&](PyVar key, PyVar value){
                     const char* k = CAST(Str&, key).c_str();
                     const char* v = CAST(Str&, value).c_str();
                     options.push_back(naettHeader(k, v));

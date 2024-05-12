@@ -5,29 +5,29 @@
 
 namespace pkpy{
 
-inline PyObject* py_var(VM* vm, ImVec2 im_vec){
+inline PyVar py_var(VM* vm, ImVec2 im_vec){
     Vec2 vec(im_vec.x, im_vec.y);
     return py_var(vm, vec);
 }
 
-inline PyObject* py_var(VM* vm, ImVec4 im_vec){
+inline PyVar py_var(VM* vm, ImVec4 im_vec){
     Vec4 vec(im_vec.x, im_vec.y, im_vec.z, im_vec.w);
     return py_var(vm, vec);
 }
 
 template<>
-inline ImVec2 py_cast<ImVec2>(VM* vm, PyObject* obj){
+inline ImVec2 py_cast<ImVec2>(VM* vm, PyVar obj){
     Vec2 vec = py_cast<Vec2>(vm, obj);
     return ImVec2(vec.x, vec.y);
 }
 
 template<>
-inline ImVec4 py_cast<ImVec4>(VM* vm, PyObject* obj){
+inline ImVec4 py_cast<ImVec4>(VM* vm, PyVar obj){
     Vec4 vec = py_cast<Vec4>(vm, obj);
     return ImVec4(vec.x, vec.y, vec.z, vec.w);
 }
 
-static void register_imgui_enums(VM* vm, PyObject* mod){
+static void register_imgui_enums(VM* vm, PyVar mod){
     vm->exec(
     "# ImDrawFlags_\n"
     "ImDrawFlags_None = 0\n"
@@ -997,7 +997,7 @@ struct OpaquePointer{
 struct PyImGuiIO: OpaquePointer<ImGuiIO>{
     using OpaquePointer<ImGuiIO>::OpaquePointer;
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){                
+    static void _register(VM* vm, PyVar mod, PyVar type){                
         PY_FIELD(PyImGuiIO, "ConfigFlags", p->ConfigFlags)           // int
         PY_FIELD(PyImGuiIO, "BackendFlags", p->BackendFlags)         // int
         PY_FIELD(PyImGuiIO, "DisplaySize", p->DisplaySize)           // struct ImVec2
@@ -1076,7 +1076,7 @@ struct PyImGuiIO: OpaquePointer<ImGuiIO>{
 struct PyImGuiStyle: OpaquePointer<ImGuiStyle>{
     using OpaquePointer<ImGuiStyle>::OpaquePointer;
 
-    static void _register(VM* vm, PyObject* mod, PyObject* type){                  
+    static void _register(VM* vm, PyVar mod, PyVar type){                  
         PY_FIELD(PyImGuiStyle, "Alpha", p->Alpha)                    // float
         PY_FIELD(PyImGuiStyle, "DisabledAlpha", p->DisabledAlpha)    // float
         PY_FIELD(PyImGuiStyle, "WindowPadding", p->WindowPadding)    // struct ImVec2
@@ -1130,7 +1130,7 @@ struct PyImGuiStyle: OpaquePointer<ImGuiStyle>{
 
 
 void add_module_imgui(VM* vm){
-    PyObject* imgui = vm->new_module("imgui");
+    PyVar imgui = vm->new_module("imgui");
     register_imgui_enums(vm, imgui);
 
     vm->register_user_class<PyImGuiIO>(imgui, "_IO");
@@ -1971,7 +1971,7 @@ void add_module_imgui(VM* vm){
             int* current_item = CAST(int*, args[1]);
             const List& items = CAST(List&, args[2]);
             std::vector<char> items_separated_by_zeros;
-            for(PyObject* obj: items){
+            for(PyVar obj: items){
                 for(char c: CAST(Str&, obj).sv()) items_separated_by_zeros.push_back(c);
                 items_separated_by_zeros.push_back('\0');
             }

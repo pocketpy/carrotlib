@@ -21,8 +21,8 @@ const char* get_template_path(){
     return template_path;
 }
 
-PyObject* add_module__ct(VM *vm){
-    PyObject* mod = vm->new_module("_carrotlib");
+PyVar add_module__ct(VM *vm){
+    PyVar mod = vm->new_module("_carrotlib");
 
 #if PK_IS_DESKTOP_PLATFORM == 1
     int desktop_screen_width, desktop_screen_height;
@@ -64,8 +64,8 @@ PyObject* add_module__ct(VM *vm){
 
     vm->bind_func(mod, "fast_apply", -1, [](VM* vm, ArgsView args){
         if(args.size() < 2) vm->TypeError("expected at least 2 arguments");
-        PyObject** begin;
-        PyObject** end;
+        PyVar* begin;
+        PyVar* end;
         if(is_type(args[1], vm->tp_list)){
             begin = PK_OBJ_GET(List, args[1]).begin();
             end = PK_OBJ_GET(List, args[1]).end();
@@ -75,7 +75,7 @@ PyObject* add_module__ct(VM *vm){
         }else{
             vm->TypeError("expected a list or tuple as 2nd argument");
         }
-        for(PyObject** item=begin; item!=end; item++){
+        for(PyVar* item=begin; item!=end; item++){
             vm->s_data.push(args[0]);
             vm->s_data.push(PY_NULL);
             vm->s_data.push(*item);

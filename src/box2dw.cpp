@@ -2,12 +2,12 @@
 
 namespace pkpy{
 
-void PyBody::_register(VM* vm, PyObject* mod, PyObject* type){
+void PyBody::_register(VM* vm, PyVar mod, PyVar type){
     vm->bind(type, "__new__(cls, world: World, node=None, with_callback=True)",
         [](VM* vm, ArgsView args){
             PyWorld& world = CAST(PyWorld&, args[1]);
-            PyObject* node = args[2];
-            PyObject* obj = vm->new_user_object<PyBody>();
+            PyVar node = args[2];
+            PyVar obj = vm->new_user_object<PyBody>();
             PyBody& body = _CAST(PyBody&, obj);
             b2BodyDef def;
             def.type = b2_dynamicBody;
@@ -150,7 +150,7 @@ void PyDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b
     DEF_SNAME(draw_polygon);
     List v(vertexCount);
     for(int i = 0; i < vertexCount; i++) v[i] = VAR(vertices[i]);
-    PyObject* col = VAR(color_to_vec4(color));
+    PyVar col = VAR(color_to_vec4(color));
     vm->call_method(draw_like, draw_polygon, VAR(std::move(v)), col);
 }
 
@@ -158,25 +158,25 @@ void PyDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, co
     DEF_SNAME(draw_solid_polygon);
     List v(vertexCount);
     for(int i = 0; i < vertexCount; i++) v[i] = VAR(vertices[i]);
-    PyObject* col = VAR(color_to_vec4(color));
+    PyVar col = VAR(color_to_vec4(color));
     vm->call_method(draw_like, draw_solid_polygon, VAR(std::move(v)), col);
 }
 
 void PyDebugDraw::DrawCircle(const b2Vec2& center, float radius, const b2Color& color){
     DEF_SNAME(draw_circle);
-    PyObject* col = VAR(color_to_vec4(color));
+    PyVar col = VAR(color_to_vec4(color));
     vm->call_method(draw_like, draw_circle, VAR(center), VAR(radius), col);
 }
 
 void PyDebugDraw::DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color){
     DEF_SNAME(draw_solid_circle);
-    PyObject* col = VAR(color_to_vec4(color));
+    PyVar col = VAR(color_to_vec4(color));
     vm->call_method(draw_like, draw_solid_circle, VAR(center), VAR(radius), VAR(axis), col);
 }
 
 void PyDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color){
     DEF_SNAME(draw_segment);
-    PyObject* col = VAR(color_to_vec4(color));
+    PyVar col = VAR(color_to_vec4(color));
     vm->call_method(draw_like, draw_segment, VAR(p1), VAR(p2), col);
 }
 
@@ -187,12 +187,12 @@ void PyDebugDraw::DrawTransform(const b2Transform& xf){
 
 void PyDebugDraw::DrawPoint(const b2Vec2& p, float size, const b2Color& color){
     DEF_SNAME(draw_point);
-    PyObject* col = VAR(color_to_vec4(color));
+    PyVar col = VAR(color_to_vec4(color));
     vm->call_method(draw_like, draw_point, VAR(p), VAR(size), col);
 }
 
 void add_module_box2d(VM* vm){
-    PyObject* mod = vm->new_module("box2d");
+    PyVar mod = vm->new_module("box2d");
     vm->register_user_class<PyBody>(mod, "Body");
     vm->register_user_class<PyWorld>(mod, "World");
 }
@@ -225,12 +225,12 @@ struct MyBoxCastCallback: b2QueryCallback{
 };
 
 void PyContactListener::_contact_f(b2Contact* contact, StrName name){
-    PyObject* a = get_body_object(contact->GetFixtureA()->GetBody());
-    PyObject* b = get_body_object(contact->GetFixtureB()->GetBody());
+    PyVar a = get_body_object(contact->GetFixtureA()->GetBody());
+    PyVar b = get_body_object(contact->GetFixtureB()->GetBody());
     PyBody& bodyA = PK_OBJ_GET(PyBody, a);
     PyBody& bodyB = PK_OBJ_GET(PyBody, b);
-    PyObject* self;
-    PyObject* f;
+    PyVar self;
+    PyVar f;
     f = vm->get_unbound_method(bodyA.node_like, name, &self, false);
     if(f != nullptr) vm->call_method(self, f, b);
     f = vm->get_unbound_method(bodyB.node_like, name, &self, false);
@@ -246,7 +246,7 @@ PyWorld::PyWorld(VM* vm): world(b2Vec2(0, 0)), _contact_listener(vm), _debug_dra
     world.SetDebugDraw(&_debug_draw);
 }
 
-void PyWorld::_register(VM* vm, PyObject* mod, PyObject* type){
+void PyWorld::_register(VM* vm, PyVar mod, PyVar type){
     vm->bind_func(type, __new__, 1, [](VM* vm, ArgsView args){
         return vm->new_user_object<PyWorld>(vm);
     });
@@ -316,7 +316,7 @@ void PyWorld::_register(VM* vm, PyObject* mod, PyObject* type){
 
             auto f = [](VM* vm, b2Body* p, StrName name){
                 while(p != nullptr){
-                    PyObject* body_obj = get_body_object(p);
+                    PyVar body_obj = get_body_object(p);
                     PyBody& body = _CAST(PyBody&, body_obj);
                     if(body.with_callback && !body._is_destroyed){
                         if(body.node_like != vm->None){
