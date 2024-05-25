@@ -12,7 +12,7 @@ void PyBody::_register(VM* vm, PyVar mod, PyVar type){
             b2BodyDef def;
             def.type = b2_dynamicBody;
             // a weak reference to this object
-            def.userData.pointer = reinterpret_cast<uintptr_t>(obj);
+            def.userData.pointer = reinterpret_cast<uintptr_t>(obj.get());
             body.body = world.world.CreateBody(&def);
             body.node_like = node;
             body.with_callback = CAST(bool, args[3]);
@@ -120,7 +120,7 @@ void PyBody::_register(VM* vm, PyVar mod, PyVar type){
         while(edge){
             b2Fixture* fixtureB = edge->contact->GetFixtureB();
             b2Body* bodyB = fixtureB->GetBody();
-            list.push_back(get_body_object(bodyB));
+            list.emplace_back(vm->_tp_user<PyBody>(), get_body_object(bodyB));
             edge = edge->next;
         }
         return VAR(std::move(list));
@@ -205,7 +205,7 @@ struct MyRayCastCallback: b2RayCastCallback{
     MyRayCastCallback(VM* vm): vm(vm) {}
  
     float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction){
-        result.push_back(get_body_object(fixture->GetBody()));
+        result.emplace_back(vm->_tp_user<PyBody>(), get_body_object(fixture->GetBody()));
         // if(only_one) return 0;
         return fraction;
     }
@@ -219,22 +219,22 @@ struct MyBoxCastCallback: b2QueryCallback{
     MyBoxCastCallback(VM* vm): vm(vm) {}
 
     bool ReportFixture(b2Fixture* fixture) override{
-        result.push_back(get_body_object(fixture->GetBody()));
+        result.emplace_back(vm->_tp_user<PyBody>(), get_body_object(fixture->GetBody()));
         return true;
     }
 };
 
 void PyContactListener::_contact_f(b2Contact* contact, StrName name){
-    PyVar a = get_body_object(contact->GetFixtureA()->GetBody());
-    PyVar b = get_body_object(contact->GetFixtureB()->GetBody());
-    PyBody& bodyA = PK_OBJ_GET(PyBody, a);
-    PyBody& bodyB = PK_OBJ_GET(PyBody, b);
+    PyObject* a = get_body_object(contact->GetFixtureA()->GetBody());
+    PyObject* b = get_body_object(contact->GetFixtureB()->GetBody());
+    PyBody& bodyA = a->as<PyBody>();
+    PyBody& bodyB = b->as<PyBody>();
     PyVar self;
     PyVar f;
     f = vm->get_unbound_method(bodyA.node_like, name, &self, false);
-    if(f != nullptr) vm->call_method(self, f, b);
+    if(f != nullptr) vm->call_method(self, f, PyVar(vm->_tp_user<PyBody>(), b));
     f = vm->get_unbound_method(bodyB.node_like, name, &self, false);
-    if(f != nullptr) vm->call_method(self, f, a);
+    if(f != nullptr) vm->call_method(self, f, PyVar(vm->_tp_user<PyBody>(), a));
 }
 
 /****************** PyWorld ******************/
@@ -266,7 +266,7 @@ void PyWorld::_register(VM* vm, PyVar mod, PyVar type){
         List list;
         b2Body* p = self.world.GetBodyList();
         while(p != nullptr){
-            list.push_back(get_body_object(p));
+            list.emplace_back(vm->_tp_user<PyBody>(), get_body_object(p));
             p = p->GetNext();
         }
         return VAR(std::move(list));
@@ -316,8 +316,8 @@ void PyWorld::_register(VM* vm, PyVar mod, PyVar type){
 
             auto f = [](VM* vm, b2Body* p, StrName name){
                 while(p != nullptr){
-                    PyVar body_obj = get_body_object(p);
-                    PyBody& body = _CAST(PyBody&, body_obj);
+                    PyObject* body_obj = get_body_object(p);
+                    PyBody& body = body_obj->as<PyBody>();
                     if(body.with_callback && !body._is_destroyed){
                         if(body.node_like != vm->None){
                             vm->call_method(body.node_like, name);
@@ -337,7 +337,7 @@ void PyWorld::_register(VM* vm, PyVar mod, PyVar type){
             b2Body* p = self.world.GetBodyList();
             while(p != nullptr){
                 b2Body* next = p->GetNext();
-                PyBody& body = _CAST(PyBody&, get_body_object(p));
+                PyBody& body = get_body_object(p)->as<PyBody>();
                 if(body._is_destroyed){
                     body.body->GetWorld()->DestroyBody(body.body);
                     body.body = nullptr;

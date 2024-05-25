@@ -21,9 +21,9 @@ inline PyVar py_var(VM* vm, b2Vec2 v){
     return py_var(vm, Vec2(v.x, v.y));
 }
 
-inline PyVar get_body_object(b2Body* p){
+inline PyObject* get_body_object(b2Body* p){
     auto userdata = p->GetUserData().pointer;
-    return reinterpret_cast<PyVar>(userdata);
+    return reinterpret_cast<PyObject*>(userdata);
 }
 
 // maybe we will use this class later
@@ -73,7 +73,7 @@ struct PyBody{
     bool _is_destroyed;
     PyBody(): body(nullptr), _fixture(nullptr), node_like(nullptr), _is_destroyed(false){}
 
-    void _gc_mark() {
+    void _gc_mark(VM* vm) {
         if(node_like != nullptr){
             PK_OBJ_MARK(node_like);
         }
@@ -126,7 +126,7 @@ struct PyWorld {
 
     PyWorld(VM* vm);
 
-    void _gc_mark(){
+    void _gc_mark(VM* vm){
         PK_OBJ_MARK(_debug_draw.draw_like);
     }
 

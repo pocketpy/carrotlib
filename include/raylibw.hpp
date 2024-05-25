@@ -13,11 +13,11 @@ T1 _struct_cast(T0& v){
 
 template<size_t N>
 void _bind_enums(VM* vm, PyVar mod, Str name, const std::pair<const char*, i64> (&enums)[N]){
-    Dict d(vm);
+    Dict d;
     for(auto [k, v]: enums){
         PyVar int_obj = py_var(vm, v);
         mod->attr().set(k, int_obj);
-        d.set(int_obj, py_var(vm, k));
+        d.set(vm, int_obj, py_var(vm, k));
     }
     mod->attr().set(name + "_NAMES", py_var(vm, std::move(d)));
 }

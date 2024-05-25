@@ -11,8 +11,7 @@ class FreeCamera(Node):
         # move via mouse wheel button
         if rl.IsMouseButtonDown(rl.MOUSE_BUTTON_MIDDLE):
             delta = get_mouse_delta() / _g.PIXEL_PER_UNIT
-            delta.x *= self.scale.x
-            delta.y *= self.scale.y
+            delta *= self.scale
             self.position -= delta
 
         # zoom via mouse wheel

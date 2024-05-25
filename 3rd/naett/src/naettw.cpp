@@ -58,14 +58,15 @@ namespace pkpy{
             vm->bind_property(type, "headers: dict", [](VM* vm, ArgsView args){
                 naett_response& self = PK_OBJ_GET(naett_response, args[0]);
                 self.check_completed();
-                Dict headers(vm);
+                Dict headers;
+                std::pair<Dict*, VM*> userdata(&headers, vm);
                 if(naettGetStatus(self.res) > 0){
                     naettHeaderLister lister = [](const char* name, const char* value, void* userData){
-                        Dict* dict = (Dict*)userData;
-                        dict->set(py_var(dict->vm, name), py_var(dict->vm, value));
+                        auto [dict, vm] = *(std::pair<Dict*, VM*>*)userData;
+                        dict->set(vm, py_var(vm, name), py_var(vm, value));
                         return 0;
                     };
-                    naettListHeaders(self.res, lister, &headers);
+                    naettListHeaders(self.res, lister, &userdata);
                 }
                 return VAR(std::move(headers));
             });
