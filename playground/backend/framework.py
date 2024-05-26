@@ -24,11 +24,14 @@ def compile_framework():
 
     shutil.rmtree(FRAMEWORK_BUILD_DIR, ignore_errors=True)
     os.makedirs(FRAMEWORK_BUILD_DIR, exist_ok=True)
+    args = ["cmake", "../.."]
     if config.use_release_build:
-        build_type = '-DCMAKE_BUILD_TYPE=Release'
+        args.append('-DCMAKE_BUILD_TYPE=Release')
     else:
-        build_type = '-DCMAKE_BUILD_TYPE=Debug'
-    task = TaskCommand(["cmake", "../..", build_type], cwd=FRAMEWORK_BUILD_DIR)
+        args.append('-DCMAKE_BUILD_TYPE=Debug')
+    if config.use_profile_build:
+        args.append('-DPK_ENABLE_PROFILER=ON')
+    task = TaskCommand(args, cwd=FRAMEWORK_BUILD_DIR)
     yield from task
     if task.returncode != 0:
         return
